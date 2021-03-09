@@ -900,6 +900,26 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
+"@mediapipe/camera_utils@^0.1.1606863050":
+  version "0.1.1606863050"
+  resolved "https://registry.yarnpkg.com/@mediapipe/camera_utils/-/camera_utils-0.1.1606863050.tgz#8f7da485148a62cd16c17c4d1c9ef79e8193858a"
+  integrity sha512-/vrwMsfsyEkXwjHyLKqDVu6j9Z1Jyi2rOpgqV/I9GTydkAVAtg1sbxlEfLFqlTK4fY367D5Yd79FPXrXqBPyIg==
+
+"@mediapipe/drawing_utils@^0.2.1614567093":
+  version "0.2.1614567093"
+  resolved "https://registry.yarnpkg.com/@mediapipe/drawing_utils/-/drawing_utils-0.2.1614567093.tgz#018f8b328efcf010ce2eaae1771604862eae1799"
+  integrity sha512-8poSzSf6rY1QpJBBGUyQgbuQoC5QJbmZqln2Cgs9USz/lKNJzcj5jypdRiVvYF/qnIbIbGOwO9fw8pkQ3fo77w==
+
+"@mediapipe/hands@^0.1.1614621970":
+  version "0.1.1614621970"
+  resolved "https://registry.yarnpkg.com/@mediapipe/hands/-/hands-0.1.1614621970.tgz#0c776c2adc7a826b14cfab71be9ef5c0f3b9d150"
+  integrity sha512-lP5Z45XDhAd/VgVA0uyZiLB7OeC2Ily/uD9pWBq+tJ8COqNNH9Ee86ojgKD07OTqXUHymDng2YL5Mjyp5u58aw==
+
+"@mediapipe/holistic@^0.1.1613603339":
+  version "0.1.1613603339"
+  resolved "https://registry.yarnpkg.com/@mediapipe/holistic/-/holistic-0.1.1613603339.tgz#21d975586af78dfce5988f2ce6f0decd1c94c1f2"
+  integrity sha512-+X0uSzbm4+dKjdmRiZGkecWuUButto6DJqbrO5wq6aNjS1Mv0qXO7cLalQUAZ2d3FPoB6I4SKoAC8wAFcywcSg==
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.npm.taobao.org/@mrmlnc/readdir-enhanced/download/@mrmlnc/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
