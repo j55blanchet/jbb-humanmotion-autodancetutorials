@@ -1,0 +1,169 @@
+<template>
+  <canvas ref="canvasE" width="1280" height="720" class="drawCanvas"></canvas>
+  {{gesture}}
+</template>
+
+<script lang="ts">
+
+import {
+  ref, defineComponent, watch, toRefs, onMounted, Ref,
+} from 'vue';
+import eventHub, { Gestures } from '../services/EventHub';
+
+import { HandLandmarks, Landmark, MpHolisticResults } from '../services/MediaPipeTypes';
+import {
+  HAND_LANDMARK_CONNECTIONS, DrawPose, DrawConnections, HAND,
+} from '../services/MediaPipe';
+// import { TinyEmitter } from 'tiny-emitter';
+
+function getAngle(lm0: Landmark, lm1: Landmark) {
+  return Math.atan2(lm1.y - lm0.y, lm1.x - lm0.x);
+}
+
+const getSum = (input: Array<number>) => input.reduce((a, b) => a + b, 0);
+
+function averageAngle(input: Array<Landmark>): number {
+  if (input.length < 2) return 0;
+
+  const angles = input.map(
+    (val, i, arr) => (arr[i + 1] === undefined ? 0 : getAngle(arr[i], arr[i + 1])),
+  );
+  angles.pop();
+
+  const y = getSum(angles.map(Math.sin));
+  const x = getSum(angles.map(Math.cos));
+
+  return Math.atan2(y, x);
+}
+
+function isLine(input: Array<Landmark>, angleTolerance?: number): boolean {
+  if (input.length < 2) { return false; } // Single point: not a line
+
+  // Default the tolerance to 15 deg (on either side)
+  const tolerance = angleTolerance ?? Math.PI / 12;
+  let lastAngle = getAngle(input[0], input[1]);
+
+  // Make sure the angle is about correct
+  for (let i = 1; i < input.length - 1; i += 1) {
+    const thisAngle = getAngle(input[i], input[i + 1]);
+    if (Math.abs(thisAngle - lastAngle) >= tolerance) { return false; }
+
+    lastAngle = thisAngle;
+  }
+  return true;
+}
+
+function getGesture(results: MpHolisticResults): string {
+  if (!results.rightHandLandmarks) return 'none';
+  const lms = results.rightHandLandmarks;
+
+  const FINGERS = [
+    HAND.INDEX_FINGER,
+    HAND.MIDDLE_FINGER,
+    HAND.RING_FINGER,
+    HAND.PINKY_FINGER,
+  ];
+
+  const FINGER_LANDMARKS = FINGERS.map((indices) => indices.map((lm) => lms[lm]));
+
+  let areLines = true;
+  FINGER_LANDMARKS.forEach((finger) => {
+    if (!isLine(finger)) areLines = false;
+  });
+
+  const avgAngle = averageAngle(FINGER_LANDMARKS[0]);
+  const avgAngleDeg = (avgAngle * 180) / Math.PI;
+
+  const tolerance = 60;
+  if (Math.abs(avgAngleDeg) < tolerance && areLines) return Gestures.pointLeft;
+  if (Math.abs(avgAngleDeg) > 180 - tolerance && areLines) return Gestures.pointRight;
+
+  return Gestures.none;
+}
+
+function drawHandShape(results: MpHolisticResults, canvasCtx: CanvasRenderingContext2D) {
+  if (!results.rightHandLandmarks) {
+    return;
+  }
+
+  canvasCtx.save();
+
+  /* eslint-disable no-param-reassign */
+  canvasCtx.strokeStyle = 'white';
+  canvasCtx.lineWidth = 3.0;
+
+  DrawConnections(canvasCtx, results.rightHandLandmarks, HAND_LANDMARK_CONNECTIONS);
+  canvasCtx.restore();
+}
+
+function drawTrackingResults(
+  detectedGesture: string,
+  results: MpHolisticResults,
+  canvasCtx: CanvasRenderingContext2D,
+) {
+  const { canvas } = canvasCtx;
+  canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (detectedGesture !== Gestures.none) drawHandShape(results, canvasCtx);
+}
+
+export default defineComponent({
+  name: 'DrawingSurface',
+  props: {
+    mpResults: {
+      type: Object,
+      required: false,
+    },
+  },
+  setup(props, ctx) {
+    const { mpResults } = toRefs(props);
+
+    const gesture = ref('none');
+    const canvasE = ref(null) as unknown as Ref<HTMLCanvasElement>;
+
+    onMounted(() => {
+      const canvas = canvasE.value;
+      const canvasCtx = canvas.getContext('2d') as CanvasRenderingContext2D;
+      watch(mpResults as unknown as object, (newVal) => {
+        const detectedGesture = getGesture(newVal);
+        drawTrackingResults(detectedGesture, newVal, canvasCtx);
+        gesture.value = detectedGesture;
+
+        if (detectedGesture !== Gestures.none) {
+          eventHub.emit('gesture', detectedGesture);
+          // emitter.emit('someevent');
+          // ctx.emit('gesture', detectedGesture);
+        }
+      });
+    });
+
+    return {
+      canvasE,
+      gesture,
+    };
+  },
+});
+</script>
+
+<style lang="scss">
+
+$pointer-size: 64px;
+
+.drawCanvas {
+  transform: scaleX(-1);
+}
+
+.pointer-container {
+  position: fixed;
+  // transition: top .1s, left .1s;
+
+  img {
+    position: relative;
+    left: -$pointer-size / 2;
+    top: -32px;
+    width: 64px;
+    height: 64px;
+  }
+}
+
+</style>

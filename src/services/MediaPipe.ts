@@ -1,148 +1,143 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/prefer-default-export */
+import { Landmark, HandLandmarks, PoseLandmarks } from './MediaPipeTypes';
+
 const mp = require('@mediapipe/holistic/holistic');
 const camUtils = require('@mediapipe/camera_utils/camera_utils');
 
-export type Landmark = {
-  x: number,
-  y: number,
-  visibility: number
-}
+export const HAND_LANDMARK_CONNECTIONS = [
+  [0, 1], [1, 2], [2, 3], [3, 4], // Thumb
+  [0, 5], [5, 6], [6, 7], [7, 8], // Index
+  [5, 9], [9, 10], [10, 11], [11, 12], // Middle
+  [9, 13], [13, 14], [14, 15], [15, 16], // Ring
+  [0, 17], [13, 17], [17, 18], [18, 19], [19, 20], // Pinky
+];
 
-export type PoseLandmarks = Array<Landmark>;
-
-export const Landmarks = {
-  nose: 0,
-  left_eye_inner: 1,
-  left_eye: 2,
-  left_eye_outer: 3,
-  right_eye_inner: 4,
-  right_eye: 5,
-  right_eye_outer: 6,
-  left_ear: 7,
-  right_ear: 8,
-  mouth_left: 9,
-  mouth_right: 10,
-  left_shoulder: 11,
-  right_shoulder: 12,
-  left_elbow: 13,
-  right_elbow: 14,
-  left_wrist: 15,
-  right_wrist: 16,
-  left_pinky: 17,
-  right_pinky: 18,
-  left_index: 19,
-  right_index: 20,
-  left_thumb: 21,
-  right_thumb: 22,
-  left_hip: 23,
-  right_hip: 24,
-  left_knee: 25,
-  right_knee: 26,
-  left_ankle: 27,
-  right_ankle: 28,
-  left_heel: 29,
-  right_heel: 30,
-  left_foot_index: 31,
-  right_foot_index: 32
-}
+export const HAND = {
+  THUMB_FINGER: [1, 2, 3, 4],
+  INDEX_FINGER: [5, 6, 7, 8],
+  MIDDLE_FINGER: [9, 10, 11, 12],
+  RING_FINGER: [13, 14, 15, 16],
+  PINKY_FINGER: [17, 18, 19, 20],
+};
 
 const CONNECTIONS_TO_DRAW = [
-  [Landmarks.left_index, Landmarks.left_wrist],
-  [Landmarks.right_index, Landmarks.right_wrist],
-  [Landmarks.left_wrist, Landmarks.left_elbow],
-  [Landmarks.right_wrist, Landmarks.right_elbow],
-  [Landmarks.left_elbow, Landmarks.left_shoulder],
-  [Landmarks.right_elbow, Landmarks.right_shoulder],
-  [Landmarks.left_shoulder, Landmarks.right_shoulder],
-  [Landmarks.left_hip, Landmarks.left_shoulder],
-  [Landmarks.right_hip, Landmarks.right_shoulder],
-  [Landmarks.left_hip, Landmarks.right_hip],
-  [Landmarks.left_hip, Landmarks.left_knee],
-  [Landmarks.right_hip, Landmarks.right_knee],
-  [Landmarks.left_knee, Landmarks.left_ankle],
-  [Landmarks.right_knee, Landmarks.right_ankle],
-  [Landmarks.left_ankle, Landmarks.left_heel],
-  [Landmarks.right_ankle, Landmarks.right_heel],
-  [Landmarks.left_heel, Landmarks.left_foot_index],
-  [Landmarks.right_heel, Landmarks.right_foot_index],
-  [Landmarks.left_ankle, Landmarks.left_foot_index],
-  [Landmarks.right_ankle, Landmarks.right_foot_index],
-  [Landmarks.nose, Landmarks.right_eye],
-  [Landmarks.nose, Landmarks.left_eye]
+  [PoseLandmarks.leftIndex, PoseLandmarks.leftWrist],
+  [PoseLandmarks.rightIndex, PoseLandmarks.rightWrist],
+  [PoseLandmarks.leftWrist, PoseLandmarks.leftElbow],
+  [PoseLandmarks.rightWrist, PoseLandmarks.rightElbow],
+  [PoseLandmarks.leftElbow, PoseLandmarks.leftShoulder],
+  [PoseLandmarks.rightElbow, PoseLandmarks.rightShoulder],
+  [PoseLandmarks.leftShoulder, PoseLandmarks.rightShoulder],
+  [PoseLandmarks.leftHip, PoseLandmarks.leftShoulder],
+  [PoseLandmarks.rightHip, PoseLandmarks.rightShoulder],
+  [PoseLandmarks.leftHip, PoseLandmarks.rightHip],
+  [PoseLandmarks.leftHip, PoseLandmarks.leftKnee],
+  [PoseLandmarks.rightHip, PoseLandmarks.rightKnee],
+  [PoseLandmarks.leftKnee, PoseLandmarks.leftAnkle],
+  [PoseLandmarks.rightKnee, PoseLandmarks.rightAnkle],
+  [PoseLandmarks.leftAnkle, PoseLandmarks.leftHeel],
+  [PoseLandmarks.rightAnkle, PoseLandmarks.rightHeel],
+  [PoseLandmarks.leftHeel, PoseLandmarks.leftFootIndex],
+  [PoseLandmarks.rightHeel, PoseLandmarks.rightFootIndex],
+  [PoseLandmarks.leftAnkle, PoseLandmarks.leftFootIndex],
+  [PoseLandmarks.rightAnkle, PoseLandmarks.rightFootIndex],
+  [PoseLandmarks.nose, PoseLandmarks.rightEye],
+  [PoseLandmarks.nose, PoseLandmarks.leftEye],
 ];
 
 let camera: any;
-
-let videoElement: undefined | HTMLVideoElement;
-let canvasElement: undefined | HTMLCanvasElement;
-
 let trackingStarted = false;
 
+export function DrawConnections(
+  canvasCtx: CanvasRenderingContext2D,
+  landmarks: Array<Landmark>,
+  connections: Array<Array<number>>,
+) {
+  const w = canvasCtx.canvas.width;
+  const h = canvasCtx.canvas.height;
 
-export function GetCanvas() {
-  return canvasElement;
+  canvasCtx.beginPath();
+  connections.forEach((connection) => {
+    const p1 = landmarks[connection[0]];
+    const p2 = landmarks[connection[1]];
+
+    if (!p1 || !p2) return;
+
+    canvasCtx.moveTo(p1.x * w, p1.y * h);
+    canvasCtx.lineTo(p2.x * w, p2.y * h);
+  });
+
+  canvasCtx.stroke();
+  canvasCtx.restore();
 }
 
-export function GetVideo() {
-  return videoElement;
-}
-
-export function DrawPose(canvasCtx: CanvasRenderingContext2D, poseLandmarks: PoseLandmarks) {
-  console.log("Drawing overlay");
+export function DrawPose(canvasCtx: CanvasRenderingContext2D, poseLandmarks: Array<Landmark>) {
   canvasCtx.save();
   const w = canvasCtx.canvas.width;
   const h = canvasCtx.canvas.height;
 
+  /* eslint-disable no-param-reassign */
   canvasCtx.strokeStyle = 'green';
   canvasCtx.lineWidth = 2;
+  /* eslint-enable no-param-reassign */
 
   canvasCtx.beginPath();
-  for (const connection of CONNECTIONS_TO_DRAW) {
+  CONNECTIONS_TO_DRAW.forEach((connection) => {
     const p1 = poseLandmarks[connection[0]];
     const p2 = poseLandmarks[connection[1]];
 
-    if (!p1 || !p2) continue;
+    if (!p1 || !p2) return;
 
     canvasCtx.moveTo(p1.x * w, p1.y * h);
     canvasCtx.lineTo(p2.x * w, p2.y * h);
-  }
+  });
 
-  const p1a = poseLandmarks[Landmarks.left_shoulder]
-  const p1b = poseLandmarks[Landmarks.right_shoulder]
-  const p2 = poseLandmarks[Landmarks.nose]
-  canvasCtx.moveTo(w * 0.5 * (p1a.x + p1b.x), h * 0.5 * (p1a.y + p1b.y))
+  const p1a = poseLandmarks[PoseLandmarks.leftShoulder];
+  const p1b = poseLandmarks[PoseLandmarks.rightShoulder];
+  const p2 = poseLandmarks[PoseLandmarks.nose];
+  canvasCtx.moveTo(w * 0.5 * (p1a.x + p1b.x), h * 0.5 * (p1a.y + p1b.y));
   canvasCtx.lineTo(w * p2.x, h * p2.y);
-  canvasCtx.stroke()
+  canvasCtx.stroke();
 
   canvasCtx.restore();
-};
+}
 
-export const StartTracking = function (videoElement: HTMLVideoElement, canvasElement: HTMLCanvasElement, onResults: (res: any, canvasCtx: CanvasRenderingContext2D) => void) {
+export function StartTracking(
+  videoE: HTMLVideoElement,
+  canvasE: HTMLCanvasElement,
+  onResults: (res: any, canvasCtx: CanvasRenderingContext2D) => void,
+) {
   if (trackingStarted) { return; }
 
   trackingStarted = true;
 
-  const renderingCtx = canvasElement.getContext('2d');
+  const renderingCtx = canvasE.getContext('2d');
 
   const holistic = new mp.Holistic({ locateFile: (file: any) => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.1/${file}` });
+  holistic.setOptions({
+    upperBodyOnly: false,
+    smoothLandmarks: true,
+    minDetectionConfidence: 0.5,
+    minTrackingConfidence: 0.5,
+  });
   holistic.onResults((res: any) => {
-    onResults(res, renderingCtx!)
+    onResults(res, renderingCtx as CanvasRenderingContext2D);
   });
 
   camera = new camUtils.Camera(
-    videoElement,
+    videoE,
     {
       onFrame: async () => {
-        await holistic.send({ image: videoElement })
+        await holistic.send({ image: videoE });
       },
       width: 1280,
       height: 720,
     },
   );
   camera.start();
-};
+}
 // function removeElements(landmarks, elements) {
 //   for (const element of elements) {
 //     delete landmarks[element];

@@ -1,31 +1,37 @@
 <template>
-  <div ref="canvasBackground" class="container">
-    <video ref="videoE" width="1280" height="720"></video>
+  <div ref="canvasBackground" class="surface-container">
 
-    <div class="overlay">
-      <slot></slot>
+    <div class="overlay overlay-background">
+      <slot name="background"></slot>
     </div>
 
-    <canvas ref="canvasE" width="1280" height="720"></canvas>
+    <video class="mirrored" ref="videoE" width="1280" height="720"></video>
 
     <div class="overlay">
-      <button v-if="!isTracking" @click="startTracking()">Start Tracking</button>
+      <slot name="ui"></slot>
     </div>
+
+    <DrawingSurface :mpResults="trackingResults" ref="drawingSurface"/>
   </div>
 </template>
 
 <script lang="ts">
 
 import { defineComponent } from 'vue';
-import { StartTracking, DrawPose, GetCanvas } from '../services/MediaPipe';
+import DrawingSurface from './DrawingSurface.vue';
+import { StartTracking } from '../services/MediaPipe';
 
 export default defineComponent({
   name: 'CameraSurface',
-  data: function (){
+  components: {
+    DrawingSurface,
+  },
+  data() {
     return {
       isTracking: false,
-      hasResults: false
-    }
+      hasResults: false,
+      trackingResults: {},
+    };
   },
   methods: {
     startTracking() {
@@ -34,31 +40,31 @@ export default defineComponent({
 
       StartTracking(
         this.$refs.videoE as HTMLVideoElement,
-        this.$refs.canvasE as HTMLCanvasElement,
-        this.onResults);
+        (this.$refs.drawingSurface as any).$refs.canvasE as HTMLCanvasElement,
+        this.onResults,
+      );
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onResults(results: any, canvasCtx: CanvasRenderingContext2D) {
-      if (!this.hasResults)
-        console.log("Got Results", results);
+      if (!this.hasResults) {
+        this.$emit('tracking-attained');
+        console.log('Got Results', results);
+      }
       this.hasResults = true;
-
-      const canvas = canvasCtx.canvas;
-      canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-
-      if (results.poseLandmarks)
-        DrawPose(canvasCtx, results.poseLandmarks);
-    }
-  }
+      this.trackingResults = results;
+      // this.$refs.drawingSurface.draw(results, canvasCtx);
+    },
+  },
 });
 </script>
 
 <style lang="scss">
 
-.container {
+.surface-container {
   position: relative;
   margin: 3rem auto;
   width: 1280px;
-  // height: 720px;
+  height: 720px;
   box-sizing: content-box;
   text-align: center;
 
@@ -68,6 +74,7 @@ export default defineComponent({
     left: 0;
     width: 1280px;
     height: 720px;
+    pointer-events: none;
   }
 
   .overlay {
@@ -78,5 +85,13 @@ export default defineComponent({
     right: 0;
   }
 }
+
+.mirrored {
+  transform: scaleX(-1);
+}
+
+// .overlay-background {
+//   z-index: -1;
+// }
 
 </style>
