@@ -5,10 +5,13 @@
 
     <template v-slot:background>
       <img v-show="state == 0" src="./assets/tiktokdances.jpg" alt="Background Image">
+
     </template>
 
     <template v-slot:ui>
-      <div class="vcenter-parent" v-if="state <= 1">
+      <DanceMenu />
+
+      <div class="vcenter-parent" v-if="state == 1">
         <div class="card"
         v-if="state == 0">
           <div class="card-content">
@@ -36,6 +39,7 @@
 import { defineComponent } from 'vue';
 import CameraSurface from './components/CameraSurface.vue';
 import OnboardingUI from './components/OnboardingUI.vue';
+import DanceMenu from './components/screens/DanceMenu.vue';
 
 enum State {
   Initial,
@@ -48,6 +52,7 @@ export default defineComponent({
   components: {
     CameraSurface,
     OnboardingUI,
+    DanceMenu,
   },
   data() {
     return {
