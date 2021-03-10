@@ -1,14 +1,13 @@
 <template>
   <div class="segmented-progress-bar">
     <progress
-      v-for="seg in segments"
-      :key="seg.i"
-      :class="[seg.isEnabled ? seg.cssClass : '', seg.disabledCss]"
+      v-for="seg in segmentsData"
+      :key="seg.id"
+      :class="[{ 'is-disabled': !seg.enabled}, seg.cssClass]"
       class="progress is-large"
-      :max="seg.max"
-      :min="seg.min"
-      :value="progressValue(seg.id)"
-      :style="{ 'flex-grow': seg.max }"
+      :max="seg.max - seg.min"
+      :value="value - seg.min"
+      :style="{ 'flex-grow': (seg.max - seg.min) }"
     ></progress>
   </div>
 </template>
@@ -16,13 +15,10 @@
 <script lang="ts">
 import { defineComponent, computed, toRefs } from 'vue';
 
-interface ProgressSegment {
-  offset: number;
-  id: number;
+export interface ProgressSegmentData {
+  min: number;
   max: number;
-  cssClass: string;
-  disabledCss: string;
-  isEnabled: boolean;
+  enabled: boolean;
 }
 
 const cssClassOptions = [
@@ -36,55 +32,32 @@ const cssClassOptions = [
 export default defineComponent({
   name: 'SegmentedProgressBar',
   props: {
-    mins: Array,
-    maxes: Array,
+    segments: {
+      default: Array,
+      type: Array,
+    },
     value: {
       default: 0,
       type: Number,
     },
-    disabled: Array,
   },
   setup(props) {
     const {
-      mins, maxes, value, disabled,
+      segments,
     } = toRefs(props);
 
-    const segments = computed(() => {
-      const segMins = mins?.value as number[];
-      const segMaxes = maxes?.value as number[];
-
-      if (!segMins || !segMaxes) return [];
-
-      const count = Math.min(segMins.length, segMaxes.length);
-      if (segMins.length !== segMaxes.length) {
-        console.error("Lengths of properties don't match up");
-      }
-
-      const segs: ProgressSegment[] = [];
-      const disabledBars = (disabled ?? []) as number[];
-      for (let i = 0; i < count; i += 1) {
-        const isDisabled = (disabledBars.indexOf(i) !== -1);
-        segs.push({
+    const segmentsData = computed(
+      () => segments.value.map(
+        (seg, i) => ({
           id: i,
-          offset: segMins[i],
-          max: segMaxes[i] - segMins[i],
           cssClass: cssClassOptions[i % cssClassOptions.length],
-          disabledCss: isDisabled ? 'is-disabled' : 'is-enabled',
-          isEnabled: !isDisabled,
-        });
-      }
-      return segs;
-    });
-
-    function progressValue(id: number) {
-      const seg = segments.value[id];
-      if (!seg) return 0;
-      return value.value - seg.offset;
-    }
+          ...(seg as ProgressSegmentData),
+        }),
+      ),
+    );
 
     return {
-      segments,
-      progressValue,
+      segmentsData,
     };
   },
 });
@@ -100,6 +73,7 @@ export default defineComponent({
   progress.progress {
     flex-basis: 10px;
     margin-bottom: auto;
+    // border: 2px solid #BBB;
 
     -webkit-appearance: none;
     appearance: none;

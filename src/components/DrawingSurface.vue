@@ -1,6 +1,5 @@
 <template>
   <canvas ref="canvasE" width="1280" height="720" class="drawCanvas"></canvas>
-  {{gesture}}
 </template>
 
 <script lang="ts">
@@ -151,6 +150,7 @@ $pointer-size: 64px;
 
 .drawCanvas {
   transform: scaleX(-1);
+  pointer-events: none;
 }
 
 .pointer-container {

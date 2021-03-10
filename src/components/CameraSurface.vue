@@ -11,7 +11,7 @@
       <slot name="ui"></slot>
     </div>
 
-    <DrawingSurface :mpResults="trackingResults" ref="drawingSurface"/>
+    <DrawingSurface :mpResults="trackingResults" ref="drawingSurface" class="overlay"/>
   </div>
 </template>
 
@@ -62,20 +62,11 @@ export default defineComponent({
 
 .surface-container {
   position: relative;
-  margin: 3rem auto;
+  margin: auto;
   width: 1280px;
   height: 720px;
   box-sizing: content-box;
   text-align: center;
-
-  canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1280px;
-    height: 720px;
-    pointer-events: none;
-  }
 
   .overlay {
     position: absolute;

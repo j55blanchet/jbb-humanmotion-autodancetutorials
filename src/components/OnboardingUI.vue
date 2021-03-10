@@ -34,11 +34,12 @@ import eventHub, { EventNames, Gestures } from '../services/EventHub';
 const OnboardingStage = {
   TrySelectNext: 0,
   TrySelectPrevious: 1,
+  Done: 2,
 };
 
 export default defineComponent({
   name: 'OnboardingUI',
-  setup() {
+  setup(props, ctx) {
     const stage = ref(OnboardingStage.TrySelectNext);
     const output = ref('');
 
@@ -47,6 +48,11 @@ export default defineComponent({
 
       if (stage.value === OnboardingStage.TrySelectNext && gesture === Gestures.pointRight) {
         stage.value = OnboardingStage.TrySelectPrevious;
+      }
+
+      if (stage.value === OnboardingStage.TrySelectPrevious && gesture === Gestures.pointLeft) {
+        stage.value = OnboardingStage.Done;
+        ctx.emit('onboarding-complete');
       }
     };
 
@@ -70,6 +76,15 @@ export default defineComponent({
 .onboardingUI {
   width: 100%;
   height: 100%;
+
+  .content {
+    color: black !important;
+    backdrop-filter: blur(4px);
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 1rem;
+    padding: 1rem;
+  }
+
 }
 
 </style>

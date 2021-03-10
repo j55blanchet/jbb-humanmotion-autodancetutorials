@@ -104,6 +104,12 @@ export function DrawPose(canvasCtx: CanvasRenderingContext2D, poseLandmarks: Arr
   canvasCtx.restore();
 }
 
+let activelyTracking = true;
+
+export function ToggleTracking(play: boolean) {
+  activelyTracking = play;
+}
+
 export function StartTracking(
   videoE: HTMLVideoElement,
   canvasE: HTMLCanvasElement,
@@ -130,7 +136,7 @@ export function StartTracking(
     videoE,
     {
       onFrame: async () => {
-        await holistic.send({ image: videoE });
+        if (activelyTracking) await holistic.send({ image: videoE });
       },
       width: 1280,
       height: 720,

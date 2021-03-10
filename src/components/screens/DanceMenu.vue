@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="section dance-menu">
     <div class="container content has-text-centered is-hidden-mobile">
       <h2 class="subtitle">Which dance would you like to learn?</h2>
     </div>
@@ -14,8 +14,8 @@
       >
         <div class="card-image">
           <figure class="image is-2by3">
-            <img v-if="!dance.hovering" :src="dance.thumbnail" alt="" />
-            <img v-if="dance.hovering" :src="dance.animatedThumb" alt="" />
+            <img v-show="!dance.hovering" :src="dance.thumbnail" alt="" />
+            <img v-show="dance.hovering" :src="dance.animatedThumb" alt="" />
           </figure>
         </div>
         <div class="card-content">
@@ -66,6 +66,11 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+
+.dance-menu {
+  // backdrop-filter: blur(4px);
+  // background: rgba(0, 0, 0, 0.2);
+}
 .menu {
   text-align: left;
   display: grid;
