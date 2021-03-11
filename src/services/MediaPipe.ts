@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/prefer-default-export */
-import { Landmark, HandLandmarks, PoseLandmarks } from './MediaPipeTypes';
+import { Landmark, PoseLandmarks } from './MediaPipeTypes';
+import eventHub, { EventNames } from './EventHub';
 
 const mp = require('@mediapipe/holistic/holistic');
 const camUtils = require('@mediapipe/camera_utils/camera_utils');
@@ -104,12 +105,6 @@ export function DrawPose(canvasCtx: CanvasRenderingContext2D, poseLandmarks: Arr
   canvasCtx.restore();
 }
 
-let activelyTracking = true;
-
-export function ToggleTracking(play: boolean) {
-  activelyTracking = play;
-}
-
 export function StartTracking(
   videoE: HTMLVideoElement,
   canvasE: HTMLCanvasElement,
@@ -118,6 +113,7 @@ export function StartTracking(
   if (trackingStarted) { return; }
 
   trackingStarted = true;
+  let trackingCount = 1;
 
   const renderingCtx = canvasE.getContext('2d');
 
@@ -130,13 +126,21 @@ export function StartTracking(
   });
   holistic.onResults((res: any) => {
     onResults(res, renderingCtx as CanvasRenderingContext2D);
+    eventHub.emit(EventNames.trackingResultsAcquired, res);
+  });
+
+  eventHub.on(EventNames.trackingRequested, () => {
+    trackingCount += 1;
+  });
+  eventHub.on(EventNames.trackingRequestFinished, () => {
+    trackingCount -= 1;
   });
 
   camera = new camUtils.Camera(
     videoE,
     {
       onFrame: async () => {
-        if (activelyTracking) await holistic.send({ image: videoE });
+        if (trackingCount > 0) await holistic.send({ image: videoE });
       },
       width: 1280,
       height: 720,

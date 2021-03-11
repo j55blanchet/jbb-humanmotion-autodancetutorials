@@ -6,10 +6,13 @@
       :class="[{ 'is-disabled': !seg.enabled}, seg.cssClass]"
       class="progress is-large"
       :max="seg.max - seg.min"
-      :value="value - seg.min"
+      :value="progress - seg.min"
       :style="{ 'flex-grow': (seg.max - seg.min) }"
     ></progress>
   </div>
+  <div>{{progress}}</div>
+  <p v-for="seg in segmentsData"
+  :key="seg.id">{{seg.min}}-{{seg.max}}</p>
 </template>
 
 <script lang="ts">
@@ -36,7 +39,7 @@ export default defineComponent({
       default: Array,
       type: Array,
     },
-    value: {
+    progress: {
       default: 0,
       type: Number,
     },

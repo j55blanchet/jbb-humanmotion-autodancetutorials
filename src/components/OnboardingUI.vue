@@ -26,10 +26,10 @@
 <script lang="ts">
 
 import {
-  defineComponent, ref, onMounted, onBeforeUnmount,
+  defineComponent, ref,
 } from 'vue';
 
-import eventHub, { EventNames, Gestures } from '../services/EventHub';
+import { setupGestureListening, GestureNames, TrackingActions } from '../services/EventHub';
 
 const OnboardingStage = {
   TrySelectNext: 0,
@@ -43,24 +43,19 @@ export default defineComponent({
     const stage = ref(OnboardingStage.TrySelectNext);
     const output = ref('');
 
-    const onGesture = (gesture: string) => {
-      output.value = gesture;
-
-      if (stage.value === OnboardingStage.TrySelectNext && gesture === Gestures.pointRight) {
-        stage.value = OnboardingStage.TrySelectPrevious;
-      }
-
-      if (stage.value === OnboardingStage.TrySelectPrevious && gesture === Gestures.pointLeft) {
-        stage.value = OnboardingStage.Done;
-        ctx.emit('onboarding-complete');
-      }
-    };
-
-    onMounted(() => {
-      eventHub.on(EventNames.gesture, onGesture);
-    });
-    onBeforeUnmount(() => {
-      eventHub.off(EventNames.gesture, onGesture);
+    setupGestureListening({
+      [GestureNames.pointRight]: () => {
+        if (stage.value === OnboardingStage.TrySelectNext) {
+          stage.value = OnboardingStage.TrySelectPrevious;
+        }
+      },
+      [GestureNames.pointLeft]: () => {
+        if (stage.value === OnboardingStage.TrySelectPrevious) {
+          stage.value = OnboardingStage.Done;
+          ctx.emit('onboarding-complete');
+          TrackingActions.endTrackingRequest();
+        }
+      },
     });
 
     return {

@@ -1,15 +1,41 @@
 import { TinyEmitter } from 'tiny-emitter';
+import { onMounted, onBeforeUnmount } from 'vue';
 
 export const EventNames = Object.freeze({
   gesture: 'gesture',
+  trackingResultsAcquired: 'trackingResultsAcquired',
+  trackingRequested: 'trackingRequested',
+  trackingRequestFinished: 'trackingRequestFinished',
 });
 
-export const Gestures = Object.freeze({
+export const GestureNames = Object.freeze({
   none: 'none',
   pointLeft: 'point-left',
   pointRight: 'point-right',
 });
 
 const eventHub = new TinyEmitter();
+
+export function setupGestureListening(callbacks: Record<string, () => void>) {
+  function onGesture(gesture: string) {
+    const cb = callbacks[gesture];
+    if (cb) cb();
+  }
+  onMounted(() => {
+    eventHub.on(EventNames.gesture, onGesture);
+  });
+  onBeforeUnmount(() => {
+    eventHub.off(EventNames.gesture, onGesture);
+  });
+}
+
+export const TrackingActions = Object.freeze({
+  requestTracking: () => {
+    eventHub.emit(EventNames.trackingRequested);
+  },
+  endTrackingRequest: () => {
+    eventHub.emit(EventNames.trackingRequestFinished);
+  },
+});
 
 export default eventHub;
