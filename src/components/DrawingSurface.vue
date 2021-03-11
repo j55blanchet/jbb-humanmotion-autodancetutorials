@@ -7,11 +7,11 @@
 import {
   ref, defineComponent, watch, toRefs, onMounted, Ref,
 } from 'vue';
-import eventHub, { Gestures } from '../services/EventHub';
+import eventHub, { GestureNames } from '../services/EventHub';
 
-import { HandLandmarks, Landmark, MpHolisticResults } from '../services/MediaPipeTypes';
+import { Landmark, MpHolisticResults } from '../services/MediaPipeTypes';
 import {
-  HAND_LANDMARK_CONNECTIONS, DrawPose, DrawConnections, HAND,
+  HAND_LANDMARK_CONNECTIONS, DrawConnections, HAND, DrawPose,
 } from '../services/MediaPipe';
 // import { TinyEmitter } from 'tiny-emitter';
 
@@ -74,10 +74,10 @@ function getGesture(results: MpHolisticResults): string {
   const avgAngleDeg = (avgAngle * 180) / Math.PI;
 
   const tolerance = 60;
-  if (Math.abs(avgAngleDeg) < tolerance && areLines) return Gestures.pointLeft;
-  if (Math.abs(avgAngleDeg) > 180 - tolerance && areLines) return Gestures.pointRight;
+  if (Math.abs(avgAngleDeg) < tolerance && areLines) return GestureNames.pointLeft;
+  if (Math.abs(avgAngleDeg) > 180 - tolerance && areLines) return GestureNames.pointRight;
 
-  return Gestures.none;
+  return GestureNames.none;
 }
 
 function drawHandShape(results: MpHolisticResults, canvasCtx: CanvasRenderingContext2D) {
@@ -103,7 +103,8 @@ function drawTrackingResults(
   const { canvas } = canvasCtx;
   canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-  if (detectedGesture !== Gestures.none) drawHandShape(results, canvasCtx);
+  if (results.poseLandmarks) DrawPose(canvasCtx, results.poseLandmarks);
+  if (detectedGesture !== GestureNames.none) drawHandShape(results, canvasCtx);
 }
 
 export default defineComponent({
@@ -114,7 +115,7 @@ export default defineComponent({
       required: false,
     },
   },
-  setup(props, ctx) {
+  setup(props) {
     const { mpResults } = toRefs(props);
 
     const gesture = ref('none');
@@ -128,10 +129,8 @@ export default defineComponent({
         drawTrackingResults(detectedGesture, newVal, canvasCtx);
         gesture.value = detectedGesture;
 
-        if (detectedGesture !== Gestures.none) {
+        if (detectedGesture !== GestureNames.none) {
           eventHub.emit('gesture', detectedGesture);
-          // emitter.emit('someevent');
-          // ctx.emit('gesture', detectedGesture);
         }
       });
     });
