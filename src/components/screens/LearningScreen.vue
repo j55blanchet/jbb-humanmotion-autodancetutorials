@@ -83,8 +83,6 @@ export default defineComponent({
     });
     const activityFinished = ref(false);
 
-    const awaitingGesture = ref(false);
-
     const progressSegments = computed(() => {
       const lesson = targetLesson?.value as DanceLesson | undefined;
       const dance = targetDance?.value as DanceEntry | undefined;

@@ -38,11 +38,12 @@
     "typescript": "~3.9.3"
   },
   "gitHooks": {
-    "pre-push": "lint-staged"
+    "pre-commit": "lint-staged"
   },
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [
-      "vue-cli-service lint"
+      "vue-cli-service lint",
+      "git add"
     ]
   }
 }
