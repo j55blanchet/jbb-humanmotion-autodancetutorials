@@ -1,5 +1,7 @@
 <template>
-  <div class="learning-screen">
+  <div class="learning-screen"
+    :class="{'background-blur': !awaitingGesture}"
+    >
     <teleport to="#topbarLeft">
       <button class="button" @click="$emit('back-selected')">&lt; Back</button>
     </teleport>
@@ -23,7 +25,9 @@
 <script lang="ts">
 import DanceEntry from '@/model/DanceEntry';
 import DanceLesson from '@/model/DanceLesson';
-import { computed, defineComponent, toRefs } from 'vue';
+import {
+  ref, computed, defineComponent, toRefs,
+} from 'vue';
 import SegmentedProgressBar, { ProgressSegmentData } from '../elements/SegmentedProgressBar.vue';
 import VideoPlayer from '../elements/VideoPlayer.vue';
 
@@ -38,6 +42,8 @@ export default defineComponent({
   },
   setup(props) {
     const { targetDance, targetLesson } = toRefs(props);
+
+    const awaitingGesture = ref(false);
 
     const progressSegments = computed(() => {
       const lesson = targetLesson?.value as DanceLesson | undefined;
@@ -56,6 +62,7 @@ export default defineComponent({
     });
     return {
       progressSegments,
+      awaitingGesture,
     };
   },
 });

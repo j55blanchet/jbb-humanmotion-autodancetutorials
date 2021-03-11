@@ -420,12 +420,4 @@ export const dances: Array<DanceEntry> = [
     hovering: false,
     lessons: [unhunhLesson],
   },
-  {
-    title: 'Filler',
-    videoSrc: 'null',
-    thumbnail: 'https://via.placeholder.com/180x270',
-    animatedThumb: 'https://via.placeholder.com/180x270',
-    hovering: false,
-    lessons: [],
-  },
 ];
