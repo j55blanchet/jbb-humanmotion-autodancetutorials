@@ -20,16 +20,26 @@
       v-on:playback-finished="onActivityFinished"
     />
 
-    <div class="overlay" v-show="activityFinished">
+    <div class="overlay mt-4" v-show="activityFinished">
       <div class="card">
         <div class="card-header">
           <h3 class="card-header-title">Use a gesture to proceed</h3>
         </div>
         <div class="card-content">
-          <p>Point forward with a flat hand to proceed</p>
-          <span class="icon is-large" >
-            <i class="fas fa-2x fa-hand-paper fa-rotate-90"></i>
-          </span>
+          <div class="columns">
+            <div class="column">
+              <p>Repeat</p>
+              <span class="icon is-large fa-flip-horizontal">
+                <i class="fas fa-2x fa-hand-paper fa-rotate-90"></i>
+              </span>
+            </div>
+            <div class="column">
+              <p>Next</p>
+              <span class="icon is-large" >
+                <i class="fas fa-2x fa-hand-paper fa-rotate-90"></i>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

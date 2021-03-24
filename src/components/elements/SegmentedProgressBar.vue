@@ -10,9 +10,6 @@
       :style="{ 'flex-grow': (seg.max - seg.min) }"
     ></progress>
   </div>
-  <div>{{progress}}</div>
-  <p v-for="seg in segmentsData"
-  :key="seg.id">{{seg.min}}-{{seg.max}}</p>
 </template>
 
 <script lang="ts">
