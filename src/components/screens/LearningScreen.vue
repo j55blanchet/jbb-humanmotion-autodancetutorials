@@ -6,8 +6,9 @@
       <button class="button" @click="$emit('back-selected')">&lt; Back</button>
     </teleport>
     <teleport to="#topbarRight">
-      <span>#{{activityId}} / {{activityCount}}: {{activityTitle}}</span>
-      <progress class="progress" :max="activityCount" value="5"></progress>
+      <span class="tag">{{activityId}} / {{activityCount}}</span>
+      <span class="m-2">{{activityTitle}}</span>
+      <progress class="progress ml-2" :max="activityCount" value="5"></progress>
     </teleport>
 
     <VideoPlayer
@@ -23,6 +24,12 @@
       <div class="card">
         <div class="card-header">
           <h3 class="card-header-title">Use a gesture to proceed</h3>
+        </div>
+        <div class="card-content">
+          <p>Point forward with a flat hand to proceed</p>
+          <span class="icon is-large" >
+            <i class="fas fa-2x fa-hand-paper fa-rotate-90"></i>
+          </span>
         </div>
       </div>
     </div>
@@ -202,5 +209,7 @@ export default defineComponent({
   padding: 1rem 1rem 1rem 1rem;
   border-radius: 0 0 0.5rem 0.5rem;
 }
+
+
 
 </style>

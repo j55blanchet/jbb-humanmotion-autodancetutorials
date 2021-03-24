@@ -210,7 +210,8 @@ body, html {
 }
 #topbarRight {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
+  align-items: center;
 }
 
 .background-blur {
