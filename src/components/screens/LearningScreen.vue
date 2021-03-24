@@ -1,6 +1,6 @@
 <template>
   <div class="learning-screen"
-    :class="{'background-blur': !awaitingGesture}"
+    :class="{'background-blur': !activityFinished}"
     >
     <teleport to="#topbarLeft">
       <button class="button" @click="$emit('back-selected')">&lt; Back</button>
@@ -13,16 +13,31 @@
       :videoBaseUrl="targetDance.videoSrc"
       :height="'720px'"
       ref="videoPlayer"
+      v-show="!activityFinished"
+      v-on:video-progressed="onTimeChanged"
+      v-on:playback-finished="onActivityFinished"
     />
 
-    <teleport to="#belowSurface">
-      <div class="master-bar">
-        <SegmentedProgressBar
-          :segments="progressSegments"
-          :value="videoTime"
-          ref="progressBar"
-        />
+    <div v-show="activityFinished">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-header-title">Use a gesture to proceed</h3>
+        </div>
       </div>
+    </div>
+
+    <teleport to="#belowSurface">
+      <div>
+        <div class="master-bar">
+          <SegmentedProgressBar
+            :segments="progressSegments"
+            :progress="videoTime"
+            ref="progressBar"
+          />
+        </div>
+        <div>Activity Finished: {{activityFinished}}</div>
+      </div>
+
     </teleport>
   </div>
 </template>
@@ -46,16 +61,20 @@ import VideoPlayer from '../elements/VideoPlayer.vue';
 function calculateProgressSegments(dance: DanceEntry, lesson: DanceLesson) {
   if (!lesson) return [];
 
-  let last = 0;
+  let last = undefined as undefined | number;
   const segs = lesson.segmentBreaks.map((timestamp) => {
-    const segData: ProgressSegmentData = {
-      min: last,
-      max: timestamp,
-      enabled: true,
-    };
+    let segData = undefined as undefined | ProgressSegmentData;
+    if (last) {
+      segData = {
+        min: last,
+        max: timestamp,
+        enabled: true,
+      };
+    }
     last = timestamp;
     return segData;
-  });
+  }).filter((x) => x !== undefined);
+
   return segs;
 }
 
@@ -93,11 +112,12 @@ export default defineComponent({
     setupGestureListening({});
 
     function onActivityFinished() {
-      activityFinished.value = false;
+      activityFinished.value = true;
       console.log('LEARNING SCREEN:: Activity finished');
     }
     function onTimeChanged(time: number) {
       videoTime.value = time;
+      console.log('Time changed', time);
     }
 
     onMounted(() => {
@@ -114,8 +134,6 @@ export default defineComponent({
           vidActivity.startTime,
           vidActivity.endTime,
           1,
-          onActivityFinished,
-          onTimeChanged,
         );
       }, 1000);
     });
@@ -125,6 +143,10 @@ export default defineComponent({
       activity,
       videoPlayer,
       progressBar,
+      activityFinished,
+      videoTime,
+      onActivityFinished,
+      onTimeChanged,
     };
   },
 });

@@ -105,6 +105,8 @@ export function DrawPose(canvasCtx: CanvasRenderingContext2D, poseLandmarks: Arr
   canvasCtx.restore();
 }
 
+let trackingCount = 0;
+
 export function StartTracking(
   videoE: HTMLVideoElement,
   canvasE: HTMLCanvasElement,
@@ -113,7 +115,7 @@ export function StartTracking(
   if (trackingStarted) { return; }
 
   trackingStarted = true;
-  let trackingCount = 1;
+  trackingCount += 1;
 
   const renderingCtx = canvasE.getContext('2d');
 
@@ -147,6 +149,10 @@ export function StartTracking(
     },
   );
   camera.start();
+}
+
+export function isTracking() {
+  return trackingCount > 0;
 }
 // function removeElements(landmarks, elements) {
 //   for (const element of elements) {

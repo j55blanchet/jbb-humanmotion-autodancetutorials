@@ -14,7 +14,6 @@
       }"
       ref="videoElement"
       v-on:loadedmetadata="resizeCanvas"
-      @timeupdate="onTimeUpdated"
     ></video>
     <canvas class="is-overlay" ref="canvasElement"> </canvas>
   </div>
@@ -62,6 +61,41 @@ function setupCanvasResizing(
   return resizeCanvas;
 }
 
+function setupVideoPlaying(
+  videoElement: Ref<HTMLVideoElement | null>,
+  startTime: Ref<number>,
+  endTime: Ref<number>,
+  startProgressUpdating: () => void,
+) {
+  function playVideo(
+    start: number,
+    end: number,
+    speed: number,
+  ) {
+    console.log(`VideoPlayer :: Starting playback from ${start} to ${end} @ ${speed.toPrecision(2)}`);
+
+    // eslint-disable-next-line no-param-reassign
+    startTime.value = start;
+    // eslint-disable-next-line no-param-reassign
+    endTime.value = end;
+
+    const videoE = videoElement.value;
+    if (!videoE) {
+      console.error("VideoE is null - can't start playback");
+      return;
+    }
+
+    videoE.playbackRate = speed;
+
+    nextTick(() => {
+      startProgressUpdating();
+      videoE.play();
+    });
+  }
+
+  return { playVideo };
+}
+
 export default defineComponent({
   name: 'VideoPlayer',
   props: {
@@ -69,7 +103,7 @@ export default defineComponent({
     width: String,
     height: String,
   },
-  setup(props) {
+  setup(props, ctx) {
     const { videoBaseUrl } = toRefs(props);
 
     const videoElement = ref(null as null | HTMLVideoElement);
@@ -81,56 +115,38 @@ export default defineComponent({
 
     const resizeCanvas = setupCanvasResizing(videoElement, canvasElement);
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    const noop = () => {};
-    // eslint-disable-next-line max-len
-    // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
-    const noopParam = (time: number) => {};
-
-    const playCallbacks = {
-      finished: noop,
-      timeUpdated: noopParam,
-    };
-
-    function playVideo(
-      start: number,
-      end: number,
-      speed: number,
-      onFinished: () => void,
-      timeUpdated?: (time: number) => void,
-    ) {
-      console.log(`VideoPlayer :: Starting playback from ${start} to ${end} @ ${speed.toPrecision(2)}`);
-      startTime.value = start;
-      endTime.value = end;
-
-      const videoE = videoElement.value;
-      if (!videoE) {
-        console.error("VideoE is null - can't start playback");
-        return;
-      }
-
-      videoE.playbackRate = speed;
-
-      playCallbacks.finished = onFinished;
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      playCallbacks.timeUpdated = timeUpdated || noopParam;
-
-      videoE.play();
-    }
-
+    let prevTime = -1;
+    let timerId = -1;
     function onTimeUpdated() {
       const vidElement = videoElement.value;
       if (!vidElement) return;
 
-      playCallbacks.timeUpdated(vidElement.currentTime);
+      const time = vidElement.currentTime;
+      if (time === prevTime) return;
+      prevTime = time;
 
-      console.log('TimeUpdated', vidElement.currentTime);
+      ctx.emit('video-progressed', time);
 
-      if (vidElement.currentTime > endTime.value) {
+      if (time + 1 / 60 >= endTime.value) {
         vidElement.pause();
-        playCallbacks.finished();
+        console.log('playback-finished');
+        ctx.emit('playback-finished');
+        clearInterval(timerId);
+        timerId = -1;
       }
     }
+
+    const startProgressUpdating = () => {
+      if (timerId !== -1) clearInterval(timerId);
+      timerId = setInterval(onTimeUpdated, 1000 / 30);
+    };
+
+    const { playVideo } = setupVideoPlaying(
+      videoElement,
+      startTime,
+      endTime,
+      startProgressUpdating,
+    );
 
     return {
       videoUrl,
@@ -138,7 +154,7 @@ export default defineComponent({
       videoElement,
       canvasElement,
       playVideo,
-      onTimeUpdated,
+      endTime,
     };
   },
 });

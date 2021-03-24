@@ -11,32 +11,45 @@
       <slot name="ui"></slot>
     </div>
 
-    <DrawingSurface :mpResults="trackingResults" ref="drawingSurface" class="overlay"/>
+    <DrawingSurface
+    :enableDrawing="isActivelyTracking"
+    :mpResults="trackingResults" ref="drawingSurface" class="overlay"/>
   </div>
 </template>
 
 <script lang="ts">
 
-import { defineComponent } from 'vue';
+import { defineComponent, onUpdated, ref } from 'vue';
 import DrawingSurface from './DrawingSurface.vue';
-import { StartTracking } from '../services/MediaPipe';
+import { isTracking as mpIsTracking, StartTracking } from '../services/MediaPipe';
 
 export default defineComponent({
   name: 'CameraSurface',
   components: {
     DrawingSurface,
   },
-  data() {
+  setup() {
+    // const { enableDrawing } = toRefs(props);
+    const hasStartedTracking = ref(false);
+    const isActivelyTracking = ref(false);
+    const hasResults = ref(false);
+    const trackingResults = ref({});
+
+    onUpdated(() => {
+      isActivelyTracking.value = mpIsTracking();
+    });
+
     return {
-      isTracking: false,
-      hasResults: false,
-      trackingResults: {},
+      hasStartedTracking,
+      isActivelyTracking,
+      hasResults,
+      trackingResults,
     };
   },
   methods: {
     startTracking() {
-      if (this.isTracking) return;
-      this.isTracking = true;
+      if (this.hasStartedTracking) return;
+      this.hasStartedTracking = true;
 
       StartTracking(
         this.$refs.videoE as HTMLVideoElement,
@@ -45,7 +58,7 @@ export default defineComponent({
       );
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onResults(results: any, canvasCtx: CanvasRenderingContext2D) {
+    onResults(results: any) {
       if (!this.hasResults) {
         this.$emit('tracking-attained');
         console.log('Got Results', results);

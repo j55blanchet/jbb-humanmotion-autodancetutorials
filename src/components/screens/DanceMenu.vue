@@ -67,10 +67,11 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 
-.dance-menu {
+// .dance-menu {
   // backdrop-filter: blur(4px);
   // background: rgba(0, 0, 0, 0.2);
-}
+// }
+
 .menu {
   text-align: left;
   display: grid;

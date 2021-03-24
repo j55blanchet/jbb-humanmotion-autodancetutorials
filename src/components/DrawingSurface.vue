@@ -96,6 +96,7 @@ function drawHandShape(results: MpHolisticResults, canvasCtx: CanvasRenderingCon
 }
 
 function drawTrackingResults(
+  enabled: boolean,
   detectedGesture: string,
   results: MpHolisticResults,
   canvasCtx: CanvasRenderingContext2D,
@@ -103,6 +104,7 @@ function drawTrackingResults(
   const { canvas } = canvasCtx;
   canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
+  if (!enabled) return;
   if (results.poseLandmarks) DrawPose(canvasCtx, results.poseLandmarks);
   if (detectedGesture !== GestureNames.none) drawHandShape(results, canvasCtx);
 }
@@ -114,9 +116,13 @@ export default defineComponent({
       type: Object,
       required: false,
     },
+    enableDrawing: {
+      type: Boolean,
+      default: true,
+    },
   },
   setup(props) {
-    const { mpResults } = toRefs(props);
+    const { mpResults, enableDrawing } = toRefs(props);
 
     const gesture = ref('none');
     const canvasE = ref(null) as unknown as Ref<HTMLCanvasElement>;
@@ -126,13 +132,25 @@ export default defineComponent({
       const canvasCtx = canvas.getContext('2d') as CanvasRenderingContext2D;
       watch(mpResults as unknown as object, (newVal) => {
         const detectedGesture = getGesture(newVal);
-        drawTrackingResults(detectedGesture, newVal, canvasCtx);
+
+        drawTrackingResults(enableDrawing.value, detectedGesture, newVal, canvasCtx);
         gesture.value = detectedGesture;
 
         if (detectedGesture !== GestureNames.none) {
           eventHub.emit('gesture', detectedGesture);
         }
       });
+    });
+
+    watch(enableDrawing, (isEnabledNow) => {
+      const canvas = canvasE.value;
+      const canvasCtx = canvas.getContext('2d') as CanvasRenderingContext2D;
+      drawTrackingResults(
+        isEnabledNow,
+        gesture.value,
+        mpResults?.value as MpHolisticResults,
+        canvasCtx,
+      );
     });
 
     return {
