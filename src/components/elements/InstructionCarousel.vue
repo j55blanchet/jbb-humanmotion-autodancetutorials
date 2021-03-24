@@ -1,0 +1,57 @@
+<template>
+  <transition-group name="slide-fade" tag="div" class="instructionCarousel">
+    <p class="translucent-text instruction" v-for="inst in instructions" :key="inst.id">{{inst.text}}</p>
+  </transition-group>
+</template>
+
+<script lang="ts">
+
+import { defineComponent } from 'vue';
+
+export type Instruction = {
+  id: number;
+  text: string;
+}
+
+export default defineComponent({
+  props: {
+    instructions: {
+      type: Array,
+      default: Array,
+    },
+  },
+});
+</script>
+
+<style lang="scss">
+
+.instructionCarousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.instruction {
+  border-radius: 20000px;
+  font-weight: bold;
+}
+
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all .15s ease;
+  overflow: hidden;
+  // transform: translateX(-100%);
+}
+.slide-fade-leave-active {
+  transition: all .15s ease;
+  overflow: clip;
+  // transform: translateX(-100%);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px) scaleX(0);
+  opacity: 0;
+}
+
+</style>

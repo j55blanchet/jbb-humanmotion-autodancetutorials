@@ -3,7 +3,7 @@
         <div class="card">
           <div class="card-header">
             <h3 class="card-header-title">
-            Get ready to learn!
+            Webcam Access Needed
             </h3>
           </div>
           <div class="card-content">
@@ -13,8 +13,11 @@
                 and control this app with gestures. Later on, we'll also
                 use your webcam to give you tips on your technique.
               </p>
+              <p class="notification is-warning">
+                Please <strong>stop other programs that are using your webcam</strong>. On most computers, only one app is able to use the webcam at a time.
+              </p>
               <p>
-                To continue, please grant access to your webcam.
+                <strong>To continue, please grant access to your webcam.</strong>
               </p>
             </div>
           </div>

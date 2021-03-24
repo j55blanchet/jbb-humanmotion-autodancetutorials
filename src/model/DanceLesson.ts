@@ -4,7 +4,7 @@ export interface TimedInstruction {
   text: string;
 }
 
-export interface KeyframeSpec {
+export interface PauseInfo {
     time: number;
     pauseDuration?: number;
     instruction?: string;
@@ -17,10 +17,11 @@ export interface Activity {
   startTime: number;
   endTime: number;
   focusedSegments?: number[];
-  keyFrames?: Array<KeyframeSpec | number>;
+  pauses?: Array<PauseInfo>;
   practiceSpeeds?: Array<number>;
   startInstruction?: string;
-  instructions?: string;
+  playingInstruction?: string;
+  staticInstruction?: string;
   timedInstructions?: Array<TimedInstruction>;
 }
 

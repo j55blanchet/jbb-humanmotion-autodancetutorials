@@ -40,8 +40,8 @@
      />
 
       <div class="vcenter-parent" v-if="state === State.LoadingTracking">
-        <div class="loader-wrapper">
-          <div class="loader is-loading"></div>
+        <div class="translucent-text is-rounded">
+          <progress class="loader-progress progress m-4" max=30 :value="webcamStartDummyTimer"></progress>
         </div>
       </div>
 
@@ -105,6 +105,8 @@ export default defineComponent({
       currentLesson.value = null;
     }
 
+    const webcamStartDummyTimer = ref(0);
+    let webcamProgressInterval = -1;
     function startWebcam() {
       console.log('Starting Webcam');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -112,10 +114,16 @@ export default defineComponent({
       hasStartedWebcam.value = true;
       camSurface.startTracking();
       state.value = State.LoadingTracking;
+
+      webcamProgressInterval = setInterval(() => {
+        webcamStartDummyTimer.value += 1 / 30;
+      }, 1000 / 30);
     }
 
     function onTrackingAttained() {
       console.log('Tracking attained');
+      clearInterval(webcamProgressInterval);
+      webcamStartDummyTimer.value = 0;
 
       if (hasCompletedOnboarding.value) state.value = State.LessonActive;
       else state.value = State.Onboarding;
@@ -131,6 +139,7 @@ export default defineComponent({
       state,
       cameraSurface,
       State,
+      webcamStartDummyTimer,
     };
   },
 });
@@ -167,17 +176,13 @@ body, html {
   height: 100%;
 }
 
-.loader-wrapper {
+.loader {
   width: 200px;
   height: 200px;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 3em;
-  border-radius: 9999px;
+}
 
-  .loader {
-    width: 100%;
-    height: 100%;
-  }
+.loader-progress {
+  width: 200px;
 }
 
 #aboveSurface {
@@ -216,6 +221,18 @@ body, html {
 
 .background-blur {
   backdrop-filter: blur(4px);
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.55);
 }
+
+.translucent-text {
+  backdrop-filter: blur(4px);
+  color: white;
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.translucent-text.is-rounded {
+  border-radius: 99999999px;
+}
+
 </style>

@@ -1,8 +1,8 @@
 <template>
   <div class="onboardingUI">
     <div class="vcenter-parent">
-      <div class="content">
-        <h3>Here's how to use this app </h3>
+      <div class="content translucent-text p-6">
+        <h3 class="has-text-white">Here's how to use this app</h3>
 
         <span v-show="stage == 0">
           <p>Point forward with a flat hand to proceed</p>
@@ -71,15 +71,6 @@ export default defineComponent({
 .onboardingUI {
   width: 100%;
   height: 100%;
-
-  .content {
-    color: black !important;
-    backdrop-filter: blur(4px);
-    background: rgba(255, 255, 255, 0.4);
-    border-radius: 1rem;
-    padding: 1rem;
-  }
-
 }
 
 </style>

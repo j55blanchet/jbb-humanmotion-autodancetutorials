@@ -8,7 +8,7 @@
     <teleport to="#topbarRight">
       <span class="tag">{{activityId}} / {{activityCount}}</span>
       <span class="m-2">{{activityTitle}}</span>
-      <progress class="progress ml-2" :max="activityCount" value="5"></progress>
+      <progress class="progress ml-2" :max="activityCount" :value="activityId"></progress>
     </teleport>
 
     <VideoPlayer
@@ -19,6 +19,11 @@
       v-on:video-progressed="onTimeChanged"
       v-on:playback-finished="onActivityFinished"
     />
+
+    <div class="overlay instructions-overlay mb-4">
+      <InstructionCarousel :instructions="instructions" class="m-2"/>
+      <InstructionCarousel :instructions="timedInstructions" class="m-2"/>
+    </div>
 
     <div class="overlay mt-4" v-show="activityFinished">
       <div class="card">
@@ -66,8 +71,15 @@ import {
 } from 'vue';
 import { GestureNames, setupGestureListening, TrackingActions } from '@/services/EventHub';
 import DanceEntry from '@/model/DanceEntry';
+import InstructionCarousel, { Instruction } from '@/components/elements/InstructionCarousel.vue';
 import SegmentedProgressBar, { ProgressSegmentData } from '../elements/SegmentedProgressBar.vue';
 import VideoPlayer from '../elements/VideoPlayer.vue';
+
+const ActivityPlayState = Object.freeze({
+  NotStarted: 'NotStarted',
+  Playing: 'Playing',
+  ActivityEnded: 'ActivityEnded',
+});
 
 //
 // TODO!
@@ -81,7 +93,7 @@ function calculateProgressSegments(dance: DanceEntry, lesson: DanceLesson) {
   let last = undefined as undefined | number;
   const segs = lesson.segmentBreaks.map((timestamp) => {
     let segData = undefined as undefined | ProgressSegmentData;
-    if (last) {
+    if (last !== undefined) {
       segData = {
         min: last,
         max: timestamp,
@@ -99,6 +111,7 @@ export default defineComponent({
   components: {
     SegmentedProgressBar,
     VideoPlayer,
+    InstructionCarousel,
   },
   props: {
     targetDance: Object,
@@ -106,6 +119,8 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const { targetLesson, targetDance } = toRefs(props);
+
+    const activityState = ref(ActivityPlayState.NotStarted);
 
     const videoPlayer = ref(null as null | typeof VideoPlayer);
     const videoTime = ref(0);
@@ -123,7 +138,52 @@ export default defineComponent({
       return lesson?.activities?.length ?? 0;
     });
     const hasNextActivity = computed(() => activityCount.value > activityId.value + 1);
-    const activityFinished = ref(false);
+    const activityFinished = computed(() => activityState.value === ActivityPlayState.ActivityEnded);
+
+    const instructions = computed(() => {
+      const mActivity = activity.value;
+      const state = activityState.value;
+      if (!mActivity) return [];
+
+      const instructs: Instruction[] = [];
+
+      if (mActivity.staticInstruction) {
+        instructs.push({
+          id: 0,
+          text: mActivity.staticInstruction,
+        });
+      }
+
+      if (state === ActivityPlayState.NotStarted && mActivity.startInstruction) {
+        instructs.push({
+          id: 1,
+          text: mActivity.startInstruction,
+        });
+      } else if (state !== ActivityPlayState.NotStarted && mActivity.playingInstruction) {
+        instructs.push({
+          id: 2,
+          text: mActivity.playingInstruction,
+        });
+      }
+
+      return instructs;
+    });
+    const timedInstructions = computed(() => {
+      const mActivity = activity.value;
+      const time = videoTime.value;
+      if (!mActivity) return [];
+
+      const activeTimedInstructions = mActivity.timedInstructions?.map(
+        (ti, i) => ({
+          id: i,
+          text: ti.text,
+          start: ti.startTime,
+          end: ti.endTime,
+        })
+      ).filter((ti) => ti.start <= time && time < ti.end) ?? [];
+
+      return activeTimedInstructions;
+    });
 
     const progressSegments = computed(() => {
       const lesson = targetLesson?.value as DanceLesson | undefined;
@@ -134,7 +194,7 @@ export default defineComponent({
 
     function playActivity() {
       console.log(`LEARNING SCREEN:: Starting playback (activityId: ${activityId.value})`);
-      activityFinished.value = false;
+      activityState.value = ActivityPlayState.Playing;
       const vidPlayer = videoPlayer.value;
       const vidActivity = activity.value;
       if (!vidPlayer || !vidActivity) {
@@ -146,11 +206,12 @@ export default defineComponent({
         vidActivity.startTime,
         vidActivity.endTime,
         (vidActivity.practiceSpeeds ?? [1])[0] ?? 1,
+        1.5,
       );
     }
 
     function gotoNextActivity() {
-
+      activityState.value = ActivityPlayState.NotStarted;
       if (!hasNextActivity.value) {
         emit('lesson-completed');
         return;
@@ -160,7 +221,7 @@ export default defineComponent({
     }
 
     function onActivityFinished() {
-      activityFinished.value = true;
+      activityState.value = ActivityPlayState.ActivityEnded;
       console.log('LEARNING SCREEN:: Activity finished. Requesting tracking...');
       TrackingActions.requestTracking();
     }
@@ -177,6 +238,8 @@ export default defineComponent({
         playActivity();
       },
     });
+    // Todo: quit tracking request when component unmounted. (perhaps
+    //       refactor tracking requests to have an id)
 
     function onTimeChanged(time: number) {
       videoTime.value = time;
@@ -189,11 +252,14 @@ export default defineComponent({
     });
 
     return {
+      activityState,
       progressSegments,
       activity,
       activityId,
       activityCount,
       activityTitle,
+      instructions,
+      timedInstructions,
       videoPlayer,
       progressBar,
       activityFinished,
@@ -220,6 +286,10 @@ export default defineComponent({
   border-radius: 0 0 0.5rem 0.5rem;
 }
 
-
-
+.instructions-overlay {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: flex-start;
+}
 </style>

@@ -68,16 +68,17 @@ function setupVideoPlaying(
   startProgressUpdating: () => void,
 ) {
   function playVideo(
-    start: number,
-    end: number,
+    from: number,
+    to: number,
     speed: number,
+    delaySecs?: number,
   ) {
-    console.log(`VideoPlayer :: Starting playback from ${start} to ${end} @ ${speed.toPrecision(2)}`);
+    console.log(`VideoPlayer :: Starting playback from ${from} to ${to} @ ${speed.toPrecision(2)}`);
 
     // eslint-disable-next-line no-param-reassign
-    startTime.value = start;
+    startTime.value = from;
     // eslint-disable-next-line no-param-reassign
-    endTime.value = end;
+    endTime.value = to;
 
     const videoE = videoElement.value;
     if (!videoE) {
@@ -87,11 +88,14 @@ function setupVideoPlaying(
 
     videoE.pause();
     videoE.playbackRate = speed;
-    videoE.currentTime = start;
+    videoE.currentTime = from;
 
     nextTick(() => {
       startProgressUpdating();
-      videoE.play();
+
+      setTimeout(() => {
+        videoE.play();
+      }, (delaySecs ?? 0) * 1000);
     });
   }
 
