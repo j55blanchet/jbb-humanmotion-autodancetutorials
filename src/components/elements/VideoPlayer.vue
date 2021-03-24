@@ -85,7 +85,9 @@ function setupVideoPlaying(
       return;
     }
 
+    videoE.pause();
     videoE.playbackRate = speed;
+    videoE.currentTime = start;
 
     nextTick(() => {
       startProgressUpdating();

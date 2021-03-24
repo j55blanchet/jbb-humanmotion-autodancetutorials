@@ -6,7 +6,8 @@
       <button class="button" @click="$emit('back-selected')">&lt; Back</button>
     </teleport>
     <teleport to="#topbarRight">
-      <progress class="progress" :max="targetLesson.activities.count" value="5"></progress>
+      <span>#{{activityId}} / {{activityCount}}: {{activityTitle}}</span>
+      <progress class="progress" :max="activityCount" value="5"></progress>
     </teleport>
 
     <VideoPlayer
@@ -18,7 +19,7 @@
       v-on:playback-finished="onActivityFinished"
     />
 
-    <div v-show="activityFinished">
+    <div class="overlay" v-show="activityFinished">
       <div class="card">
         <div class="card-header">
           <h3 class="card-header-title">Use a gesture to proceed</h3>
@@ -35,7 +36,6 @@
             ref="progressBar"
           />
         </div>
-        <div>Activity Finished: {{activityFinished}}</div>
       </div>
 
     </teleport>
@@ -47,7 +47,7 @@ import DanceLesson from '@/model/DanceLesson';
 import {
   computed, defineComponent, onMounted, ref, toRefs,
 } from 'vue';
-import { setupGestureListening } from '@/services/EventHub';
+import { GestureNames, setupGestureListening, TrackingActions } from '@/services/EventHub';
 import DanceEntry from '@/model/DanceEntry';
 import SegmentedProgressBar, { ProgressSegmentData } from '../elements/SegmentedProgressBar.vue';
 import VideoPlayer from '../elements/VideoPlayer.vue';
@@ -87,7 +87,7 @@ export default defineComponent({
     targetDance: Object,
     targetLesson: Object,
   },
-  setup(props) {
+  setup(props, { emit }) {
     const { targetLesson, targetDance } = toRefs(props);
 
     const videoPlayer = ref(null as null | typeof VideoPlayer);
@@ -100,6 +100,12 @@ export default defineComponent({
       const lesson = targetLesson?.value as unknown as DanceLesson | null;
       return lesson?.activities[activityId.value];
     });
+    const activityTitle = computed(() => activity.value?.title ?? '');
+    const activityCount = computed(() => {
+      const lesson = targetLesson?.value as unknown as DanceLesson | null;
+      return lesson?.activities?.length ?? 0;
+    });
+    const hasNextActivity = computed(() => activityCount.value > activityId.value + 1);
     const activityFinished = ref(false);
 
     const progressSegments = computed(() => {
@@ -109,38 +115,68 @@ export default defineComponent({
       return [];
     });
 
-    setupGestureListening({});
+    function playActivity() {
+      console.log(`LEARNING SCREEN:: Starting playback (activityId: ${activityId.value})`);
+      activityFinished.value = false;
+      const vidPlayer = videoPlayer.value;
+      const vidActivity = activity.value;
+      if (!vidPlayer || !vidActivity) {
+        console.error('LEARNING SCREEN:: Aborting video playback: videoElement or lessonActivity is null', vidPlayer, vidActivity);
+        return;
+      }
+
+      vidPlayer.playVideo(
+        vidActivity.startTime,
+        vidActivity.endTime,
+        (vidActivity.practiceSpeeds ?? [1])[0] ?? 1,
+      );
+    }
+
+    function gotoNextActivity() {
+
+      if (!hasNextActivity.value) {
+        emit('lesson-completed');
+        return;
+      }
+      activityId.value += 1;
+      setTimeout(() => { playActivity(); }, 1000);
+    }
 
     function onActivityFinished() {
       activityFinished.value = true;
-      console.log('LEARNING SCREEN:: Activity finished');
+      console.log('LEARNING SCREEN:: Activity finished. Requesting tracking...');
+      TrackingActions.requestTracking();
     }
+
+    setupGestureListening({
+      [GestureNames.pointRight]: () => {
+        TrackingActions.endTrackingRequest();
+        if (!activityFinished.value) return;
+        gotoNextActivity();
+      },
+      [GestureNames.pointLeft]: () => {
+        TrackingActions.endTrackingRequest();
+        if (!activityFinished.value) return;
+        playActivity();
+      },
+    });
+
     function onTimeChanged(time: number) {
       videoTime.value = time;
-      console.log('Time changed', time);
     }
 
     onMounted(() => {
       setTimeout(() => {
-        console.log('LEARNING SCREEN:: Starting playback');
-        const vidPlayer = videoPlayer.value;
-        const vidActivity = activity.value;
-        if (!vidPlayer || !vidActivity) {
-          console.error('LEARNING SCREEN:: Aborting video playback: videoElement or lessonActivity is null', vidPlayer, vidActivity);
-          return;
-        }
-
-        vidPlayer.playVideo(
-          vidActivity.startTime,
-          vidActivity.endTime,
-          1,
-        );
+        playActivity();
       }, 1000);
     });
 
     return {
       progressSegments,
       activity,
+      activityId,
+      activityCount,
+      activityTitle,
       videoPlayer,
       progressBar,
       activityFinished,
