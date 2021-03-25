@@ -72,6 +72,7 @@ export default defineComponent({
     function setTime(time: number) {
       const vidPlayer = videoPlayer.value;
       if (vidPlayer) vidPlayer.setTime(time);
+      emit('progress', time);
     }
 
     function onProgress(time: number) {

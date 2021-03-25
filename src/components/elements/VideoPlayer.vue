@@ -179,5 +179,9 @@ export default defineComponent({
   canvas {
     margin: auto;
   }
+
+  video {
+    border-radius: 0.25rem;
+  }
 }
 </style>

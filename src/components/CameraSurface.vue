@@ -1,11 +1,11 @@
 <template>
-  <div ref="canvasBackground" class="surface-container">
+  <div ref="canvasBackground" class="surface-container is-slightly-rounded">
 
     <div class="overlay overlay-background">
       <slot name="background"></slot>
     </div>
 
-    <video class="mirrored" ref="videoE" width="1280" height="720"></video>
+    <video class="mirrored is-slightly-rounded" ref="videoE" width="1280" height="720"></video>
 
     <div class="overlay">
       <slot name="ui"></slot>
@@ -80,6 +80,8 @@ export default defineComponent({
   height: 720px;
   box-sizing: content-box;
   text-align: center;
+
+  background: rgba(0, 0, 0, 0.3);
 
   .overlay {
     position: absolute;

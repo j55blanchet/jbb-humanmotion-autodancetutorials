@@ -7,15 +7,17 @@
     </teleport>
     <teleport to="#topbarRight">
       <span class="tag">{{activityId}} / {{activityCount}}</span>
-      <span class="m-2">{{activityTitle}}</span>
-      <progress class="progress ml-2" :max="activityCount" :value="activityId"></progress>
+      <progress class="lessonProgress progress ml-2" :max="activityCount" :value="activityId">
+      </progress>
+    </teleport>
+    <teleport to="#topbarCenter">
+        <h3>{{activityTitle}}</h3>
     </teleport>
 
     <PausingVideoPlayer
       :videoSrc="targetDance.videoSrc"
       :height="'720px'"
       ref="videoPlayer"
-      v-show="!activityFinished"
       @progress="onTimeChanged"
       @playback-completed="onActivityFinished"
       @pause-hit="onPauseHit"
@@ -27,33 +29,33 @@
       <InstructionCarousel :instructions="timedInstructions" class="m-2"/>
     </div>
 
-    <div class="overlay mt-4" v-show="activityFinished">
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-header-title">Use a gesture to proceed</h3>
-        </div>
-        <div class="card-content">
-          <div class="columns">
+    <div class="vcenter-parent overlay" v-show="activityFinished">
+      <div class="content translucent-text p-6 is-rounded">
+        <h3 class="has-text-white">Use a gesture to proceed</h3>
+        <div class="columns">
             <div class="column">
-              <p>Repeat</p>
+              <p class="mt-4 mb-0">Repeat</p>
               <span class="icon is-large fa-flip-horizontal">
                 <i class="fas fa-2x fa-hand-paper fa-rotate-90"></i>
               </span>
+              <br>
+              <p class="mt-4 has-text-grey-lighter">{{activityTitle}}</p>
             </div>
             <div class="column">
-              <p>Next</p>
+              <p class="mt-4 mb-0">Next</p>
               <span class="icon is-large" >
                 <i class="fas fa-2x fa-hand-paper fa-rotate-90"></i>
               </span>
+              <br>
+              <p class="mt-4 has-text-grey-lighter">{{nextActivityTitle}}</p>
             </div>
           </div>
-        </div>
       </div>
     </div>
 
     <teleport to="#belowSurface">
       <div>
-        <div class="master-bar">
+        <div class="master-bar mt-4">
           <SegmentedProgressBar
             :segments="progressSegments"
             :progress="videoTime"
@@ -61,7 +63,6 @@
           />
         </div>
       </div>
-
     </teleport>
   </div>
 </template>
@@ -141,6 +142,13 @@ export default defineComponent({
     });
     const hasNextActivity = computed(() => activityCount.value > activityId.value + 1);
     const activityFinished = computed(() => activityState.value === ActivityPlayState.ActivityEnded);
+    const nextActivityTitle = computed(() => {
+      if (!hasNextActivity.value) return 'Finish Lesson';
+      const lesson = targetLesson?.value as unknown as DanceLesson | null;
+
+      const nextActivity = lesson?.activities[activityId.value + 1];
+      return nextActivity?.title ?? 'Unknown';
+    });
 
     const pauseInstructs = ref([] as Instruction[]);
     function onPauseHit(pause: PauseInfo) {
@@ -275,6 +283,7 @@ export default defineComponent({
       activityId,
       activityCount,
       activityTitle,
+      nextActivityTitle,
       instructions,
       timedInstructions,
       videoPlayer,
@@ -301,9 +310,9 @@ export default defineComponent({
 
 .master-bar {
   width: 1280px;
-  margin: 0 auto;
-  padding: 1rem 1rem 1rem 1rem;
-  border-radius: 0 0 0.5rem 0.5rem;
+  // margin: 0 auto;
+  // padding: 1rem 1rem 1rem 1rem;
+  // border-radius: 0 0 0.5rem 0.5rem;
 }
 
 .instructions-overlay {
@@ -311,5 +320,9 @@ export default defineComponent({
   flex-direction: column-reverse;
   align-items: center;
   justify-content: flex-start;
+}
+
+.lessonProgress {
+  width: 128px;
 }
 </style>

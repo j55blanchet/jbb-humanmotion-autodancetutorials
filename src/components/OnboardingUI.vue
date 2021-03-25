@@ -1,7 +1,7 @@
 <template>
   <div class="onboardingUI">
     <div class="vcenter-parent">
-      <div class="content translucent-text p-6">
+      <div class="content translucent-text is-rounded p-6">
         <h3 class="has-text-white">Here's how to use this app</h3>
 
         <span v-show="stage == 0">

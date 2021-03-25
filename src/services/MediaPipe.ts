@@ -80,7 +80,7 @@ export function DrawPose(canvasCtx: CanvasRenderingContext2D, poseLandmarks: Arr
   const h = canvasCtx.canvas.height;
 
   /* eslint-disable no-param-reassign */
-  canvasCtx.strokeStyle = 'green';
+  canvasCtx.strokeStyle = 'rgba(0, 255, 0, 0.3)';
   canvasCtx.lineWidth = 2;
   /* eslint-enable no-param-reassign */
 

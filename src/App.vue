@@ -1,9 +1,9 @@
 <template>
 <div class="app">
-   <div id="aboveSurface">
+   <div id="aboveSurface" class="pb-4 pt-4">
      <span id="topbarLeft"></span>
      <span class="spacer"></span>
-     <span style="color:transparent">{{state}}</span>
+     <span id="topbarCenter"></span>
      <span class="spacer"></span>
      <span id="topbarRight"></span>
 
@@ -186,8 +186,6 @@ body, html {
 }
 
 #aboveSurface {
-  padding: 1rem;
-  // margin-top: 1rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -206,14 +204,9 @@ body, html {
 #belowSurface {
   width: 1280px;
   margin: auto;
-  border-radius: 0 0 0.5rem 0.5rem;
 }
 
-#topbarLeft {
-  display: flex;
-  flex-direction: row;
-}
-#topbarRight {
+#topbarLeft, #topbarRight, #topbarCenter {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -232,7 +225,11 @@ body, html {
 }
 
 .translucent-text.is-rounded {
-  border-radius: 99999999px;
+  border-radius: 0.25rem;
+}
+
+.is-slightly-rounded {
+  border-radius: 0.25rem;
 }
 
 </style>
