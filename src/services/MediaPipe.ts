@@ -138,10 +138,23 @@ export function StartTracking(
     trackingCount -= 1;
   });
 
+  let frameCount = 0;
+  let startTime = new Date().getTime();
+
   camera = new camUtils.Camera(
     videoE,
     {
       onFrame: async () => {
+        frameCount += 1;
+        if (frameCount % 60 === 0) {
+          const cTime = new Date().getTime();
+          const elapsedMs = cTime - startTime;
+          console.log('FPS: ', (1000 * frameCount) / elapsedMs);
+
+          frameCount = 0;
+          startTime = cTime;
+        }
+
         if (trackingCount > 0) await holistic.send({ image: videoE });
       },
       width: 1280,
@@ -149,6 +162,28 @@ export function StartTracking(
     },
   );
   camera.start();
+}
+
+export function sendFrames(
+  onFrame: () => Promise<undefined>,
+) {
+
+  // Todo: don't call onFrame if video or stream is paused or
+  //       if no time has elapsed.
+  const paused = false;
+  const timeHasPassed = false;
+
+  if (paused || timeHasPassed) {
+    requestAnimationFrame(() => {
+      sendFrames(onFrame);
+    });
+  } else {
+    requestAnimationFrame(() => {
+      onFrame().then(() => {
+        sendFrames(onFrame);
+      });
+    });
+  }
 }
 
 export function isTracking() {
