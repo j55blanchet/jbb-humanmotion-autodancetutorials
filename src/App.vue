@@ -214,7 +214,7 @@ body, html {
 
 .background-blur {
   backdrop-filter: blur(4px);
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.75);
 }
 
 .translucent-text {

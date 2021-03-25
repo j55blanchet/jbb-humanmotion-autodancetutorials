@@ -1,6 +1,5 @@
 <template>
-  <div class="learning-screen"
-    :class="{'background-blur': !activityFinished}"
+  <div class="learning-screen background-blur"
     >
     <teleport to="#topbarLeft">
       <button class="button" @click="$emit('back-selected')">&lt; Back</button>
