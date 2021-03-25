@@ -71,7 +71,6 @@ function setupVideoPlaying(
     from: number,
     to: number,
     speed: number,
-    delaySecs?: number,
   ) {
     console.log(`VideoPlayer :: Starting playback from ${from} to ${to} @ ${speed.toPrecision(2)}`);
 
@@ -92,10 +91,7 @@ function setupVideoPlaying(
 
     nextTick(() => {
       startProgressUpdating();
-
-      setTimeout(() => {
-        videoE.play();
-      }, (delaySecs ?? 0) * 1000);
+      videoE.play();
     });
   }
 
@@ -109,6 +105,10 @@ export default defineComponent({
     width: String,
     height: String,
   },
+  emits: [
+    'playback-completed',
+    'progress',
+  ],
   setup(props, ctx) {
     const { videoBaseUrl } = toRefs(props);
 
@@ -131,12 +131,12 @@ export default defineComponent({
       if (time === prevTime) return;
       prevTime = time;
 
-      ctx.emit('video-progressed', time);
+      ctx.emit('progress', time);
 
       if (time + 1 / 60 >= endTime.value) {
         vidElement.pause();
-        console.log('playback-finished');
-        ctx.emit('playback-finished');
+        console.log('VideoPlauer :: playback-completed');
+        ctx.emit('playback-completed');
         clearInterval(timerId);
         timerId = -1;
       }
@@ -162,6 +162,14 @@ export default defineComponent({
       playVideo,
       endTime,
     };
+  },
+  methods: {
+    setTime(time: number) {
+      const videoE = this.videoElement;
+      if (videoE) {
+        videoE.currentTime = time;
+      }
+    },
   },
 });
 </script>

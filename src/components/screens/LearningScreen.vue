@@ -11,13 +11,15 @@
       <progress class="progress ml-2" :max="activityCount" :value="activityId"></progress>
     </teleport>
 
-    <VideoPlayer
-      :videoBaseUrl="targetDance.videoSrc"
+    <PausingVideoPlayer
+      :videoSrc="targetDance.videoSrc"
       :height="'720px'"
       ref="videoPlayer"
       v-show="!activityFinished"
-      v-on:video-progressed="onTimeChanged"
-      v-on:playback-finished="onActivityFinished"
+      @progress="onTimeChanged"
+      @playback-completed="onActivityFinished"
+      @pause-hit="onPauseHit"
+      @pause-end="onPauseEnded"
     />
 
     <div class="overlay instructions-overlay mb-4">
@@ -65,7 +67,7 @@
 </template>
 
 <script lang="ts">
-import DanceLesson from '@/model/DanceLesson';
+import DanceLesson, { PauseInfo } from '@/model/DanceLesson';
 import {
   computed, defineComponent, onMounted, ref, toRefs,
 } from 'vue';
@@ -73,7 +75,7 @@ import { GestureNames, setupGestureListening, TrackingActions } from '@/services
 import DanceEntry from '@/model/DanceEntry';
 import InstructionCarousel, { Instruction } from '@/components/elements/InstructionCarousel.vue';
 import SegmentedProgressBar, { ProgressSegmentData } from '../elements/SegmentedProgressBar.vue';
-import VideoPlayer from '../elements/VideoPlayer.vue';
+import PausingVideoPlayer from '../elements/PausingVideoPlayer.vue';
 
 const ActivityPlayState = Object.freeze({
   NotStarted: 'NotStarted',
@@ -110,7 +112,7 @@ function calculateProgressSegments(dance: DanceEntry, lesson: DanceLesson) {
 export default defineComponent({
   components: {
     SegmentedProgressBar,
-    VideoPlayer,
+    PausingVideoPlayer,
     InstructionCarousel,
   },
   props: {
@@ -122,7 +124,7 @@ export default defineComponent({
 
     const activityState = ref(ActivityPlayState.NotStarted);
 
-    const videoPlayer = ref(null as null | typeof VideoPlayer);
+    const videoPlayer = ref(null as null | typeof PausingVideoPlayer);
     const videoTime = ref(0);
 
     const progressBar = ref(null as null | typeof SegmentedProgressBar);
@@ -139,6 +141,20 @@ export default defineComponent({
     });
     const hasNextActivity = computed(() => activityCount.value > activityId.value + 1);
     const activityFinished = computed(() => activityState.value === ActivityPlayState.ActivityEnded);
+
+    const pauseInstructs = ref([] as Instruction[]);
+    function onPauseHit(pause: PauseInfo) {
+      if (pause.instruction) {
+        pauseInstructs.value.push({
+          id: pause.time,
+          text: pause.instruction,
+        });
+      }
+    }
+    function onPauseEnded() {
+      // Remove all pause instructions
+      pauseInstructs.value.splice(0);
+    }
 
     const instructions = computed(() => {
       const mActivity = activity.value;
@@ -202,10 +218,11 @@ export default defineComponent({
         return;
       }
 
-      vidPlayer.playVideo(
+      vidPlayer.play(
         vidActivity.startTime,
         vidActivity.endTime,
         (vidActivity.practiceSpeeds ?? [1])[0] ?? 1,
+        vidActivity.pauses ?? [],
         1.5,
       );
     }
@@ -266,6 +283,9 @@ export default defineComponent({
       videoTime,
       onActivityFinished,
       onTimeChanged,
+
+      onPauseHit,
+      onPauseEnded,
     };
   },
 });
