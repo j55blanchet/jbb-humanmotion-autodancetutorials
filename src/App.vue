@@ -56,6 +56,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
+import webcamProvider from '@/services/WebcamProvider';
 import CameraSurface from './components/CameraSurface.vue';
 import OnboardingUI from './components/OnboardingUI.vue';
 import DanceMenu from './components/screens/DanceMenu.vue';
@@ -107,11 +108,15 @@ export default defineComponent({
 
     const webcamStartDummyTimer = ref(0);
     let webcamProgressInterval = -1;
-    function startWebcam() {
+
+    async function startWebcam() {
       console.log('Starting Webcam');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const camSurface: any = cameraSurface.value;
       hasStartedWebcam.value = true;
+
+      await webcamProvider.startWebcam();
+
       camSurface.startTracking();
       state.value = State.LoadingTracking;
 

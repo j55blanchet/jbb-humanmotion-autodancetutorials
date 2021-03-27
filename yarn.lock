@@ -900,11 +900,6 @@
     cssnano-preset-default "^4.0.0"
     postcss "^7.0.0"
 
-"@mediapipe/camera_utils@^0.1.1606863050":
-  version "0.1.1606863050"
-  resolved "https://registry.yarnpkg.com/@mediapipe/camera_utils/-/camera_utils-0.1.1606863050.tgz#8f7da485148a62cd16c17c4d1c9ef79e8193858a"
-  integrity sha512-/vrwMsfsyEkXwjHyLKqDVu6j9Z1Jyi2rOpgqV/I9GTydkAVAtg1sbxlEfLFqlTK4fY367D5Yd79FPXrXqBPyIg==
-
 "@mediapipe/drawing_utils@^0.2.1614567093":
   version "0.2.1614567093"
   resolved "https://registry.yarnpkg.com/@mediapipe/drawing_utils/-/drawing_utils-0.2.1614567093.tgz#018f8b328efcf010ce2eaae1771604862eae1799"
@@ -1106,6 +1101,11 @@
   version "1.2.3"
   resolved "https://registry.npm.taobao.org/@types/range-parser/download/@types/range-parser-1.2.3.tgz#7ee330ba7caafb98090bece86a5ee44115904c2c"
   integrity sha1-fuMwunyq+5gJC+zoal7kQRWQTCw=
+
+"@types/recordrtc@^5.6.5":
+  version "5.6.5"
+  resolved "https://registry.yarnpkg.com/@types/recordrtc/-/recordrtc-5.6.5.tgz#aa7b1ec80afefbe1f73296f36fcad0eabcd8c6f1"
+  integrity sha512-4FF77kV/VTnEM7lB018sr70IKl1e1rbRpXuv1G3t7Ty7Z5HGRDehH2xq9cxvTNn18DDSkm0D5gwU5CpfwiPuDQ==
 
 "@types/serve-static@*":
   version "1.13.9"
@@ -7844,6 +7844,11 @@ readdirp@~3.5.0:
   integrity sha1-m6dMAZsV02UnjS6Ru4xI17TULJ4=
   dependencies:
     picomatch "^2.2.1"
+
+recordrtc@^5.6.2:
+  version "5.6.2"
+  resolved "https://registry.yarnpkg.com/recordrtc/-/recordrtc-5.6.2.tgz#48fc214b35084973ccce82c6251198b5742bc327"
+  integrity sha512-1QNKKNtl7+KcwD1lyOgP3ZlbiJ1d0HtXnypUy7yq49xEERxk31PHvE9RCciDrulPCY7WJ+oz0R9hpNxgsIurGQ==
 
 regenerate-unicode-properties@^8.2.0:
   version "8.2.0"

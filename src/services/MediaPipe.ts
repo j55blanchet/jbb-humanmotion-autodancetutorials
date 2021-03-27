@@ -5,7 +5,6 @@ import { Landmark, PoseLandmarks } from './MediaPipeTypes';
 import eventHub, { EventNames } from './EventHub';
 
 const mp = require('@mediapipe/holistic/holistic');
-const camUtils = require('@mediapipe/camera_utils/camera_utils');
 
 export const HAND_LANDMARK_CONNECTIONS = [
   [0, 1], [1, 2], [2, 3], [3, 4], // Thumb
@@ -48,7 +47,6 @@ const CONNECTIONS_TO_DRAW = [
   [PoseLandmarks.nose, PoseLandmarks.leftEye],
 ];
 
-let camera: any;
 let trackingStarted = false;
 
 export function DrawConnections(
@@ -109,15 +107,12 @@ let trackingCount = 0;
 
 export function StartTracking(
   videoE: HTMLVideoElement,
-  canvasE: HTMLCanvasElement,
-  onResults: (res: any, canvasCtx: CanvasRenderingContext2D) => void,
-) {
-  if (trackingStarted) { return; }
+  onResults: (res: any) => void,
+): () => Promise<void> {
+  if (trackingStarted) { throw Error('Tracking alread started'); }
 
   trackingStarted = true;
   trackingCount += 1;
-
-  const renderingCtx = canvasE.getContext('2d');
 
   const holistic = new mp.Holistic({ locateFile: (file: any) => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.1/${file}` });
   holistic.setOptions({
@@ -127,7 +122,7 @@ export function StartTracking(
     minTrackingConfidence: 0.5,
   });
   holistic.onResults((res: any) => {
-    onResults(res, renderingCtx as CanvasRenderingContext2D);
+    onResults(res);
     eventHub.emit(EventNames.trackingResultsAcquired, res);
   });
 
@@ -138,30 +133,20 @@ export function StartTracking(
     trackingCount -= 1;
   });
 
-  let frameCount = 0;
-  let startTime = new Date().getTime();
-
-  camera = new camUtils.Camera(
-    videoE,
-    {
-      onFrame: async () => {
-        frameCount += 1;
-        if (frameCount % 60 === 0) {
-          const cTime = new Date().getTime();
-          const elapsedMs = cTime - startTime;
-          console.log('FPS: ', (1000 * frameCount) / elapsedMs);
-
-          frameCount = 0;
-          startTime = cTime;
-        }
-
-        if (trackingCount > 0) await holistic.send({ image: videoE });
-      },
-      width: 1280,
-      height: 720,
-    },
-  );
-  camera.start();
+  return async () => {
+    if (trackingCount > 0) await holistic.send({ image: videoE });
+  };
+  // camera = new camUtils.Camera(
+  //   videoE,
+  //   {
+  //     onFrame: async () => {
+  //       if (trackingCount > 0) await holistic.send({ image: videoE });
+  //     },
+  //     width: 1280,
+  //     height: 720,
+  //   },
+  // );
+  // camera.start();
 }
 
 export function sendFrames(

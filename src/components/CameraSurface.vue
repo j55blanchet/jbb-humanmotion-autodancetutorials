@@ -5,7 +5,12 @@
       <slot name="background"></slot>
     </div>
 
-    <video class="mirrored is-slightly-rounded" ref="videoE" width="1280" height="720"></video>
+    <video
+      class="mirrored is-slightly-rounded"
+      ref="videoE"
+      width="1280"
+      height="720"
+    ></video>
 
     <div class="overlay">
       <slot name="ui"></slot>
@@ -19,7 +24,10 @@
 
 <script lang="ts">
 
-import { defineComponent, onUpdated, ref } from 'vue';
+import {
+  defineComponent, onUpdated, ref,
+} from 'vue';
+import webcamProvider, { WebcamProvider } from '@/services/WebcamProvider';
 import DrawingSurface from './DrawingSurface.vue';
 import { isTracking as mpIsTracking, StartTracking } from '../services/MediaPipe';
 
@@ -51,11 +59,21 @@ export default defineComponent({
       if (this.hasStartedTracking) return;
       this.hasStartedTracking = true;
 
-      StartTracking(
-        this.$refs.videoE as HTMLVideoElement,
-        (this.$refs.drawingSurface as any).$refs.canvasE as HTMLCanvasElement,
-        this.onResults,
-      );
+      const videoE = this.$refs.videoE as HTMLVideoElement;
+
+      videoE.onloadedmetadata = (() => {
+        videoE.play();
+
+        const sendFrame = StartTracking(
+          this.$refs.videoE as HTMLVideoElement,
+          this.onResults,
+        );
+
+        WebcamProvider.doEveryFrame(sendFrame);
+        videoE.onloadedmetadata = null;
+      });
+
+      videoE.srcObject = webcamProvider.getMediaStream();
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onResults(results: any) {
