@@ -103,7 +103,11 @@ export function DrawPose(canvasCtx: CanvasRenderingContext2D, poseLandmarks: Arr
   canvasCtx.restore();
 }
 
-let trackingCount = 0;
+const trackingRequests: Record<string, boolean> = {};
+const trackingCount = () => Object
+  .keys(trackingRequests)
+  .map((id) => trackingRequests[id])
+  .filter((x) => x).length;
 
 export function StartTracking(
   videoE: HTMLVideoElement,
@@ -112,7 +116,7 @@ export function StartTracking(
   if (trackingStarted) { throw Error('Tracking alread started'); }
 
   trackingStarted = true;
-  trackingCount += 1;
+  trackingRequests.initial = true;
 
   const holistic = new mp.Holistic({ locateFile: (file: any) => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.1/${file}` });
   holistic.setOptions({
@@ -123,18 +127,19 @@ export function StartTracking(
   });
   holistic.onResults((res: any) => {
     onResults(res);
+    trackingRequests.initial = false;
     eventHub.emit(EventNames.trackingResultsAcquired, res);
   });
 
-  eventHub.on(EventNames.trackingRequested, () => {
-    trackingCount += 1;
+  eventHub.on(EventNames.trackingRequested, (id: string) => {
+    trackingRequests[id] = true;
   });
-  eventHub.on(EventNames.trackingRequestFinished, () => {
-    trackingCount -= 1;
+  eventHub.on(EventNames.trackingRequestFinished, (id: string) => {
+    trackingRequests[id] = false;
   });
 
   return async () => {
-    if (trackingCount > 0) await holistic.send({ image: videoE });
+    if (trackingCount() > 0) await holistic.send({ image: videoE });
   };
   // camera = new camUtils.Camera(
   //   videoE,
@@ -172,7 +177,7 @@ export function sendFrames(
 }
 
 export function isTracking() {
-  return trackingCount > 0;
+  return trackingCount() > 0;
 }
 // function removeElements(landmarks, elements) {
 //   for (const element of elements) {

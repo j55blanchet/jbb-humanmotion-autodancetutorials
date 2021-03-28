@@ -26,7 +26,7 @@
 <script lang="ts">
 
 import {
-  defineComponent, ref,
+  defineComponent, onBeforeUnmount, onMounted, ref,
 } from 'vue';
 
 import { setupGestureListening, GestureNames, TrackingActions } from '../services/EventHub';
@@ -43,6 +43,13 @@ export default defineComponent({
     const stage = ref(OnboardingStage.TrySelectNext);
     const output = ref('');
 
+    onMounted(() => {
+      TrackingActions.requestTracking('onboarding');
+    });
+    onBeforeUnmount(() => {
+      TrackingActions.endTrackingRequest('onboarding');
+    });
+
     setupGestureListening({
       [GestureNames.pointRight]: () => {
         if (stage.value === OnboardingStage.TrySelectNext) {
@@ -53,7 +60,6 @@ export default defineComponent({
         if (stage.value === OnboardingStage.TrySelectPrevious) {
           stage.value = OnboardingStage.Done;
           ctx.emit('onboarding-complete');
-          TrackingActions.endTrackingRequest();
         }
       },
     });

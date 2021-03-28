@@ -69,7 +69,7 @@
 <script lang="ts">
 import DanceLesson, { PauseInfo } from '@/model/DanceLesson';
 import {
-  computed, defineComponent, onMounted, ref, toRefs,
+  computed, defineComponent, onBeforeUnmount, onMounted, ref, toRefs,
 } from 'vue';
 import { GestureNames, setupGestureListening, TrackingActions } from '@/services/EventHub';
 import DanceEntry from '@/model/DanceEntry';
@@ -109,6 +109,8 @@ function calculateProgressSegments(dance: DanceEntry, lesson: DanceLesson) {
   return segs;
 }
 
+const TRACKING_ID = 'LearningScreen';
+
 export default defineComponent({
   components: {
     SegmentedProgressBar,
@@ -140,6 +142,7 @@ export default defineComponent({
       return lesson?.activities?.length ?? 0;
     });
     const hasNextActivity = computed(() => activityCount.value > activityId.value + 1);
+    // eslint-disable-next-line max-len
     const activityFinished = computed(() => activityState.value === ActivityPlayState.ActivityEnded);
     const nextActivityTitle = computed(() => {
       if (!hasNextActivity.value) return 'Finish Lesson';
@@ -247,20 +250,23 @@ export default defineComponent({
     function onActivityFinished() {
       activityState.value = ActivityPlayState.ActivityEnded;
       console.log('LEARNING SCREEN:: Activity finished. Requesting tracking...');
-      TrackingActions.requestTracking();
+      TrackingActions.requestTracking(TRACKING_ID);
     }
 
     setupGestureListening({
       [GestureNames.pointRight]: () => {
-        TrackingActions.endTrackingRequest();
+        TrackingActions.endTrackingRequest(TRACKING_ID);
         if (!activityFinished.value) return;
         gotoNextActivity();
       },
       [GestureNames.pointLeft]: () => {
-        TrackingActions.endTrackingRequest();
+        TrackingActions.endTrackingRequest(TRACKING_ID);
         if (!activityFinished.value) return;
         playActivity();
       },
+    });
+    onBeforeUnmount(() => {
+      TrackingActions.endTrackingRequest(TRACKING_ID);
     });
     // Todo: quit tracking request when component unmounted. (perhaps
     //       refactor tracking requests to have an id)

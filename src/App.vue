@@ -41,7 +41,11 @@
 
       <div class="vcenter-parent" v-if="state === State.LoadingTracking">
         <div class="translucent-text is-rounded">
-          <progress class="loader-progress progress m-4" max=30 :value="webcamStartDummyTimer"></progress>
+          <progress
+            class="loader-progress progress m-4"
+            max=30
+            :value="webcamStartDummyTimer">
+          </progress>
         </div>
       </div>
 
@@ -130,8 +134,9 @@ export default defineComponent({
       clearInterval(webcamProgressInterval);
       webcamStartDummyTimer.value = 0;
 
-      if (hasCompletedOnboarding.value) state.value = State.LessonActive;
-      else state.value = State.Onboarding;
+      if (hasCompletedOnboarding.value) {
+        state.value = State.LessonActive;
+      } else state.value = State.Onboarding;
     }
 
     return {
