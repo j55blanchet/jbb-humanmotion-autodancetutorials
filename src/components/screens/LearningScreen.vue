@@ -29,7 +29,7 @@
     </div>
 
     <div class="vcenter-parent overlay" v-show="activityFinished">
-      <div class="content translucent-text p-6 is-rounded">
+      <div class="content translucent-text p-6 is-rounded is-size-5">
         <h3 class="has-text-white">Use a gesture to proceed</h3>
         <div class="columns">
             <div class="column">
