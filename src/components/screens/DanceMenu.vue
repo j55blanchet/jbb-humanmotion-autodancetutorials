@@ -6,7 +6,7 @@
     <div class="menu container padded">
       <div
         class="dance-card card is-clickable"
-        v-for="dance in danceList"
+        v-for="dance in motionList"
         :key="dance.title"
         @mouseover="hover = dance.hovering = true"
         @mouseleave="hover = dance.hovering = false"
@@ -20,6 +20,17 @@
         </div>
         <div class="card-content">
           {{ dance.title }}
+        </div>
+      </div>
+      <div class="dance-card card is-clickable"
+        @click="$emit('pose-drawer-selected')">
+        <div class="card-image">
+          <figure class="image is-2by3">
+            <img src="../../assets/stickfigure.png" alt="">
+          </figure>
+        </div>
+        <div class="card-content">
+          Pose Drawer Test
         </div>
       </div>
     </div>
@@ -39,16 +50,18 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import DanceEntry, { LessonSelection, dances } from '../../model/DanceEntry';
+import DanceEntry, { LessonSelection } from '../../model/DanceEntry';
 import LessonCard from '../elements/LessonCard.vue';
+import motions from '../../services/MotionDatabase';
 
 export default defineComponent({
   name: 'DanceMenu',
+  emits: ['dance-selected', 'pose-drawer-selected'],
   components: {
     LessonCard,
   },
   setup(props, ctx) {
-    const danceList = ref(dances);
+    const motionList = ref(motions);
     const selectedDance = ref(null as DanceEntry | null);
 
     function danceLessonSelected(sel: LessonSelection) {
@@ -58,7 +71,7 @@ export default defineComponent({
 
     return {
       selectedDance,
-      danceList,
+      motionList,
       danceLessonSelected,
     };
   },

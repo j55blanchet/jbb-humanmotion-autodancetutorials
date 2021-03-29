@@ -12,6 +12,7 @@
   <DanceMenu
         v-on:dance-selected="danceSelected"
         v-if="state === State.DanceMenu"
+        @pose-drawer-selected="poseDrawerSelected"
       />
 
   <CameraSurface
@@ -33,6 +34,10 @@
         @lesson-completed="goHome"
         @back-selected="goHome"
       />
+
+      <PoseDrawerTest
+        v-if="state === State.PoseDrawingTester"
+        @back-selected="goHome" />
 
      <WebcamPromptCard v-if="state === State.PromptStartWebcam"
       @cancel-selected="state = State.DanceMenu"
@@ -71,6 +76,8 @@ import DanceEntry, { LessonSelection } from './model/DanceEntry';
 import DanceLesson from './model/DanceLesson';
 import WebcamPromptCard from './components/elements/WebcamPromptCard.vue';
 
+import PoseDrawerTest from './components/screens/PoseDrawerTest.vue';
+
 const State = {
   DanceMenu: 'DanceMenu',
   PromptStartWebcam: 'PromptStartWebcam',
@@ -78,6 +85,7 @@ const State = {
   LoadingTracking: 'LoadingTracking',
   Onboarding: 'Onboarding',
   LessonActive: 'LessonActive',
+  PoseDrawingTester: 'PoseDrawingTester',
 };
 
 export default defineComponent({
@@ -88,6 +96,7 @@ export default defineComponent({
     DanceMenu,
     LearningScreen,
     WebcamPromptCard,
+    PoseDrawerTest,
   },
   setup() {
     const state = ref(State.DanceMenu);
@@ -158,6 +167,11 @@ export default defineComponent({
       cameraSurface,
       State,
     };
+  },
+  methods: {
+    poseDrawerSelected() {
+      this.state = State.PoseDrawingTester;
+    },
   },
 });
 </script>
