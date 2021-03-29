@@ -30,11 +30,11 @@ export function setupGestureListening(callbacks: Record<string, () => void>) {
 }
 
 export const TrackingActions = Object.freeze({
-  requestTracking: () => {
-    eventHub.emit(EventNames.trackingRequested);
+  requestTracking: (id: string) => {
+    eventHub.emit(EventNames.trackingRequested, id);
   },
-  endTrackingRequest: () => {
-    eventHub.emit(EventNames.trackingRequestFinished);
+  endTrackingRequest: (id: string) => {
+    eventHub.emit(EventNames.trackingRequestFinished, id);
   },
 });
 

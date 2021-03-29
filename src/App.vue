@@ -47,10 +47,7 @@
 
       <div class="vcenter-parent" v-if="state === State.LoadingTracking">
         <div class="translucent-text is-rounded">
-          <progress class="loader-progress progress m-4"
-            max=30
-            :value="webcamStartDummyTimer">
-          </progress>
+          <progress class="loader-progress progress is-primary m-4"></progress>
         </div>
       </div>
 
@@ -114,18 +111,11 @@ export default defineComponent({
       currentLesson.value = null;
     }
 
-    const webcamStartDummyTimer = ref(0);
-    let webcamProgressInterval = -1;
-
     async function startTracking() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const camSurface: any = cameraSurface.value;
-      camSurface.startTracking();
       state.value = State.LoadingTracking;
-
-      webcamProgressInterval = setInterval(() => {
-        webcamStartDummyTimer.value += 1 / 30;
-      }, 1000 / 30);
+      camSurface.startTracking();
     }
 
     async function startWebcam() {
@@ -152,11 +142,9 @@ export default defineComponent({
 
     function onTrackingAttained() {
       console.log('Tracking attained');
-      clearInterval(webcamProgressInterval);
-      webcamStartDummyTimer.value = 0;
-
-      if (hasCompletedOnboarding.value) state.value = State.LessonActive;
-      else state.value = State.Onboarding;
+      if (hasCompletedOnboarding.value) {
+        state.value = State.LessonActive;
+      } else state.value = State.Onboarding;
     }
 
     return {
@@ -169,7 +157,6 @@ export default defineComponent({
       state,
       cameraSurface,
       State,
-      webcamStartDummyTimer,
     };
   },
 });

@@ -1,6 +1,9 @@
 <template>
-  <transition-group name="slide-fade" tag="div" class="instructionCarousel">
-    <p class="translucent-text instruction" v-for="inst in instructions" :key="inst.id">{{inst.text}}</p>
+  <transition-group name="slide-fade" tag="div" class="instructionCarousel is-size-4">
+    <p
+      class="translucent-text instruction"
+      v-for="inst in instructions"
+      :key="inst.id">{{inst.text}}</p>
   </transition-group>
 </template>
 
