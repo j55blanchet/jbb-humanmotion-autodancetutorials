@@ -14,8 +14,9 @@
       >
         <div class="card-image">
           <figure class="image is-2by3">
-            <img v-show="!dance.hovering" :src="dance.thumbnail" alt="" />
-            <img v-show="dance.hovering" :src="dance.animatedThumb" alt="" />
+            <img v-if="dance.thumbnail" v-show="!dance.hovering" :src="dance.thumbnail" alt="" />
+            <img v-if="dance.animatedThumb" v-show="dance.hovering" :src="dance.animatedThumb" alt="" />
+            <video v-if="!dance.thumbnail || !dance.animatedThumb" :src="dance.videoSrc" />
           </figure>
         </div>
         <div class="card-content">
@@ -49,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import DanceEntry, { LessonSelection } from '../../model/DanceEntry';
 import LessonCard from '../elements/LessonCard.vue';
 import motions from '../../services/MotionDatabase';
@@ -78,43 +79,57 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 // .dance-menu {
   // backdrop-filter: blur(4px);
   // background: rgba(0, 0, 0, 0.2);
 // }
 
-.menu {
-  text-align: left;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  grid-gap: 0.5em;
-}
-.menu .card {
-  display: block;
-}
-.dance-card {
-  height: max-content;
-  transition: transform 0.2s, box-shadow 0.2s;
+.dance-menu {
 
-  &:hover {
-    box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.3),
-      0 0 0 2px rgba(10, 10, 10, 0.05);
-    transform: scale(0.98);
+  .menu {
+    text-align: left;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-gap: 0.5em;
   }
-}
+  .menu .card {
+    display: block;
+  }
+  .dance-card {
+    height: max-content;
+    transition: transform 0.2s, box-shadow 0.2s;
 
-img {
-  object-fit: fill;
-}
+    &:hover {
+      box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.3),
+        0 0 0 2px rgba(10, 10, 10, 0.05);
+      transform: scale(0.98);
+    }
+  }
 
-.subtitle {
-  margin: 2rem 1rem 2em;
-  color: white;
-}
+  img {
+    object-fit: fill;
+  }
 
-.section {
-  padding: 1.5rem;
-}
+  .subtitle {
+    margin: 2rem 1rem 2em;
+    color: white;
+  }
+
+  .section {
+    padding: 1.5rem;
+  }
+
+  .image video {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  }
 </style>

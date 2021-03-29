@@ -30,8 +30,8 @@ const dances: Array<DanceEntry> = [
   {
     title: 'Derulo',
     videoSrc: 'dances/derulo.mp4',
-    thumbnail: 'null',
-    animatedThumb: 'null',
+    thumbnail: '',
+    animatedThumb: '',
     hovering: false,
     lessons: [
       deruloLesson as DanceLesson,
@@ -40,8 +40,8 @@ const dances: Array<DanceEntry> = [
   {
     title: "It's a fit",
     videoSrc: 'dances/itsafit.mp4',
-    thumbnail: 'null',
-    animatedThumb: 'null',
+    thumbnail: '',
+    animatedThumb: '',
     hovering: false,
     lessons: [
       itsafitLesson as DanceLesson,
