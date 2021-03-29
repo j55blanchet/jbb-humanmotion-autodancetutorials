@@ -45,14 +45,20 @@
      />
 
       <div class="vcenter-parent" v-if="state === State.StartingWebcam">
-        <div class="translucent-text is-rounded">
-          <div class="loader is-loading"></div>
+        <div class="translucent-text is-rounded has-text-centered">
+          <div class="content">
+            <h3 class="has-text-white m-2">Starting Webcam...</h3>
+          </div>
+          <div class="loader-progress loader is-loading mt-5 mb-5"></div>
         </div>
       </div>
 
       <div class="vcenter-parent" v-if="state === State.LoadingTracking">
-        <div class="translucent-text is-rounded">
-          <progress class="loader-progress progress is-primary m-4"></progress>
+        <div class="translucent-text is-rounded has-text-centered">
+          <div class="content has-text-white m-2 has-text-centered">
+            <h3 class="has-text-white">Starting Gestures...</h3>
+          </div>
+          <div class="loader-progress loader is-loading mt-5 mb-5"></div>
         </div>
       </div>
 
@@ -207,13 +213,10 @@ body, html {
   height: 100%;
 }
 
-.loader {
-  width: 200px;
-  height: 200px;
-}
-
 .loader-progress {
-  width: 200px;
+  width: 100px;
+  height: 100px;
+  margin: auto;
 }
 
 #aboveSurface {
