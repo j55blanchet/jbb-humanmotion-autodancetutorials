@@ -26,6 +26,10 @@ export class WebcamProvider {
 
   }
 
+  public hasStartedWebcam() {
+    return !!this.mediaStream;
+  }
+
   static doEveryFrame(onFrame: () => Promise<void>) {
     requestAnimationFrame(() => {
       onFrame().then(() => {

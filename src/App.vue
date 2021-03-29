@@ -39,9 +39,18 @@
       @startWebcamSelected="startWebcam"
      />
 
+      <div class="vcenter-parent" v-if="state === State.StartingWebcam">
+        <div class="translucent-text is-rounded">
+          <div class="loader is-loading"></div>
+        </div>
+      </div>
+
       <div class="vcenter-parent" v-if="state === State.LoadingTracking">
         <div class="translucent-text is-rounded">
-          <progress class="loader-progress progress m-4" max=30 :value="webcamStartDummyTimer"></progress>
+          <progress class="loader-progress progress m-4"
+            max=30
+            :value="webcamStartDummyTimer">
+          </progress>
         </div>
       </div>
 
@@ -68,7 +77,8 @@ import WebcamPromptCard from './components/elements/WebcamPromptCard.vue';
 const State = {
   DanceMenu: 'DanceMenu',
   PromptStartWebcam: 'PromptStartWebcam',
-  LoadingTracking: 'OnboardingLoading',
+  StartingWebcam: 'StartingWebcam',
+  LoadingTracking: 'LoadingTracking',
   Onboarding: 'Onboarding',
   LessonActive: 'LessonActive',
 };
@@ -85,18 +95,16 @@ export default defineComponent({
   setup() {
     const state = ref(State.DanceMenu);
     const cameraSurface = ref(null as typeof CameraSurface | null);
-    const hasStartedWebcam = ref(false);
     const hasCompletedOnboarding = ref(false);
 
     const currentDance = ref(null as DanceEntry | null);
     const currentLesson = ref(null as DanceLesson | null);
 
     function danceSelected(sel: LessonSelection) {
-      state.value = State.LoadingTracking;
       currentDance.value = sel.dance;
       currentLesson.value = sel.lesson;
 
-      if (hasStartedWebcam.value) state.value = State.LessonActive;
+      if (webcamProvider.hasStartedWebcam()) state.value = State.LessonActive;
       else state.value = State.PromptStartWebcam;
     }
 
@@ -109,20 +117,37 @@ export default defineComponent({
     const webcamStartDummyTimer = ref(0);
     let webcamProgressInterval = -1;
 
-    async function startWebcam() {
-      console.log('Starting Webcam');
+    async function startTracking() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const camSurface: any = cameraSurface.value;
-      hasStartedWebcam.value = true;
-
-      await webcamProvider.startWebcam();
-
       camSurface.startTracking();
       state.value = State.LoadingTracking;
 
       webcamProgressInterval = setInterval(() => {
         webcamStartDummyTimer.value += 1 / 30;
       }, 1000 / 30);
+    }
+
+    async function startWebcam() {
+      console.log('Starting Webcam');
+
+      if (!webcamProvider.hasStartedWebcam()) {
+        state.value = State.StartingWebcam;
+
+        try {
+          await webcamProvider.startWebcam();
+        } catch (e) {
+          console.error("Couldn't start webcam", e);
+          return;
+        }
+      }
+
+      state.value = State.LoadingTracking;
+      try {
+        await startTracking();
+      } catch (e) {
+        console.error("Couldn't start tracking", e);
+      }
     }
 
     function onTrackingAttained() {
