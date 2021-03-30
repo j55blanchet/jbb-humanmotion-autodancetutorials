@@ -72,7 +72,7 @@ function setupVideoPlaying(
     to: number,
     speed: number,
   ) {
-    console.log(`VideoPlayer :: Starting playback from ${from} to ${to} @ ${speed.toPrecision(2)}`);
+    // console.log(`VideoPlayer :: Starting playback from ${from} to ${to} @ ${speed.toPrecision(2)}`);
 
     // eslint-disable-next-line no-param-reassign
     startTime.value = from;

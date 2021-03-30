@@ -29,24 +29,28 @@
       <InstructionCarousel v-show="activityFinished" :instructions="[{id:0, text:'Use a gesture to proceed'}]" class="m-2"/>
     </div>
 
-    <div class="overlay overlay-bottom overlay-left" v-show="activityFinished">
-      <div class="content translucent-text p-6 is-size-5 is-rounded">
-        <p class="mt-4 mb-0">Repeat</p>
-          <span class="icon is-large fa-flip-horizontal">
+    <div class="overlay overlay-left" v-show="activityFinished">
+      <div class="vcenter-parent">
+        <div class="content translucent-text p-5 is-size-5 is-rounded">
+          <p class="mb-0">Repeat</p>
+            <span class="icon is-large fa-flip-horizontal">
+              <i class="fas fa-2x fa-hand-paper fa-rotate-90"></i>
+            </span>
+            <!-- <br>
+            <p class="mt-4 has-text-grey-lighter">{{activityTitle}}</p> -->
+        </div>
+      </div>
+    </div>
+    <div class="overlay overlay-right" v-show="activityFinished">
+      <div class="vcenter-parent">
+        <div class="content translucent-text p-5 is-size-5 is-rounded">
+          <p class="mb-0">Next</p>
+          <span class="icon is-large" >
             <i class="fas fa-2x fa-hand-paper fa-rotate-90"></i>
           </span>
           <!-- <br>
-          <p class="mt-4 has-text-grey-lighter">{{activityTitle}}</p> -->
-      </div>
-    </div>
-    <div class="overlay overlay-bottom overlay-right " v-show="activityFinished">
-      <div class="content translucent-text p-6 is-size-5 is-rounded">
-        <p class="mt-4 mb-0">Next</p>
-        <span class="icon is-large" >
-          <i class="fas fa-2x fa-hand-paper fa-rotate-90"></i>
-        </span>
-        <!-- <br>
-        <p class="mt-4 has-text-grey-lighter">{{nextActivityTitle}}</p> -->
+          <p class="mt-4 has-text-grey-lighter">{{nextActivityTitle}}</p> -->
+        </div>
       </div>
     </div>
 
