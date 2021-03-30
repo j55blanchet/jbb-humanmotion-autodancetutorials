@@ -14,9 +14,7 @@
       >
         <div class="card-image">
           <figure class="image is-2by3">
-            <img v-if="dance.thumbnail" v-show="!dance.hovering" :src="dance.thumbnail" alt="" />
-            <img v-if="dance.animatedThumb" v-show="dance.hovering" :src="dance.animatedThumb" alt="" />
-            <video v-if="!dance.thumbnail || !dance.animatedThumb" :src="dance.videoSrc" />
+            <video :src="dance.videoSrc" />
           </figure>
         </div>
         <div class="card-content">
@@ -50,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import DanceEntry, { LessonSelection } from '../../model/DanceEntry';
 import LessonCard from '../elements/LessonCard.vue';
 import motions from '../../services/MotionDatabase';
@@ -91,7 +89,7 @@ export default defineComponent({
   .menu {
     text-align: left;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
     grid-gap: 0.5em;
   }
   .menu .card {

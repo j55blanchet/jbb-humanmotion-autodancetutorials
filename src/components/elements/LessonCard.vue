@@ -12,7 +12,7 @@
     <div class="card-content">
       <div class="columns">
         <div class="column is-narrow is-hidden-mobile">
-          <img :src="dance.animatedThumb" :alt="dance.title" class="dance-image" />
+          <video :src="dance.videoSrc" autoplay="true" muted="true" width="180" />
         </div>
         <div class="column">
           <ul class="menu-list">

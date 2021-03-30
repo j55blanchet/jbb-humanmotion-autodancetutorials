@@ -4,8 +4,6 @@ import DanceLesson from './DanceLesson';
 export default interface DanceEntry {
   title: string;
   videoSrc: string;
-  thumbnail: string;
-  animatedThumb: string;
   hovering: boolean;
   lessons: Array<DanceLesson>;
 }

@@ -10,8 +10,6 @@ const dances: Array<DanceEntry> = [
   {
     title: 'Renegade',
     videoSrc: 'dances/renegade.mp4',
-    thumbnail: 'dances/renegade.jpg',
-    animatedThumb: 'dances/renegade.gif',
     hovering: false,
     lessons: [
       renegadeLesson as DanceLesson,
@@ -20,8 +18,6 @@ const dances: Array<DanceEntry> = [
   {
     title: 'Unh Hunhh',
     videoSrc: 'dances/unhhunh.mp4',
-    thumbnail: 'dances/unhhunh.jpg',
-    animatedThumb: 'dances/unhhunh.gif',
     hovering: false,
     lessons: [
       unhhunhLesson as DanceLesson,
@@ -30,8 +26,6 @@ const dances: Array<DanceEntry> = [
   {
     title: 'Derulo',
     videoSrc: 'dances/derulo.mp4',
-    thumbnail: '',
-    animatedThumb: '',
     hovering: false,
     lessons: [
       deruloLesson as DanceLesson,
@@ -40,8 +34,6 @@ const dances: Array<DanceEntry> = [
   {
     title: "It's a fit",
     videoSrc: 'dances/itsafit.mp4',
-    thumbnail: '',
-    animatedThumb: '',
     hovering: false,
     lessons: [
       itsafitLesson as DanceLesson,
