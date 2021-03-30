@@ -15,15 +15,19 @@
           <video :src="dance.videoSrc" autoplay="true" muted="true" width="180" />
         </div>
         <div class="column">
-          <ul class="menu-list">
-            <li v-for="lesson in dance.lessons" :key="lesson._id">
-              <a @click="$emit('lesson-selected', {dance: dance, lesson: lesson})">
-                {{ lesson.header.lessonTitle }}
-              </a>
-            </li>
-          </ul>
-
-          <p v-if="dance.lessons.length == 0">No lessons available.</p>
+          <div class="menu">
+            <p class="menu-label">
+              Pick a lesson
+            </p>
+            <ul class="menu-list">
+              <li v-for="lesson in dance.lessons" :key="lesson._id">
+                <a @click="$emit('lesson-selected', {dance: dance, lesson: lesson})">
+                  {{ lesson.header.lessonTitle }}
+                </a>
+              </li>
+            </ul>
+            <p v-if="dance.lessons.length == 0">No lessons available.</p>
+          </div>
         </div>
       </div>
     </div>

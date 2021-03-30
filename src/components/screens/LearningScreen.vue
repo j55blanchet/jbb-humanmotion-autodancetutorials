@@ -58,7 +58,6 @@
           <SegmentedProgressBar
             :segments="progressSegments"
             :progress="videoTime"
-            ref="progressBar"
           />
         </div>
       </div>
@@ -67,7 +66,7 @@
 </template>
 
 <script lang="ts">
-import DanceLesson, { PauseInfo } from '@/model/DanceLesson';
+import DanceLesson, { Activity, PauseInfo } from '@/model/DanceLesson';
 import {
   computed, defineComponent, onBeforeUnmount, onMounted, ref, toRefs,
 } from 'vue';
@@ -89,17 +88,17 @@ const ActivityPlayState = Object.freeze({
 //     start time and the last activity end time.
 //
 
-function calculateProgressSegments(dance: DanceEntry, lesson: DanceLesson) {
+function calculateProgressSegments(dance: DanceEntry, lesson: DanceLesson, activity: Activity) {
   if (!lesson) return [];
 
   let last = undefined as undefined | number;
-  const segs = lesson.segmentBreaks.map((timestamp) => {
+  const segs = lesson.segmentBreaks.map((timestamp, i) => {
     let segData = undefined as undefined | ProgressSegmentData;
     if (last !== undefined) {
       segData = {
         min: last,
         max: timestamp,
-        enabled: true,
+        enabled: activity.focusedSegments ? activity.focusedSegments.indexOf(i - 1) !== -1 : true,
       };
     }
     last = timestamp;
@@ -128,8 +127,6 @@ export default defineComponent({
 
     const videoPlayer = ref(null as null | typeof PausingVideoPlayer);
     const videoTime = ref(0);
-
-    const progressBar = ref(null as null | typeof SegmentedProgressBar);
 
     const activityId = ref(0);
     const activity = computed(() => {
@@ -214,7 +211,8 @@ export default defineComponent({
     const progressSegments = computed(() => {
       const lesson = targetLesson?.value as DanceLesson | undefined;
       const dance = targetDance?.value as DanceEntry | undefined;
-      if (lesson && dance) return calculateProgressSegments(dance, lesson);
+      const curActivity = activity.value;
+      if (lesson && dance && curActivity) return calculateProgressSegments(dance, lesson, curActivity);
       return [];
     });
 
@@ -268,12 +266,6 @@ export default defineComponent({
     onBeforeUnmount(() => {
       TrackingActions.endTrackingRequest(TRACKING_ID);
     });
-    // Todo: quit tracking request when component unmounted. (perhaps
-    //       refactor tracking requests to have an id)
-
-    function onTimeChanged(time: number) {
-      videoTime.value = time;
-    }
 
     onMounted(() => {
       setTimeout(() => {
@@ -292,15 +284,18 @@ export default defineComponent({
       instructions,
       timedInstructions,
       videoPlayer,
-      progressBar,
       activityFinished,
       videoTime,
       onActivityFinished,
-      onTimeChanged,
 
       onPauseHit,
       onPauseEnded,
     };
+  },
+  methods: {
+    onTimeChanged(time: number) {
+      this.videoTime = time;
+    },
   },
 });
 </script>
