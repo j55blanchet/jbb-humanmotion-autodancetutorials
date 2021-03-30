@@ -108,6 +108,10 @@ export default defineComponent({
     left: 0;
     right: 0;
   }
+
+  .overlay.overlay-bottom {
+    top: auto;
+  }
 }
 
 .mirrored {
