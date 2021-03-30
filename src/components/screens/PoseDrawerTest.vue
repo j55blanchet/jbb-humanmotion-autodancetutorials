@@ -90,7 +90,7 @@ function convertRow(row: Row): Landmark[] {
   if (row[0].startsWith('#')) return [];
 
   const lms = [] as Landmark[];
-  for (let i = 0; i + 2 < row.length; i += 4) {
+  for (let i = 0; i + 2 < row.length; i += 3) {
     lms.push({
       x: Number.parseFloat(row[i]),
       y: Number.parseFloat(row[i + 1]),
