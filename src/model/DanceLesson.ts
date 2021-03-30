@@ -33,5 +33,7 @@ export default interface DanceLesson {
   };
   segmentBreaks: number[];
   activities: Array<Activity>;
+  fps: number;
+  poseScope: 'all' | 'upperBody';
   // eslint-disable-next-line
 }

@@ -78,7 +78,7 @@ export function DrawPose(canvasCtx: CanvasRenderingContext2D, poseLandmarks: Arr
   const h = canvasCtx.canvas.height;
 
   /* eslint-disable no-param-reassign */
-  canvasCtx.strokeStyle = 'rgba(200, 200, 200, 0.1)';
+  canvasCtx.strokeStyle = 'rgba(200, 200, 200, 0.4)';
   canvasCtx.lineWidth = 4;
   /* eslint-enable no-param-reassign */
 
@@ -88,6 +88,9 @@ export function DrawPose(canvasCtx: CanvasRenderingContext2D, poseLandmarks: Arr
     const p2 = poseLandmarks[connection[1]];
 
     if (!p1 || !p2) return;
+    if ((p1.visibility ?? 1) < 1 || (p2.visibility ?? 1) < 1) {
+      console.log('skipping b/c of insufficient visibility');
+    }
 
     canvasCtx.moveTo(p1.x * w, p1.y * h);
     canvasCtx.lineTo(p2.x * w, p2.y * h);

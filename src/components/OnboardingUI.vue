@@ -8,7 +8,6 @@
       <div class="content translucent-text is-rounded p-6">
         <!-- <h3 class="has-text-white">Here's how to use this app</h3> -->
 
-
         <span v-show="stage == 0">
           <span class="icon is-large" >
             <i class="fas fa-2x fa-hand-paper fa-rotate-90"></i>

@@ -13,13 +13,15 @@
         height: height,
       }"
       ref="videoElement"
-      v-on:loadedmetadata="resizeCanvas"
+      @loadedmetadata="scheduleCanvasResizing"
     ></video>
     <canvas class="is-overlay" ref="canvasElement"> </canvas>
   </div>
 </template>
 
 <script lang="ts">
+import { DrawPose } from '@/services/MediaPipe';
+import { Landmark } from '@/services/MediaPipeTypes';
 import {
   computed,
   defineComponent,
@@ -29,27 +31,34 @@ import {
   ref,
   nextTick,
   Ref,
+  watch,
 } from 'vue';
 
-function onResize(canvasE: HTMLCanvasElement, videoE: HTMLVideoElement) {
+function onResize(canvasE: HTMLCanvasElement, videoE: HTMLVideoElement, modified: Ref<boolean>) {
   nextTick(() => {
     if (!canvasE || !videoE) return;
 
-    // eslint-disable-next-line no-param-reassign
-    if (canvasE.width !== videoE.offsetWidth) canvasE.width = videoE.offsetWidth;
-    // eslint-disable-next-line no-param-reassign
-    if (canvasE.height !== videoE.offsetHeight) canvasE.height = videoE.offsetHeight;
+    // eslint-disable no-param-reassign
+    if (canvasE.width !== videoE.offsetWidth) {
+      canvasE.width = videoE.offsetWidth;
+      modified.value = true;
+    }
+    if (canvasE.height !== videoE.offsetHeight) {
+      canvasE.height = videoE.offsetHeight;
+      modified.value = true;
+    };
   });
 }
 
 function setupCanvasResizing(
   videoElement: Ref<null | HTMLVideoElement>,
   canvasElement: Ref<null | HTMLCanvasElement>,
+  modified: Ref<boolean>,
 ) {
   function resizeCanvas() {
     const videoE = videoElement.value;
     const canvasE = canvasElement.value;
-    if (videoE && canvasE) onResize(canvasE, videoE);
+    if (videoE && canvasE) onResize(canvasE, videoE, modified);
   }
   onMounted(() => {
     window.addEventListener('resize', resizeCanvas);
@@ -104,13 +113,18 @@ export default defineComponent({
     videoBaseUrl: String,
     width: String,
     height: String,
+    poseLandmarks: {
+      type: Array,
+      required: false,
+      default: undefined,
+    },
   },
   emits: [
     'playback-completed',
     'progress',
   ],
   setup(props, ctx) {
-    const { videoBaseUrl } = toRefs(props);
+    const { videoBaseUrl, poseLandmarks } = toRefs(props);
 
     const videoElement = ref(null as null | HTMLVideoElement);
     const canvasElement = ref(null as null | HTMLCanvasElement);
@@ -118,8 +132,9 @@ export default defineComponent({
     const startTime = ref(0);
     const endTime = ref(0);
     const videoUrl = computed(() => videoBaseUrl?.value ?? '');
+    const canvasModified = ref(false);
 
-    const resizeCanvas = setupCanvasResizing(videoElement, canvasElement);
+    const resizeCanvas = setupCanvasResizing(videoElement, canvasElement, canvasModified);
 
     let prevTime = -1;
     let timerId = -1;
@@ -154,6 +169,31 @@ export default defineComponent({
       startProgressUpdating,
     );
 
+    function drawPose(lms: Landmark[]) {
+      const canvasE = canvasElement.value;
+      if (!canvasE) return;
+      const canvasCtx = canvasE.getContext('2d') as CanvasRenderingContext2D;
+
+      canvasCtx.clearRect(0, 0, canvasE.width, canvasE.height);
+      if (lms) DrawPose(canvasCtx, lms as Landmark[]);
+    }
+    watch(poseLandmarks, (lms) => {
+      drawPose(lms as Landmark[]);
+    });
+    watch(canvasModified, (wasModified) => {
+      if (wasModified) {
+        drawPose(poseLandmarks.value as Landmark[]);
+        canvasModified.value = false;
+      }
+    });
+
+    function scheduleCanvasResizing() {
+      setTimeout(() => {
+        nextTick(resizeCanvas);
+      }, 100);
+    }
+
+
     return {
       videoUrl,
       resizeCanvas,
@@ -161,6 +201,7 @@ export default defineComponent({
       canvasElement,
       playVideo,
       endTime,
+      scheduleCanvasResizing,
     };
   },
   methods: {
