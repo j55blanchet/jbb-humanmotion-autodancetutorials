@@ -13,7 +13,6 @@ import { Landmark, MpHolisticResults } from '../services/MediaPipeTypes';
 import {
   HAND_LANDMARK_CONNECTIONS, DrawConnections, HAND, DrawPose,
 } from '../services/MediaPipe';
-// import { TinyEmitter } from 'tiny-emitter';
 
 function getAngle(lm0: Landmark, lm1: Landmark) {
   return Math.atan2(lm1.y - lm0.y, lm1.x - lm0.x);
@@ -52,9 +51,9 @@ function isLine(input: Array<Landmark>, angleTolerance?: number): boolean {
   return true;
 }
 
-function getGesture(results: MpHolisticResults): string {
-  if (!results.rightHandLandmarks) return 'none';
-  const lms = results.rightHandLandmarks;
+function getGesture(handLandmarks?: Landmark[]): string {
+  if (!handLandmarks) return GestureNames.none;
+  const lms = handLandmarks;
 
   const FINGERS = [
     HAND.INDEX_FINGER,
@@ -130,8 +129,9 @@ export default defineComponent({
     onMounted(() => {
       const canvas = canvasE.value;
       const canvasCtx = canvas.getContext('2d') as CanvasRenderingContext2D;
-      watch(mpResults as unknown as object, (newVal) => {
-        const detectedGesture = getGesture(newVal);
+      watch(mpResults as unknown as Ref<MpHolisticResults>, (newVal) => {
+        let detectedGesture = getGesture(newVal.rightHandLandmarks);
+        if (detectedGesture === GestureNames.none) detectedGesture = getGesture(newVal.leftHandLandmarks);
 
         drawTrackingResults(enableDrawing.value, detectedGesture, newVal, canvasCtx);
         gesture.value = detectedGesture;
