@@ -1,7 +1,7 @@
 <template>
-  <transition-group name="slide-fade" tag="div" class="instructionCarousel is-size-4">
+  <transition-group name="slide-fade" tag="div" class="instructionCarousel">
     <p
-      class="translucent-text instruction"
+      class="tag is-size-4 is-dark"
       v-for="inst in instructions"
       :key="inst.id">{{inst.text}}</p>
   </transition-group>
@@ -32,11 +32,6 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.instruction {
-  border-radius: 20000px;
-  font-weight: bold;
 }
 
 /* Enter and leave animations can use different */

@@ -3,7 +3,7 @@
     <progress
       v-for="seg in segmentsData"
       :key="seg.id"
-      :class="[{ 'is-disabled': !seg.enabled, [seg.cssClass]: seg.enabled}, ]"
+      :class="[{ 'is-disabled': !seg.enabled, [seg.cssClass]: seg.enabled, 'is-dark': !seg.enabled}, ]"
       class="progress is-large"
       :max="seg.max - seg.min"
       :value="progress - seg.min"
@@ -71,6 +71,7 @@ export default defineComponent({
   width: 100%;
 
   progress.progress {
+    border-radius: 0.5rem;
     flex-basis: 10px;
     margin-bottom: auto;
     // border: 2px solid #BBB;
