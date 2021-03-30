@@ -142,7 +142,10 @@ export default defineComponent({
         try {
           await webcamProvider.startWebcam();
         } catch (e) {
-          console.error("Couldn't start webcam", e);
+          console.error('Error starting webcam: ', e);
+          // eslint-disable-next-line no-alert
+          alert('Failed to start the webcam\n\nPlease ensure this is the only app using the camera and that you\'ve allowed camera access in your browser.');
+          state.value = State.DanceMenu;
           return;
         }
       }
