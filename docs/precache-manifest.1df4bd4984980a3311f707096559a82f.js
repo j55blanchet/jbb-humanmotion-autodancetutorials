@@ -1,7 +1,7 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "979b4054525493d168fd",
-    "url": "/css/app.742349db.css"
+    "revision": "cbff862313e60257a93c",
+    "url": "/css/app.7d005d26.css"
   },
   {
     "revision": "7fb52f5d3bd4ecd3d3efe4e29ee74231",
@@ -16,28 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/dances/itsafit.mp4"
   },
   {
-    "revision": "9724eef5e0f030c1181639ab47d4d0cf",
-    "url": "/dances/renegade.gif"
-  },
-  {
-    "revision": "3b0017e315598ab44d978ad493c9bb04",
-    "url": "/dances/renegade.jpg"
-  },
-  {
     "revision": "5aaed349da5afcd33a47ea8292fcfd2d",
     "url": "/dances/renegade.mp4"
-  },
-  {
-    "revision": "e293700aa1a41d67e5fc8358c107f502",
-    "url": "/dances/renegade.poses.csv"
-  },
-  {
-    "revision": "c5c9d67cc520d366df02d6cbeb653957",
-    "url": "/dances/unhhunh.gif"
-  },
-  {
-    "revision": "40b1dcf1b9eb2802261684d3780c3153",
-    "url": "/dances/unhhunh.jpg"
   },
   {
     "revision": "8cfa10d03b809dfa0b35bf2a343ba1d7",
@@ -48,12 +28,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/img/tiktokdances.589b3b61.jpg"
   },
   {
-    "revision": "5ef9128de3c5dee76f9468feb8023e6f",
+    "revision": "d276b9dfc9d551490cf252f7ab913d51",
     "url": "/index.html"
   },
   {
-    "revision": "979b4054525493d168fd",
-    "url": "/js/app.a7451f02.js"
+    "revision": "cbff862313e60257a93c",
+    "url": "/js/app.ea1595f7.js"
   },
   {
     "revision": "292ef1fb922e371e95f1",
