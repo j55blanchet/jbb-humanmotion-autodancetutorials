@@ -112,6 +112,15 @@ export default defineComponent({
   .overlay.overlay-bottom {
     top: auto;
   }
+  .overlay.overlay-left {
+    right: auto;
+  }
+  .overlay.overlay-right {
+    left: auto;
+  }
+  .overlay.overlay-top {
+    bottom: auto;
+  }
 }
 
 .mirrored {

@@ -24,31 +24,29 @@
     />
 
     <div class="overlay instructions-overlay mb-4">
-      <InstructionCarousel :instructions="instructions" class="m-2"/>
-      <InstructionCarousel :instructions="timedInstructions" class="m-2"/>
+      <InstructionCarousel v-show="!activityFinished" :instructions="instructions" class="m-2"/>
+      <InstructionCarousel v-show="!activityFinished" :instructions="timedInstructions" class="m-2"/>
+      <InstructionCarousel v-show="activityFinished" :instructions="[{id:0, text:'Use a gesture to proceed'}]" class="m-2"/>
     </div>
 
-    <div class="overlay overlay-bottom" v-show="activityFinished">
-      <div class="content translucent-text p-6 is-rounded is-size-5">
-        <h3 class="has-text-white">Use a gesture to proceed</h3>
-        <div class="columns">
-            <div class="column">
-              <p class="mt-4 mb-0">Repeat</p>
-              <span class="icon is-large fa-flip-horizontal">
-                <i class="fas fa-2x fa-hand-paper fa-rotate-90"></i>
-              </span>
-              <br>
-              <p class="mt-4 has-text-grey-lighter">{{activityTitle}}</p>
-            </div>
-            <div class="column">
-              <p class="mt-4 mb-0">Next</p>
-              <span class="icon is-large" >
-                <i class="fas fa-2x fa-hand-paper fa-rotate-90"></i>
-              </span>
-              <br>
-              <p class="mt-4 has-text-grey-lighter">{{nextActivityTitle}}</p>
-            </div>
-          </div>
+    <div class="overlay overlay-bottom overlay-left" v-show="activityFinished">
+      <div class="content translucent-text p-6 is-size-5 is-rounded">
+        <p class="mt-4 mb-0">Repeat</p>
+          <span class="icon is-large fa-flip-horizontal">
+            <i class="fas fa-2x fa-hand-paper fa-rotate-90"></i>
+          </span>
+          <!-- <br>
+          <p class="mt-4 has-text-grey-lighter">{{activityTitle}}</p> -->
+      </div>
+    </div>
+    <div class="overlay overlay-bottom overlay-right " v-show="activityFinished">
+      <div class="content translucent-text p-6 is-size-5 is-rounded">
+        <p class="mt-4 mb-0">Next</p>
+        <span class="icon is-large" >
+          <i class="fas fa-2x fa-hand-paper fa-rotate-90"></i>
+        </span>
+        <!-- <br>
+        <p class="mt-4 has-text-grey-lighter">{{nextActivityTitle}}</p> -->
       </div>
     </div>
 
