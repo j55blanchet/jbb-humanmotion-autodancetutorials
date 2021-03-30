@@ -3,7 +3,7 @@
     <progress
       v-for="seg in segmentsData"
       :key="seg.id"
-      :class="[{ 'is-disabled': !seg.enabled}, seg.cssClass]"
+      :class="[{ 'is-disabled': !seg.enabled, [seg.cssClass]: seg.enabled}, ]"
       class="progress is-large"
       :max="seg.max - seg.min"
       :value="progress - seg.min"

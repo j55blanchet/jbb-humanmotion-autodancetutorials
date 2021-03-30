@@ -11,7 +11,7 @@
 <script lang="ts">
 
 import { PauseInfo } from '@/model/DanceLesson';
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onBeforeUnmount, ref } from 'vue';
 import VideoPlayer from './VideoPlayer.vue';
 
 const DEFAULT_PAUSE_DURATION = 1.5;
@@ -69,6 +69,8 @@ export default defineComponent({
   setup(props, { emit }) {
     const videoPlayer = ref(null as null | typeof VideoPlayer);
 
+    let playTimeoutId = undefined as undefined | number;
+
     function setTime(time: number) {
       const vidPlayer = videoPlayer.value;
       if (vidPlayer) vidPlayer.setTime(time);
@@ -83,14 +85,18 @@ export default defineComponent({
       const vidPlayer = videoPlayer.value;
       if (!vidPlayer) return;
 
+      clearTimeout(playTimeoutId);
       vidPlayer.setTime(seg.from);
-      setTimeout(() => {
-        if (emitResume) {
+      playTimeoutId = setTimeout(() => {
+        if (emitResume ?? false) {
           emit('pause-end');
         }
         vidPlayer.playVideo(seg.from, seg.to, seg.speed);
       }, 1000 * delaySecs);
     }
+    onBeforeUnmount(() => {
+      clearTimeout(playTimeoutId);
+    });
 
     let playingSegments: PlaySegment[] = [];
     let playingSegmentIndex = 0;
