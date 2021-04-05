@@ -5,7 +5,10 @@
     </teleport>
 
     <teleport to='#belowSurface'>
-      <button class="button is-pulled-right mt-4" @click="playVideo">Play</button>
+      <span class="is-pulled-right mt-4">
+        <button class="button mr-2"  @click="playVideo">Play</button>
+        <button class="button" @click="pauseVideo">Pause</button>
+      </span>
     </teleport>
     <h3>Pose Drawer Test</h3>
 
@@ -39,7 +42,7 @@
         </div>
 
         <div class="table-container" style="overflow:auto auto; max-height: 500px;">
-          <table class="table is-fullwidth is-hoverable is-bordered" v-if="poseLandmarks">
+          <table class="table is-fullwidth is-hoverable is-bordered" v-if="videoPlayer && videoPlayer.cPose">
             <thead>
               <tr>
                 <th>id</th>
@@ -49,7 +52,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(lm, index) in poseLandmarks" :key="index">
+              <tr v-for="(lm, index) in videoPlayer.cPose" :key="index">
                 <td>{{index}}</td>
                 <td>{{lm.x}}</td>
                 <td>{{lm.y}}</td>
@@ -63,8 +66,8 @@
         <VideoPlayer
         :videoBaseUrl="videoSrc"
         :height="'500px'"
-        :poseLandmarks="poseLandmarks"
         ref="videoPlayer"
+        :drawPoseLandmarks="true"
         @progress="onProgress"/>
       </div>
     </div>
@@ -79,10 +82,7 @@ import {
   computed, defineComponent, ref,
 } from 'vue';
 
-import poseProvider from '@/services/PoseProvider';
-
 import VideoPlayer from '@/components/elements/VideoPlayer.vue';
-import { Landmark } from '@/services/MediaPipeTypes';
 
 export default defineComponent({
   name: 'PoseDrawerTest',
@@ -101,31 +101,22 @@ export default defineComponent({
     const fps = ref(30);
     const error = ref(null as string | null);
 
-    const poseFrames = ref([] as Landmark[][]);
-    const poseLandmarks = computed(() => {
-      const frame = Math.floor(fps.value * videoTime.value);
-      const poseFrame = poseFrames.value[frame];
-      return poseFrame ?? null;
-    });
-
     async function loadDance(dance: DanceEntry) {
       error.value = null;
-      poseFrames.value = [];
       dropdownOpen.value = false;
       clipName.value = dance.videoSrc.replace('dances/', '').replace('.mp4', '');
       fps.value = dance.lessons[0]?.fps ?? 30;
-
-      try {
-        poseFrames.value = await poseProvider.GetPose(clipName.value);
-      } catch (e) {
-        error.value = `${e}`;
-      }
     }
 
     function playVideo() {
       const vidPlayer = videoPlayer.value;
       if (!vidPlayer) return;
       vidPlayer.playVideo(0, 1000, 0.5);
+    }
+    function pauseVideo() {
+      const vidPlayer = videoPlayer.value;
+      if (!vidPlayer) return;
+      vidPlayer.pauseVideo();
     }
 
     function onProgress(time: number) {
@@ -135,13 +126,12 @@ export default defineComponent({
     return {
       videoPlayer,
       error,
-      poseFrames,
       loadDance,
       dropdownOpen,
       clipName,
       videoSrc,
-      poseLandmarks,
       playVideo,
+      pauseVideo,
       onProgress,
     };
   },

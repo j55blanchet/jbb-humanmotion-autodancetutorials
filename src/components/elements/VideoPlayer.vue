@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 <template>
   <div
     class="is-relative video-player-container"
@@ -23,6 +22,7 @@
 <script lang="ts">
 import { DrawPose } from '@/services/MediaPipe';
 import { Landmark } from '@/services/MediaPipeTypes';
+import poseProvider, { PoseProvider } from '@/services/PoseProvider';
 import {
   computed,
   defineComponent,
@@ -108,7 +108,16 @@ function setupVideoPlaying(
     });
   }
 
-  return { playVideo };
+  function pauseVideo() {
+    const videoE = videoElement.value;
+    if (!videoE) {
+      console.error("VideoE is null - can't start playback");
+      return;
+    }
+    videoE.pause();
+  }
+
+  return { playVideo, pauseVideo };
 }
 
 export default defineComponent({
@@ -117,10 +126,13 @@ export default defineComponent({
     videoBaseUrl: String,
     width: String,
     height: String,
-    poseLandmarks: {
-      type: Array,
-      required: false,
-      default: undefined,
+    drawPoseLandmarks: {
+      type: Boolean,
+      default: false,
+    },
+    fps: {
+      type: Number,
+      default: 30,
     },
   },
   emits: [
@@ -128,17 +140,26 @@ export default defineComponent({
     'progress',
   ],
   setup(props, ctx) {
-    const { videoBaseUrl, poseLandmarks } = toRefs(props);
+    const { videoBaseUrl, drawPoseLandmarks, fps } = toRefs(props);
 
     const videoElement = ref(null as null | HTMLVideoElement);
     const canvasElement = ref(null as null | HTMLCanvasElement);
+    const canvasCtx = computed(() => canvasElement.value?.getContext('2d') as CanvasRenderingContext2D | null);
 
     const startTime = ref(0);
     const endTime = ref(0);
     const videoUrl = computed(() => videoBaseUrl?.value ?? '');
+    const currentTime = ref(0);
     const canvasModified = ref(false);
 
     const resizeCanvas = setupCanvasResizing(videoElement, canvasElement, canvasModified);
+
+    const poses = ref([] as Readonly<Array<Readonly<Array<Readonly<Landmark>>>>>);
+    const cPose = computed(() => {
+      const frame = Math.floor(currentTime.value * fps.value);
+      const pose = poses.value[frame] ?? [];
+      return pose;
+    });
 
     let prevTime = -1;
     let timerId = -1;
@@ -150,11 +171,12 @@ export default defineComponent({
       if (time === prevTime) return;
       prevTime = time;
 
+      currentTime.value = time;
       ctx.emit('progress', time);
 
       if (time + 1 / 60 >= endTime.value) {
         vidElement.pause();
-        console.log('VideoPlauer :: playback-completed');
+        console.log('VideoPlayer :: playback-completed');
         ctx.emit('playback-completed');
         clearInterval(timerId);
         timerId = -1;
@@ -166,30 +188,12 @@ export default defineComponent({
       timerId = setInterval(onTimeUpdated, 1000 / 30);
     };
 
-    const { playVideo } = setupVideoPlaying(
+    const { playVideo, pauseVideo } = setupVideoPlaying(
       videoElement,
       startTime,
       endTime,
       startProgressUpdating,
     );
-
-    function drawPose(lms: Landmark[]) {
-      const canvasE = canvasElement.value;
-      if (!canvasE) return;
-      const canvasCtx = canvasE.getContext('2d') as CanvasRenderingContext2D;
-
-      canvasCtx.clearRect(0, 0, canvasE.width, canvasE.height);
-      if (lms) DrawPose(canvasCtx, lms as Landmark[]);
-    }
-    watch(poseLandmarks, (lms) => {
-      drawPose(lms as Landmark[]);
-    });
-    watch(canvasModified, (wasModified) => {
-      if (wasModified) {
-        drawPose(poseLandmarks.value as Landmark[]);
-        canvasModified.value = false;
-      }
-    });
 
     function scheduleCanvasResizing() {
       setTimeout(() => {
@@ -197,14 +201,49 @@ export default defineComponent({
       }, 100);
     }
 
+    // Update pose drawing
+    function clearDrawing() {
+      const canvasE = canvasElement.value;
+      const drawCtx = canvasCtx.value;
+      if (!canvasE || !drawCtx) return;
+      drawCtx.clearRect(0, 0, canvasE.width, canvasE.height);
+    }
+    function drawPose(lms: Landmark[]) {
+      const drawCtx = canvasCtx.value;
+      if (!drawCtx) return;
+      DrawPose(drawCtx, lms);
+    }
+
+    watch([videoBaseUrl, drawPoseLandmarks], async () => {
+      if (!drawPoseLandmarks.value) {
+        poses.value = [];
+        return;
+      }
+
+      const baseName = PoseProvider.getBaseName(videoBaseUrl?.value ?? '');
+      poses.value = await poseProvider.GetPose(baseName);
+    });
+    watch([canvasModified, cPose, drawPoseLandmarks], () => {
+      canvasModified.value = false;
+      clearDrawing();
+
+      if (drawPoseLandmarks.value) {
+        drawPose(cPose.value as any);
+      }
+    });
+
     return {
       videoUrl,
       resizeCanvas,
       videoElement,
       canvasElement,
       playVideo,
+      pauseVideo,
       endTime,
       scheduleCanvasResizing,
+      poses,
+      currentTime,
+      cPose,
     };
   },
   methods: {

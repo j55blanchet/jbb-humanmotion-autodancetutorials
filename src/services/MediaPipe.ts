@@ -73,6 +73,11 @@ export function DrawConnections(
 }
 
 export function DrawPose(canvasCtx: CanvasRenderingContext2D, poseLandmarks: Array<Landmark>) {
+
+  if (poseLandmarks.length === 0) {
+    return;
+  }
+
   canvasCtx.save();
   const w = canvasCtx.canvas.width;
   const h = canvasCtx.canvas.height;
@@ -88,19 +93,24 @@ export function DrawPose(canvasCtx: CanvasRenderingContext2D, poseLandmarks: Arr
     const p2 = poseLandmarks[connection[1]];
 
     if (!p1 || !p2) return;
-    if ((p1.visibility ?? 1) < 1 || (p2.visibility ?? 1) < 1) {
+    if ((p1.visibility ?? 1) < 0.5 || (p2.visibility ?? 1) < 0.5) {
       console.log('skipping b/c of insufficient visibility');
+      return;
     }
 
     canvasCtx.moveTo(p1.x * w, p1.y * h);
     canvasCtx.lineTo(p2.x * w, p2.y * h);
+    console.log(`draw from ${connection[0]} to ${connection[1]}`);
   });
 
   const p1a = poseLandmarks[PoseLandmarks.leftShoulder];
   const p1b = poseLandmarks[PoseLandmarks.rightShoulder];
   const p2 = poseLandmarks[PoseLandmarks.nose];
-  canvasCtx.moveTo(w * 0.5 * (p1a.x + p1b.x), h * 0.5 * (p1a.y + p1b.y));
-  canvasCtx.lineTo(w * p2.x, h * p2.y);
+  if (!p1a || !p1b || !p2) {
+    canvasCtx.moveTo(w * 0.5 * (p1a.x + p1b.x), h * 0.5 * (p1a.y + p1b.y));
+    canvasCtx.lineTo(w * p2.x, h * p2.y);
+  }
+
   canvasCtx.stroke();
 
   canvasCtx.restore();

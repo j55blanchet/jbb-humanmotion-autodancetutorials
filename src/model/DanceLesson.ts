@@ -13,9 +13,10 @@ export interface PauseInfo {
 
 export interface Activity {
   title: string;
-  type: 'learn' | 'game';
   startTime: number;
   endTime: number;
+  demoType?: 'video' | 'skeleton' | 'none';
+  videoActive?: boolean;
   focusedSegments?: number[];
   pauses?: Array<PauseInfo>;
   practiceSpeeds?: Array<number>;
