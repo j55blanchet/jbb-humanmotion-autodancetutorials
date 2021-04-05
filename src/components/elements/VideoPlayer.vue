@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 <template>
   <div
     class="is-relative video-player-container"
@@ -38,15 +39,18 @@ function onResize(canvasE: HTMLCanvasElement, videoE: HTMLVideoElement, modified
   nextTick(() => {
     if (!canvasE || !videoE) return;
 
-    // eslint-disable no-param-reassign
     if (canvasE.width !== videoE.offsetWidth) {
+      // eslint-disable-next-line no-param-reassign
       canvasE.width = videoE.offsetWidth;
+      // eslint-disable-next-line no-param-reassign
       modified.value = true;
     }
     if (canvasE.height !== videoE.offsetHeight) {
+      // eslint-disable-next-line no-param-reassign
       canvasE.height = videoE.offsetHeight;
+      // eslint-disable-next-line no-param-reassign
       modified.value = true;
-    };
+    }
   });
 }
 
@@ -192,7 +196,6 @@ export default defineComponent({
         nextTick(resizeCanvas);
       }, 100);
     }
-
 
     return {
       videoUrl,

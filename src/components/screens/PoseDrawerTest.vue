@@ -79,33 +79,10 @@ import {
   computed, defineComponent, ref,
 } from 'vue';
 
-import PoseProvider from '@/services/PoseProvider';
+import poseProvider from '@/services/PoseProvider';
 
 import VideoPlayer from '@/components/elements/VideoPlayer.vue';
-import { Row } from '@gregoranders/csv';
 import { Landmark } from '@/services/MediaPipeTypes';
-
-function convertRow(row: Row): Landmark[] {
-  if (row.length === 0) return [];
-  if (row[0].startsWith('#')) return [];
-
-  const lms = [] as Landmark[];
-  for (let i = 0; i + 2 < row.length; i += 3) {
-    lms.push({
-      x: Number.parseFloat(row[i]),
-      y: Number.parseFloat(row[i + 1]),
-      visibility: Number.parseFloat(row[i + 2]),
-    });
-  }
-
-  return lms;
-}
-
-function generatePosesFromCsv(csv: readonly Row[]): Landmark[][] {
-  return csv
-    .map((row) => convertRow(row))
-    .filter((x) => x.length > 0);
-}
 
 export default defineComponent({
   name: 'PoseDrawerTest',
@@ -139,8 +116,7 @@ export default defineComponent({
       fps.value = dance.lessons[0]?.fps ?? 30;
 
       try {
-        const csvData = await PoseProvider.getPose(clipName.value);
-        poseFrames.value = generatePosesFromCsv(csvData);
+        poseFrames.value = await poseProvider.GetPose(clipName.value);
       } catch (e) {
         error.value = `${e}`;
       }
