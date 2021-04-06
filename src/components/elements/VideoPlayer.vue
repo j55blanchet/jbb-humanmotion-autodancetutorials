@@ -220,8 +220,7 @@ export default defineComponent({
         return;
       }
 
-      const baseName = PoseProvider.getBaseName(videoBaseUrl?.value ?? '');
-      poses.value = await poseProvider.GetPose(baseName);
+      poses.value = await poseProvider.GetPose(videoBaseUrl?.value ?? '');
     });
     watch([canvasModified, cPose, drawPoseLandmarks], () => {
       canvasModified.value = false;

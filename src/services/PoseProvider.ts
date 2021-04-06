@@ -7,34 +7,31 @@ export class PoseProvider {
 
   private poseFiles: Map<string, Readonly<Array<Readonly<Array<Readonly<Landmark>>>>>> = new Map();
 
-  async GetPose(baseName: string) {
-    const cached = this.poseFiles.get(baseName);
+  async GetPose(videoName: string) {
+    if (videoName.length < 4) return [];
+
+    const poseFilename = videoName.replace('dances', 'poses').replace('.mp4', '.poses.csv')
+    const cached = this.poseFiles.get(poseFilename);
     if (cached !== undefined) return cached;
 
-    const stored = localStorage.getItem(`poses-${baseName}`);
+    const stored = localStorage.getItem(poseFilename);
     if (stored !== null) {
       const poses = JSON.parse(stored) as Readonly<Array<Readonly<Array<Readonly<Landmark>>>>>;
-      this.poseFiles.set(baseName, Object.freeze(poses));
+      this.poseFiles.set(poseFilename, Object.freeze(poses));
       return poses;
     }
 
-    const poseFile = await PoseProvider.getPoseFile(baseName);
+    const poseFile = await PoseProvider.getPoseFile(poseFilename);
     const poses = PoseProvider.convertToPoseList(poseFile);
-    this.poseFiles.set(baseName, poses);
+    this.poseFiles.set(poseFilename, poses);
 
-    localStorage.setItem(`poses-${baseName}`, JSON.stringify(poses));
+    localStorage.setItem(poseFilename, JSON.stringify(poses));
 
     return poses;
   }
 
-  static getBaseName(path: string) {
-    const s = (path.split('\\').pop() ?? '').split('/').pop() ?? '';
-    return s.substring(0, s.lastIndexOf('.')) || s;
-  }
+  private static async getPoseFile(url: string) {
 
-  private static async getPoseFile(baseName: string) {
-
-    const url = `poses/${baseName}.poses.csv`;
     const response = await fetch(url);
     if (!response.ok) throw new Error(`Error fetching pose file: ${response.statusText}`);
 
