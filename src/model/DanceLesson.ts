@@ -15,8 +15,8 @@ export interface Activity {
   title: string;
   startTime: number;
   endTime: number;
-  demoType?: 'video' | 'skeleton' | 'none';
-  videoActive?: boolean;
+  demoVisual: 'video' | 'skeleton' | 'none';
+  userVisual: 'video' | 'skeleton' | 'none'; // If the user's webcam should be on
   focusedSegments?: number[];
   pauses?: Array<PauseInfo>;
   practiceSpeeds?: Array<number>;

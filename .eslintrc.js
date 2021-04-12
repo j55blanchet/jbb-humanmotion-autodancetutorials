@@ -19,5 +19,6 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 'off',
     'padded-blocks': 'off',
     'max-len': 'off',
-  },
+    'no-param-reassign': 'off',
+  }
 };

@@ -1,213 +1,174 @@
-import RecordRTC, { invokeSaveAsDialog } from 'recordrtc';
+import RecordRTC from 'recordrtc';
+
+import { computed, ref, Ref } from 'vue';
 
 export class WebcamProvider {
-  private recorder?: RecordRTC;
 
-  private mediaStream?: MediaStream;
+  // Recorder class
+  private recorder = ref(null as null | RecordRTC);
 
-  public async startWebcam() {
-    if (this.mediaStream) {
+  // The actual media stream
+  private mediaStream = ref(null as null | MediaStream);
+
+  // List of active connections. Used so we know when to pause the webcam
+  private activeConnections: Set<HTMLVideoElement> = new Set();
+
+  private permissionState: Ref<PermissionState> = ref('prompt');
+
+  private isWebcamLoading = ref(false);
+
+  public webcamError = ref(null as any);
+
+  public isRecording = ref(false);
+
+  constructor() {
+    this.readPermissionStatus();
+  }
+
+  private async readPermissionStatus(): Promise<void> {
+    if (navigator.permissions) {
+      try {
+        const result = await navigator.permissions.query({ name: 'camera' });
+        this.permissionState.value = result.state;
+
+      // eslint-disable-next-line no-empty
+      } catch { }
+    }
+  }
+
+  public permissionStatus(): Ref<PermissionState> {
+    return this.permissionState;
+  }
+
+  public async startWebcam(): Promise<void> {
+    if (this.mediaStream.value || this.isWebcamLoading.value) {
+      return;
+    }
+    this.isWebcamLoading.value = true;
+
+    try {
+      const constraints: MediaStreamConstraints = {
+        video: {
+          facingMode: 'user',
+          width: 1280,
+          height: 720,
+          aspectRatio: 1.777777778,
+          frameRate: 30,
+        },
+        audio: true,
+      };
+
+      if (!navigator.mediaDevices?.getUserMedia) throw new Error("Browser doesn't support webcam");
+
+      this.mediaStream.value = await navigator.mediaDevices.getUserMedia(constraints);
+
+      this.permissionState.value = 'granted';
+    } finally {
+      this.isWebcamLoading.value = false;
+    }
+  }
+
+  public webcamStatus = computed(() => {
+    if (this.mediaStream.value) return 'running';
+    if (this.isWebcamLoading.value) return 'loading';
+    return 'stopped';
+  });
+
+  public async connectVideoElement(videoE: HTMLVideoElement): Promise<void> {
+
+    if (this.permissionState.value !== 'granted') throw new Error("Doesn't have permissions yet!");
+
+    this.activeConnections.add(videoE);
+
+    // eslint-disable-next-line no-param-reassign
+    console.log('Connecting media stream to video');
+    videoE.srcObject = this.mediaStream.value;
+    videoE.onloadedmetadata = () => {
+      videoE.play();
+      console.log('Connected media stream to video');
+    };
+  }
+
+  public disconnectVideoElement(videoE: HTMLVideoElement): void {
+    this.activeConnections.delete(videoE);
+
+    videoE.srcObject = null;
+
+    if (this.activeConnections.size === 0 && !this.recorder) {
+      this.stopWebcam();
+    }
+  }
+
+  public async stopWebcam(): Promise<void> {
+    if (this.recorder) {
+      try {
+        await this.stopRecording();
+      // eslint-disable-next-line no-empty
+      } catch { }
+    }
+
+    if (this.mediaStream.value) {
+      this.mediaStream.value.getTracks().forEach((x) => x.stop());
+    }
+    this.mediaStream.value = null;
+  }
+
+  public async startRecording(): Promise<void> {
+    if (this.recorder.value || this.isRecording.value) {
       return;
     }
 
-    const constraints: MediaStreamConstraints = {
-      video: {
-        facingMode: 'user',
-        width: 1280,
-        height: 720,
-        aspectRatio: 1.777777778,
-        frameRate: 30,
-      },
-    };
+    if (!this.mediaStream.value) {
+      throw new Error('Webcam must be started before recording can happen');
+    }
 
-    if (!navigator.mediaDevices?.getUserMedia) throw new Error("Browser doesn't support webcam");
+    this.isRecording.value = true;
 
-    this.mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
-
+    const rtc = new RecordRTC(this.mediaStream.value, {
+      type: 'video',
+    });
+    rtc.startRecording();
+    this.recorder.value = rtc;
   }
 
-  public hasStartedWebcam() {
-    return !!this.mediaStream;
-  }
+  public async stopRecording(): Promise<Blob> {
 
-  static doEveryFrame(onFrame: () => Promise<void>) {
-    requestAnimationFrame(() => {
-      onFrame().then(() => {
-        WebcamProvider.doEveryFrame(onFrame);
+    return new Promise((res) => {
+      if (!this.recorder.value) throw new Error("Haven't started recording");
+      this.isRecording.value = false;
+      const recorder = this.recorder.value;
+      this.recorder.value.stopRecording(() => {
+        res(recorder.getBlob());
+        this.recorder.value = null;
       });
     });
   }
 
-  public connectVideoElement(videoE: HTMLVideoElement) {
-    // eslint-disable-next-line no-param-reassign
-    videoE.srcObject = this.mediaStream as any;
+  public async clearRecording(): Promise<void> {
+    // TODO: pay attention to status of recording
+    // this.recorder?.stopRecording();
+    this.recorder.value = null;
   }
 
-  public async startRecording() {
+  // public async postFiles(url: string, filename: string): Promise<void> {
+  //   if (!this.recorder) throw new Error('Nothing to post');
 
-    if (this.recorder) {
-      return;
-    }
+  //   const blob = this.recorder.getBlob();
+  //   invokeSaveAsDialog(blob, filename);
 
-    if (!this.mediaStream) {
-      throw new Error('Webcam must be started before recording can happen');
-    }
+  //   const fname = `${filename}.webm`;
 
-    // eslint-disable-next-line new-cap
-    const recorder = new RecordRTC(this.mediaStream, {
-      type: 'video',
-    });
-    recorder.startRecording();
-    this.recorder = recorder;
+  //   const file = new File([blob], fname, {
+  //     type: 'video/webm',
+  //   });
 
-  }
+  // videoElement.src = '';
+  // videoElement.srcObject = null;
 
-  public async stopRecording() {
-    if (!this.recorder) throw new Error("Haven't started recording");
-
-    await this.recorder.stopRecording();
-  }
-
-  public getMediaStream(): MediaStream | null {
-    return this.mediaStream ?? null;
-  }
-
-  public postFiles(url: string, filename: string) {
-
-    if (!this.recorder) throw new Error('Nothing to post');
-
-    const blob = this.recorder.getBlob();
-    invokeSaveAsDialog(blob, filename);
-
-    const fname = `${filename}.webm`;
-
-    const file = new File([blob], fname, {
-      type: 'video/webm',
-    });
-
-    // videoElement.src = '';
-    // videoElement.srcObject = null;
-
-    WebcamProvider.xhr(url, file, () => {
-      console.log('File successfully uploaded to server');
-    });
-
-    // if (mediaStream) { mediaStream.stop(); }
-  }
-
-  private static xhr(url: string, data: File, callback: (resText: string) => void) {
-    const request = new XMLHttpRequest();
-    request.onreadystatechange = () => {
-      if (request.readyState === 4 && request.status === 200) {
-        callback(request.responseText);
-      }
-    };
-
-    // request.upload.onprogress = (e) => {
-    //   const percent = e.loaded / e.total;
-    // };
-
-    request.upload.onload = () => {
-      console.log(`${url} upload finished`);
-    };
-
-    request.open('POST', url);
-
-    const formData = new FormData();
-    formData.append('file', data);
-    request.send(formData);
-  }
+  // if (mediaStream) { mediaStream.stop(); }
+  // }
 }
 
 const defaultProvider = new WebcamProvider();
 
 export default defaultProvider;
-
-// function startRecording() {
-
-//   captureUserMedia((stream) => {
-//     // mediaStream = stream;
-
-//     // videoElement.srcObject = stream;
-
-//     // videoElement.play();
-//     // videoElement.muted = true;
-//     // videoElement.controls = false;
-
-//     recorder = RecordRTC(stream, {
-//       type: 'video',
-//     });
-
-//     recorder.startRecording();
-//   });
-// }
-
-// function stopRecording(postUrl, filename) {
-//   recorder.stopRecording(() => {
-//     postFiles(postUrl, filename);
-//   });
-// }
-
-// function promptSave() {
-//   const blob = recorder.getBlob();
-//   invokeSaveAsDialog(blob);
-// }
-
-// function postFiles(url, filename) {
-//   const blob = recorder.getBlob();
-//   // invokeSaveAsDialog(blob);
-
-//   var filename = `${filename}.webm`;
-
-//   const file = new File([blob], filename, {
-//     type: 'video/webm',
-//   });
-
-//   // videoElement.src = '';
-//   // videoElement.srcObject = null;
-
-//   xhr(url, file, (responseText) => {
-//     console.log('File successfully uploaded to server');
-//   });
-
-//   if (mediaStream) { mediaStream.stop(); }
-// }
-
-// function xhr(url, data, callback) {
-//   const request = new XMLHttpRequest();
-//   request.onreadystatechange = () => {
-//     if (request.readyState == 4 && request.status == 200) {
-//       callback(request.responseText);
-//     }
-//   };
-
-//   request.upload.onprogress = (e) => {
-//     const percent = e.loaded / e.total;
-//     // console.log(`${url} upload: ${percent} complete`);
-
-//     if (window.unityInstance) {
-//       unityInstance.SendMessage('Main Camera', 'UploadProgressed', percent);
-//     }
-//   };
-
-//   request.upload.onload = () => {
-//     console.log(`${url} upload finished`);
-//   };
-
-//   request.open('POST', url);
-
-//   const formData = new FormData();
-//   formData.append('file', data);
-//   request.send(formData);
-// }
-
-// function generateRandomString() {
-//   if (window.crypto) {
-//     const a = window.crypto.getRandomValues(new Uint32Array(3));
-//     let token = '';
-//     for (let i = 0, l = a.length; i < l; i++) token += a[i].toString(36);
-//     return token;
-//   }
-//   return (Math.random() * new Date().getTime()).toString(36).replace(/\./g, '');
-
-// }

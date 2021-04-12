@@ -10,6 +10,7 @@
       ref="videoE"
       width="1280"
       height="720"
+      muted
     ></video>
 
     <div class="overlay">
@@ -27,14 +28,19 @@
 import {
   defineComponent, onUpdated, ref,
 } from 'vue';
-import webcamProvider, { WebcamProvider } from '@/services/WebcamProvider';
+import webcamProvider from '@/services/WebcamProvider';
 import DrawingSurface from './DrawingSurface.vue';
-import { isTracking as mpIsTracking, StartTracking } from '../services/MediaPipe';
+import { isTracking as mpIsTracking, StartTracking, sendFrames } from '../services/MediaPipe';
 
 export default defineComponent({
   name: 'CameraSurface',
   components: {
     DrawingSurface,
+  },
+  data() {
+    return {
+      trackingIntervalId: -1,
+    };
   },
   setup() {
     // const { enableDrawing } = toRefs(props);
@@ -56,24 +62,38 @@ export default defineComponent({
   },
   methods: {
     startTracking() {
-      if (this.hasStartedTracking) return;
-      this.hasStartedTracking = true;
+      if (this.trackingIntervalId !== -1) return;
 
       const videoE = this.$refs.videoE as HTMLVideoElement;
-
-      videoE.onloadedmetadata = (() => {
-        videoE.play();
-
+      const whenReady = () => {
+        if (this.hasStartedTracking) return;
+        this.hasStartedTracking = true;
+        console.log('Video loaded. Starting tracking...');
         const sendFrame = StartTracking(
-          this.$refs.videoE as HTMLVideoElement,
-          this.onResults,
+            this.$refs.videoE as HTMLVideoElement,
+            this.onResults,
         );
 
-        WebcamProvider.doEveryFrame(sendFrame);
+        sendFrames(sendFrame);
         videoE.onloadedmetadata = null;
-      });
+      };
 
-      videoE.srcObject = webcamProvider.getMediaStream();
+      this.trackingIntervalId = setInterval(() => {
+
+        if (this.hasStartedTracking) {
+          clearInterval(this.trackingIntervalId);
+          this.trackingIntervalId = -1;
+        }
+
+        if (videoE.readyState === 4) {
+          whenReady();
+          return;
+        }
+
+        console.log('Video not ready, will start tracking when loaded.');
+      }, 100);
+
+      webcamProvider.connectVideoElement(videoE);
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onResults(results: any) {

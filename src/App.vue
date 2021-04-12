@@ -72,7 +72,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, nextTick, ref } from 'vue';
 import webcamProvider from '@/services/WebcamProvider';
 import CameraSurface from './components/CameraSurface.vue';
 import OnboardingUI from './components/OnboardingUI.vue';
@@ -116,7 +116,7 @@ export default defineComponent({
       currentDance.value = sel.dance;
       currentLesson.value = sel.lesson;
 
-      if (webcamProvider.hasStartedWebcam()) state.value = State.LessonActive;
+      if (webcamProvider.webcamStatus.value === 'running') state.value = State.LessonActive;
       else state.value = State.PromptStartWebcam;
     }
 
@@ -128,15 +128,17 @@ export default defineComponent({
 
     async function startTracking() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const camSurface: any = cameraSurface.value;
-      state.value = State.LoadingTracking;
-      camSurface.startTracking();
+      nextTick(() => {
+        const camSurface: any = cameraSurface.value;
+        state.value = State.LoadingTracking;
+        camSurface.startTracking();
+      });
     }
 
     async function startWebcam() {
       console.log('Starting Webcam');
 
-      if (!webcamProvider.hasStartedWebcam()) {
+      if (webcamProvider.webcamStatus.value !== 'running') {
         state.value = State.StartingWebcam;
 
         try {

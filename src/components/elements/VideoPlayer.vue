@@ -11,6 +11,7 @@
       :style="{
         width: width,
         height: height,
+        opacity: '' + videoOpacity,
       }"
       ref="videoElement"
       @loadedmetadata="scheduleCanvasResizing"
@@ -129,6 +130,10 @@ export default defineComponent({
     drawPoseLandmarks: {
       type: Boolean,
       default: false,
+    },
+    videoOpacity: {
+      type: Number,
+      default: 1,
     },
     fps: {
       type: Number,

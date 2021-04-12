@@ -5,6 +5,8 @@
     :videoBaseUrl="videoSrc"
     @progress="onProgress"
     @playback-completed="onSegmentPlaybackCompleted"
+    :videoOpacity="videoOpacity"
+    :drawPoseLandmarks="drawPoseLandmarks"
     />
 </template>
 
@@ -63,6 +65,14 @@ export default defineComponent({
   props: {
     videoSrc: {
       default: '',
+    },
+    drawPoseLandmarks: {
+      type: Boolean,
+      default: false,
+    },
+    videoOpacity: {
+      type: Number,
+      default: 1,
     },
   },
   emits: ['playback-completed', 'progress', 'pause-hit', 'pause-end'],

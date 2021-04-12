@@ -94,13 +94,13 @@ export function DrawPose(canvasCtx: CanvasRenderingContext2D, poseLandmarks: Arr
 
     if (!p1 || !p2) return;
     if ((p1.visibility ?? 1) < 0.5 || (p2.visibility ?? 1) < 0.5) {
-      console.log('skipping b/c of insufficient visibility');
+      // console.log('skipping b/c of insufficient visibility');
       return;
     }
 
     canvasCtx.moveTo(p1.x * w, p1.y * h);
     canvasCtx.lineTo(p2.x * w, p2.y * h);
-    console.log(`draw from ${connection[0]} to ${connection[1]}`);
+    // console.log(`draw from ${connection[0]} to ${connection[1]}`);
   });
 
   const p1a = poseLandmarks[PoseLandmarks.leftShoulder];
@@ -168,7 +168,7 @@ export function StartTracking(
 }
 
 export function sendFrames(
-  onFrame: () => Promise<undefined>,
+  onFrame: () => Promise<void>,
 ) {
 
   // Todo: don't call onFrame if video or stream is paused or

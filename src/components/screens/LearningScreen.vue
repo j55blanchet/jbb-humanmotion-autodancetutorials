@@ -13,15 +13,23 @@
         <h3>{{activityTitle}}</h3>
     </teleport>
 
-    <PausingVideoPlayer
-      :videoSrc="targetDance.videoSrc"
-      :height="'720px'"
-      ref="videoPlayer"
-      @progress="onTimeChanged"
-      @playback-completed="onActivityFinished"
-      @pause-hit="onPauseHit"
-      @pause-end="onPauseEnded"
-    />
+    <div class="overlay" v-show="activity && activity.userVisual !== 'none'">
+      <WebcamBox />
+    </div>
+
+    <div class="overlay">
+      <PausingVideoPlayer
+        :videoSrc="targetDance.videoSrc"
+        :height="'720px'"
+        ref="videoPlayer"
+        @progress="onTimeChanged"
+        @playback-completed="onActivityFinished"
+        @pause-hit="onPauseHit"
+        @pause-end="onPauseEnded"
+        :drawPoseLandmarks="activity?.demoVisual === 'skeleton'"
+        :videoOpacity="activity?.demoVisual === 'video' ? 1 : 0"
+      />
+    </div>
 
     <div class="overlay instructions-overlay mb-4">
       <InstructionCarousel v-show="!activityFinished" :instructions="instructions" class="m-2"/>
@@ -77,6 +85,7 @@ import DanceEntry from '@/model/DanceEntry';
 import InstructionCarousel, { Instruction } from '@/components/elements/InstructionCarousel.vue';
 import SegmentedProgressBar, { ProgressSegmentData } from '../elements/SegmentedProgressBar.vue';
 import PausingVideoPlayer from '../elements/PausingVideoPlayer.vue';
+import WebcamBox from '../elements/WebcamBox.vue';
 
 const ActivityPlayState = Object.freeze({
   NotStarted: 'NotStarted',
@@ -117,6 +126,7 @@ export default defineComponent({
     SegmentedProgressBar,
     PausingVideoPlayer,
     InstructionCarousel,
+    WebcamBox,
   },
   props: {
     targetDance: Object,
@@ -133,8 +143,9 @@ export default defineComponent({
     const activityId = ref(0);
     const activity = computed(() => {
       const lesson = targetLesson?.value as unknown as DanceLesson | null;
-      return lesson?.activities[activityId.value];
+      return lesson?.activities[activityId.value] ?? null;
     });
+
     const activityTitle = computed(() => activity.value?.title ?? '');
     const activityCount = computed(() => {
       const lesson = targetLesson?.value as unknown as DanceLesson | null;
