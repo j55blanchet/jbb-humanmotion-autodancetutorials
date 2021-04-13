@@ -1,9 +1,10 @@
 import { TinyEmitter } from 'tiny-emitter';
 import { onMounted, onBeforeUnmount } from 'vue';
+import { MpHolisticResults } from './MediaPipeTypes';
 
 export const EventNames = Object.freeze({
   gesture: 'gesture',
-  trackingResultsAcquired: 'trackingResultsAcquired',
+  trackingResults: 'trackingResults',
   trackingRequested: 'trackingRequested',
   trackingRequestFinished: 'trackingRequestFinished',
 });
@@ -26,6 +27,16 @@ export function setupGestureListening(callbacks: Record<string, () => void>) {
   });
   onBeforeUnmount(() => {
     eventHub.off(EventNames.gesture, onGesture);
+  });
+}
+
+export function setupMediaPipeListening(callback: (res: MpHolisticResults) => void) {
+
+  onMounted(() => {
+    eventHub.on(EventNames.trackingResults, callback);
+  });
+  onBeforeUnmount(() => {
+    eventHub.off(EventNames.trackingResults, callback);
   });
 }
 

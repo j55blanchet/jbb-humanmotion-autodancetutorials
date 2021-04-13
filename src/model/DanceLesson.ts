@@ -24,6 +24,7 @@ export interface Activity {
   playingInstruction?: string;
   staticInstruction?: string;
   timedInstructions?: Array<TimedInstruction>;
+  endInstruction?: string;
 }
 
 export default interface DanceLesson {

@@ -29,6 +29,8 @@ import {
   defineComponent, onUpdated, ref,
 } from 'vue';
 import webcamProvider from '@/services/WebcamProvider';
+import { setupMediaPipeListening } from '@/services/EventHub';
+import { MpHolisticResults } from '@/services/MediaPipeTypes';
 import DrawingSurface from './DrawingSurface.vue';
 import { isTracking as mpIsTracking, StartTracking, sendFrames } from '../services/MediaPipe';
 
@@ -42,7 +44,7 @@ export default defineComponent({
       trackingIntervalId: -1,
     };
   },
-  setup() {
+  setup(props, { emit }) {
     // const { enableDrawing } = toRefs(props);
     const hasStartedTracking = ref(false);
     const isActivelyTracking = ref(false);
@@ -52,6 +54,18 @@ export default defineComponent({
     onUpdated(() => {
       isActivelyTracking.value = mpIsTracking();
     });
+
+    function onResults(results: MpHolisticResults) {
+      if (!hasResults.value) {
+        emit('tracking-attained');
+        console.log('Got Results', results);
+      }
+      hasResults.value = true;
+      trackingResults.value = results;
+      // this.$refs.drawingSurface.draw(results, canvasCtx);
+    }
+
+    setupMediaPipeListening(onResults);
 
     return {
       hasStartedTracking,
@@ -71,7 +85,6 @@ export default defineComponent({
         console.log('Video loaded. Starting tracking...');
         const sendFrame = StartTracking(
             this.$refs.videoE as HTMLVideoElement,
-            this.onResults,
         );
 
         sendFrames(sendFrame);
@@ -94,16 +107,6 @@ export default defineComponent({
       }, 100);
 
       webcamProvider.connectVideoElement(videoE);
-    },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onResults(results: any) {
-      if (!this.hasResults) {
-        this.$emit('tracking-attained');
-        console.log('Got Results', results);
-      }
-      this.hasResults = true;
-      this.trackingResults = results;
-      // this.$refs.drawingSurface.draw(results, canvasCtx);
     },
   },
 });

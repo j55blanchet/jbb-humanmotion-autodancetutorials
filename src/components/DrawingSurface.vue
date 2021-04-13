@@ -72,7 +72,7 @@ function getGesture(handLandmarks?: Landmark[]): string {
   const avgAngle = averageAngle(FINGER_LANDMARKS[0]);
   const avgAngleDeg = (avgAngle * 180) / Math.PI;
 
-  const tolerance = 60;
+  const tolerance = 30;
   if (Math.abs(avgAngleDeg) < tolerance && areLines) return GestureNames.pointLeft;
   if (Math.abs(avgAngleDeg) > 180 - tolerance && areLines) return GestureNames.pointRight;
 
@@ -129,6 +129,10 @@ export default defineComponent({
     onMounted(() => {
       const canvas = canvasE.value;
       const canvasCtx = canvas.getContext('2d') as CanvasRenderingContext2D;
+
+      canvasCtx.strokeStyle = 'rgba(200, 250, 200, 0.6)';
+      canvasCtx.lineWidth = 4;
+
       watch(mpResults as unknown as Ref<MpHolisticResults>, (newVal) => {
         let detectedGesture = getGesture(newVal.rightHandLandmarks);
         if (detectedGesture === GestureNames.none) detectedGesture = getGesture(newVal.leftHandLandmarks);

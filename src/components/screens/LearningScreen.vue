@@ -32,8 +32,9 @@
     </div>
 
     <div class="overlay instructions-overlay mb-4">
-      <InstructionCarousel v-show="!activityFinished" :instructions="instructions" class="m-2"/>
-      <InstructionCarousel v-show="!activityFinished" :instructions="timedInstructions" class="m-2"/>
+      <InstructionCarousel v-show="!activityFinished && timedInstructions.length > 0" :instructions="timedInstructions" class="m-2"/>
+      <InstructionCarousel v-show="instructions.length > 0" :instructions="instructions" class="m-2"/>
+      <InstructionCarousel v-show="activity.staticInstruction" :instructions="[{id:0, text:activity.staticInstruction}]" class="m-2"/>
       <InstructionCarousel v-show="activityFinished" :instructions="[{id:0, text:'Use a gesture to proceed'}]" class="m-2"/>
     </div>
 
@@ -70,6 +71,14 @@
             :progress="videoTime"
           />
         </div>
+        <div class="mt-4 mb-4 buttons is-centered">
+          <button class="button" @click="gotoPreviousActivity">Previous</button>
+          <button class="button" @click="gotoNextActivity">Next</button>
+          <button class="button"
+            @click="startSaveFrames"
+            :disabled="!canSaveFrame"
+            :class="{'is-loading': isSavingFrames}">Save Frames</button>
+        </div>
       </div>
     </teleport>
   </div>
@@ -78,9 +87,11 @@
 <script lang="ts">
 import DanceLesson, { Activity, PauseInfo } from '@/model/DanceLesson';
 import {
-  computed, defineComponent, onBeforeUnmount, onMounted, ref, toRefs,
+  computed, ComputedRef, defineComponent, onBeforeUnmount, onMounted, Ref, ref, toRefs,
 } from 'vue';
-import { GestureNames, setupGestureListening, TrackingActions } from '@/services/EventHub';
+import {
+  GestureNames, setupGestureListening, setupMediaPipeListening, TrackingActions,
+} from '@/services/EventHub';
 import DanceEntry from '@/model/DanceEntry';
 import InstructionCarousel, { Instruction } from '@/components/elements/InstructionCarousel.vue';
 import SegmentedProgressBar, { ProgressSegmentData } from '../elements/SegmentedProgressBar.vue';
@@ -121,6 +132,57 @@ function calculateProgressSegments(dance: DanceEntry, lesson: DanceLesson, activ
 
 const TRACKING_ID = 'LearningScreen';
 
+const recordedFrames = {
+  userWidth: 0,
+  userHeight: 0,
+  userData: [] as any[],
+  demoWidth: 0,
+  demoHeight: 0,
+  demoData: []as any[],
+};
+
+function resetRecordedFrames(pausingVideoPlayer: typeof PausingVideoPlayer) {
+  recordedFrames.userWidth = 1280;
+  recordedFrames.userHeight = 720;
+  recordedFrames.userData = [];
+
+  const demoDimensions = pausingVideoPlayer.getVideoDimensions();
+  recordedFrames.demoWidth = demoDimensions?.width ?? 0;
+  recordedFrames.demoHeight = demoDimensions?.height ?? 0;
+  recordedFrames.demoData = [];
+}
+
+function setupFrameRecording(activity: ComputedRef<Activity | null>, activityFinished: Ref<boolean>, videoPlayer: Ref<null | typeof PausingVideoPlayer>, playActivity: Function) {
+  const isSavingFrames = ref(false);
+  setupMediaPipeListening((mpResults) => {
+    // console.log('Got mp result');
+    if (isSavingFrames.value) {
+      recordedFrames.userData.push(mpResults.poseLandmarks);
+      recordedFrames.demoData.push(videoPlayer.value?.currentPose);
+    }
+  });
+  const canSaveFrame = computed(() => {
+    if (isSavingFrames.value) return false;
+    if (!activity.value) return false;
+    if (!activityFinished.value) return false;
+    return activity.value.demoVisual === 'skeleton' && activity.value.userVisual !== 'none';
+  });
+  function startSaveFrames() {
+    isSavingFrames.value = true;
+    TrackingActions.requestTracking(TRACKING_ID);
+    playActivity();
+  }
+  function concludeSaveFrames() {
+    isSavingFrames.value = false;
+    console.log('Recorded frames', recordedFrames);
+    resetRecordedFrames(videoPlayer.value!);
+  }
+
+  return {
+    isSavingFrames, canSaveFrame, startSaveFrames, concludeSaveFrames,
+  };
+}
+
 export default defineComponent({
   components: {
     SegmentedProgressBar,
@@ -133,6 +195,7 @@ export default defineComponent({
     targetLesson: Object,
   },
   setup(props, { emit }) {
+
     const { targetLesson, targetDance } = toRefs(props);
 
     const activityState = ref(ActivityPlayState.NotStarted);
@@ -183,22 +246,20 @@ export default defineComponent({
 
       const instructs: Instruction[] = [];
 
-      if (mActivity.staticInstruction) {
-        instructs.push({
-          id: 0,
-          text: mActivity.staticInstruction,
-        });
-      }
-
       if (state === ActivityPlayState.NotStarted && mActivity.startInstruction) {
         instructs.push({
           id: 1,
           text: mActivity.startInstruction,
         });
-      } else if (state !== ActivityPlayState.NotStarted && mActivity.playingInstruction) {
+      } else if (state === ActivityPlayState.Playing && mActivity.playingInstruction) {
         instructs.push({
           id: 2,
           text: mActivity.playingInstruction,
+        });
+      } else if (state === ActivityPlayState.ActivityEnded && mActivity.endInstruction) {
+        instructs.push({
+          id: 2,
+          text: mActivity.endInstruction,
         });
       }
 
@@ -248,20 +309,37 @@ export default defineComponent({
       );
     }
 
-    function gotoNextActivity() {
+    function gotoActivity(delta: number) {
       activityState.value = ActivityPlayState.NotStarted;
       if (!hasNextActivity.value) {
         emit('lesson-completed');
         return;
       }
-      activityId.value += 1;
+      if (activityId.value === 0 && delta < 0) {
+        playActivity();
+        return;
+      }
+      activityId.value += delta;
       setTimeout(() => { playActivity(); }, 1000);
     }
+    function gotoPreviousActivity() {
+      gotoActivity(-1);
+    }
+
+    function gotoNextActivity() {
+      gotoActivity(1);
+    }
+
+    const {
+      isSavingFrames, canSaveFrame, startSaveFrames, concludeSaveFrames,
+    } = setupFrameRecording(activity, activityFinished, videoPlayer, playActivity);
 
     function onActivityFinished() {
       activityState.value = ActivityPlayState.ActivityEnded;
       console.log('LEARNING SCREEN:: Activity finished. Requesting tracking...');
       TrackingActions.requestTracking(TRACKING_ID);
+
+      if (isSavingFrames.value) concludeSaveFrames();
     }
 
     setupGestureListening({
@@ -286,6 +364,11 @@ export default defineComponent({
       }, 1000);
     });
 
+    onMounted(() => {
+      if (!videoPlayer.value) throw new Error('Video player ref not loaded');
+      resetRecordedFrames(videoPlayer.value);
+    });
+
     return {
       activityState,
       progressSegments,
@@ -303,6 +386,13 @@ export default defineComponent({
 
       onPauseHit,
       onPauseEnded,
+
+      gotoPreviousActivity,
+      gotoNextActivity,
+
+      canSaveFrame,
+      isSavingFrames,
+      startSaveFrames,
     };
   },
   methods: {

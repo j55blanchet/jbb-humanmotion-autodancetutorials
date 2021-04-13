@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/prefer-default-export */
-import { Landmark, PoseLandmarks } from './MediaPipeTypes';
+import { Landmark, MpHolisticResults, PoseLandmarks } from './MediaPipeTypes';
 import eventHub, { EventNames } from './EventHub';
 
 const mp = require('@mediapipe/holistic/holistic');
@@ -82,11 +82,6 @@ export function DrawPose(canvasCtx: CanvasRenderingContext2D, poseLandmarks: Arr
   const w = canvasCtx.canvas.width;
   const h = canvasCtx.canvas.height;
 
-  /* eslint-disable no-param-reassign */
-  canvasCtx.strokeStyle = 'rgba(200, 200, 200, 0.4)';
-  canvasCtx.lineWidth = 4;
-  /* eslint-enable no-param-reassign */
-
   canvasCtx.beginPath();
   CONNECTIONS_TO_DRAW.forEach((connection) => {
     const p1 = poseLandmarks[connection[0]];
@@ -122,9 +117,13 @@ const trackingCount = () => Object
   .map((id) => trackingRequests[id])
   .filter((x) => x).length;
 
+let latestResults: MpHolisticResults | null = null;
+export function GetLatestResults() {
+  return Object.freeze(latestResults);
+}
+
 export function StartTracking(
   videoE: HTMLVideoElement,
-  onResults: (res: any) => void,
 ): () => Promise<void> {
   if (trackingStarted) { throw Error('Tracking alread started'); }
 
@@ -138,10 +137,10 @@ export function StartTracking(
     minDetectionConfidence: 0.5,
     minTrackingConfidence: 0.5,
   });
-  holistic.onResults((res: any) => {
-    onResults(res);
+  holistic.onResults((res: MpHolisticResults) => {
     trackingRequests.initial = false;
-    eventHub.emit(EventNames.trackingResultsAcquired, res);
+    latestResults = res;
+    eventHub.emit(EventNames.trackingResults, res);
   });
 
   eventHub.on(EventNames.trackingRequested, (id: string) => {

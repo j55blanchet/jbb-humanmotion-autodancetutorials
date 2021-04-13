@@ -23,7 +23,7 @@
 <script lang="ts">
 import { DrawPose } from '@/services/MediaPipe';
 import { Landmark } from '@/services/MediaPipeTypes';
-import poseProvider, { PoseProvider } from '@/services/PoseProvider';
+import poseProvider from '@/services/PoseProvider';
 import {
   computed,
   defineComponent,
@@ -139,17 +139,29 @@ export default defineComponent({
       type: Number,
       default: 30,
     },
+    setDrawStyle: {
+      type: Function,
+      default: () => {},
+    },
   },
   emits: [
     'playback-completed',
     'progress',
   ],
   setup(props, ctx) {
-    const { videoBaseUrl, drawPoseLandmarks, fps } = toRefs(props);
+    const {
+      videoBaseUrl, drawPoseLandmarks, fps, setDrawStyle,
+    } = toRefs(props);
 
     const videoElement = ref(null as null | HTMLVideoElement);
     const canvasElement = ref(null as null | HTMLCanvasElement);
     const canvasCtx = computed(() => canvasElement.value?.getContext('2d') as CanvasRenderingContext2D | null);
+    watch(canvasCtx, () => {
+      setDrawStyle.value(canvasCtx.value);
+    });
+    onMounted(() => {
+      setDrawStyle.value(canvasCtx.value);
+    });
 
     const startTime = ref(0);
     const endTime = ref(0);
@@ -160,7 +172,7 @@ export default defineComponent({
     const resizeCanvas = setupCanvasResizing(videoElement, canvasElement, canvasModified);
 
     const poses = ref([] as Readonly<Array<Readonly<Array<Readonly<Landmark>>>>>);
-    const cPose = computed(() => {
+    const currentPose = computed(() => {
       const frame = Math.floor(currentTime.value * fps.value);
       const pose = poses.value[frame] ?? [];
       return pose;
@@ -227,12 +239,12 @@ export default defineComponent({
 
       poses.value = await poseProvider.GetPose(videoBaseUrl?.value ?? '');
     });
-    watch([canvasModified, cPose, drawPoseLandmarks], () => {
+    watch([canvasModified, currentPose, drawPoseLandmarks], () => {
       canvasModified.value = false;
       clearDrawing();
 
       if (drawPoseLandmarks.value) {
-        drawPose(cPose.value as any);
+        drawPose(currentPose.value as any);
       }
     });
 
@@ -247,7 +259,12 @@ export default defineComponent({
       scheduleCanvasResizing,
       poses,
       currentTime,
-      cPose,
+      currentPose,
+
+      getVideoDimensions: () => ({
+        height: videoElement.value?.height ?? 0,
+        width: videoElement.value?.width ?? 0,
+      }),
     };
   },
   methods: {

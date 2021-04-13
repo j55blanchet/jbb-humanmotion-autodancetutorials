@@ -7,13 +7,16 @@
     @playback-completed="onSegmentPlaybackCompleted"
     :videoOpacity="videoOpacity"
     :drawPoseLandmarks="drawPoseLandmarks"
+    :setDrawStyle="setDrawStyle"
     />
 </template>
 
 <script lang="ts">
 
 import { PauseInfo } from '@/model/DanceLesson';
-import { defineComponent, onBeforeUnmount, ref } from 'vue';
+import {
+  computed, defineComponent, onBeforeUnmount, ref,
+} from 'vue';
 import VideoPlayer from './VideoPlayer.vue';
 
 const DEFAULT_PAUSE_DURATION = 1.5;
@@ -73,6 +76,18 @@ export default defineComponent({
     videoOpacity: {
       type: Number,
       default: 1,
+    },
+    setDrawStyle: {
+      type: Function,
+      default: (canvasCtx: CanvasRenderingContext2D) => {
+        if (!canvasCtx) return;
+
+        /* eslint-disable no-param-reassign */
+        console.log('Setting default draw style for pausing video player', canvasCtx);
+        canvasCtx.strokeStyle = 'rgba(250, 200, 200, 0.4)';
+        canvasCtx.lineWidth = 4;
+        /* eslint-enable no-param-reassign */
+      },
     },
   },
   emits: ['playback-completed', 'progress', 'pause-hit', 'pause-end'],
@@ -142,13 +157,21 @@ export default defineComponent({
       }
     }
 
+    const currentPose = computed(() => videoPlayer.value?.currentPose ?? null);
+
     return {
       videoPlayer,
       setTime,
       onProgress,
       onSegmentPlaybackCompleted,
       play,
+      currentPose,
     };
+  },
+  methods: {
+    getVideoDimensions() {
+      return (this.$refs.videoPlayer as typeof VideoPlayer)?.getVideoDimensions();
+    },
   },
 });
 </script>
