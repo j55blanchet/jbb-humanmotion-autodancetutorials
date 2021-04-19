@@ -98,6 +98,8 @@ import SegmentedProgressBar, { ProgressSegmentData } from '../elements/Segmented
 import PausingVideoPlayer from '../elements/PausingVideoPlayer.vue';
 import WebcamBox from '../elements/WebcamBox.vue';
 
+const DefaultPauseDuration = 1.5; // 1.5 seconds
+
 const ActivityPlayState = Object.freeze({
   NotStarted: 'NotStarted',
   Playing: 'Playing',
@@ -174,7 +176,8 @@ function setupFrameRecording(activity: ComputedRef<Activity | null>, activityFin
   }
   function concludeSaveFrames() {
     isSavingFrames.value = false;
-    console.log('Recorded frames', recordedFrames);
+    console.log('Recorded frames', JSON.stringify(recordedFrames));
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     resetRecordedFrames(videoPlayer.value!);
   }
 
@@ -290,8 +293,9 @@ export default defineComponent({
       return [];
     });
 
-    function playActivity() {
+    function playActivity(pause?: number | undefined) {
       console.log(`LEARNING SCREEN:: Starting playback (activityId: ${activityId.value})`);
+      pauseInstructs.value.splice(0);
       activityState.value = ActivityPlayState.Playing;
       const vidPlayer = videoPlayer.value;
       const vidActivity = activity.value;
@@ -305,7 +309,7 @@ export default defineComponent({
         vidActivity.endTime,
         (vidActivity.practiceSpeeds ?? [1])[0] ?? 1,
         vidActivity.pauses ?? [],
-        1.5,
+        pause ?? DefaultPauseDuration,
       );
     }
 
@@ -316,11 +320,11 @@ export default defineComponent({
         return;
       }
       if (activityId.value === 0 && delta < 0) {
-        playActivity();
+        playActivity(0);
         return;
       }
       activityId.value += delta;
-      setTimeout(() => { playActivity(); }, 1000);
+      playActivity();
     }
     function gotoPreviousActivity() {
       gotoActivity(-1);
@@ -359,9 +363,7 @@ export default defineComponent({
     });
 
     onMounted(() => {
-      setTimeout(() => {
-        playActivity();
-      }, 1000);
+      playActivity(2.5);
     });
 
     onMounted(() => {
