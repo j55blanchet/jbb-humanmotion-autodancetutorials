@@ -3,8 +3,10 @@
 /* eslint-disable import/prefer-default-export */
 import { Landmark, MpHolisticResults, PoseLandmarks } from './MediaPipeTypes';
 import eventHub, { EventNames } from './EventHub';
+import Utils from './Utils';
 
 const mp = require('@mediapipe/holistic/holistic');
+const mpPose = require('@mediapipe/pose/pose');
 
 export const HAND_LANDMARK_CONNECTIONS = [
   [0, 1], [1, 2], [2, 3], [3, 4], // Thumb
@@ -122,9 +124,7 @@ export function GetLatestResults() {
   return Object.freeze(latestResults);
 }
 
-export function StartTracking(
-  videoE: HTMLVideoElement,
-): () => Promise<void> {
+export function StartTracking(videoE: HTMLVideoElement): void {
   if (trackingStarted) { throw Error('Tracking alread started'); }
 
   trackingStarted = true;
@@ -137,10 +137,12 @@ export function StartTracking(
     minDetectionConfidence: 0.5,
     minTrackingConfidence: 0.5,
   });
+
+  let frameId = 0;
   holistic.onResults((res: MpHolisticResults) => {
     trackingRequests.initial = false;
     latestResults = res;
-    eventHub.emit(EventNames.trackingResults, res);
+    eventHub.emit(EventNames.trackingResults, res, frameId);
   });
 
   eventHub.on(EventNames.trackingRequested, (id: string) => {
@@ -150,76 +152,16 @@ export function StartTracking(
     trackingRequests[id] = false;
   });
 
-  return async () => {
-    if (trackingCount() > 0) await holistic.send({ image: videoE });
-  };
-  // camera = new camUtils.Camera(
-  //   videoE,
-  //   {
-  //     onFrame: async () => {
-  //       if (trackingCount > 0) await holistic.send({ image: videoE });
-  //     },
-  //     width: 1280,
-  //     height: 720,
-  //   },
-  // );
-  // camera.start();
-}
-
-export function sendFrames(
-  onFrame: () => Promise<void>,
-) {
-
-  // Todo: don't call onFrame if video or stream is paused or
-  //       if no time has elapsed.
-  const paused = false;
-  const timeHasPassed = false;
-
-  if (paused || timeHasPassed) {
-    requestAnimationFrame(() => {
-      sendFrames(onFrame);
-    });
-  } else {
-    requestAnimationFrame(() => {
-      onFrame().then(() => {
-        sendFrames(onFrame);
-      });
-    });
-  }
+  Utils.DoEveryFrame(
+    async () => {
+      frameId += 1;
+      eventHub.emit(EventNames.trackingProcessingStarted, frameId);
+      if (trackingCount() > 0) await holistic.send({ image: videoE });
+    },
+    () => true,
+  );
 }
 
 export function isTracking() {
   return trackingCount() > 0;
 }
-// function removeElements(landmarks, elements) {
-//   for (const element of elements) {
-//     delete landmarks[element];
-//   }
-// }
-
-// function removeLandmarks(results) {
-//   if (results.poseLandmarks) {
-//     removeElements(
-//       results.poseLandmarks,
-//       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 16, 17, 18, 19, 20, 21, 22],
-//     );
-//   }
-// }
-
-// function connect(ctx: CanvasRenderingContext2D, connectors: Array<Array<number>>) {
-//   const { canvas } = ctx;
-//   for (const connector of connectors) {
-//     const from = connector[0];
-//     const to = connector[1];
-//     if (from && to) {
-//       if (from.visibility && to.visibility
-//         && (from.visibility < 0.1 || to.visibility < 0.1)) {
-//         continue;
-//       }
-//       ctx.beginPath();
-//       ctx.moveTo(from.x * canvas.width, from.y * canvas.height);
-//       ctx.lineTo(to.x * canvas.width, to.y * canvas.height);
-//       ctx.stroke();
-//     }
-//   }
-// }

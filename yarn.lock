@@ -920,6 +920,11 @@
   resolved "https://registry.yarnpkg.com/@mediapipe/holistic/-/holistic-0.1.1613603339.tgz#21d975586af78dfce5988f2ce6f0decd1c94c1f2"
   integrity sha512-+X0uSzbm4+dKjdmRiZGkecWuUButto6DJqbrO5wq6aNjS1Mv0qXO7cLalQUAZ2d3FPoB6I4SKoAC8wAFcywcSg==
 
+"@mediapipe/pose@^0.2.1617147663":
+  version "0.2.1617147663"
+  resolved "https://registry.yarnpkg.com/@mediapipe/pose/-/pose-0.2.1617147663.tgz#1879b9c684c8a7050271a01373093a49265f8cab"
+  integrity sha512-/hiMN8Dkvg47RnDCqjg7ufaPuRwGZ1KJ9fsLJg8sxkwfO+2JexgyD38w0IeuGHBINZLeMq03S8f1hYJaX/ioGg==
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.npm.taobao.org/@mrmlnc/readdir-enhanced/download/@mrmlnc/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"

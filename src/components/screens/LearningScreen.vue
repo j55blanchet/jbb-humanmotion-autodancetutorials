@@ -14,7 +14,7 @@
     </teleport>
 
     <div class="overlay" v-show="activity && activity.userVisual !== 'none'">
-      <WebcamBox />
+      <WebcamBox style="width:1280px;height:720px;"/>
     </div>
 
     <div class="overlay">
@@ -95,6 +95,7 @@ import {
 import DanceEntry from '@/model/DanceEntry';
 import motionRecorder from '@/services/MotionRecorder';
 import InstructionCarousel, { Instruction } from '@/components/elements/InstructionCarousel.vue';
+import { Landmark } from '@/services/MediaPipeTypes';
 import SegmentedProgressBar, { ProgressSegmentData } from '../elements/SegmentedProgressBar.vue';
 import PausingVideoPlayer from '../elements/PausingVideoPlayer.vue';
 import WebcamBox from '../elements/WebcamBox.vue';
@@ -139,34 +140,54 @@ function setupFrameRecording(activity: ComputedRef<Activity | null>, activityFin
   const isSavingFrames = ref(false);
   let recordingSessionId = -1;
 
-  setupMediaPipeListening((mpResults) => {
-    // console.log('Got mp result');
-    if (isSavingFrames.value) {
-      motionRecorder.saveMotionFrame(
-        recordingSessionId,
-        mpResults,
-        { poseLandmarks: videoPlayer.value?.currentPose },
-      );
-    }
-  });
+  const lastPose = {
+    frameId: -1,
+    pose: null as null | Landmark[],
+  };
+
+  setupMediaPipeListening(
+    (mpResults, frameId) => {
+      // console.log('Got mp result');
+      if (frameId !== lastPose.frameId) {
+        console.warn(`Skipping motion recording frame -- proceesed frameId ${frameId} doesn't match stored pose with id: ${lastPose.frameId}`);
+        return;
+      }
+      if (isSavingFrames.value) {
+        motionRecorder.saveMotionFrame(
+          recordingSessionId,
+          mpResults,
+          { poseLandmarks: lastPose.pose ?? undefined },
+        );
+      }
+    },
+    (frameId) => {
+      lastPose.frameId = frameId;
+      lastPose.pose = videoPlayer.value?.currentPose ?? null;
+    },
+  );
   const canSaveFrame = computed(() => {
     if (isSavingFrames.value) return false;
     if (!activity.value) return false;
-    if (!activityFinished.value) return false;
+    // if (!activityFinished.value) return false;
     return activity.value.demoVisual === 'skeleton' && activity.value.userVisual !== 'none';
   });
-  function startSaveFrames() {
-    recordingSessionId = motionRecorder.startRecordingSession(
-      { width: 1280, height: 720 },
+  async function startSaveFrames() {
+    recordingSessionId = await motionRecorder.startRecordingSession(
+      { width: 640, height: 480 },
       videoPlayer.value?.getVideoDimensions(),
     );
 
     isSavingFrames.value = true;
     playActivity();
   }
-  function concludeSaveFrames() {
+  async function concludeSaveFrames() {
     isSavingFrames.value = false;
-    motionRecorder.endRecordingSession(recordingSessionId);
+
+    await motionRecorder.endRecordingSession(
+      recordingSessionId,
+      activity.value?.startTime ?? -1,
+      activity.value?.endTime ?? -1,
+    );
   }
 
   return {

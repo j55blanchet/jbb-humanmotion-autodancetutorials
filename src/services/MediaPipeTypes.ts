@@ -8,6 +8,7 @@ export type Landmark = {
 }
 
 export type MpHolisticResults = {
+  image?: any;
   faceLandmarks?: Array<Landmark>;
   poseLandmarks?: Array<Landmark>;
   rightHandLandmarks?: Array<Landmark>;

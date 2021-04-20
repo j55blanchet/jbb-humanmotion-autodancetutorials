@@ -8,9 +8,11 @@
     <video
       class="mirrored is-slightly-rounded"
       ref="videoE"
-      width="1280"
-      height="720"
       muted
+      :style="{
+        height: '720px',
+        width: '1280px',
+      }"
     ></video>
 
     <div class="overlay">
@@ -32,7 +34,7 @@ import webcamProvider from '@/services/WebcamProvider';
 import { setupMediaPipeListening } from '@/services/EventHub';
 import { MpHolisticResults } from '@/services/MediaPipeTypes';
 import DrawingSurface from './DrawingSurface.vue';
-import { isTracking as mpIsTracking, StartTracking, sendFrames } from '../services/MediaPipe';
+import { isTracking as mpIsTracking, StartTracking } from '../services/MediaPipe';
 
 export default defineComponent({
   name: 'CameraSurface',
@@ -83,11 +85,11 @@ export default defineComponent({
         if (this.hasStartedTracking) return;
         this.hasStartedTracking = true;
         console.log('Video loaded. Starting tracking...');
-        const sendFrame = StartTracking(
+
+        StartTracking(
             this.$refs.videoE as HTMLVideoElement,
         );
 
-        sendFrames(sendFrame);
         videoE.onloadedmetadata = null;
       };
 

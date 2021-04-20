@@ -1,5 +1,6 @@
 import { MpHolisticResults } from './MediaPipeTypes';
 import Utils from './Utils';
+import webcamProvider, { saveBlob } from './WebcamProvider';
 
 export interface Dimensions {
   width: number;
@@ -19,7 +20,7 @@ export class MotionRecorder {
 
   private recordingSessionNextId = 0;
 
-  startRecordingSession(userDims: Dimensions, demoDims: Dimensions): number {
+  async startRecordingSession(userDims: Dimensions, demoDims: Dimensions): Promise<number> {
     this.recordingSessions[this.recordingSessionNextId] = {
       userDimension: userDims,
       userFrames: [],
@@ -27,6 +28,8 @@ export class MotionRecorder {
       demoFrames: [],
     };
     this.recordingSessionNextId += 1;
+
+    await webcamProvider.startRecording();
     return this.recordingSessionNextId - 1;
   }
 
@@ -35,15 +38,21 @@ export class MotionRecorder {
     if (!session) throw new Error(`Recording session ${sessionId} wasn't found!`);
 
     debugger;
+    if (userFrame.image) delete userFrame.image;
     session.userFrames.push(userFrame);
     session.demoFrames.push(demoFrame);
   }
 
-  endRecordingSession(sessionId: number) {
+  async endRecordingSession(sessionId: number, start: number, end: number) {
     const session = this.recordingSessions[sessionId];
     if (!session) throw new Error(`Recording session ${sessionId} wasn't found!`);
 
-    Utils.PromptDownloadFile(`RecordedSession-${sessionId}.json`, JSON.stringify(session));
+    const webcamBlob = await webcamProvider.stopRecording();
+    saveBlob(webcamBlob, 'webcam.webm');
+
+    const mSession = { startTime: start, endTime: end, ...session };
+
+    Utils.PromptDownloadFile(`RecordedSession-${sessionId}.json`, JSON.stringify(mSession));
   }
 }
 

@@ -4,6 +4,7 @@ import { MpHolisticResults } from './MediaPipeTypes';
 
 export const EventNames = Object.freeze({
   gesture: 'gesture',
+  trackingProcessingStarted: 'trackingProcessingStarted',
   trackingResults: 'trackingResults',
   trackingRequested: 'trackingRequested',
   trackingRequestFinished: 'trackingRequestFinished',
@@ -30,13 +31,18 @@ export function setupGestureListening(callbacks: Record<string, () => void>) {
   });
 }
 
-export function setupMediaPipeListening(callback: (res: MpHolisticResults) => void) {
+export function setupMediaPipeListening(
+  callback: (res: MpHolisticResults, frameId?: number) => void,
+  frameProcessingStarted?: (frameId: number) => void,
+) {
 
   onMounted(() => {
     eventHub.on(EventNames.trackingResults, callback);
+    if (frameProcessingStarted) eventHub.on(EventNames.trackingProcessingStarted, frameProcessingStarted);
   });
   onBeforeUnmount(() => {
     eventHub.off(EventNames.trackingResults, callback);
+    if (frameProcessingStarted) eventHub.off(EventNames.trackingProcessingStarted, frameProcessingStarted);
   });
 }
 

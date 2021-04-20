@@ -1,4 +1,4 @@
-import RecordRTC from 'recordrtc';
+import RecordRTC, { invokeSaveAsDialog } from 'recordrtc';
 
 import { computed, ref, Ref } from 'vue';
 
@@ -31,7 +31,7 @@ export class WebcamProvider {
         const result = await navigator.permissions.query({ name: 'camera' });
         this.permissionState.value = result.state;
 
-      // eslint-disable-next-line no-empty
+        // eslint-disable-next-line no-empty
       } catch { }
     }
   }
@@ -50,8 +50,8 @@ export class WebcamProvider {
       const constraints: MediaStreamConstraints = {
         video: {
           facingMode: 'user',
-          width: 1280,
-          height: 720,
+          width: 640,
+          height: 480,
           aspectRatio: 1.777777778,
           frameRate: 30,
         },
@@ -103,7 +103,7 @@ export class WebcamProvider {
     if (this.recorder) {
       try {
         await this.stopRecording();
-      // eslint-disable-next-line no-empty
+        // eslint-disable-next-line no-empty
       } catch { }
     }
 
@@ -168,6 +168,8 @@ export class WebcamProvider {
   // if (mediaStream) { mediaStream.stop(); }
   // }
 }
+
+export const saveBlob = invokeSaveAsDialog;
 
 const defaultProvider = new WebcamProvider();
 

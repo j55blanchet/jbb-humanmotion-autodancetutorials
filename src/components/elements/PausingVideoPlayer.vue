@@ -1,6 +1,5 @@
 <template>
   <VideoPlayer
-    :height="'720px'"
     ref="videoPlayer"
     :videoBaseUrl="videoSrc"
     @progress="onProgress"
@@ -8,6 +7,9 @@
     :videoOpacity="videoOpacity"
     :drawPoseLandmarks="drawPoseLandmarks"
     :setDrawStyle="setDrawStyle"
+    :style="{
+      height: '720px',
+    }"
     />
 </template>
 
