@@ -2,6 +2,11 @@ import RecordRTC, { invokeSaveAsDialog } from 'recordrtc';
 
 import { computed, ref, Ref } from 'vue';
 
+export const WEBCAM_DIMENSIONS = Object.freeze({
+  width: 640,
+  height: 480,
+});
+
 export class WebcamProvider {
 
   // Recorder class
@@ -50,8 +55,8 @@ export class WebcamProvider {
       const constraints: MediaStreamConstraints = {
         video: {
           facingMode: 'user',
-          width: 640,
-          height: 480,
+          width: WEBCAM_DIMENSIONS.width,
+          height: WEBCAM_DIMENSIONS.height,
           aspectRatio: 1.777777778,
           frameRate: 30,
         },

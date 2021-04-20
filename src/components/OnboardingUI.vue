@@ -23,6 +23,9 @@
 
       </div>
     </div>
+    <div class="overlay overlay-top overlay-right mt-4 mr-4">
+      <button class="button" @click="skipOnboarding">Skip</button>
+    </div>
   </div>
 </template>
 
@@ -94,11 +97,20 @@ export default defineComponent({
       },
     });
 
+    function skipOnboarding() {
+      TrackingActions.endTrackingRequest('onboarding');
+      stage.value = OnboardingStage.done;
+      setTimeout(() => {
+        ctx.emit('onboarding-complete');
+      }, 500);
+    }
+
     return {
       stage,
       output,
       instructions,
       OnboardingStage,
+      skipOnboarding,
     };
   },
 });

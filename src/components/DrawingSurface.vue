@@ -7,11 +7,12 @@
 import {
   ref, defineComponent, watch, toRefs, onMounted, Ref,
 } from 'vue';
+import { WEBCAM_DIMENSIONS } from '@/services/WebcamProvider';
 import eventHub, { GestureNames } from '../services/EventHub';
 
 import { Landmark, MpHolisticResults } from '../services/MediaPipeTypes';
 import {
-  HAND_LANDMARK_CONNECTIONS, DrawConnections, HAND, DrawPose,
+  HAND_LANDMARK_CONNECTIONS, DrawConnections, HAND, DrawPose, usingHolistic,
 } from '../services/MediaPipe';
 
 function getAngle(lm0: Landmark, lm1: Landmark) {
@@ -51,9 +52,8 @@ function isLine(input: Array<Landmark>, angleTolerance?: number): boolean {
   return true;
 }
 
-function getGesture(handLandmarks?: Landmark[]): string {
+function detectHandGesture(handLandmarks?: Landmark[]): string {
   if (!handLandmarks) return GestureNames.none;
-  const lms = handLandmarks;
 
   const FINGERS = [
     HAND.INDEX_FINGER,
@@ -62,7 +62,7 @@ function getGesture(handLandmarks?: Landmark[]): string {
     HAND.PINKY_FINGER,
   ];
 
-  const FINGER_LANDMARKS = FINGERS.map((indices) => indices.map((lm) => lms[lm]));
+  const FINGER_LANDMARKS = FINGERS.map((indices) => indices.map((lm) => handLandmarks[lm]));
 
   let areLines = true;
   FINGER_LANDMARKS.forEach((finger) => {
@@ -77,6 +77,24 @@ function getGesture(handLandmarks?: Landmark[]): string {
   if (Math.abs(avgAngleDeg) > 180 - tolerance && areLines) return GestureNames.pointRight;
 
   return GestureNames.none;
+}
+
+function detectPoseGesture(poseLandmarks?: Landmark[]): string {
+  if (!poseLandmarks) return GestureNames.none;
+
+  return GestureNames.none;
+}
+
+function getGesture(mpResults?: MpHolisticResults): string {
+  if (!mpResults) return GestureNames.none;
+  let detectedGesture = GestureNames.none;
+
+  if (usingHolistic) {
+    if (detectedGesture === GestureNames.none) detectedGesture = detectHandGesture(mpResults.rightHandLandmarks);
+    if (detectedGesture === GestureNames.none) detectedGesture = detectHandGesture(mpResults.leftHandLandmarks);
+  } else if (detectedGesture === GestureNames.none) detectedGesture = detectPoseGesture(mpResults.poseLandmarks);
+
+  return detectedGesture;
 }
 
 function drawHandShape(results: MpHolisticResults, canvasCtx: CanvasRenderingContext2D) {
@@ -104,8 +122,15 @@ function drawTrackingResults(
   canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
   if (!enabled) return;
-  if (results.poseLandmarks) DrawPose(canvasCtx, results.poseLandmarks);
-  if (detectedGesture !== GestureNames.none) drawHandShape(results, canvasCtx);
+
+  canvasCtx.save();
+
+  const sourceAR = WEBCAM_DIMENSIONS.width / WEBCAM_DIMENSIONS.height;
+
+  if (results.poseLandmarks) DrawPose(canvasCtx, results.poseLandmarks, sourceAR);
+  // if (detectedGesture !== GestureNames.none) drawHandShape(results, canvasCtx);
+
+  canvasCtx.restore();
 }
 
 export default defineComponent({
@@ -134,8 +159,8 @@ export default defineComponent({
       canvasCtx.lineWidth = 4;
 
       watch(mpResults as unknown as Ref<MpHolisticResults>, (newVal) => {
-        let detectedGesture = getGesture(newVal.rightHandLandmarks);
-        if (detectedGesture === GestureNames.none) detectedGesture = getGesture(newVal.leftHandLandmarks);
+
+        const detectedGesture = getGesture(newVal);
 
         drawTrackingResults(enableDrawing.value, detectedGesture, newVal, canvasCtx);
         gesture.value = detectedGesture;

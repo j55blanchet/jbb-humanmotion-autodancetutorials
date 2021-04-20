@@ -5,8 +5,13 @@ import { Landmark, MpHolisticResults, PoseLandmarks } from './MediaPipeTypes';
 import eventHub, { EventNames } from './EventHub';
 import Utils from './Utils';
 
-const mp = require('@mediapipe/holistic/holistic');
-const mpPose = require('@mediapipe/pose/pose');
+export const usingHolistic = false;
+
+let mp: any = null;
+// eslint-disable-next-line global-require
+if (usingHolistic) mp = require('@mediapipe/holistic/holistic');
+// eslint-disable-next-line global-require
+else mp = require('@mediapipe/pose/pose');
 
 export const HAND_LANDMARK_CONNECTIONS = [
   [0, 1], [1, 2], [2, 3], [3, 4], // Thumb
@@ -25,6 +30,10 @@ export const HAND = {
 };
 
 const CONNECTIONS_TO_DRAW = [
+  [PoseLandmarks.leftWrist, PoseLandmarks.leftPinky],
+  [PoseLandmarks.rightWrist, PoseLandmarks.rightPinky],
+  [PoseLandmarks.leftWrist, PoseLandmarks.leftThumb],
+  [PoseLandmarks.rightWrist, PoseLandmarks.rightThumb],
   [PoseLandmarks.leftIndex, PoseLandmarks.leftWrist],
   [PoseLandmarks.rightIndex, PoseLandmarks.rightWrist],
   [PoseLandmarks.leftWrist, PoseLandmarks.leftElbow],
@@ -74,15 +83,34 @@ export function DrawConnections(
   canvasCtx.restore();
 }
 
-export function DrawPose(canvasCtx: CanvasRenderingContext2D, poseLandmarks: Array<Landmark>) {
+export function DrawPose(canvasCtx: CanvasRenderingContext2D, poseLandmarks: Array<Landmark>, sourceAR?: number) {
 
   if (poseLandmarks.length === 0) {
     return;
   }
 
   canvasCtx.save();
-  const w = canvasCtx.canvas.width;
-  const h = canvasCtx.canvas.height;
+  let w = canvasCtx.canvas.width;
+  let h = canvasCtx.canvas.height;
+
+  if (sourceAR) {
+    const canvasAR = canvasCtx.canvas.width / canvasCtx.canvas.height;
+
+    if (sourceAR > canvasAR) {
+      // video source is wider than canvas
+      const adjustedHeight = w / sourceAR;
+      const pixelsTaller = h - adjustedHeight;
+      canvasCtx.translate(0, pixelsTaller / 2);
+      h = adjustedHeight;
+
+    } else if (sourceAR < canvasAR) {
+      // video source is taller than canvas
+      const adjustedWidth = sourceAR * h;
+      const pixelsWider = w - adjustedWidth;
+      canvasCtx.translate(pixelsWider / 2, 0);
+      w = adjustedWidth;
+    }
+  }
 
   canvasCtx.beginPath();
   CONNECTIONS_TO_DRAW.forEach((connection) => {
@@ -130,8 +158,11 @@ export function StartTracking(videoE: HTMLVideoElement): void {
   trackingStarted = true;
   trackingRequests.initial = true;
 
-  const holistic = new mp.Holistic({ locateFile: (file: any) => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.1/${file}` });
-  holistic.setOptions({
+  let mpInstance: any = null;
+  if (usingHolistic) mpInstance = new mp.Holistic({ locateFile: (file: any) => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}` });
+  else mpInstance = new mp.Pose({ locateFile: (file: any) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}` });
+
+  mpInstance.setOptions({
     upperBodyOnly: false,
     smoothLandmarks: true,
     minDetectionConfidence: 0.5,
@@ -139,7 +170,7 @@ export function StartTracking(videoE: HTMLVideoElement): void {
   });
 
   let frameId = 0;
-  holistic.onResults((res: MpHolisticResults) => {
+  mpInstance.onResults((res: MpHolisticResults) => {
     trackingRequests.initial = false;
     latestResults = res;
     eventHub.emit(EventNames.trackingResults, res, frameId);
@@ -156,7 +187,7 @@ export function StartTracking(videoE: HTMLVideoElement): void {
     async () => {
       frameId += 1;
       eventHub.emit(EventNames.trackingProcessingStarted, frameId);
-      if (trackingCount() > 0) await holistic.send({ image: videoE });
+      if (trackingCount() > 0) await mpInstance.send({ image: videoE });
     },
     () => true,
   );

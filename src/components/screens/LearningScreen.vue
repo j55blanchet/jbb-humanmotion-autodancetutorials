@@ -178,7 +178,8 @@ function setupFrameRecording(activity: ComputedRef<Activity | null>, activityFin
     );
 
     isSavingFrames.value = true;
-    playActivity();
+
+    playActivity(5);
   }
   async function concludeSaveFrames() {
     isSavingFrames.value = false;
