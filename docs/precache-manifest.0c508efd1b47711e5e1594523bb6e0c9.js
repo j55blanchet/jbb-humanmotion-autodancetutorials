@@ -1,11 +1,15 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "43b95f463c8900c98e63",
-    "url": "/css/app.9db92fa2.css"
+    "revision": "84a60f6367520052fc69",
+    "url": "/css/app.3afc09cd.css"
   },
   {
     "revision": "7fb52f5d3bd4ecd3d3efe4e29ee74231",
     "url": "/dances/20210304_202928000_iOS.mp4"
+  },
+  {
+    "revision": "e8e16ef2da403b557c4dd3f9f048597a",
+    "url": "/dances/asl/COCONUT.mov"
   },
   {
     "revision": "c7b6e371056cbd8e8148382c0765e0bf",
@@ -48,20 +52,28 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/dances/unhhunh.mp4"
   },
   {
+    "revision": "434f566c61ffe4138fb0925237a8d95a",
+    "url": "/img/backward.434f566c.svg"
+  },
+  {
+    "revision": "e257a03f1b9263a7e65082b3c00fccc2",
+    "url": "/img/forward.e257a03f.svg"
+  },
+  {
     "revision": "589b3b61bf5090d9eadc8cb559b6229b",
     "url": "/img/tiktokdances.589b3b61.jpg"
   },
   {
-    "revision": "4ce99dfdc65277e3eef143f19981a247",
+    "revision": "167a2b069f602bc5e098bfe951c156d2",
     "url": "/index.html"
   },
   {
-    "revision": "43b95f463c8900c98e63",
-    "url": "/js/app.a700cbfa.js"
+    "revision": "84a60f6367520052fc69",
+    "url": "/js/app.ffe127d1.js"
   },
   {
-    "revision": "a66ea348f562966b72a5",
-    "url": "/js/chunk-vendors.b6131f1a.js"
+    "revision": "e93554b94e2ca1530ddd",
+    "url": "/js/chunk-vendors.83e086cb.js"
   },
   {
     "revision": "2c36a4ecadb38d2be6a01dfc55f19ea6",
