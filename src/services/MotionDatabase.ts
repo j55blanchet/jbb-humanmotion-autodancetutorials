@@ -49,7 +49,7 @@ const dances: Array<DanceEntry> = [
 
   {
     title: 'ASL: Coconut',
-    videoSrc: 'dances/asl/COCONUT.mp4',
+    videoSrc: 'dances/asl/COCONUT.mov',
     hovering: false,
     lessons: [aslCoconutLesson as DanceLesson],
   },

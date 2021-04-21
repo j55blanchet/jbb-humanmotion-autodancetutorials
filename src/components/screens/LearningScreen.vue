@@ -40,25 +40,19 @@
 
     <div class="overlay overlay-left" v-show="activityFinished">
       <div class="vcenter-parent">
-        <div class="content translucent-text p-5 is-size-5 is-rounded">
-          <p class="mb-0">Repeat</p>
-            <span class="icon is-large fa-flip-horizontal">
-              <i class="fas fa-2x fa-hand-paper fa-rotate-90"></i>
-            </span>
-            <!-- <br>
-            <p class="mt-4 has-text-grey-lighter">{{activityTitle}}</p> -->
+        <div class="content translucent-text p-5 is-size-5 is-rounded activityEndGestureCard">
+          <GestureIcon :gesture="'backward'" />
+          <br />
+          Repeat
         </div>
       </div>
     </div>
     <div class="overlay overlay-right" v-show="activityFinished">
       <div class="vcenter-parent">
-        <div class="content translucent-text p-5 is-size-5 is-rounded">
-          <p class="mb-0">Next</p>
-          <span class="icon is-large" >
-            <i class="fas fa-2x fa-hand-paper fa-rotate-90"></i>
-          </span>
-          <!-- <br>
-          <p class="mt-4 has-text-grey-lighter">{{nextActivityTitle}}</p> -->
+        <div class="content translucent-text p-5 is-size-5 is-rounded activityEndGestureCard">
+          <GestureIcon :gesture="'forward'" />
+          <br />
+          Next
         </div>
       </div>
     </div>
@@ -99,6 +93,7 @@ import { Landmark } from '@/services/MediaPipeTypes';
 import SegmentedProgressBar, { ProgressSegmentData } from '../elements/SegmentedProgressBar.vue';
 import PausingVideoPlayer from '../elements/PausingVideoPlayer.vue';
 import WebcamBox from '../elements/WebcamBox.vue';
+import GestureIcon from '../elements/GestureIcon.vue';
 
 const DefaultPauseDuration = 1.5; // 1.5 seconds
 
@@ -202,6 +197,7 @@ export default defineComponent({
     PausingVideoPlayer,
     InstructionCarousel,
     WebcamBox,
+    GestureIcon,
   },
   props: {
     targetDance: Object,
@@ -442,5 +438,9 @@ export default defineComponent({
 
 .lessonProgress {
   width: 128px;
+}
+
+.activityEndGestureCard {
+  max-width: 4rem;
 }
 </style>

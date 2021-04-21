@@ -2,25 +2,11 @@
   <div class="onboardingUI">
     <div class="overlay instructions-overlay mb-4">
        <InstructionCarousel :instructions="instructions" class="m-2"/>
-       <InstructionCarousel v-show="stage !== OnboardingStage.done" :instructions="[{id: 0, text: 'How to use this app'}]" class="m-2"/>
+       <!-- <InstructionCarousel v-show="stage !== OnboardingStage.done" :instructions="[{id: 0, text: 'How to use this app'}]" class="m-2"/> -->
     </div>
     <div class="vcenter-parent" v-show="stage !== OnboardingStage.done">
       <div class="content translucent-text is-rounded p-6">
-        <!-- <h3 class="has-text-white">Here's how to use this app</h3> -->
-
-        <span v-show="stage == 0">
-          <span class="icon is-large" >
-            <i class="fas fa-2x fa-hand-paper fa-rotate-90"></i>
-          </span>
-        </span>
-
-        <span v-show="stage == 1">
-          <!-- <p>Point to the left with a flat hand to go backwards</p> -->
-          <span class="icon is-large fa-flip-horizontal" v-show="stage == 1">
-            <i class="fas fa-2x fa-hand-paper fa-rotate-90"></i>
-          </span>
-        </span>
-
+        <GestureIcon :gesture="gestureIcon" />
       </div>
     </div>
     <div class="overlay overlay-top overlay-right mt-4 mr-4">
@@ -39,6 +25,7 @@ import {
 
 import { setupGestureListening, GestureNames, TrackingActions } from '../services/EventHub';
 import InstructionCarousel, { Instruction } from './elements/InstructionCarousel.vue';
+import GestureIcon, { GestureIcons } from './elements/GestureIcon.vue';
 
 const OnboardingStage = {
   trySelectNext: 0,
@@ -48,7 +35,7 @@ const OnboardingStage = {
 
 export default defineComponent({
   name: 'OnboardingUI',
-  components: { InstructionCarousel },
+  components: { InstructionCarousel, GestureIcon },
   setup(props, ctx) {
     const stage = ref(OnboardingStage.trySelectNext);
     const output = ref('');
@@ -114,12 +101,24 @@ export default defineComponent({
       ctx.emit('onboarding-complete');
     }
 
+    const gestureIcon = computed(() => {
+      switch (stage.value) {
+        case OnboardingStage.trySelectNext:
+          return GestureIcons.forward;
+        case OnboardingStage.trySelectPrevious:
+          return GestureIcons.backward;
+        default:
+          return '';
+      }
+    });
+
     return {
       stage,
       output,
       instructions,
       OnboardingStage,
       skipOnboarding,
+      gestureIcon,
     };
   },
 });
