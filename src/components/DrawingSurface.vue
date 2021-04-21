@@ -10,7 +10,7 @@ import {
 import { WEBCAM_DIMENSIONS } from '@/services/WebcamProvider';
 import eventHub, { GestureNames } from '../services/EventHub';
 
-import { Landmark, MpHolisticResults } from '../services/MediaPipeTypes';
+import { Landmark, MpHolisticResults, PoseLandmarks } from '../services/MediaPipeTypes';
 import {
   HAND_LANDMARK_CONNECTIONS, DrawConnections, HAND, DrawPose, usingHolistic,
 } from '../services/MediaPipe';
@@ -81,6 +81,25 @@ function detectHandGesture(handLandmarks?: Landmark[]): string {
 
 function detectPoseGesture(poseLandmarks?: Landmark[]): string {
   if (!poseLandmarks) return GestureNames.none;
+
+  const TOLERANCE = 20;
+  const TOLERANCE_RADS = TOLERANCE / (180 * Math.PI);
+
+  const left = [PoseLandmarks.leftElbow, PoseLandmarks.leftWrist].map((i) => poseLandmarks[i]);
+  const lelb = left[0];
+  const lwrist = left[1];
+  if (lelb.visibility && lelb.visibility > 0.95 && lwrist.visibility && lwrist.visibility > 0.95) {
+    const ang = getAngle(lelb, lwrist);
+    if (Math.abs(ang) > Math.PI - TOLERANCE_RADS) return GestureNames.pointRight;
+  }
+
+  const right = [PoseLandmarks.rightElbow, PoseLandmarks.rightWrist].map((i) => poseLandmarks[i]);
+  const relb = right[0];
+  const rwrist = right[1];
+  if (relb.visibility && relb.visibility > 0.95 && rwrist.visibility && rwrist.visibility > 0.95) {
+    const ang = getAngle(relb, rwrist);
+    if (Math.abs(ang) < TOLERANCE_RADS) return GestureNames.pointLeft;
+  }
 
   return GestureNames.none;
 }
@@ -155,8 +174,8 @@ export default defineComponent({
       const canvas = canvasE.value;
       const canvasCtx = canvas.getContext('2d') as CanvasRenderingContext2D;
 
-      canvasCtx.strokeStyle = 'rgba(200, 250, 200, 0.6)';
-      canvasCtx.lineWidth = 4;
+      canvasCtx.strokeStyle = 'rgba(200, 250, 200, 0.75)';
+      canvasCtx.lineWidth = 6;
 
       watch(mpResults as unknown as Ref<MpHolisticResults>, (newVal) => {
 

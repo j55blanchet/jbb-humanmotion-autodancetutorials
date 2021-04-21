@@ -31,6 +31,7 @@
 
 <script lang="ts">
 
+import { usingHolistic } from '@/services/MediaPipe';
 import {
   computed,
   defineComponent, onBeforeUnmount, onMounted, ref,
@@ -57,12 +58,18 @@ export default defineComponent({
       if (stage.value === OnboardingStage.trySelectNext) {
         instructs.push({
           id: 0,
-          text: 'Point to the right with a flat hand to proceed',
+          text:
+            usingHolistic
+              ? 'Point to the right with a flat hand to proceed'
+              : 'Point your left forearm to the right to proceed',
         });
       } else if (stage.value === OnboardingStage.trySelectPrevious) {
         instructs.push({
           id: 1,
-          text: 'Point to the left with a flat hand to repeat an activity',
+          text:
+          usingHolistic
+            ? 'Point to the left with a flat hand to repeat an activity'
+            : 'Point your right forearm to the left to proceed',
         });
       } else {
         instructs.push({
@@ -98,11 +105,13 @@ export default defineComponent({
     });
 
     function skipOnboarding() {
+      if (stage.value === OnboardingStage.trySelectNext) {
+        stage.value = OnboardingStage.trySelectPrevious;
+        return;
+      }
       TrackingActions.endTrackingRequest('onboarding');
       stage.value = OnboardingStage.done;
-      setTimeout(() => {
-        ctx.emit('onboarding-complete');
-      }, 500);
+      ctx.emit('onboarding-complete');
     }
 
     return {

@@ -156,12 +156,6 @@ export default defineComponent({
     const videoElement = ref(null as null | HTMLVideoElement);
     const canvasElement = ref(null as null | HTMLCanvasElement);
     const canvasCtx = computed(() => canvasElement.value?.getContext('2d') as CanvasRenderingContext2D | null);
-    watch(canvasCtx, () => {
-      setDrawStyle.value(canvasCtx.value);
-    });
-    onMounted(() => {
-      setDrawStyle.value(canvasCtx.value);
-    });
 
     const startTime = ref(0);
     const endTime = ref(0);
@@ -228,6 +222,7 @@ export default defineComponent({
     function drawPose(lms: Landmark[]) {
       const drawCtx = canvasCtx.value;
       if (!drawCtx) return;
+      setDrawStyle.value(drawCtx);
       DrawPose(drawCtx, lms);
     }
 

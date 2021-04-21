@@ -85,9 +85,8 @@ export default defineComponent({
         if (!canvasCtx) return;
 
         /* eslint-disable no-param-reassign */
-        console.log('Setting default draw style for pausing video player', canvasCtx);
-        canvasCtx.strokeStyle = 'rgba(250, 200, 200, 0.4)';
-        canvasCtx.lineWidth = 4;
+        canvasCtx.strokeStyle = 'rgba(250, 200, 250, 0.95)';
+        canvasCtx.lineWidth = 7;
         /* eslint-enable no-param-reassign */
       },
     },
