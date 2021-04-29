@@ -126,6 +126,7 @@ function drawHandShape(results: MpHolisticResults, canvasCtx: CanvasRenderingCon
   /* eslint-disable no-param-reassign */
   canvasCtx.strokeStyle = 'white';
   canvasCtx.lineWidth = 3.0;
+  canvasCtx.lineCap = 'round';
 
   DrawConnections(canvasCtx, results.rightHandLandmarks, HAND_LANDMARK_CONNECTIONS);
   canvasCtx.restore();
@@ -146,7 +147,11 @@ function drawTrackingResults(
 
   const sourceAR = WEBCAM_DIMENSIONS.width / WEBCAM_DIMENSIONS.height;
 
-  if (results.poseLandmarks) DrawPose(canvasCtx, results.poseLandmarks, sourceAR);
+  if (results.poseLandmarks) {
+    DrawPose(canvasCtx, results.poseLandmarks, {
+      sourceAspectRatio: sourceAR,
+    });
+  }
   // if (detectedGesture !== GestureNames.none) drawHandShape(results, canvasCtx);
 
   canvasCtx.restore();
@@ -176,6 +181,7 @@ export default defineComponent({
 
       canvasCtx.strokeStyle = 'rgba(200, 250, 200, 0.75)';
       canvasCtx.lineWidth = 6;
+      canvasCtx.lineCap = 'round';
 
       watch(mpResults as unknown as Ref<MpHolisticResults>, (newVal) => {
 

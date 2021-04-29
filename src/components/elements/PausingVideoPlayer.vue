@@ -10,6 +10,8 @@
     :style="{
       height: '720px',
     }"
+    :emphasizedJoints="emphasizedJoints"
+    :emphasizedJointStyle="emphasizedJointStyle"
     />
 </template>
 
@@ -87,8 +89,17 @@ export default defineComponent({
         /* eslint-disable no-param-reassign */
         canvasCtx.strokeStyle = 'rgba(250, 200, 250, 0.95)';
         canvasCtx.lineWidth = 7;
+        canvasCtx.lineCap = 'round';
         /* eslint-enable no-param-reassign */
       },
+    },
+    emphasizedJoints: {
+      type: Array,
+      default: Array,
+    },
+    emphasizedJointStyle: {
+      type: String,
+      default: 'red',
     },
   },
   emits: ['playback-completed', 'progress', 'pause-hit', 'pause-end'],

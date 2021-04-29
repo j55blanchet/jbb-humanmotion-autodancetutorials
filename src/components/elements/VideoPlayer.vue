@@ -143,6 +143,14 @@ export default defineComponent({
       type: Function,
       default: () => {},
     },
+    emphasizedJoints: {
+      type: Array,
+      default: Array,
+    },
+    emphasizedJointStyle: {
+      type: String,
+      default: 'red',
+    },
   },
   emits: [
     'playback-completed',
@@ -150,7 +158,7 @@ export default defineComponent({
   ],
   setup(props, ctx) {
     const {
-      videoBaseUrl, drawPoseLandmarks, fps, setDrawStyle,
+      videoBaseUrl, drawPoseLandmarks, fps, setDrawStyle, emphasizedJoints, emphasizedJointStyle,
     } = toRefs(props);
 
     const videoElement = ref(null as null | HTMLVideoElement);
@@ -223,7 +231,10 @@ export default defineComponent({
       const drawCtx = canvasCtx.value;
       if (!drawCtx) return;
       setDrawStyle.value(drawCtx);
-      DrawPose(drawCtx, lms);
+      DrawPose(drawCtx, lms, {
+        emphasizedJoints: emphasizedJoints.value as number[],
+        emphasisStroke: emphasizedJointStyle.value,
+      });
     }
 
     watch([videoBaseUrl, drawPoseLandmarks], async () => {

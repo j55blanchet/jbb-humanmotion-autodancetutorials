@@ -29,6 +29,7 @@
         @pause-end="onPauseEnded"
         :drawPoseLandmarks="activity?.demoVisual === 'skeleton'"
         :videoOpacity="activity?.demoVisual === 'video' ? 1 : 0"
+        :emphasizedJoints="emphasizedJoints"
       />
     </div>
 
@@ -226,6 +227,7 @@ export default defineComponent({
       return lesson?.activities[activityId.value] ?? null;
     });
 
+    const emphasizedJoints = computed(() => activity.value?.emphasizedJoints ?? []);
     const activityTitle = computed(() => activity.value?.title ?? '');
     const activityCount = computed(() => {
       const lesson = targetLesson?.value as unknown as DanceLesson | null;
@@ -395,6 +397,7 @@ export default defineComponent({
       activityId,
       activityCount,
       activityTitle,
+      emphasizedJoints,
       nextActivityTitle,
       instructions,
       timedInstructions,

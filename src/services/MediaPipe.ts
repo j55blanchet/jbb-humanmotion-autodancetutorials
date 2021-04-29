@@ -1,3 +1,4 @@
+/* eslint-disable no-multi-spaces */
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/prefer-default-export */
@@ -30,32 +31,32 @@ export const HAND = {
 };
 
 const CONNECTIONS_TO_DRAW = [
-  [PoseLandmarks.leftWrist, PoseLandmarks.leftPinky],
-  [PoseLandmarks.rightWrist, PoseLandmarks.rightPinky],
-  [PoseLandmarks.leftWrist, PoseLandmarks.leftThumb],
-  [PoseLandmarks.rightWrist, PoseLandmarks.rightThumb],
-  [PoseLandmarks.leftIndex, PoseLandmarks.leftWrist],
-  [PoseLandmarks.rightIndex, PoseLandmarks.rightWrist],
-  [PoseLandmarks.leftWrist, PoseLandmarks.leftElbow],
-  [PoseLandmarks.rightWrist, PoseLandmarks.rightElbow],
-  [PoseLandmarks.leftElbow, PoseLandmarks.leftShoulder],
-  [PoseLandmarks.rightElbow, PoseLandmarks.rightShoulder],
-  [PoseLandmarks.leftShoulder, PoseLandmarks.rightShoulder],
-  [PoseLandmarks.leftHip, PoseLandmarks.leftShoulder],
-  [PoseLandmarks.rightHip, PoseLandmarks.rightShoulder],
-  [PoseLandmarks.leftHip, PoseLandmarks.rightHip],
-  [PoseLandmarks.leftHip, PoseLandmarks.leftKnee],
-  [PoseLandmarks.rightHip, PoseLandmarks.rightKnee],
-  [PoseLandmarks.leftKnee, PoseLandmarks.leftAnkle],
-  [PoseLandmarks.rightKnee, PoseLandmarks.rightAnkle],
-  [PoseLandmarks.leftAnkle, PoseLandmarks.leftHeel],
-  [PoseLandmarks.rightAnkle, PoseLandmarks.rightHeel],
-  [PoseLandmarks.leftHeel, PoseLandmarks.leftFootIndex],
-  [PoseLandmarks.rightHeel, PoseLandmarks.rightFootIndex],
-  [PoseLandmarks.leftAnkle, PoseLandmarks.leftFootIndex],
-  [PoseLandmarks.rightAnkle, PoseLandmarks.rightFootIndex],
-  [PoseLandmarks.nose, PoseLandmarks.rightEye],
-  [PoseLandmarks.nose, PoseLandmarks.leftEye],
+  { v0: PoseLandmarks.leftWrist,    v1: PoseLandmarks.leftPinky,      size: 1.0 },
+  { v0: PoseLandmarks.rightWrist,   v1: PoseLandmarks.rightPinky,     size: 1.0 },
+  { v0: PoseLandmarks.leftWrist,    v1: PoseLandmarks.leftThumb,      size: 1.0 },
+  { v0: PoseLandmarks.rightWrist,   v1: PoseLandmarks.rightThumb,     size: 1.0 },
+  { v0: PoseLandmarks.leftIndex,    v1: PoseLandmarks.leftWrist,      size: 1.0 },
+  { v0: PoseLandmarks.rightIndex,   v1: PoseLandmarks.rightWrist,     size: 1.0 },
+  { v0: PoseLandmarks.leftWrist,    v1: PoseLandmarks.leftElbow,      size: 1.1 },
+  { v0: PoseLandmarks.rightWrist,   v1: PoseLandmarks.rightElbow,     size: 1.1 },
+  { v0: PoseLandmarks.leftElbow,    v1: PoseLandmarks.leftShoulder,   size: 1.3 },
+  { v0: PoseLandmarks.rightElbow,   v1: PoseLandmarks.rightShoulder,  size: 1.3 },
+  { v0: PoseLandmarks.leftShoulder, v1: PoseLandmarks.rightShoulder,  size: 2.0 },
+  { v0: PoseLandmarks.leftHip,      v1: PoseLandmarks.leftShoulder,   size: 1.7 },
+  { v0: PoseLandmarks.rightHip,     v1: PoseLandmarks.rightShoulder,  size: 1.7 },
+  { v0: PoseLandmarks.leftHip,      v1: PoseLandmarks.rightHip,       size: 1.7 },
+  { v0: PoseLandmarks.leftHip,      v1: PoseLandmarks.leftKnee,       size: 1.5 },
+  { v0: PoseLandmarks.rightHip,     v1: PoseLandmarks.rightKnee,      size: 1.5 },
+  { v0: PoseLandmarks.leftKnee,     v1: PoseLandmarks.leftAnkle,      size: 1.4 },
+  { v0: PoseLandmarks.rightKnee,    v1: PoseLandmarks.rightAnkle,     size: 1.4 },
+  { v0: PoseLandmarks.leftAnkle,    v1: PoseLandmarks.leftHeel,       size: 1.0 },
+  { v0: PoseLandmarks.rightAnkle,   v1: PoseLandmarks.rightHeel,      size: 1.0 },
+  { v0: PoseLandmarks.leftHeel,     v1: PoseLandmarks.leftFootIndex,  size: 1.0 },
+  { v0: PoseLandmarks.rightHeel,    v1: PoseLandmarks.rightFootIndex, size: 1.0 },
+  { v0: PoseLandmarks.leftAnkle,    v1: PoseLandmarks.leftFootIndex,  size: 1.0 },
+  { v0: PoseLandmarks.rightAnkle,   v1: PoseLandmarks.rightFootIndex, size: 1.0 },
+  { v0: PoseLandmarks.nose,         v1: PoseLandmarks.rightEye,       size: 1.0 },
+  { v0: PoseLandmarks.nose,         v1: PoseLandmarks.leftEye,        size: 1.0 },
 ];
 
 let trackingStarted = false;
@@ -83,16 +84,27 @@ export function DrawConnections(
   canvasCtx.restore();
 }
 
-export function DrawPose(canvasCtx: CanvasRenderingContext2D, poseLandmarks: Array<Landmark>, sourceAR?: number) {
+export function DrawPose(
+  canvasCtx: CanvasRenderingContext2D,
+  poseLandmarks: Landmark[],
+  options?: {
+    sourceAspectRatio?: number;
+    emphasizedJoints?: number[];
+    emphasisStroke? : string;
+  },
+) {
 
   if (poseLandmarks.length === 0) {
     return;
   }
 
+  const jointsWithEmphasis = options?.emphasizedJoints;
+
   canvasCtx.save();
   let w = canvasCtx.canvas.width;
   let h = canvasCtx.canvas.height;
 
+  const sourceAR = options?.sourceAspectRatio;
   if (sourceAR) {
     const canvasAR = canvasCtx.canvas.width / canvasCtx.canvas.height;
 
@@ -112,10 +124,9 @@ export function DrawPose(canvasCtx: CanvasRenderingContext2D, poseLandmarks: Arr
     }
   }
 
-  canvasCtx.beginPath();
   CONNECTIONS_TO_DRAW.forEach((connection) => {
-    const p1 = poseLandmarks[connection[0]];
-    const p2 = poseLandmarks[connection[1]];
+    const p1 = poseLandmarks[connection.v0];
+    const p2 = poseLandmarks[connection.v1];
 
     if (!p1 || !p2) return;
     if ((p1.visibility ?? 1) < 0.5 || (p2.visibility ?? 1) < 0.5) {
@@ -123,20 +134,31 @@ export function DrawPose(canvasCtx: CanvasRenderingContext2D, poseLandmarks: Arr
       return;
     }
 
+    const emphasized = jointsWithEmphasis
+    && jointsWithEmphasis.indexOf(connection.v0) !== -1
+    && jointsWithEmphasis.indexOf(connection.v1) !== -1;
+
+    canvasCtx.save();
+    if (emphasized && options?.emphasisStroke) {
+      canvasCtx.strokeStyle = options.emphasisStroke;
+    }
+    canvasCtx.lineWidth *= connection.size;
+    canvasCtx.beginPath();
     canvasCtx.moveTo(p1.x * w, p1.y * h);
     canvasCtx.lineTo(p2.x * w, p2.y * h);
-    // console.log(`draw from ${connection[0]} to ${connection[1]}`);
+    canvasCtx.stroke();
+    canvasCtx.restore();
   });
 
   const p1a = poseLandmarks[PoseLandmarks.leftShoulder];
   const p1b = poseLandmarks[PoseLandmarks.rightShoulder];
   const p2 = poseLandmarks[PoseLandmarks.nose];
   if (!p1a || !p1b || !p2) {
+    canvasCtx.beginPath();
     canvasCtx.moveTo(w * 0.5 * (p1a.x + p1b.x), h * 0.5 * (p1a.y + p1b.y));
     canvasCtx.lineTo(w * p2.x, h * p2.y);
+    canvasCtx.stroke();
   }
-
-  canvasCtx.stroke();
 
   canvasCtx.restore();
 }
