@@ -1,6 +1,7 @@
 import { MpHolisticResults } from './MediaPipeTypes';
 import Utils from './Utils';
-import webcamProvider, { saveBlob } from './WebcamProvider';
+import { saveBlob } from './WebcamProvider';
+import ScreenRecorder from './ScreenRecorder';
 
 export interface Dimensions {
   width: number;
@@ -8,6 +9,7 @@ export interface Dimensions {
 }
 
 interface RecordingSession {
+  frameTimestamps: number[];
   userDimension: Dimensions;
   userFrames: MpHolisticResults[];
   demoDimension: Dimensions;
@@ -20,8 +22,11 @@ export class MotionRecorder {
 
   private recordingSessionNextId = 0;
 
+  private screenRecorder = new ScreenRecorder();
+
   async startRecordingSession(userDims: Dimensions, demoDims: Dimensions): Promise<number> {
     this.recordingSessions[this.recordingSessionNextId] = {
+      frameTimestamps: [],
       userDimension: userDims,
       userFrames: [],
       demoDimension: demoDims,
@@ -29,16 +34,17 @@ export class MotionRecorder {
     };
     this.recordingSessionNextId += 1;
 
-    await webcamProvider.startRecording();
+    await this.screenRecorder.startRecording();
     return this.recordingSessionNextId - 1;
   }
 
-  saveMotionFrame(sessionId: number, userFrame: MpHolisticResults, demoFrame: MpHolisticResults) {
+  saveMotionFrame(sessionId: number, timestamp: number, userFrame: MpHolisticResults, demoFrame: MpHolisticResults) {
     const session = this.recordingSessions[sessionId];
     if (!session) throw new Error(`Recording session ${sessionId} wasn't found!`);
 
     debugger;
     if (userFrame.image) delete userFrame.image;
+    session.frameTimestamps.push(timestamp);
     session.userFrames.push(userFrame);
     session.demoFrames.push(demoFrame);
   }
@@ -47,8 +53,8 @@ export class MotionRecorder {
     const session = this.recordingSessions[sessionId];
     if (!session) throw new Error(`Recording session ${sessionId} wasn't found!`);
 
-    const webcamBlob = await webcamProvider.stopRecording();
-    saveBlob(webcamBlob, 'webcam.webm');
+    const recordedBlob = await this.screenRecorder.endRecording();
+    saveBlob(recordedBlob, 'recording.webm');
 
     const mSession = { startTime: start, endTime: end, ...session };
 

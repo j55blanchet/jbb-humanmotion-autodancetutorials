@@ -4,6 +4,10 @@
 
 export default class Utils {
 
+  static sleep(secs: number): Promise<void> {
+    return new Promise((res) => setTimeout(res, secs * 1000));
+  }
+
   static PromptDownloadFile(filename: string, text: string) {
     const element = document.createElement('a');
     element.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(text)}`);

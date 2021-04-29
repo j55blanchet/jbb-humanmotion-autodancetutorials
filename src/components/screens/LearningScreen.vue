@@ -11,6 +11,7 @@
     </teleport>
     <teleport to="#topbarCenter">
         <h3>{{activityTitle}}</h3>
+        <span class="tag">Time: {{videoTime}}</span>
     </teleport>
 
     <div class="overlay" v-show="activity && activity.userVisual !== 'none'">
@@ -90,6 +91,7 @@ import DanceEntry from '@/model/DanceEntry';
 import motionRecorder from '@/services/MotionRecorder';
 import InstructionCarousel, { Instruction } from '@/components/elements/InstructionCarousel.vue';
 import { Landmark } from '@/services/MediaPipeTypes';
+import Utils from '@/services/Utils';
 import SegmentedProgressBar, { ProgressSegmentData } from '../elements/SegmentedProgressBar.vue';
 import PausingVideoPlayer from '../elements/PausingVideoPlayer.vue';
 import WebcamBox from '../elements/WebcamBox.vue';
@@ -131,13 +133,14 @@ function calculateProgressSegments(dance: DanceEntry, lesson: DanceLesson, activ
 
 const TRACKING_ID = 'LearningScreen';
 
-function setupFrameRecording(activity: ComputedRef<Activity | null>, activityFinished: Ref<boolean>, videoPlayer: Ref<null | typeof PausingVideoPlayer>, playActivity: Function) {
+function setupFrameRecording(activity: ComputedRef<Activity | null>, videoTime: Ref<number>, videoPlayer: Ref<null | typeof PausingVideoPlayer>, playActivity: Function) {
   const isSavingFrames = ref(false);
   let recordingSessionId = -1;
 
   const lastPose = {
     frameId: -1,
     pose: null as null | Landmark[],
+    timestamp: 0,
   };
 
   setupMediaPipeListening(
@@ -150,6 +153,7 @@ function setupFrameRecording(activity: ComputedRef<Activity | null>, activityFin
       if (isSavingFrames.value) {
         motionRecorder.saveMotionFrame(
           recordingSessionId,
+          lastPose.timestamp,
           mpResults,
           { poseLandmarks: lastPose.pose ?? undefined },
         );
@@ -158,6 +162,7 @@ function setupFrameRecording(activity: ComputedRef<Activity | null>, activityFin
     (frameId) => {
       lastPose.frameId = frameId;
       lastPose.pose = videoPlayer.value?.currentPose ?? null;
+      lastPose.timestamp = videoTime.value;
     },
   );
   const canSaveFrame = computed(() => {
@@ -177,6 +182,9 @@ function setupFrameRecording(activity: ComputedRef<Activity | null>, activityFin
     playActivity(5);
   }
   async function concludeSaveFrames() {
+
+    await Utils.sleep(1.5);
+
     isSavingFrames.value = false;
 
     await motionRecorder.endRecordingSession(
@@ -342,7 +350,7 @@ export default defineComponent({
 
     const {
       isSavingFrames, canSaveFrame, startSaveFrames, concludeSaveFrames,
-    } = setupFrameRecording(activity, activityFinished, videoPlayer, playActivity);
+    } = setupFrameRecording(activity, videoTime, videoPlayer, playActivity);
 
     function onActivityFinished() {
       activityState.value = ActivityPlayState.ActivityEnded;
