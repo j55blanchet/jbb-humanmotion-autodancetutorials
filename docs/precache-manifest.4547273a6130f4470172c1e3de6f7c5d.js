@@ -1,7 +1,7 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "7b47d4fc1cc7dd9c52a4",
-    "url": "/css/app.3afc09cd.css"
+    "revision": "19bcac59d45c316946c6",
+    "url": "/css/app.715e85e6.css"
   },
   {
     "revision": "7fb52f5d3bd4ecd3d3efe4e29ee74231",
@@ -60,20 +60,24 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/img/forward.e257a03f.svg"
   },
   {
+    "revision": "8c9e21c741930f77cb7e2034f0545473",
+    "url": "/img/play.8c9e21c7.svg"
+  },
+  {
     "revision": "589b3b61bf5090d9eadc8cb559b6229b",
     "url": "/img/tiktokdances.589b3b61.jpg"
   },
   {
-    "revision": "fb7c03b7734dcdaaddc61196ac32822d",
+    "revision": "45c586205f01ad8d21b01063a3eddc84",
     "url": "/index.html"
   },
   {
-    "revision": "7b47d4fc1cc7dd9c52a4",
-    "url": "/js/app.ac854d48.js"
+    "revision": "19bcac59d45c316946c6",
+    "url": "/js/app.c92037ce.js"
   },
   {
-    "revision": "e93554b94e2ca1530ddd",
-    "url": "/js/chunk-vendors.83e086cb.js"
+    "revision": "124becd01af82b5174fb",
+    "url": "/js/chunk-vendors.24029bd5.js"
   },
   {
     "revision": "2c36a4ecadb38d2be6a01dfc55f19ea6",
@@ -104,23 +108,23 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/poses/asl/sailboat.poses.csv"
   },
   {
-    "revision": "622519a745b44f10d390c5ce9ab25590",
+    "revision": "a12dd273db861716c80b8518c8310c48",
     "url": "/poses/derulo.poses.csv"
   },
   {
-    "revision": "84398df88cbc43af3b265332b4167aae",
+    "revision": "84b35c7fa282a4a7a193c45d67128e3e",
     "url": "/poses/itsafit.poses.csv"
   },
   {
-    "revision": "32012bb728c36f0352b607b895e0011c",
+    "revision": "c676fda1d3ac9b22900c98cdd777c4fe",
     "url": "/poses/renegade.poses.csv"
   },
   {
-    "revision": "533a4757d27c719bceb7ca4ce3b489b4",
+    "revision": "0d58f64838ebcd908534f515d43329ee",
     "url": "/poses/unhhunh.poses.csv"
   },
   {
-    "revision": "b6216d61c03e6ce0c9aea6ca7808f7ca",
+    "revision": "735ab4f94fbcd57074377afca324c813",
     "url": "/robots.txt"
   }
 ]);

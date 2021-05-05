@@ -40,3 +40,9 @@ export default interface DanceLesson {
   poseScope: 'all' | 'upperBody';
   // eslint-disable-next-line
 }
+
+export class DanceUtils {
+  static shouldPauseBeforeActivity(activity: Activity) {
+    return !!activity.startInstruction;
+  }
+}

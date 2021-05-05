@@ -118,7 +118,7 @@ export default defineComponent({
       emit('progress', time);
     }
 
-    function playSegment(seg: PlaySegment, delaySecs: number, emitResume?: boolean) {
+    function playSegment(seg: PlaySegment, delaySecs: number, emitResume?: boolean, onPlayStart?: () => void) {
       const vidPlayer = videoPlayer.value;
       if (!vidPlayer) return;
 
@@ -129,6 +129,7 @@ export default defineComponent({
           emit('pause-end');
         }
         vidPlayer.playVideo(seg.from, seg.to, seg.speed);
+        if (onPlayStart) onPlayStart();
       }, 1000 * delaySecs);
     }
     onBeforeUnmount(() => {
@@ -144,12 +145,14 @@ export default defineComponent({
       speed: number,
       pauses: Array<PauseInfo>,
       playDelaySecs: number,
+      onPlayStart?: () => void,
     ) {
+      clearTimeout(playTimeoutId);
       setTime(from);
       playingSegments = computePlaySegments(from, to, speed, pauses);
       playingSegmentIndex = 0;
 
-      playSegment(playingSegments[playingSegmentIndex], playDelaySecs);
+      playSegment(playingSegments[playingSegmentIndex], playDelaySecs, false, onPlayStart);
     }
     function onSegmentPlaybackCompleted() {
       const { pause } = playingSegments[playingSegmentIndex];

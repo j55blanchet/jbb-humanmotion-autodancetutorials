@@ -14,6 +14,7 @@ import { computed, defineComponent, toRefs } from 'vue';
 export const GestureIcons = Object.freeze({
   forward: 'forward',
   backward: 'backward',
+  play: 'play',
 });
 
 export default defineComponent({

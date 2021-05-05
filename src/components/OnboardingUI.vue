@@ -30,7 +30,8 @@ import GestureIcon, { GestureIcons } from './elements/GestureIcon.vue';
 const OnboardingStage = {
   trySelectNext: 0,
   trySelectPrevious: 1,
-  done: 2,
+  tryPerformPlay: 2,
+  done: 3,
 };
 
 export default defineComponent({
@@ -56,11 +57,16 @@ export default defineComponent({
           text:
           usingHolistic
             ? 'Point to the left with a flat hand to repeat an activity'
-            : 'Point your right forearm to the left to proceed',
+            : 'Point your right forearm to the left to repeat an activity',
+        });
+      } else if (stage.value === OnboardingStage.tryPerformPlay) {
+        instructs.push({
+          id: 2,
+          text: 'Put your hands together in a Namaste greeting to play a video',
         });
       } else {
         instructs.push({
-          id: 2,
+          id: 3,
           text: 'You got it!',
         });
       }
@@ -82,6 +88,11 @@ export default defineComponent({
       },
       [GestureNames.pointLeft]: () => {
         if (stage.value === OnboardingStage.trySelectPrevious) {
+          stage.value = OnboardingStage.tryPerformPlay;
+        }
+      },
+      [GestureNames.namaste]: () => {
+        if (stage.value === OnboardingStage.tryPerformPlay) {
           stage.value = OnboardingStage.done;
           TrackingActions.endTrackingRequest('onboarding');
           setTimeout(() => {
@@ -107,6 +118,8 @@ export default defineComponent({
           return GestureIcons.forward;
         case OnboardingStage.trySelectPrevious:
           return GestureIcons.backward;
+        case OnboardingStage.tryPerformPlay:
+          return GestureIcons.play;
         default:
           return '';
       }

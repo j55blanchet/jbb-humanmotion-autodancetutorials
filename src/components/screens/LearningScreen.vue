@@ -34,7 +34,11 @@
     </div>
 
     <div class="overlay instructions-overlay mb-4">
-      <InstructionCarousel v-show="activityFinished" :instructions="[{id:0, text:'Use a gesture to proceed'}]" class="m-2"/>
+      <div class="content translucent-text activityGestureCard mb-1 is-rounded" v-show="showPlayGestureIcon">
+        <GestureIcon :gesture="'play'" />
+      </div>
+      <InstructionCarousel v-show="showPlayGestureIcon" :sizeClass="'is-size-6'" :instructions="[{id:0, text:'Do the play gesture when you\'re ready'}]" class="mb-4"/>
+      <InstructionCarousel v-show="activityFinished" :sizeClass="'is-size-6'" :instructions="[{id:0, text:'Use a gesture to proceed'}]" class="m-2"/>
       <InstructionCarousel v-show="!activityFinished && timedInstructions.length > 0" :instructions="timedInstructions" class="m-2"/>
       <InstructionCarousel v-show="instructions.length > 0" :instructions="instructions" class="m-2"/>
       <InstructionCarousel v-show="activity.staticInstruction" :instructions="[{id:0, text:activity.staticInstruction}]" class="m-2"/>
@@ -42,7 +46,7 @@
 
     <div class="overlay overlay-left" v-show="activityFinished">
       <div class="vcenter-parent">
-        <div class="content translucent-text p-5 is-size-5 is-rounded activityEndGestureCard">
+        <div class="content translucent-text p-5 is-size-5 is-rounded activityGestureCard">
           <GestureIcon :gesture="'backward'" />
           <br />
           Repeat
@@ -51,7 +55,7 @@
     </div>
     <div class="overlay overlay-right" v-show="activityFinished">
       <div class="vcenter-parent">
-        <div class="content translucent-text p-5 is-size-5 is-rounded activityEndGestureCard">
+        <div class="content translucent-text p-5 is-size-5 is-rounded activityGestureCard">
           <GestureIcon :gesture="'forward'" />
           <br />
           Next
@@ -81,7 +85,7 @@
 </template>
 
 <script lang="ts">
-import DanceLesson, { Activity, PauseInfo } from '@/model/DanceLesson';
+import DanceLesson, { Activity, PauseInfo, DanceUtils } from '@/model/DanceLesson';
 import {
   computed, ComputedRef, defineComponent, onBeforeUnmount, onMounted, Ref, ref, toRefs, watch,
 } from 'vue';
@@ -101,7 +105,8 @@ import GestureIcon from '../elements/GestureIcon.vue';
 const DefaultPauseDuration = 1.5; // 1.5 seconds
 
 const ActivityPlayState = Object.freeze({
-  NotStarted: 'NotStarted',
+  AwaitingPlayGesture: 'AwaitingPlayGesture',
+  PendingStart: 'PendingStart',
   Playing: 'Playing',
   ActivityEnded: 'ActivityEnded',
 });
@@ -180,7 +185,7 @@ function setupFrameRecording(activity: ComputedRef<Activity | null>, videoTime: 
 
     isSavingFrames.value = true;
 
-    playActivity(5);
+    playActivity(5, true);
   }
   async function concludeSaveFrames() {
 
@@ -216,7 +221,8 @@ export default defineComponent({
 
     const { targetLesson, targetDance } = toRefs(props);
 
-    const activityState = ref(ActivityPlayState.NotStarted);
+    const activityState = ref(ActivityPlayState.AwaitingPlayGesture);
+    const showPlayGestureIcon = computed(() => activityState.value === ActivityPlayState.AwaitingPlayGesture);
 
     const videoPlayer = ref(null as null | typeof PausingVideoPlayer);
     const videoTime = ref(0);
@@ -265,7 +271,7 @@ export default defineComponent({
 
       const instructs: Instruction[] = [];
 
-      if (state === ActivityPlayState.NotStarted && mActivity.startInstruction) {
+      if (state === ActivityPlayState.AwaitingPlayGesture && mActivity.startInstruction) {
         instructs.push({
           id: 1,
           text: mActivity.startInstruction,
@@ -309,16 +315,14 @@ export default defineComponent({
       return [];
     });
 
-    function playActivity(pause?: number | undefined) {
-      console.log(`LEARNING SCREEN:: Starting playback (activityId: ${activityId.value})`);
-      pauseInstructs.value.splice(0);
-      activityState.value = ActivityPlayState.Playing;
+    function playVideo(vidActivity: Activity, pause?: number | undefined) {
       const vidPlayer = videoPlayer.value;
-      const vidActivity = activity.value;
-      if (!vidPlayer || !vidActivity) {
-        console.error('LEARNING SCREEN:: Aborting video playback: videoElement or lessonActivity is null', vidPlayer, vidActivity);
+      if (!vidPlayer) {
+        console.error('LEARNING SCREEN:: Aborting video playback: vidPlayer is null');
         return;
       }
+
+      activityState.value = ActivityPlayState.PendingStart;
 
       vidPlayer.play(
         vidActivity.startTime,
@@ -326,17 +330,39 @@ export default defineComponent({
         (vidActivity.practiceSpeeds ?? [1])[0] ?? 1,
         vidActivity.pauses ?? [],
         pause ?? DefaultPauseDuration,
+        () => {
+          activityState.value = ActivityPlayState.Playing;
+        },
       );
     }
 
+    function playActivity(pause?: number | undefined, forcePlay?: boolean | undefined) {
+      console.log(`LEARNING SCREEN:: Starting playback (activityId: ${activityId.value})`);
+      pauseInstructs.value.splice(0);
+      activityState.value = ActivityPlayState.AwaitingPlayGesture;
+      const vidActivity = activity.value;
+      const vidPlayer = videoPlayer.value;
+      if (!vidPlayer || !vidActivity) {
+        console.error('LEARNING SCREEN:: Aborting video playback: vidPlayer or lessonActivity is null', vidPlayer, vidActivity);
+        return;
+      }
+
+      vidPlayer.setTime(vidActivity.startTime);
+
+      if (!forcePlay && activityId.value !== 0 && !DanceUtils.shouldPauseBeforeActivity(vidActivity)) {
+        playVideo(vidActivity, pause);
+      }
+    }
+
     function gotoActivity(delta: number) {
-      activityState.value = ActivityPlayState.NotStarted;
+      activityState.value = ActivityPlayState.AwaitingPlayGesture;
       if (!hasNextActivity.value) {
         emit('lesson-completed');
         return;
       }
       if (activityId.value === 0 && delta < 0) {
-        playActivity(0);
+        // Don't adjust activityId - we can't go back (simply repeat).
+        playActivity();
         return;
       }
       activityId.value += delta;
@@ -363,7 +389,7 @@ export default defineComponent({
 
     const isTrackingUser = computed(() => {
       if (activity.value?.userVisual === 'skeleton') return true;
-      if (activityState.value === ActivityPlayState.ActivityEnded) return true;
+      if (activityState.value === ActivityPlayState.ActivityEnded || activityState.value === ActivityPlayState.AwaitingPlayGesture) return true;
       if (isSavingFrames.value) return true;
       return false;
     });
@@ -387,11 +413,12 @@ export default defineComponent({
     });
 
     onMounted(() => {
-      playActivity(2.5);
+      playActivity();
     });
 
     return {
       activityState,
+      showPlayGestureIcon,
       progressSegments,
       activity,
       activityId,
@@ -451,7 +478,7 @@ export default defineComponent({
   width: 128px;
 }
 
-.activityEndGestureCard {
+.activityGestureCard {
   max-width: 4rem;
 }
 </style>

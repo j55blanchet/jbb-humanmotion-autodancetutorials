@@ -1,7 +1,8 @@
 <template>
   <transition-group name="slide-fade" tag="div" class="instructionCarousel">
     <p
-      class="tag is-size-4 is-dark"
+      class="tag is-dark"
+      :class="[sizeClass]"
       v-for="inst in instructions"
       :key="inst.id">{{inst.text}}</p>
   </transition-group>
@@ -21,6 +22,10 @@ export default defineComponent({
     instructions: {
       type: Array,
       default: Array,
+    },
+    sizeClass: {
+      type: String,
+      default: 'is-size-4',
     },
   },
 });
