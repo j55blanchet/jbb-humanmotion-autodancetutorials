@@ -142,11 +142,11 @@ function isNamasteGesture(results: MpHolisticResults): boolean {
     leftWristNeckDist  < handNeckMinRelativeDist &&
     rightWristNeckDist < handNeckMinRelativeDist;
 
-  console.log('areArmLandmarksVisible', areArmLandmarksVisible);
+  // console.log('areArmLandmarksVisible', areArmLandmarksVisible);
   // console.log('areElbowsNearChest', areElbowsNearChest);
-  console.log('areHandsNearNeckBase', areHandsNearNeckBase);
-  console.log('  leftWristNeckDist', leftWristNeckDist);
-  console.log('  rightWristNeckDist', rightWristNeckDist);
+  // console.log('areHandsNearNeckBase', areHandsNearNeckBase);
+  // console.log('  leftWristNeckDist', leftWristNeckDist);
+  // console.log('  rightWristNeckDist', rightWristNeckDist);
   return areArmLandmarksVisible &&
         //  areElbowsNearChest &&
          areHandsNearNeckBase;

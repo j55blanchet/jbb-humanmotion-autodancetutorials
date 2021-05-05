@@ -191,14 +191,17 @@ export default defineComponent({
       prevTime = time;
 
       currentTime.value = time;
-      ctx.emit('progress', time);
 
       if (time + 1 / 60 >= endTime.value) {
         vidElement.pause();
+        vidElement.currentTime = endTime.value; // pin to end time
+        ctx.emit('progress', endTime.value);
         console.log('VideoPlayer :: playback-completed');
         ctx.emit('playback-completed');
         clearInterval(timerId);
         timerId = -1;
+      } else {
+        ctx.emit('progress', time);
       }
     }
 
@@ -274,11 +277,13 @@ export default defineComponent({
     };
   },
   methods: {
-    setTime(time: number) {
+    setTime(time: number, keepPlaying?: boolean | undefined) {
       const videoE = this.videoElement;
       if (videoE) {
         videoE.currentTime = time;
       }
+      const pauseVideo = !(keepPlaying ?? false);
+      if (videoE && pauseVideo) videoE.pause();
     },
   },
 });

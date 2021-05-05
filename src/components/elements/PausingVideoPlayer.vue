@@ -110,6 +110,7 @@ export default defineComponent({
 
     function setTime(time: number) {
       const vidPlayer = videoPlayer.value;
+      clearTimeout(playTimeoutId);
       if (vidPlayer) vidPlayer.setTime(time);
       emit('progress', time);
     }
@@ -123,7 +124,6 @@ export default defineComponent({
       if (!vidPlayer) return;
 
       clearTimeout(playTimeoutId);
-      vidPlayer.setTime(seg.from);
       playTimeoutId = setTimeout(() => {
         if (emitResume ?? false) {
           emit('pause-end');
@@ -155,9 +155,10 @@ export default defineComponent({
       playSegment(playingSegments[playingSegmentIndex], playDelaySecs, false, onPlayStart);
     }
     function onSegmentPlaybackCompleted() {
-      const { pause } = playingSegments[playingSegmentIndex];
+      const { pause, to } = playingSegments[playingSegmentIndex];
       playingSegmentIndex += 1;
       if (playingSegmentIndex >= playingSegments.length) {
+        setTime(to);
         emit('playback-completed');
         return;
       }

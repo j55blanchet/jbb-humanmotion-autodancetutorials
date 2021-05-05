@@ -80,36 +80,39 @@ export default defineComponent({
       TrackingActions.endTrackingRequest('onboarding');
     });
 
+    function advanceStage() {
+      if (stage.value === OnboardingStage.trySelectNext) {
+        stage.value = OnboardingStage.trySelectPrevious;
+      } else if (stage.value === OnboardingStage.trySelectPrevious) {
+        stage.value = OnboardingStage.tryPerformPlay;
+      } else if (stage.value === OnboardingStage.tryPerformPlay) {
+        stage.value = OnboardingStage.done;
+        TrackingActions.endTrackingRequest('onboarding');
+        setTimeout(() => {
+          ctx.emit('onboarding-complete');
+        }, 1500);
+      }
+    }
     setupGestureListening({
       [GestureNames.pointRight]: () => {
         if (stage.value === OnboardingStage.trySelectNext) {
-          stage.value = OnboardingStage.trySelectPrevious;
+          advanceStage();
         }
       },
       [GestureNames.pointLeft]: () => {
         if (stage.value === OnboardingStage.trySelectPrevious) {
-          stage.value = OnboardingStage.tryPerformPlay;
+          advanceStage();
         }
       },
       [GestureNames.namaste]: () => {
         if (stage.value === OnboardingStage.tryPerformPlay) {
-          stage.value = OnboardingStage.done;
-          TrackingActions.endTrackingRequest('onboarding');
-          setTimeout(() => {
-            ctx.emit('onboarding-complete');
-          }, 1500);
+          advanceStage();
         }
       },
     });
 
     function skipOnboarding() {
-      if (stage.value === OnboardingStage.trySelectNext) {
-        stage.value = OnboardingStage.trySelectPrevious;
-        return;
-      }
-      TrackingActions.endTrackingRequest('onboarding');
-      stage.value = OnboardingStage.done;
-      ctx.emit('onboarding-complete');
+      advanceStage();
     }
 
     const gestureIcon = computed(() => {

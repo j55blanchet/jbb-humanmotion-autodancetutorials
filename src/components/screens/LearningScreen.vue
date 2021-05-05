@@ -11,7 +11,7 @@
     </teleport>
     <teleport to="#topbarCenter">
         <h3>{{activityTitle}}</h3>
-        <span class="tag">Time: {{videoTime}}</span>
+        <span class="tag ml-2">Time: {{videoTime.toFixed(2)}}</span>
     </teleport>
 
     <div class="overlay" v-show="activity && activity.userVisual !== 'none'">
@@ -34,31 +34,32 @@
     </div>
 
     <div class="overlay instructions-overlay mb-4">
-      <div class="content translucent-text activityGestureCard mb-1 is-rounded" v-show="showPlayGestureIcon">
-        <GestureIcon :gesture="'play'" />
-      </div>
-      <InstructionCarousel v-show="showPlayGestureIcon" :sizeClass="'is-size-6'" :instructions="[{id:0, text:'Do the play gesture when you\'re ready'}]" class="mb-4"/>
-      <InstructionCarousel v-show="activityFinished" :sizeClass="'is-size-6'" :instructions="[{id:0, text:'Use a gesture to proceed'}]" class="m-2"/>
-      <InstructionCarousel v-show="!activityFinished && timedInstructions.length > 0" :instructions="timedInstructions" class="m-2"/>
-      <InstructionCarousel v-show="instructions.length > 0" :instructions="instructions" class="m-2"/>
-      <InstructionCarousel v-show="activity.staticInstruction" :instructions="[{id:0, text:activity.staticInstruction}]" class="m-2"/>
+      <InstructionCarousel v-show="!activityFinished && timedInstructions.length > 0" :sizeClass="'is-large'" :instructions="timedInstructions" class="m-2"/>
+      <InstructionCarousel v-show="instructions.length > 0" :sizeClass="'is-large'" :instructions="instructions" class="m-2"/>
+      <InstructionCarousel v-show="activity.staticInstruction" :sizeClass="'is-large'"  :instructions="[{id:0, text:activity.staticInstruction}]" class="m-2"/>
     </div>
 
-    <div class="overlay overlay-left" v-show="activityFinished">
+    <div class="overlay overlay-bottom overlay-right mb-6 mr-6" v-show="showPlayGestureIcon">
       <div class="vcenter-parent">
-        <div class="content translucent-text p-5 is-size-5 is-rounded activityGestureCard">
-          <GestureIcon :gesture="'backward'" />
-          <br />
-          Repeat
+        <div class="content translucent-text activityStartGestureCard is-rounded" >
+          <GestureIcon class="activityEndGestureCard" :gesture="'play'" />
+          <p>Start Activity</p>
         </div>
       </div>
     </div>
-    <div class="overlay overlay-right" v-show="activityFinished">
+    <div class="overlay overlay-left overlay-bottom mb-6 ml-6" v-show="activityFinished">
+      <div class="vcenter-parent ml-2">
+        <div class="content translucent-text p-5 is-rounded activityStartGestureCard">
+          <GestureIcon class="activityEndGestureCard" :gesture="'backward'" />
+          <p>Repeat this activity</p>
+        </div>
+      </div>
+    </div>
+    <div class="overlay overlay-right overlay-bottom mb-6 mr-6" v-show="activityFinished">
       <div class="vcenter-parent">
-        <div class="content translucent-text p-5 is-size-5 is-rounded activityGestureCard">
-          <GestureIcon :gesture="'forward'" />
-          <br />
-          Next
+        <div class="content translucent-text p-5 is-rounded activityStartGestureCard">
+          <GestureIcon class="activityEndGestureCard" :gesture="'forward'" />
+          <p>Advance to next activity</p>
         </div>
       </div>
     </div>
@@ -72,9 +73,42 @@
           />
         </div>
         <div class="mt-4 mb-4 buttons is-centered">
-          <button class="button" @click="gotoPreviousActivity">Previous</button>
-          <button class="button" @click="gotoNextActivity">Next</button>
-          <button class="button"
+          <button
+            class="button"
+            @click="gotoPreviousActivity"
+            :class="{
+              'is-white': activityFinished,
+              'is-light': !activityFinished,
+            }"
+            :disabled="activityId === 0">Previous</button>
+          <button
+             class="button"
+            @click="repeatActivity"
+            :class="{
+              'is-white': activityFinished,
+              'is-light': !activityFinished,
+            }"
+            :disabled="!activityFinished">Repeat <i class="fa fa-repeat" aria-hidden="true"></i>
+          </button>
+          <button
+            class="button"
+            :class="{
+              'is-white': showPlayGestureIcon,
+              'is-light': !showPlayGestureIcon,
+            }"
+            @click="playActivity(undefined, true)"
+            :disabled="!showPlayGestureIcon">Start Activity</button>
+          <button
+            class="button"
+            @click="gotoNextActivity"
+            :class="{
+              'is-white': activityFinished,
+              'is-light': !activityFinished,
+            }">
+            <span v-if="hasNextActivity">Next</span>
+            <span v-else>Finish Lesson</span></button>
+          <button
+            class="button"
             @click="startSaveFrames"
             :disabled="!canSaveFrame"
             :class="{'is-loading': isSavingFrames}">Save Frames</button>
@@ -87,7 +121,7 @@
 <script lang="ts">
 import DanceLesson, { Activity, PauseInfo, DanceUtils } from '@/model/DanceLesson';
 import {
-  computed, ComputedRef, defineComponent, onBeforeUnmount, onMounted, Ref, ref, toRefs, watch,
+  computed, ComputedRef, defineComponent, nextTick, onBeforeUnmount, onMounted, Ref, ref, toRefs, watch,
 } from 'vue';
 import {
   GestureNames, setupGestureListening, setupMediaPipeListening, TrackingActions,
@@ -271,7 +305,7 @@ export default defineComponent({
 
       const instructs: Instruction[] = [];
 
-      if (state === ActivityPlayState.AwaitingPlayGesture && mActivity.startInstruction) {
+      if ((state === ActivityPlayState.AwaitingPlayGesture || state === ActivityPlayState.PendingStart) && mActivity.startInstruction) {
         instructs.push({
           id: 1,
           text: mActivity.startInstruction,
@@ -337,7 +371,7 @@ export default defineComponent({
     }
 
     function playActivity(pause?: number | undefined, forcePlay?: boolean | undefined) {
-      console.log(`LEARNING SCREEN:: Starting playback (activityId: ${activityId.value})`);
+
       pauseInstructs.value.splice(0);
       activityState.value = ActivityPlayState.AwaitingPlayGesture;
       const vidActivity = activity.value;
@@ -346,11 +380,15 @@ export default defineComponent({
         console.error('LEARNING SCREEN:: Aborting video playback: vidPlayer or lessonActivity is null', vidPlayer, vidActivity);
         return;
       }
+      const startingNow = forcePlay || (activityId.value !== 0 && !DanceUtils.shouldPauseBeforeActivity(vidActivity));
 
       vidPlayer.setTime(vidActivity.startTime);
 
-      if (!forcePlay && activityId.value !== 0 && !DanceUtils.shouldPauseBeforeActivity(vidActivity)) {
+      if (startingNow) {
         playVideo(vidActivity, pause);
+        console.log(`LEARNING SCREEN:: Scheduling playback for activity ${activityId.value}`);
+      } else {
+        console.log(`LEARNING SCREEN:: Setting start & pausing for userinput for activity ${activityId.value}`);
       }
     }
 
@@ -367,6 +405,9 @@ export default defineComponent({
       }
       activityId.value += delta;
       playActivity();
+    }
+    function repeatActivity() {
+      gotoActivity(0);
     }
     function gotoPreviousActivity() {
       gotoActivity(-1);
@@ -398,6 +439,13 @@ export default defineComponent({
       else TrackingActions.endTrackingRequest(TRACKING_ID);
     });
 
+    onMounted(() => {
+      nextTick(() => {
+        if (isTrackingUser.value) TrackingActions.requestTracking(TRACKING_ID);
+        else TrackingActions.endTrackingRequest(TRACKING_ID);
+      });
+    });
+
     setupGestureListening({
       [GestureNames.pointRight]: () => {
         if (!activityFinished.value) return;
@@ -406,6 +454,11 @@ export default defineComponent({
       [GestureNames.pointLeft]: () => {
         if (!activityFinished.value) return;
         playActivity();
+      },
+      [GestureNames.namaste]: () => {
+        if (activityState.value === ActivityPlayState.AwaitingPlayGesture) {
+          playActivity(undefined, true);
+        }
       },
     });
     onBeforeUnmount(() => {
@@ -418,7 +471,9 @@ export default defineComponent({
 
     return {
       activityState,
+      ActivityPlayState,
       showPlayGestureIcon,
+      playActivity,
       progressSegments,
       activity,
       activityId,
@@ -437,11 +492,14 @@ export default defineComponent({
       onPauseEnded,
 
       gotoPreviousActivity,
+      repeatActivity,
       gotoNextActivity,
+      hasNextActivity,
 
       canSaveFrame,
       isSavingFrames,
       startSaveFrames,
+      isTrackingUser,
     };
   },
   methods: {
@@ -478,7 +536,11 @@ export default defineComponent({
   width: 128px;
 }
 
-.activityGestureCard {
+.activityEndGestureCard {
   max-width: 4rem;
+}
+
+.activityStartGestureCard {
+  max-width: 8rem;
 }
 </style>

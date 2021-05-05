@@ -43,6 +43,6 @@ export default interface DanceLesson {
 
 export class DanceUtils {
   static shouldPauseBeforeActivity(activity: Activity) {
-    return !!activity.startInstruction;
+    return activity.userVisual !== 'none';
   }
 }

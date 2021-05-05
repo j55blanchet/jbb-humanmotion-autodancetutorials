@@ -9,6 +9,7 @@
     "gitprep": "node chores/copyToDocs.js"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.3",
     "@gregoranders/csv": "^0.0.8",
     "@mediapipe/drawing_utils": "^0.2.1614567093",
     "@mediapipe/hands": "^0.1.1614621970",
