@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "2ed87b34873a1774737e",
+    "revision": "48a3463a61bcc60c0540",
     "url": "/css/app.79eba14b.css"
   },
   {
@@ -68,12 +68,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/img/tiktokdances.589b3b61.jpg"
   },
   {
-    "revision": "2ea1a85f6870dbb39dd99b270141a2b2",
+    "revision": "01cf9da890c48922bd87858a47a4bace",
     "url": "/index.html"
   },
   {
-    "revision": "2ed87b34873a1774737e",
-    "url": "/js/app.49913907.js"
+    "revision": "48a3463a61bcc60c0540",
+    "url": "/js/app.c30d5128.js"
   },
   {
     "revision": "580d67216641a6ac9864",
