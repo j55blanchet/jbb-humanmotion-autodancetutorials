@@ -54,7 +54,7 @@ export class WebcamProvider {
     try {
       const constraints: MediaStreamConstraints = {
         video: {
-          facingMode: 'user',
+          // facingMode: 'user',
           width: WEBCAM_DIMENSIONS.width,
           height: WEBCAM_DIMENSIONS.height,
           aspectRatio: 1.777777778,

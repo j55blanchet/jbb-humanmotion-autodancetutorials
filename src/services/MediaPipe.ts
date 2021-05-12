@@ -181,8 +181,8 @@ export function StartTracking(videoE: HTMLVideoElement): void {
   trackingRequests.initial = true;
 
   let mpInstance: any = null;
-  if (usingHolistic) mpInstance = new mp.Holistic({ locateFile: (file: any) => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}` });
-  else mpInstance = new mp.Pose({ locateFile: (file: any) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}` });
+  if (usingHolistic) mpInstance = new mp.Holistic({ locateFile: (file: any) => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.1.1613603339/${file}` });
+  else mpInstance = new mp.Pose({ locateFile: (file: any) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.2.1617147663/${file}` });
 
   mpInstance.setOptions({
     upperBodyOnly: false,
