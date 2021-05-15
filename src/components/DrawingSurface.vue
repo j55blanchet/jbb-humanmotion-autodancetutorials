@@ -42,8 +42,7 @@ function drawTrackingResults(
 
   if (!enabled) return;
 
-  canvasCtx.save();
-
+  // console.log('Drawing tracking results', canvasCtx, canvas);
   const sourceAR = WEBCAM_DIMENSIONS.width / WEBCAM_DIMENSIONS.height;
 
   if (results.poseLandmarks) {
@@ -52,8 +51,6 @@ function drawTrackingResults(
     });
   }
   if (detectedGesture !== GestureNames.none) drawHandShape(results, canvasCtx);
-
-  canvasCtx.restore();
 }
 
 export default defineComponent({
@@ -89,12 +86,18 @@ export default defineComponent({
     watch([enableDrawing, mpResults, gesture], (isEnabledNow, results, ges) => {
       const canvas = canvasE.value;
       const canvasCtx = canvas.getContext('2d') as CanvasRenderingContext2D;
-      drawTrackingResults(
-        isEnabledNow as unknown as boolean,
-        ges as unknown as string,
-        results as MpHolisticResults,
-        canvasCtx,
-      );
+
+      // Temp, for testing
+      canvasCtx.save();
+      canvasCtx.fillStyle = isEnabledNow ? 'rgba(0, 255, 0, 0.5)' : 'rgba(255, 0, 0, 0.5)';
+      canvasCtx.rect(0, 0, canvas.width, canvas.height);
+      canvasCtx.restore();
+      // drawTrackingResults(
+        // isEnabledNow as unknown as boolean,
+        // ges as unknown as string,
+        // results as MpHolisticResults,
+        // canvasCtx,
+      // );
     });
 
     return {

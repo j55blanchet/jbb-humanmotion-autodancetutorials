@@ -20,8 +20,9 @@
     </div>
 
     <DrawingSurface
-    :enableDrawing="isActivelyTracking"
-    :mpResults="trackingResults" ref="drawingSurface" class="overlay"/>
+      :enableDrawing="isActivelyTracking"
+      ref="drawingSurface"
+      class="overlay"/>
   </div>
 </template>
 
@@ -61,8 +62,8 @@ export default defineComponent({
       if (!hasResults.value) {
         emit('tracking-attained');
         console.log('Got Results', results);
+        hasResults.value = true;
       }
-      hasResults.value = true;
       trackingResults.value = results;
       // this.$refs.drawingSurface.draw(results, canvasCtx);
     }
