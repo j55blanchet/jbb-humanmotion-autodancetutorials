@@ -9,6 +9,7 @@ export type Landmark = {
 
 export type MpHolisticResults = {
   image?: any;
+  timestamp?: number;
   faceLandmarks?: Array<Landmark>;
   poseLandmarks?: Array<Landmark>;
   rightHandLandmarks?: Array<Landmark>;

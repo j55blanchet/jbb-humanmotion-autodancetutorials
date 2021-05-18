@@ -35,14 +35,17 @@ function drawTrackingResults(
   enabled: boolean,
   detectedGesture: string,
   results: MpHolisticResults,
+  fadeTimeMs: number,
   canvasCtx: CanvasRenderingContext2D,
 ) {
-  const { canvas } = canvasCtx;
   if (!enabled) return;
 
-  const sourceAR = (results.image?.width ?? WEBCAM_DIMENSIONS.width) /
-                   (results.image?.height ?? WEBCAM_DIMENSIONS.height);
+  const sourceAR = (results.image?.width ?? WEBCAM_DIMENSIONS.width)
+                   / (results.image?.height ?? WEBCAM_DIMENSIONS.height);
 
+  canvasCtx.save();
+  const trackingTimestamp = results.timestamp ?? Date.now();
+  canvasCtx.globalAlpha = 1 - (Date.now() - trackingTimestamp) / fadeTimeMs;
 
   if (results.poseLandmarks) {
     DrawPose(canvasCtx, results.poseLandmarks, {
@@ -50,6 +53,7 @@ function drawTrackingResults(
     });
   }
   if (detectedGesture !== GestureNames.none) drawHandShape(results, canvasCtx);
+  canvasCtx.restore();
 }
 
 export default defineComponent({
@@ -59,9 +63,13 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    fadeTimeMs: {
+      type: Number,
+      default: 1000,
+    },
   },
   setup(props) {
-    const { enableDrawing } = toRefs(props);
+    const { enableDrawing, fadeTimeMs } = toRefs(props);
 
     const canvasE = ref(null) as unknown as Ref<HTMLCanvasElement>;
     const gesture = ref(GestureNames.none);
@@ -97,6 +105,7 @@ export default defineComponent({
         isEnabled as unknown as boolean,
         detectedGesture as unknown as string,
         holisticResults as unknown as MpHolisticResults,
+        fadeTimeMs.value,
         canvasCtx,
       );
     });

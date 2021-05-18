@@ -192,9 +192,11 @@ export function StartTracking(videoE: HTMLVideoElement): void {
   });
 
   let frameId = 0;
+  let timestamp = Date.now();
   mpInstance.onResults((res: MpHolisticResults) => {
     trackingRequests.initial = false;
     latestResults = res;
+    res.timestamp = timestamp;
     eventHub.emit(EventNames.trackingResults, res, frameId);
   });
 
@@ -209,6 +211,7 @@ export function StartTracking(videoE: HTMLVideoElement): void {
     async () => {
       frameId += 1;
       eventHub.emit(EventNames.trackingProcessingStarted, frameId);
+      timestamp = Date.now();
       if (trackingCount() > 0) await mpInstance.send({ image: videoE });
     },
     () => true,
