@@ -19,7 +19,10 @@ export const GestureNames = Object.freeze({
 
 const eventHub = new TinyEmitter();
 
-export function setupGestureListening(callbacks: Record<string, (trackingResults?: MpHolisticResults | undefined) => void>, fallback?: undefined | ((gesture: string, trackingResults: MpHolisticResults) => void)) {
+export function setupGestureListening(
+  callbacks: Record<string, (trackingResults?: MpHolisticResults | undefined) => void>,
+  fallback?: undefined | ((gesture: string, trackingResults: MpHolisticResults) => void),
+) {
   function onGesture(gesture: string, trackingResults: MpHolisticResults) {
     const cb = callbacks[gesture];
     if (cb) cb(trackingResults);

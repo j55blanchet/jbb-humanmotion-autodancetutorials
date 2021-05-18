@@ -13,6 +13,8 @@ import aslSailboatLesson from '@/model/lessons/asl/sailboat.lesson.json';
 import aslTurtleLesson from '@/model/lessons/asl/TURTLE.lesson.json';
 import aslUmbrellaLesson from '@/model/lessons/asl/UMBRELLA.lesson.json';
 
+import aslUmbrellaCustomesson from '@/model/lessons/asl/Custom/UMBRELLA.custom.lesson.json';
+
 const dances: Array<DanceEntry> = [
   {
     title: 'Renegade',
@@ -81,7 +83,10 @@ const dances: Array<DanceEntry> = [
     title: 'ASL: Umbrella',
     videoSrc: 'dances/asl/UMBRELLA.mp4',
     hovering: false,
-    lessons: [aslUmbrellaLesson as DanceLesson],
+    lessons: [
+      aslUmbrellaLesson as DanceLesson,
+      aslUmbrellaCustomesson as DanceLesson,
+    ],
   },
 ];
 

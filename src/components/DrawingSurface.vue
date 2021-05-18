@@ -38,12 +38,11 @@ function drawTrackingResults(
   canvasCtx: CanvasRenderingContext2D,
 ) {
   const { canvas } = canvasCtx;
-  canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-
   if (!enabled) return;
 
-  // console.log('Drawing tracking results', canvasCtx, canvas);
-  const sourceAR = WEBCAM_DIMENSIONS.width / WEBCAM_DIMENSIONS.height;
+  const sourceAR = (results.image?.width ?? WEBCAM_DIMENSIONS.width) /
+                   (results.image?.height ?? WEBCAM_DIMENSIONS.height);
+
 
   if (results.poseLandmarks) {
     DrawPose(canvasCtx, results.poseLandmarks, {
@@ -66,12 +65,13 @@ export default defineComponent({
 
     const canvasE = ref(null) as unknown as Ref<HTMLCanvasElement>;
     const gesture = ref(GestureNames.none);
-    const mpResults = ref(null as MpHolisticResults | null);
+    const mpResults = ref({} as MpHolisticResults);
 
     setupGestureListening({},
       (ges, trackingResults) => {
         gesture.value = ges;
         mpResults.value = trackingResults;
+        // console.log('Drawing surface: recvived tracking results', ges, trackingResults);
       });
 
     onMounted(() => {
@@ -83,29 +83,32 @@ export default defineComponent({
       canvasCtx.lineCap = 'round';
     });
 
-    watch([enableDrawing, mpResults, gesture], (isEnabledNow, results, ges) => {
+    watch([enableDrawing, mpResults, gesture], (newVals) => {
       const canvas = canvasE.value;
       const canvasCtx = canvas.getContext('2d') as CanvasRenderingContext2D;
 
-      // Temp, for testing
-      canvasCtx.save();
-      canvasCtx.fillStyle = isEnabledNow ? 'rgba(0, 255, 0, 0.5)' : 'rgba(255, 0, 0, 0.5)';
-      canvasCtx.rect(0, 0, canvas.width, canvas.height);
-      canvasCtx.restore();
-      // drawTrackingResults(
-        // isEnabledNow as unknown as boolean,
-        // ges as unknown as string,
-        // results as MpHolisticResults,
-        // canvasCtx,
-      // );
+      canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const isEnabled = newVals[0];
+      const holisticResults = newVals[1];
+      const detectedGesture = newVals[2];
+
+      drawTrackingResults(
+        isEnabled as unknown as boolean,
+        detectedGesture as unknown as string,
+        holisticResults as unknown as MpHolisticResults,
+        canvasCtx,
+      );
     });
 
     return {
       canvasE,
       gesture,
+      mpResults,
     };
   },
 });
+
 </script>
 
 <style lang="scss">
