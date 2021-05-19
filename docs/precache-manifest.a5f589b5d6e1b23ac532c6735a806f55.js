@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "4a93de4d5df8a8aee9cf",
+    "revision": "4662f0204590f81eab94",
     "url": "/css/app.79eba14b.css"
   },
   {
@@ -68,16 +68,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/img/tiktokdances.589b3b61.jpg"
   },
   {
-    "revision": "fabd9beb0d41d150946c7f7b95e11d56",
+    "revision": "cca825aabd62b5db307fbfad8c489146",
     "url": "/index.html"
   },
   {
-    "revision": "4a93de4d5df8a8aee9cf",
-    "url": "/js/app.7465bc6e.js"
+    "revision": "4662f0204590f81eab94",
+    "url": "/js/app.86cbebc1.js"
   },
   {
-    "revision": "213ee152b16764dc8d85",
-    "url": "/js/chunk-vendors.c7843e78.js"
+    "revision": "580d67216641a6ac9864",
+    "url": "/js/chunk-vendors.86884a09.js"
   },
   {
     "revision": "2c36a4ecadb38d2be6a01dfc55f19ea6",
@@ -108,23 +108,23 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/poses/asl/sailboat.poses.csv"
   },
   {
-    "revision": "a12dd273db861716c80b8518c8310c48",
+    "revision": "622519a745b44f10d390c5ce9ab25590",
     "url": "/poses/derulo.poses.csv"
   },
   {
-    "revision": "84b35c7fa282a4a7a193c45d67128e3e",
+    "revision": "84398df88cbc43af3b265332b4167aae",
     "url": "/poses/itsafit.poses.csv"
   },
   {
-    "revision": "c676fda1d3ac9b22900c98cdd777c4fe",
+    "revision": "32012bb728c36f0352b607b895e0011c",
     "url": "/poses/renegade.poses.csv"
   },
   {
-    "revision": "0d58f64838ebcd908534f515d43329ee",
+    "revision": "533a4757d27c719bceb7ca4ce3b489b4",
     "url": "/poses/unhhunh.poses.csv"
   },
   {
-    "revision": "735ab4f94fbcd57074377afca324c813",
+    "revision": "b6216d61c03e6ce0c9aea6ca7808f7ca",
     "url": "/robots.txt"
   }
 ]);
