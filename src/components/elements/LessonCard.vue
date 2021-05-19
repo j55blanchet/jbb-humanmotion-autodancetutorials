@@ -1,5 +1,5 @@
 <template>
-  <div class="card" v-if="dance">
+  <div class="card lesson-card" v-if="dance">
     <div class="card-header">
       <h4 class="card-header-title">
         {{ dance.title }}
@@ -40,12 +40,13 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'LessonCard',
   props: ['dance'],
+  emits: ['lesson-selected', 'closed'],
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
-.dance-image {
+.lesson-card .dance-image {
   max-height: 50vh;
 }
 

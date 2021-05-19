@@ -5,7 +5,7 @@
     </div>
     <div class="menu container padded">
       <div
-        class="dance-card card is-clickable"
+        class="dance-card card is-clickable shrink-hover"
         v-for="dance in motionList"
         :key="dance.title"
         @mouseover="hover = dance.hovering = true"
@@ -21,15 +21,18 @@
           {{ dance.title }}
         </div>
       </div>
-      <div class="dance-card card is-clickable"
-        @click="$emit('pose-drawer-selected')">
-        <div class="card-image">
-          <figure class="image is-2by3">
-            <img src="../../assets/stickfigure.png" alt="">
-          </figure>
+
+      <div class="form-upload p-4">
+        <h4 class="title is-4">Other Actions</h4>
+        <div class="field">
+          <div class="control is-expanded shrink-hover">
+            <button class="button is-fullwidth" @click="uploadUIActive = true">Upload Custom Lesson</button>
+          </div>
         </div>
-        <div class="card-content">
-          Pose Drawer Test
+        <div class="field">
+          <div class="control is-expanded shrink-hover">
+            <button class="button is-fullwidth" @click="$emit('pose-drawer-selected')">Pose Drawer Test</button>
+          </div>
         </div>
       </div>
     </div>
@@ -44,6 +47,15 @@
         />
       </div>
     </div>
+
+    <div v-bind:class="{ 'is-active': uploadUIActive }" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <UploadCard
+          @cancelled="uploadUIActive = false"
+        />
+      </div>
+    </div>
   </section>
 </template>
 
@@ -51,6 +63,7 @@
 import { defineComponent, ref } from 'vue';
 import DanceEntry, { LessonSelection } from '../../model/DanceEntry';
 import LessonCard from '../elements/LessonCard.vue';
+import UploadCard from '../elements/UploadCard.vue';
 import motions from '../../services/MotionDatabase';
 
 export default defineComponent({
@@ -58,10 +71,12 @@ export default defineComponent({
   emits: ['dance-selected', 'pose-drawer-selected'],
   components: {
     LessonCard,
+    UploadCard,
   },
   setup(props, ctx) {
     const motionList = ref(motions);
     const selectedDance = ref(null as DanceEntry | null);
+    const uploadUIActive = ref(false);
 
     function danceLessonSelected(sel: LessonSelection) {
       ctx.emit('dance-selected', sel);
@@ -72,6 +87,7 @@ export default defineComponent({
       selectedDance,
       motionList,
       danceLessonSelected,
+      uploadUIActive,
     };
   },
 });
@@ -97,6 +113,17 @@ export default defineComponent({
   }
   .dance-card {
     height: max-content;
+    overflow: hidden;
+    // transition: transform 0.2s, box-shadow 0.2s;
+
+    // &:hover {
+    //   box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.3),
+    //     0 0 0 2px rgba(10, 10, 10, 0.05);
+    //   transform: scale(0.98);
+    // }
+  }
+
+  .shrink-hover {
     transition: transform 0.2s, box-shadow 0.2s;
 
     &:hover {
@@ -129,5 +156,5 @@ export default defineComponent({
     height: 100%;
     object-fit: cover;
   }
-  }
+}
 </style>
