@@ -15,6 +15,7 @@
       }"
       ref="videoElement"
       @loadedmetadata="scheduleCanvasResizing"
+      @ended="endReported = true"
     ></video>
     <canvas class="is-overlay" ref="canvasElement"> </canvas>
   </div>
@@ -80,6 +81,7 @@ function setupVideoPlaying(
   startTime: Ref<number>,
   endTime: Ref<number>,
   startProgressUpdating: () => void,
+  endReported: Ref<boolean>,
 ) {
   function playVideo(
     from: number,
@@ -88,6 +90,8 @@ function setupVideoPlaying(
   ) {
     // console.log(`VideoPlayer :: Starting playback from ${from} to ${to} @ ${speed.toPrecision(2)}`);
 
+    // eslint-disable-next-line no-param-reassign
+    endReported.value = false;
     // eslint-disable-next-line no-param-reassign
     startTime.value = from;
     // eslint-disable-next-line no-param-reassign
@@ -172,6 +176,7 @@ export default defineComponent({
     const canvasModified = ref(false);
 
     const resizeCanvas = setupCanvasResizing(videoElement, canvasElement, canvasModified);
+    const endReported = ref(false);
 
     const poses = ref([] as Readonly<Array<Readonly<Array<Readonly<Landmark>>>>>);
     const currentPose = computed(() => {
@@ -192,7 +197,7 @@ export default defineComponent({
 
       currentTime.value = time;
 
-      if (time + 1 / 60 >= endTime.value) {
+      if (time + 1 / 60 >= endTime.value || endReported.value) {
         vidElement.pause();
         vidElement.currentTime = endTime.value; // pin to end time
         ctx.emit('progress', endTime.value);
@@ -215,6 +220,7 @@ export default defineComponent({
       startTime,
       endTime,
       startProgressUpdating,
+      endReported,
     );
 
     function scheduleCanvasResizing() {
@@ -269,6 +275,7 @@ export default defineComponent({
       poses,
       currentTime,
       currentPose,
+      endReported,
 
       getVideoDimensions: () => ({
         height: videoElement.value?.height ?? 0,

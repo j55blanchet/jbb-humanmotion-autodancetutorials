@@ -9,7 +9,7 @@
         <GestureIcon :gesture="gestureIcon" />
       </div>
     </div>
-    <div class="overlay overlay-top overlay-right mt-4 mr-4">
+    <div class="overlay overlay-top overlay-right mt-4 mr-4" v-show="stage !== OnboardingStage.done">
       <button class="button" @click="skipOnboarding">Skip</button>
     </div>
   </div>
