@@ -126,7 +126,7 @@ import {
 import {
   GestureNames, setupGestureListening, setupMediaPipeListening, TrackingActions,
 } from '@/services/EventHub';
-import DanceEntry from '@/model/DanceEntry';
+import { DatabaseEntry } from '@/services/MotionDatabase';
 import motionRecorder from '@/services/MotionRecorder';
 import InstructionCarousel, { Instruction } from '@/components/elements/InstructionCarousel.vue';
 import { Landmark } from '@/services/MediaPipeTypes';
@@ -151,7 +151,7 @@ const ActivityPlayState = Object.freeze({
 //     start time and the last activity end time.
 //
 
-function calculateProgressSegments(dance: DanceEntry, lesson: DanceLesson, activity: Activity) {
+function calculateProgressSegments(dance: DatabaseEntry, lesson: DanceLesson, activity: Activity) {
   if (!lesson) return [];
 
   let last = undefined as undefined | number;
@@ -343,7 +343,7 @@ export default defineComponent({
 
     const progressSegments = computed(() => {
       const lesson = targetLesson?.value as DanceLesson | undefined;
-      const dance = targetDance?.value as DanceEntry | undefined;
+      const dance = targetDance?.value as DatabaseEntry | undefined;
       const curActivity = activity.value;
       if (lesson && dance && curActivity) return calculateProgressSegments(dance, lesson, curActivity);
       return [];

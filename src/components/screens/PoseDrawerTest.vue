@@ -23,11 +23,11 @@
       </div>
       <div class="dropdown-menu">
         <div class="dropdown-content">
-          <a v-for="dance in dances"
-                  :key="dance.title"
+          <a v-for="motion in motions"
+                  :key="motion.title"
                   class="dropdown-item"
-            @click="loadDance(dance)">
-            {{dance.title}}
+            @click="loadMotion(motion)">
+            {{motion.title}}
           </a>
         </div>
       </div>
@@ -76,8 +76,7 @@
 </template>
 
 <script lang="ts">
-import DanceEntry from '@/model/DanceEntry';
-import dances from '@/services/MotionDatabase';
+import db, { DatabaseEntry } from '@/services/MotionDatabase';
 import {
   computed, defineComponent, ref,
 } from 'vue';
@@ -87,12 +86,8 @@ import VideoPlayer from '@/components/elements/VideoPlayer.vue';
 export default defineComponent({
   name: 'PoseDrawerTest',
   components: { VideoPlayer },
-  data() {
-    return {
-      dances,
-    };
-  },
   setup() {
+    const { motions } = db;
     const videoPlayer = ref(null as null | typeof VideoPlayer);
     const dropdownOpen = ref(false);
     const clipName = ref('');
@@ -101,11 +96,11 @@ export default defineComponent({
     const fps = ref(30);
     const error = ref(null as string | null);
 
-    async function loadDance(dance: DanceEntry) {
+    async function loadMotion(motion: DatabaseEntry) {
       error.value = null;
       dropdownOpen.value = false;
-      clipName.value = dance.videoSrc.replace('dances/', '').replace('.mp4', '');
-      fps.value = dance.lessons[0]?.fps ?? 30;
+      clipName.value = motion.clipName;
+      fps.value = motion.fps;
     }
 
     function playVideo() {
@@ -124,9 +119,10 @@ export default defineComponent({
     }
 
     return {
+      motions,
       videoPlayer,
       error,
-      loadDance,
+      loadMotion,
       dropdownOpen,
       clipName,
       videoSrc,

@@ -1,8 +1,8 @@
 <template>
-  <div class="card lesson-card" v-if="dance">
+  <div class="card lesson-card" v-if="motion">
     <div class="card-header">
       <h4 class="card-header-title">
-        {{ dance.title }}
+        {{ motion.title }}
       </h4>
 
       <a class="card-header-icon" @click="$emit('closed')">
@@ -12,7 +12,7 @@
     <div class="card-content">
       <div class="columns">
         <div class="column is-narrow is-hidden-mobile">
-          <video :src="dance.videoSrc" autoplay="true" muted="true" width="180" />
+          <video :src="motion.videoSrc" autoplay="true" muted="true" width="180" />
         </div>
         <div class="column">
           <div class="menu">
@@ -20,13 +20,16 @@
               Pick a lesson
             </p>
             <ul class="menu-list">
-              <li v-for="lesson in dance.lessons" :key="lesson._id">
-                <a @click="$emit('lesson-selected', {dance: dance, lesson: lesson})">
+              <li v-for="lesson in lessons" :key="lesson._id">
+                <a @click="$emit('lesson-selected', motion, lesson)">
                   {{ lesson.header.lessonTitle }}
                 </a>
               </li>
+              <li v-if="canCreateLesson">
+                <a @click="$emit('create-lesson-selected', motion)">Create Lesson</a>
+              </li>
             </ul>
-            <p v-if="dance.lessons.length == 0">No lessons available.</p>
+            <p v-if="lessons.length == 0">No lessons available.</p>
           </div>
         </div>
       </div>
@@ -36,11 +39,28 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import db, { DatabaseEntry } from '@/services/MotionDatabase';
 
 export default defineComponent({
   name: 'LessonCard',
-  props: ['dance'],
-  emits: ['lesson-selected', 'closed'],
+  props: {
+    motion: {
+      type: Object,
+    },
+    canCreateLesson: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  computed: {
+    lessons() {
+      if (!this.motion) return [];
+      const motion = this.motion as DatabaseEntry;
+      const lessons = db.getLessons(motion);
+      return lessons ?? [];
+    },
+  },
+  emits: ['lesson-selected', 'create-lesson-selected', 'closed'],
 });
 </script>
 

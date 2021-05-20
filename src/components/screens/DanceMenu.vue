@@ -41,9 +41,10 @@
       <div class="modal-background"></div>
       <div class="modal-content">
         <LessonCard
-          v-bind:dance="selectedDance"
-          v-on:closed="selectedDance = null"
-          v-on:lesson-selected="danceLessonSelected"
+          :motion="selectedDance"
+          @closed="selectedDance = null"
+          @lesson-selected="danceLessonSelected"
+          @create-lesson-selected="createLessonSelected"
         />
       </div>
     </div>
@@ -60,26 +61,31 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import DanceEntry, { LessonSelection } from '../../model/DanceEntry';
-import LessonCard from '../elements/LessonCard.vue';
-import UploadCard from '../elements/UploadCard.vue';
-import motions from '../../services/MotionDatabase';
+import { computed, defineComponent, ref } from 'vue';
+import LessonCard from '@/components/elements/LessonCard.vue';
+import UploadCard from '@/components/elements/UploadCard.vue';
+import db, { DatabaseEntry } from '@/services/MotionDatabase';
+import DanceLesson from '@/model/DanceLesson';
 
 export default defineComponent({
   name: 'DanceMenu',
-  emits: ['dance-selected', 'pose-drawer-selected'],
+  emits: ['dance-selected', 'pose-drawer-selected', 'create-lesson-selected'],
   components: {
     LessonCard,
     UploadCard,
   },
   setup(props, ctx) {
-    const motionList = ref(motions);
-    const selectedDance = ref(null as DanceEntry | null);
+    const motionList = db.motions;
+    const selectedDance = ref(null as DatabaseEntry | null);
     const uploadUIActive = ref(false);
 
-    function danceLessonSelected(sel: LessonSelection) {
-      ctx.emit('dance-selected', sel);
+    function danceLessonSelected(dance: DatabaseEntry, lesson: DanceLesson) {
+      ctx.emit('dance-selected', dance, lesson);
+      selectedDance.value = null;
+    }
+
+    function createLessonSelected(dance: DatabaseEntry) {
+      ctx.emit('create-lesson-selected', dance);
       selectedDance.value = null;
     }
 
@@ -87,6 +93,7 @@ export default defineComponent({
       selectedDance,
       motionList,
       danceLessonSelected,
+      createLessonSelected,
       uploadUIActive,
     };
   },

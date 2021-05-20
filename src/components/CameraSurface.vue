@@ -29,7 +29,7 @@
 <script lang="ts">
 
 import {
-  defineComponent, onUpdated, ref,
+  defineComponent, onBeforeUnmount, onMounted, onUpdated, ref,
 } from 'vue';
 import webcamProvider from '@/services/WebcamProvider';
 import { setupMediaPipeListening } from '@/services/EventHub';
@@ -54,8 +54,14 @@ export default defineComponent({
     const hasResults = ref(false);
     const trackingResults = ref({});
 
-    onUpdated(() => {
-      isActivelyTracking.value = mpIsTracking();
+    let timerId = -1;
+    onMounted(() => {
+      timerId = setInterval(() => {
+        isActivelyTracking.value = mpIsTracking();
+      }, 500);
+    });
+    onBeforeUnmount(() => {
+      clearInterval(timerId);
     });
 
     function onResults(results: MpHolisticResults) {

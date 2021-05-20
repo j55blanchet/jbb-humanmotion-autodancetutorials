@@ -1,7 +1,7 @@
 <template>
   <div class="onboardingUI">
     <div class="overlay instructions-overlay mb-4">
-       <InstructionCarousel :instructions="instructions" class="m-2"/>
+       <InstructionCarousel :instructions="instructions" class=""/>
        <!-- <InstructionCarousel v-show="stage !== OnboardingStage.done" :instructions="[{id: 0, text: 'How to use this app'}]" class="m-2"/> -->
     </div>
     <div class="vcenter-parent" v-show="stage !== OnboardingStage.done">

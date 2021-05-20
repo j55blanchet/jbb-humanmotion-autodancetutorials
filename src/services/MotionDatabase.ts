@@ -1,93 +1,65 @@
-import DanceEntry from '@/model/DanceEntry';
 import DanceLesson from '@/model/DanceLesson';
 
-import renegadeLesson from '@/model/lessons/renegade.lesson.json';
-import itsafitLesson from '@/model/lessons/itsafit.lesson.json';
-import deruloLesson from '@/model/lessons/derulo.lesson.json';
-import unhhunhLesson from '@/model/lessons/unhhunh.lesson.json';
+import videoDatabase from '@/model/videoDatabase.json';
+import defaultLessons from '@/model/bakedInLessons.json';
 
-import aslCoconutLesson from '@/model/lessons/asl/COCONUT.lesson.json';
-import aslFlipFlopsLesson from '@/model/lessons/asl/flipflops.lesson.json';
-import aslOceanLesson from '@/model/lessons/asl/ocean.lesson.json';
-import aslSailboatLesson from '@/model/lessons/asl/sailboat.lesson.json';
-import aslTurtleLesson from '@/model/lessons/asl/TURTLE.lesson.json';
-import aslUmbrellaLesson from '@/model/lessons/asl/UMBRELLA.lesson.json';
+import { computed, reactive } from 'vue';
 
-import aslUmbrellaCustomesson from '@/model/lessons/asl/Custom/UMBRELLA.custom.lesson.json';
+export interface DatabaseEntry {
+  title: string;
+  clipName: string;
+  clipPath: string;
+  frameCount: number;
+  fps: number;
+  duration: number;
+  width: number;
+  height: number;
+  videoSrc: string;
+}
 
-const dances: Array<DanceEntry> = [
-  {
-    title: 'Renegade',
-    videoSrc: 'dances/renegade.mp4',
-    hovering: false,
-    lessons: [
-      renegadeLesson as DanceLesson,
-    ],
-  },
-  {
-    title: 'Unh Hunhh',
-    videoSrc: 'dances/unhhunh.mp4',
-    hovering: false,
-    lessons: [
-      unhhunhLesson as DanceLesson,
-    ],
-  },
-  {
-    title: 'Derulo',
-    videoSrc: 'dances/derulo.mp4',
-    hovering: false,
-    lessons: [
-      deruloLesson as DanceLesson,
-    ],
-  },
-  {
-    title: "It's a fit",
-    videoSrc: 'dances/itsafit.mp4',
-    hovering: false,
-    lessons: [
-      itsafitLesson as DanceLesson,
-    ],
-  },
+export class MotionDatabase {
+  readonly motionsMap = reactive(new Map<string, DatabaseEntry>());
 
-  {
-    title: 'ASL: Coconut',
-    videoSrc: 'dances/asl/COCONUT.mov',
-    hovering: false,
-    lessons: [aslCoconutLesson as DanceLesson],
-  },
-  {
-    title: 'ASL: Flip Flips',
-    videoSrc: 'dances/asl/flipflops.mp4',
-    hovering: false,
-    lessons: [aslFlipFlopsLesson as DanceLesson],
-  },
-  {
-    title: 'ASL: Ocean',
-    videoSrc: 'dances/asl/ocean.mp4',
-    hovering: false,
-    lessons: [aslOceanLesson as DanceLesson],
-  },
-  {
-    title: 'ASL: Sailboat',
-    videoSrc: 'dances/asl/sailboat.mp4',
-    hovering: false,
-    lessons: [aslSailboatLesson as DanceLesson],
-  },
-  {
-    title: 'ASL: Turtle',
-    videoSrc: 'dances/asl/TURTLE.mp4',
-    hovering: false,
-    lessons: [aslTurtleLesson as DanceLesson],
-  },
-  {
-    title: 'ASL: Umbrella',
-    videoSrc: 'dances/asl/UMBRELLA.mp4',
-    hovering: false,
-    lessons: [
-      aslUmbrellaLesson as DanceLesson,
-      aslUmbrellaCustomesson as DanceLesson,
-    ],
-  },
-];
+  readonly motions = computed(() => Array.from(this.motionsMap.values()));
 
-export default dances;
+  readonly lessons = reactive(new Map<string, DanceLesson[]>());
+
+  constructor() {
+
+    videoDatabase.forEach((videoEntry) => {
+      this.motionsMap.set(videoEntry.clipName, {
+        videoSrc: `motions/${videoEntry.clipPath}`,
+        ...videoEntry,
+      });
+      this.lessons.set(videoEntry.clipName, []);
+    });
+
+    console.log(`Motion database: loaded ${this.motionsMap.size} videos`);
+    defaultLessons.forEach((lesson) => {
+      this.addLesson(lesson as DanceLesson);
+    });
+    console.log(`Motion database: loaded ${defaultLessons.length} built-in lessons`);
+  }
+
+  addLesson(lesson: DanceLesson) {
+    const lessonList = this.lessons.get(lesson.header.clipName);
+    if (lessonList === undefined) {
+      console.warn(`No video entry found for lesson ${lesson.header.clipName}`);
+      this.lessons.set(lesson.header.clipName, [lesson]);
+      return;
+    }
+
+    lessonList.push(lesson);
+    this.lessons.set(lesson.header.clipName, lessonList);
+  }
+
+  getLessons(videoEntry: DatabaseEntry | string) {
+    let lessons = undefined as undefined | DanceLesson[];
+    if (typeof videoEntry === 'object' && videoEntry !== null) lessons = this.lessons.get(videoEntry.clipName);
+    else lessons = this.lessons.get(videoEntry);
+    return lessons;
+  }
+}
+
+const db = new MotionDatabase();
+export default db;

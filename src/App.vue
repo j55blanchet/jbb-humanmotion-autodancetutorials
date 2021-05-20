@@ -10,9 +10,10 @@
   </div>
 
   <DanceMenu
-        v-on:dance-selected="danceSelected"
         v-if="state === State.DanceMenu"
         @pose-drawer-selected="poseDrawerSelected"
+        @dance-selected="danceSelected"
+        @create-lesson-selected="createLessonSelected"
       />
 
   <CameraSurface
@@ -38,6 +39,12 @@
       <PoseDrawerTest
         v-if="state === State.PoseDrawingTester"
         @back-selected="goHome" />
+
+      <CreateLessonScreen
+        v-if="state === State.CreateLesson"
+          :dance="currentDance"
+          @back-selected="goHome"
+          @lesson-created="goHome" />
 
      <WebcamPromptCard v-if="state === State.PromptStartWebcam"
       @cancel-selected="state = State.DanceMenu"
@@ -78,11 +85,13 @@ import CameraSurface from './components/CameraSurface.vue';
 import OnboardingUI from './components/OnboardingUI.vue';
 import DanceMenu from './components/screens/DanceMenu.vue';
 import LearningScreen from './components/screens/LearningScreen.vue';
-import DanceEntry, { LessonSelection } from './model/DanceEntry';
 import DanceLesson from './model/DanceLesson';
 import WebcamPromptCard from './components/elements/WebcamPromptCard.vue';
 
 import PoseDrawerTest from './components/screens/PoseDrawerTest.vue';
+import CreateLessonScreen from './components/screens/CreateLessonScreen.vue';
+
+import { DatabaseEntry } from '@/services/MotionDatabase';
 
 const State = {
   DanceMenu: 'DanceMenu',
@@ -92,6 +101,7 @@ const State = {
   Onboarding: 'Onboarding',
   LessonActive: 'LessonActive',
   PoseDrawingTester: 'PoseDrawingTester',
+  CreateLesson: 'CreateLesson',
 };
 
 export default defineComponent({
@@ -103,18 +113,19 @@ export default defineComponent({
     LearningScreen,
     WebcamPromptCard,
     PoseDrawerTest,
+    CreateLessonScreen,
   },
   setup() {
     const state = ref(State.DanceMenu);
     const cameraSurface = ref(null as typeof CameraSurface | null);
     const hasCompletedOnboarding = ref(false);
 
-    const currentDance = ref(null as DanceEntry | null);
+    const currentDance = ref(null as DatabaseEntry | null);
     const currentLesson = ref(null as DanceLesson | null);
 
-    function danceSelected(sel: LessonSelection) {
-      currentDance.value = sel.dance;
-      currentLesson.value = sel.lesson;
+    function danceSelected(dance: DatabaseEntry, lesson: DanceLesson) {
+      currentDance.value = dance;
+      currentLesson.value = lesson;
 
       if (webcamProvider.webcamStatus.value === 'running') state.value = State.LessonActive;
       else state.value = State.PromptStartWebcam;
@@ -182,6 +193,10 @@ export default defineComponent({
   methods: {
     poseDrawerSelected() {
       this.state = State.PoseDrawingTester;
+    },
+    createLessonSelected(dance: DatabaseEntry) {
+      this.currentDance = dance;
+      this.state = State.CreateLesson;
     },
   },
 });
