@@ -6,20 +6,29 @@
      <span id="topbarCenter"></span>
      <span class="spacer"></span>
      <span id="topbarRight"></span>
-
   </div>
 
   <DanceMenu
-        v-if="state === State.DanceMenu"
+        v-show="state === State.DanceMenu"
         @pose-drawer-selected="poseDrawerSelected"
         @dance-selected="danceSelected"
         @create-lesson-selected="createLessonSelected"
       />
 
+  <CreateLessonScreen
+        v-if="state === State.CreateLesson"
+          :motion="currentDance"
+          @back-selected="goHome"
+          @lesson-created="goHome" />
+
+  <PoseDrawerTest
+        v-if="state === State.PoseDrawingTester"
+        @back-selected="goHome" />
+
   <CameraSurface
     ref="cameraSurface"
     @tracking-attained="onTrackingAttained()"
-    v-show="state !== State.DanceMenu">
+    v-show="[State.DanceMenu, State.CreateLesson, State.PoseDrawingTester].indexOf(state) === -1">
 
     <template v-slot:background>
       <img v-show="state == State.OnboardingLoading"
@@ -35,16 +44,6 @@
         @lesson-completed="goHome"
         @back-selected="goHome"
       />
-
-      <PoseDrawerTest
-        v-if="state === State.PoseDrawingTester"
-        @back-selected="goHome" />
-
-      <CreateLessonScreen
-        v-if="state === State.CreateLesson"
-          :dance="currentDance"
-          @back-selected="goHome"
-          @lesson-created="goHome" />
 
      <WebcamPromptCard v-if="state === State.PromptStartWebcam"
       @cancel-selected="state = State.DanceMenu"
@@ -81,6 +80,7 @@
 <script lang="ts">
 import { defineComponent, nextTick, ref } from 'vue';
 import webcamProvider from '@/services/WebcamProvider';
+import { DatabaseEntry } from '@/services/MotionDatabase';
 import CameraSurface from './components/CameraSurface.vue';
 import OnboardingUI from './components/OnboardingUI.vue';
 import DanceMenu from './components/screens/DanceMenu.vue';
@@ -90,8 +90,6 @@ import WebcamPromptCard from './components/elements/WebcamPromptCard.vue';
 
 import PoseDrawerTest from './components/screens/PoseDrawerTest.vue';
 import CreateLessonScreen from './components/screens/CreateLessonScreen.vue';
-
-import { DatabaseEntry } from '@/services/MotionDatabase';
 
 const State = {
   DanceMenu: 'DanceMenu',

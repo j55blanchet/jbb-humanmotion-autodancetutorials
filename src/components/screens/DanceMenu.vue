@@ -1,9 +1,20 @@
 <template>
   <section class="section dance-menu">
-    <div class="container content has-text-centered is-hidden-mobile">
-      <h2 class="subtitle">Which dance would you like to learn?</h2>
+
+    <div class="hero is-primary block">
+      <div class="hero-body">
+        <div class="container">
+          <p class="title">
+            Main Menu
+          </p>
+          <p class="subtitle mb-0">
+            Which motion would you like to learn?
+          </p>
+        </div>
+      </div>
     </div>
-    <div class="menu container padded">
+
+    <div class="menu container block">
       <div
         class="dance-card card is-clickable shrink-hover"
         v-for="dance in motionList"
@@ -61,7 +72,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import LessonCard from '@/components/elements/LessonCard.vue';
 import UploadCard from '@/components/elements/UploadCard.vue';
 import db, { DatabaseEntry } from '@/services/MotionDatabase';

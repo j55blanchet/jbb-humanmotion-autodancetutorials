@@ -17,6 +17,7 @@
     "@mediapipe/pose": "^0.2.1617147663",
     "@types/recordrtc": "^5.6.5",
     "bulma": "^0.9.2",
+    "bulma-slider": "^2.0.4",
     "core-js": "^3.6.5",
     "recordrtc": "^5.6.2",
     "register-service-worker": "^1.7.1",

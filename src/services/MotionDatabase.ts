@@ -4,6 +4,7 @@ import videoDatabase from '@/model/videoDatabase.json';
 import defaultLessons from '@/model/bakedInLessons.json';
 
 import { computed, reactive } from 'vue';
+import Utils from './Utils';
 
 export interface DatabaseEntry {
   title: string;
@@ -59,6 +60,25 @@ export class MotionDatabase {
     else lessons = this.lessons.get(videoEntry);
     return lessons;
   }
+}
+
+export function createBlankLesson(videoEntry: DatabaseEntry): DanceLesson {
+  return {
+    _id: Utils.uuidv4(),
+    header: {
+      clipName: videoEntry.clipName,
+      lessonTitle: 'New Lesson',
+    },
+    segmentBreaks: [],
+    activities: [{
+      title: 'Play Whole Video',
+      startTime: 0,
+      endTime: videoEntry.duration,
+      demoVisual: 'video',
+      userVisual: 'none',
+    }],
+    fps: videoEntry.fps,
+  };
 }
 
 const db = new MotionDatabase();

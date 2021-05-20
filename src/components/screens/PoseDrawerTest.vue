@@ -137,6 +137,7 @@ export default defineComponent({
 <style>
 
 .pose-drawer {
+  margin: auto;
   width: 1280px;
   height: 720px;
   position: relative;
