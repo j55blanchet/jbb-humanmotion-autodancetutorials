@@ -29,7 +29,6 @@
                 <a @click="$emit('create-lesson-selected', motion)">Create Lesson</a>
               </li>
             </ul>
-            <p v-if="lessons.length == 0">No lessons available.</p>
           </div>
         </div>
       </div>
