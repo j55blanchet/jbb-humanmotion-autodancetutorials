@@ -15,13 +15,13 @@
     </teleport>
 
     <div class="overlay" v-show="activity && activity.userVisual !== 'none'">
-      <WebcamBox style="width:1280px;height:720px;"/>
+      <WebcamBox :maxHeight="'720px'"/>
     </div>
 
     <div class="overlay">
       <PausingVideoPlayer
         :videoSrc="targetDance.videoSrc"
-        :height="'720px'"
+        :maxHeight="'720px'"
         ref="videoPlayer"
         @progress="onTimeChanged"
         @playback-completed="onActivityFinished"
@@ -131,7 +131,7 @@ import motionRecorder from '@/services/MotionRecorder';
 import InstructionCarousel, { Instruction } from '@/components/elements/InstructionCarousel.vue';
 import { Landmark } from '@/services/MediaPipeTypes';
 import Utils from '@/services/Utils';
-import SegmentedProgressBar, { ProgressSegmentData } from '../elements/SegmentedProgressBar.vue';
+import SegmentedProgressBar, { ProgressSegmentData, calculateProgressSegments } from '../elements/SegmentedProgressBar.vue';
 import PausingVideoPlayer from '../elements/PausingVideoPlayer.vue';
 import WebcamBox from '../elements/WebcamBox.vue';
 import GestureIcon from '../elements/GestureIcon.vue';
@@ -150,26 +150,6 @@ const ActivityPlayState = Object.freeze({
 //   * Update segment breaks in activity to have the first activity
 //     start time and the last activity end time.
 //
-
-function calculateProgressSegments(dance: DatabaseEntry, lesson: DanceLesson, activity: Activity) {
-  if (!lesson) return [];
-
-  let last = undefined as undefined | number;
-  const segs = lesson.segmentBreaks.map((timestamp, i) => {
-    let segData = undefined as undefined | ProgressSegmentData;
-    if (last !== undefined) {
-      segData = {
-        min: last,
-        max: timestamp,
-        enabled: activity.focusedSegments ? activity.focusedSegments.indexOf(i - 1) !== -1 : true,
-      };
-    }
-    last = timestamp;
-    return segData;
-  }).filter((x) => x !== undefined);
-
-  return segs;
-}
 
 const TRACKING_ID = 'LearningScreen';
 
@@ -208,7 +188,6 @@ function setupFrameRecording(activity: ComputedRef<Activity | null>, videoTime: 
   const canSaveFrame = computed(() => {
     if (isSavingFrames.value) return false;
     if (!activity.value) return false;
-    // if (!activityFinished.value) return false;
     return activity.value.demoVisual === 'skeleton' && activity.value.userVisual !== 'none';
   });
   async function startSaveFrames() {
@@ -343,9 +322,8 @@ export default defineComponent({
 
     const progressSegments = computed(() => {
       const lesson = targetLesson?.value as DanceLesson | undefined;
-      const dance = targetDance?.value as DatabaseEntry | undefined;
       const curActivity = activity.value;
-      if (lesson && dance && curActivity) return calculateProgressSegments(dance, lesson, curActivity);
+      if (lesson && curActivity) return calculateProgressSegments(lesson, curActivity);
       return [];
     });
 
