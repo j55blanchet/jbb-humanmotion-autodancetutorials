@@ -29,5 +29,9 @@ $body-background-color: $beige-lighter;
 $input-border-color: transparent;
 $input-shadow: none;
 
+.input:invalid {
+    color: red;
+}
+
 @import '~bulma';
 @import '~bulma-slider';

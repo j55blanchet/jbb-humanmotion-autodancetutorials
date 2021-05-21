@@ -3,7 +3,7 @@
     <progress
       v-for="seg in segmentsData"
       :key="seg.id"
-      :class="[{ 'is-disabled': !seg.enabled, [seg.cssClass]: seg.enabled, 'is-dark': !seg.enabled}, ]"
+      :class="[{ 'is-disabled': !enableAll && !seg.enabled, [seg.cssClass]: enableAll || seg.enabled, 'is-dark': !enableAll && !seg.enabled}, ]"
       class="progress is-large"
       :max="seg.max - seg.min"
       :value="progress - seg.min"
@@ -14,11 +14,32 @@
 
 <script lang="ts">
 import { defineComponent, computed, toRefs } from 'vue';
+import DanceLesson, { Activity } from '@/model/DanceLesson';
 
 export interface ProgressSegmentData {
   min: number;
   max: number;
   enabled: boolean;
+}
+
+export function calculateProgressSegments(lesson: DanceLesson, activity: Activity) {
+  if (!lesson) return [];
+
+  let last = undefined as undefined | number;
+  const segs = lesson.segmentBreaks.map((timestamp, i) => {
+    let segData = undefined as undefined | ProgressSegmentData;
+    if (last !== undefined) {
+      segData = {
+        min: last,
+        max: timestamp,
+        enabled: activity?.focusedSegments ? activity.focusedSegments.indexOf(i - 1) !== -1 : true,
+      };
+    }
+    last = timestamp;
+    return segData;
+  }).filter((x) => x !== undefined);
+
+  return segs as ProgressSegmentData[];
 }
 
 const cssClassOptions = [
@@ -39,6 +60,10 @@ export default defineComponent({
     progress: {
       default: 0,
       type: Number,
+    },
+    enableAll: {
+      default: false,
+      type: Boolean,
     },
   },
   setup(props) {

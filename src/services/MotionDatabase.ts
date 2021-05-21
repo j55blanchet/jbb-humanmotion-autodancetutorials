@@ -69,7 +69,7 @@ export function createBlankLesson(videoEntry: DatabaseEntry): DanceLesson {
       clipName: videoEntry.clipName,
       lessonTitle: 'New Lesson',
     },
-    segmentBreaks: [],
+    segmentBreaks: [0, videoEntry.duration],
     activities: [{
       title: 'Play Whole Video',
       startTime: 0,

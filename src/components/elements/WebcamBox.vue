@@ -1,6 +1,10 @@
 <template>
   <div class="is-relative webcam-box">
-    <video ref="videoE" muted disablePictureInPicture
+    <video
+      ref="videoE" muted disablePictureInPicture
+      :style="{
+        'max-height': maxHeight,
+      }"
     ></video>
     <div class="is-overlay" v-if="webcamStatus !== 'running'">
       <div class="vcenter-parent">
@@ -33,6 +37,9 @@ export default defineComponent({
     enableRecordButton: {
       type: Boolean,
       default: false,
+    },
+    maxHeight: {
+      type: String,
     },
   },
   setup() {

@@ -2,15 +2,13 @@
   <div
     class="is-relative video-player-container"
     :style="{
-      width: width,
-      height: height,
+      'max-height': maxHeight
     }"
   >
     <video
       :src="videoUrl"
       :style="{
-        width: width,
-        height: height,
+        'max-height': maxHeight,
         opacity: '' + videoOpacity,
       }"
       ref="videoElement"
@@ -129,8 +127,7 @@ export default defineComponent({
   name: 'VideoPlayer',
   props: {
     videoBaseUrl: String,
-    width: String,
-    height: String,
+    maxHeight: String,
     drawPoseLandmarks: {
       type: Boolean,
       default: false,
@@ -292,6 +289,9 @@ export default defineComponent({
       const pauseVideo = !(keepPlaying ?? false);
       if (videoE && pauseVideo) videoE.pause();
     },
+    getVideoTime() {
+      return this.videoElement?.currentTime ?? 0;
+    },
   },
 });
 </script>
@@ -304,6 +304,8 @@ export default defineComponent({
 
   video {
     border-radius: 0.25rem;
+    display: block;
+    margin: auto;
   }
 }
 </style>

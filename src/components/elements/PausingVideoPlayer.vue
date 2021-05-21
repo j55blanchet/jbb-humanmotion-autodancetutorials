@@ -7,9 +7,7 @@
     :videoOpacity="videoOpacity"
     :drawPoseLandmarks="drawPoseLandmarks"
     :setDrawStyle="setDrawStyle"
-    :style="{
-      height: '720px',
-    }"
+    :maxHeight="maxHeight"
     :emphasizedJoints="emphasizedJoints"
     :emphasizedJointStyle="emphasizedJointStyle"
     />
@@ -101,6 +99,9 @@ export default defineComponent({
       type: String,
       default: 'red',
     },
+    maxHeight: {
+      type: String,
+    },
   },
   emits: ['playback-completed', 'progress', 'pause-hit', 'pause-end'],
   setup(props, { emit }) {
@@ -187,6 +188,9 @@ export default defineComponent({
   methods: {
     getVideoDimensions() {
       return (this.$refs.videoPlayer as typeof VideoPlayer)?.getVideoDimensions();
+    },
+    getVideoTime(): number {
+      return (this.videoPlayer as any)?.getVideoTime() ?? 0;
     },
   },
 });
