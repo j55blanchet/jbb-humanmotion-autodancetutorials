@@ -146,12 +146,12 @@
               <div class="field-body">
                 <div class="field is-narrow">
                   <div class="control">
-                    <input type="number" class="input narrow-number-input" v-model="activeActivity.startTime" min="0" step="0.01" :max="motion.duration">
+                    <input type="number" class="input narrow-number-input" v-model.number="activeActivity.startTime" min="0" step="0.01" :max="motion.duration">
                   </div>
                 </div>
                 <div class="field">
                   <div class="control">
-                    <input type="range" class="input slider mt-0 mb-0" v-model="activeActivity.startTime" min="0" step="0.01" :max="motion.duration"/>
+                    <input type="range" class="input slider mt-0 mb-0" v-model.number="activeActivity.startTime" min="0" step="0.01" :max="motion.duration"/>
                   </div>
                 </div>
               </div>
@@ -164,27 +164,136 @@
               <div class="field-body">
                 <div class="field is-narrow">
                   <div class="control">
-                    <input type="number" class="input narrow-number-input" v-model="activeActivity.endTime" :min="0" step="0.01" :max="motion.duration">
+                    <input type="number" class="input narrow-number-input" v-model.number="activeActivity.endTime" :min="0" step="0.01" :max="motion.duration">
                   </div>
                 </div>
                 <div class="field">
                   <div class="control">
-                    <input type="range" class="input slider mt-0 mb-0" v-model="activeActivity.endTime" :min="0" step="0.01" :max="motion.duration"/>
+                    <input type="range" class="input slider mt-0 mb-0" v-model.number="activeActivity.endTime" :min="0" step="0.01" :max="motion.duration"/>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- <div class="field is-horizontal">
-              <div class="field-label"></div>
+
+            <div class="field is-horizontal">
+              <div class="field-label">
+                <label class="label">Start Instruction</label>
+              </div>
               <div class="field-body">
                 <div class="field">
                   <div class="control">
-                    <input type="range" class="input slider" v-model="activeActivity.startTime" min="0" step="0.1" :max="motion.duration"/>
+                    <input type="text" class="input" v-model="activeActivity.startInstruction" />
                   </div>
                 </div>
               </div>
-            </div> -->
+            </div>
 
+            <div class="field is-horizontal">
+              <div class="field-label">
+                <label class="label">Playing Instruction</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <input type="text" class="input" v-model="activeActivity.playingInstruction" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label">
+                <label class="label">End Instruction</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <input type="text" class="input" v-model="activeActivity.endInstruction" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label">
+                <label class="label">Static Instruction</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <input type="text" class="input" v-model="activeActivity.staticInstruction" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label">
+                <label class="label">Pauses</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <ul class="menu-list">
+                      <li v-for="(pause, i) in activeActivity.pauses ?? []" :key="i">
+                        <a :class="{'is-active': activePauseIndex === i}" @click="selectPause(i)">
+                          <strong>#{{i+1}}</strong>
+                          for {{pause.pauseDuration ?? Constants.DefaultPauseDuration}}s
+                          @ {{pause.time}}s
+                          <small v-if="pause.instruction">&quot;{{pause.instruction}}&quot;</small>
+                        </a>
+                      </li>
+                      <li><a @click="addPause()">&plus; Add Pause</a></li>
+                      <li v-show="(activeActivity.pauses?.length ?? 0) >= 2"><a @click="sortPauses()">Sort Pauses</a></li>
+                      <li v-if="lessonUnderConstruction.activities.length === 0">No Pauses</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div v-if="activePause">
+              <h6 class="title is-5">Pause {{activePauseIndex + 1}} Details</h6>
+              <div class="field is-horizontal">
+                <div class="field-label"><label class="label">Time</label></div>
+                <div class="field-body">
+                  <div class="field is-narrow">
+                    <div class="control">
+                      <input type="number" class="input narrow-number-input" v-model.number="activePause.time" min="0" step="0.01" :max="motion.duration">
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="control">
+                      <input type="range" class="input slider mt-0 mb-0" v-model.number="activePause.time" min="0" step="0.01" :max="motion.duration"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">Duration</label>
+                </div>
+                <div class="field-body">
+                  <div class="field is-narrow">
+                    <div class="control">
+                      <input type="number" class="input narrow-number-input" v-model.number="activePause.pauseDuration" min="0" step="0.01" :max="10">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">Instruction</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <input type="text" class="input" v-model.number="activePause.instruction">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> <!-- End pause detail section-->
           </div>
 
           <div class="column">
@@ -218,11 +327,12 @@ import {
   defineComponent, ref, toRefs, watchEffect,
 } from 'vue';
 
+import Constants from '@/services/Constants';
 import ActivityVideoPlayer from '@/components/elements/ActivityVideoPlayer.vue';
 import PausingVideoPlayer from '@/components/elements/PausingVideoPlayer.vue';
 import VideoPlayer from '@/components/elements/VideoPlayer.vue';
 import db, { createBlankLesson, DatabaseEntry } from '@/services/MotionDatabase';
-import DanceLesson, { Activity } from '@/model/DanceLesson';
+import DanceLesson, { Activity, PauseInfo } from '@/model/DanceLesson';
 import Utils from '@/services/Utils';
 import SegmentedProgressBar, { ProgressSegmentData, calculateProgressSegments } from '@/components/elements/SegmentedProgressBar.vue';
 
@@ -243,7 +353,11 @@ export default defineComponent({
   props: ['motion'],
   emits: ['back-selected', 'lesson-created'],
   data() {
-    return { newSegmentVal: 0 };
+    return {
+      newPauseTime: 0,
+      newSegmentVal: 0,
+      activePauseIndex: 0,
+    };
   },
   computed: {
     lessonStartTime(): number {
@@ -261,6 +375,9 @@ export default defineComponent({
     progressSegments(): ProgressSegmentData[] {
       if (this.activeActivity && this.lessonUnderConstruction) return calculateProgressSegments(this.lessonUnderConstruction, this.activeActivity);
       return [];
+    },
+    activePause(): null | PauseInfo {
+      return ((this as any).activeActivity.pauses ?? [])[(this as any).activePauseIndex] ?? null;
     },
   },
   mounted() {
@@ -289,6 +406,7 @@ export default defineComponent({
       lessonUnderConstruction,
       activeActivityIndex,
       activeActivity,
+      Constants,
     };
   },
   methods: {
@@ -322,6 +440,34 @@ export default defineComponent({
     },
     selectActivity(targetIndex: number) {
       this.activeActivityIndex = targetIndex;
+    },
+    addPause(targetIndex?: number) {
+      const pauses = this.activeActivity.pauses ?? [];
+      const newPause: PauseInfo = {
+        time: this.activeActivity.startTime,
+        pauseDuration: Constants.DefaultPauseDuration,
+      };
+      if (targetIndex === undefined) {
+        pauses.push(newPause);
+        this.activePauseIndex = pauses.length - 1;
+      } else {
+        pauses.splice(targetIndex, 0, newPause);
+        this.activePauseIndex = targetIndex;
+      }
+      pauses.sort((a, b) => a.time - b.time);
+      this.activeActivity.pauses = pauses;
+    },
+    selectPause(targetIndex: number) {
+      if (targetIndex === this.activePauseIndex) this.activePauseIndex = -1;
+      else this.activePauseIndex = targetIndex;
+    },
+    sortPauses() {
+      const pauses = this.activeActivity.pauses ?? [];
+      const prevPause = pauses[this.activePauseIndex];
+      pauses.sort((a, b) => a.time - b.time);
+      const newIndex = pauses.indexOf(prevPause);
+      if (newIndex >= 0) this.activePauseIndex = newIndex;
+      this.activeActivity.pauses = pauses;
     },
     addSegmentBreak(breakTime: number) {
       breakTime = +breakTime;

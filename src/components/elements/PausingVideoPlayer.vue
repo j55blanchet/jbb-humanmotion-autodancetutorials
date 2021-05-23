@@ -15,13 +15,14 @@
 
 <script lang="ts">
 
+import Constants from '@/services/Constants';
 import { PauseInfo } from '@/model/DanceLesson';
 import {
   computed, defineComponent, onBeforeUnmount, ref,
 } from 'vue';
 import VideoPlayer from './VideoPlayer.vue';
 
-const DEFAULT_PAUSE_DURATION = 1.5;
+const DEFAULT_PAUSE_DURATION = Constants.DefaultPauseDuration;
 
 type PlaySegment = {
   from: number;
