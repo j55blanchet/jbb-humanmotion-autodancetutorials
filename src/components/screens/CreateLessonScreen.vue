@@ -141,6 +141,19 @@
 
             <div class="field is-horizontal">
               <div class="field-label">
+                <label class="label">Playback Speed</label>
+              </div>
+              <div class="field-body">
+                <div class="field is-narrow">
+                  <div class="control">
+                    <input type="number" class="input narrow-number-input" v-model.number="activeActivity.practiceSpeed" min="0" step="0.01" :max="2">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label">
                 <label class="label">Start Time</label>
               </div>
               <div class="field-body">
@@ -403,7 +416,7 @@ import Constants from '@/services/Constants';
 import ActivityVideoPlayer from '@/components/elements/ActivityVideoPlayer.vue';
 import PausingVideoPlayer from '@/components/elements/PausingVideoPlayer.vue';
 import VideoPlayer from '@/components/elements/VideoPlayer.vue';
-import db, { createBlankLesson, DatabaseEntry } from '@/services/MotionDatabase';
+import db, { createBlankActivity, createBlankLesson, DatabaseEntry } from '@/services/MotionDatabase';
 import DanceLesson, { Activity, PauseInfo, TimedInstruction } from '@/model/DanceLesson';
 import Utils from '@/services/Utils';
 import SegmentedProgressBar, { ProgressSegmentData, calculateProgressSegments } from '@/components/elements/SegmentedProgressBar.vue';
@@ -498,13 +511,7 @@ export default defineComponent({
       this.state = LessonCreationState.ModifyLesson;
     },
     addActivity(targetIndex?: number) {
-      const newActivity: Activity = {
-        title: `Activity ${this.lessonUnderConstruction.activities.length + 1}`,
-        startTime: 0,
-        endTime: this.typedMotion.duration,
-        demoVisual: 'video',
-        userVisual: 'none',
-      };
+      const newActivity: Activity = createBlankActivity(this.typedMotion, `Activity ${this.lessonUnderConstruction.activities.length + 1}`);
 
       if (targetIndex === undefined) {
         this.lessonUnderConstruction.activities.push(newActivity);

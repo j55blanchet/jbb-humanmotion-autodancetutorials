@@ -339,7 +339,7 @@ export default defineComponent({
       vidPlayer.play(
         vidActivity.startTime,
         vidActivity.endTime,
-        (vidActivity.practiceSpeeds ?? [1])[0] ?? 1,
+        vidActivity.practiceSpeed ?? 1,
         vidActivity.pauses ?? [],
         pause ?? DefaultPauseDuration,
         () => {

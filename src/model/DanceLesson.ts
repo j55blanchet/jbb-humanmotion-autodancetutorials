@@ -20,7 +20,7 @@ export interface Activity {
   emphasizedJoints?: number[];
   focusedSegments?: number[];
   pauses?: Array<PauseInfo>;
-  practiceSpeeds?: Array<number>;
+  practiceSpeed?: number;
   startInstruction?: string;
   playingInstruction?: string;
   staticInstruction?: string;

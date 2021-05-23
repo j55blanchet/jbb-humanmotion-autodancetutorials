@@ -1,4 +1,4 @@
-import DanceLesson from '@/model/DanceLesson';
+import DanceLesson, { Activity } from '@/model/DanceLesson';
 
 import videoDatabase from '@/model/videoDatabase.json';
 import defaultLessons from '@/model/bakedInLessons.json';
@@ -62,6 +62,17 @@ export class MotionDatabase {
   }
 }
 
+export function createBlankActivity(motion: DatabaseEntry, title: string): Activity {
+  return {
+    title,
+    startTime: 0,
+    endTime: motion.duration,
+    demoVisual: 'video',
+    userVisual: 'none',
+    practiceSpeed: 1,
+  };
+}
+
 export function createBlankLesson(videoEntry: DatabaseEntry): DanceLesson {
   return {
     _id: Utils.uuidv4(),
@@ -70,13 +81,7 @@ export function createBlankLesson(videoEntry: DatabaseEntry): DanceLesson {
       lessonTitle: 'New Lesson',
     },
     segmentBreaks: [0, videoEntry.duration],
-    activities: [{
-      title: 'Play Whole Video',
-      startTime: 0,
-      endTime: videoEntry.duration,
-      demoVisual: 'video',
-      userVisual: 'none',
-    }],
+    activities: [createBlankActivity(videoEntry, 'Activity 1')],
     fps: videoEntry.fps,
   };
 }
