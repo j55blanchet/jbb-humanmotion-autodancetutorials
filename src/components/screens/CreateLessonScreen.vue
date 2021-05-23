@@ -243,9 +243,35 @@
                           <small v-if="pause.instruction">&quot;{{pause.instruction}}&quot;</small>
                         </a>
                       </li>
+                      <li v-if="lessonUnderConstruction.activities.length === 0">No Pauses</li>
                       <li><a @click="addPause()">&plus; Add Pause</a></li>
                       <li v-show="(activeActivity.pauses?.length ?? 0) >= 2"><a @click="sortPauses()">Sort Pauses</a></li>
-                      <li v-if="lessonUnderConstruction.activities.length === 0">No Pauses</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label">
+                <label class="label">Timed Instructions</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <ul class="menu-list">
+                      <li v-for="(ti, i) in activeActivity.timedInstructions ?? []" :key="i">
+                        <a :class="{'is-active': activeTimedInstructionIndex === i}" @click="selectTimedInstruction(i)">
+                          <strong>#{{i+1}}</strong>&nbsp;
+                          <small>&quot;{{ti.text}}&quot;</small>
+                          from {{ti.startTime}}s
+                          to {{ti.endTime}}s
+                        </a>
+                      </li>
+                      <li v-if="lessonUnderConstruction.activities.length === 0">No Timed Instructions</li>
+                      <li><a @click="addTimedInstruction()">&plus; Add Timed Instruction</a></li>
+                      <li v-show="(activeActivity.timedInstructions?.length ?? 0) >= 2"><a @click="sortTimedInstructions()">Sort Timed Instructions</a></li>
+                      <li v-if="lessonUnderConstruction.activities.length === 0">No Timed Instructions</li>
                     </ul>
                   </div>
                 </div>
@@ -288,12 +314,58 @@
                 <div class="field-body">
                   <div class="field">
                     <div class="control">
-                      <input type="text" class="input" v-model.number="activePause.instruction">
+                      <input type="text" class="input" v-model="activePause.instruction">
                     </div>
                   </div>
                 </div>
               </div>
             </div> <!-- End pause detail section-->
+
+            <div v-if="activeTimedInstruction">
+              <h6 class="title is-5">Timed Instruction {{activeTimedInstructionIndex + 1}} Details</h6>
+              <div class="field is-horizontal">
+                <div class="field-label"><label class="label">Start Time</label></div>
+                <div class="field-body">
+                  <div class="field is-narrow">
+                    <div class="control">
+                      <input type="number" class="input narrow-number-input" v-model.number="activeTimedInstruction.startTime" :min="activeActivity.startTime" step="0.01" :max="activeTimedInstruction.endTime">
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="control">
+                      <input type="range" class="input slider mt-0 mb-0" v-model.number="activeTimedInstruction.startTime" :min="activeActivity.startTime" step="0.01" :max="activeActivity.endTime"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <div class="field-label"><label class="label">End Time</label></div>
+                <div class="field-body">
+                  <div class="field is-narrow">
+                    <div class="control">
+                      <input type="number" class="input narrow-number-input" v-model.number="activeTimedInstruction.endTime" :min="activeTimedInstruction.startTime" step="0.01" :max="activeActivity.endTime">
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="control">
+                      <input type="range" class="input slider mt-0 mb-0" v-model.number="activeTimedInstruction.endTime" :min="activeActivity.startTime" step="0.01" :max="activeActivity.endTime"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">Text</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <input type="text" class="input" v-model="activeTimedInstruction.text">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> <!-- End timed instruction detail section-->
           </div>
 
           <div class="column">
@@ -332,7 +404,7 @@ import ActivityVideoPlayer from '@/components/elements/ActivityVideoPlayer.vue';
 import PausingVideoPlayer from '@/components/elements/PausingVideoPlayer.vue';
 import VideoPlayer from '@/components/elements/VideoPlayer.vue';
 import db, { createBlankLesson, DatabaseEntry } from '@/services/MotionDatabase';
-import DanceLesson, { Activity, PauseInfo } from '@/model/DanceLesson';
+import DanceLesson, { Activity, PauseInfo, TimedInstruction } from '@/model/DanceLesson';
 import Utils from '@/services/Utils';
 import SegmentedProgressBar, { ProgressSegmentData, calculateProgressSegments } from '@/components/elements/SegmentedProgressBar.vue';
 
@@ -357,6 +429,7 @@ export default defineComponent({
       newPauseTime: 0,
       newSegmentVal: 0,
       activePauseIndex: 0,
+      activeTimedInstructionIndex: 0,
     };
   },
   computed: {
@@ -378,6 +451,9 @@ export default defineComponent({
     },
     activePause(): null | PauseInfo {
       return ((this as any).activeActivity.pauses ?? [])[(this as any).activePauseIndex] ?? null;
+    },
+    activeTimedInstruction(): null | TimedInstruction {
+      return ((this as any).activeActivity.timedInstructions ?? [])[(this as any).activeTimedInstructionIndex] ?? null;
     },
   },
   mounted() {
@@ -454,7 +530,7 @@ export default defineComponent({
         pauses.splice(targetIndex, 0, newPause);
         this.activePauseIndex = targetIndex;
       }
-      pauses.sort((a, b) => a.time - b.time);
+      this.sortPauses();
       this.activeActivity.pauses = pauses;
     },
     selectPause(targetIndex: number) {
@@ -463,11 +539,41 @@ export default defineComponent({
     },
     sortPauses() {
       const pauses = this.activeActivity.pauses ?? [];
-      const prevPause = pauses[this.activePauseIndex];
+      const selectedPause = pauses[this.activePauseIndex];
       pauses.sort((a, b) => a.time - b.time);
-      const newIndex = pauses.indexOf(prevPause);
+      const newIndex = pauses.indexOf(selectedPause);
       if (newIndex >= 0) this.activePauseIndex = newIndex;
       this.activeActivity.pauses = pauses;
+    },
+    addTimedInstruction(targetIndex?: number) {
+      const timedInstructions = this.activeActivity.timedInstructions ?? [];
+      const newInstruction: TimedInstruction = {
+        startTime: 0,
+        endTime: 1,
+        text: 'Do XYZ',
+      };
+      if (targetIndex === undefined) {
+        timedInstructions.push(newInstruction);
+        this.activeTimedInstructionIndex = timedInstructions.length - 1;
+      } else {
+        timedInstructions.splice(targetIndex, 0, newInstruction);
+        this.activeTimedInstructionIndex = targetIndex;
+      }
+      this.sortTimedInstructions();
+
+      this.activeActivity.timedInstructions = timedInstructions;
+    },
+    selectTimedInstruction(targetIndex: number) {
+      if (targetIndex === this.activeTimedInstructionIndex) this.activeTimedInstructionIndex = -1;
+      else this.activeTimedInstructionIndex = targetIndex;
+    },
+    sortTimedInstructions() {
+      const timedInstructs = this.activeActivity.timedInstructions ?? [];
+      const selectedTimedInstruc = timedInstructs[this.activeTimedInstructionIndex];
+      timedInstructs.sort((a, b) => a.startTime - b.startTime);
+      const newIndex = timedInstructs.indexOf(selectedTimedInstruc);
+      if (newIndex >= 0) this.activeTimedInstructionIndex = newIndex;
+      this.activeActivity.timedInstructions = timedInstructs;
     },
     addSegmentBreak(breakTime: number) {
       breakTime = +breakTime;
