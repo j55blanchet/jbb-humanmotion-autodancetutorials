@@ -263,6 +263,11 @@ export default defineComponent({
       return [];
     },
   },
+  mounted() {
+    if (this.lessons.length === 0) {
+      this.startCreation(null);
+    }
+  },
   setup(props) {
     const { motion } = toRefs(props);
     const typedMotion = computed(() => motion.value as unknown as DatabaseEntry);
