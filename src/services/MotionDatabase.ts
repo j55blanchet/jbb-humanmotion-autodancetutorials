@@ -29,7 +29,7 @@ export class MotionDatabase {
 
     videoDatabase.forEach((videoEntry) => {
       this.motionsMap.set(videoEntry.clipName, {
-        videoSrc: `motions/${videoEntry.clipPath}`,
+        videoSrc: `videos/${videoEntry.clipPath}`,
         ...videoEntry,
       });
       this.lessons.set(videoEntry.clipName, []);

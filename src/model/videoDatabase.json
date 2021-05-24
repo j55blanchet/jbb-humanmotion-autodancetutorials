@@ -1,168 +1,510 @@
 [
-    {
-      "clipName": "derulo",
-      "clipPath": "derulo.mp4",
-      "frameCount": 527,
-      "fps": 29.194436229205177,
-      "duration": 18.051384718051384,
-      "width": 576,
-      "height": 1024,
-      "startTime": 4.8,
-      "endTime": 15.0,
-      "poseUpperBodyOnly": true,
-      "landmarkScope": [
-        "pose"
-      ],
-      "title": "Savage Love"
-    },
-    {
-      "clipName": "itsafit",
-      "clipPath": "itsafit.mp4",
-      "frameCount": 414,
-      "fps": 29.97,
-      "duration": 13.813813813813814,
-      "width": 576,
-      "height": 1024,
-      "startTime": 1.0,
-      "endTime": 10.0,
-      "poseUpperBodyOnly": false,
-      "landmarkScope": [
-        "pose"
-      ],
-      "title": "It's a Fit"
-    },
-    {
-      "clipName": "renegade",
-      "clipPath": "renegade.mp4",
-      "frameCount": 367,
-      "fps": 30.0,
-      "duration": 12.233333333333333,
-      "width": 576,
-      "height": 1024,
-      "startTime": 0,
-      "endTime": 12.233333333333333,
-      "poseUpperBodyOnly": false,
-      "landmarkScope": [
-        "pose"
-      ],
-      "title": "Renegade"
-    },
-    {
-      "clipName": "unhhunh",
-      "clipPath": "unhhunh.mp4",
-      "frameCount": 578,
-      "fps": 30.0,
-      "duration": 19.266666666666666,
-      "width": 540,
-      "height": 960,
-      "startTime": 0,
-      "endTime": 19.266666666666666,
-      "poseUpperBodyOnly": false,
-      "landmarkScope": [
-        "pose"
-      ],
-      "title": "Unhhunh"
-    },
-    {
-      "clipName": "COCONUT",
-      "clipPath": "ASL/COCONUT.mov",
-      "frameCount": 42,
-      "fps": 29.97,
-      "duration": 1.4014014014014013,
-      "width": 720,
-      "height": 480,
-      "startTime": 0,
-      "endTime": 1.4014014014014013,
-      "poseUpperBodyOnly": true,
-      "landmarkScope": [
-        "rightHand",
-        "leftHand"
-      ],
-      "title": "ASL: Coconut"
-    },
-    {
-      "clipName": "flipflops",
-      "clipPath": "ASL/flipflops.mp4",
-      "frameCount": 58,
-      "fps": 29.97002997002997,
-      "duration": 1.9352666666666667,
-      "width": 640,
-      "height": 480,
-      "startTime": 0,
-      "endTime": 1.9352666666666667,
-      "poseUpperBodyOnly": true,
-      "landmarkScope": [
-        "rightHand",
-        "leftHand"
-      ],
-      "title": "ASL: FlipFlips"
-    },
-    {
-      "clipName": "ocean",
-      "clipPath": "ASL/ocean.mp4",
-      "frameCount": 61,
-      "fps": 29.97002997002997,
-      "duration": 2.0353666666666665,
-      "width": 640,
-      "height": 480,
-      "startTime": 0,
-      "endTime": 2.0353666666666665,
-      "poseUpperBodyOnly": true,
-      "landmarkScope": [
-        "rightHand",
-        "leftHand"
-      ],
-      "title": "ASL: Ocean"
-    },
-    {
-      "clipName": "sailboat",
-      "clipPath": "ASL/sailboat.mp4",
-      "frameCount": 63,
-      "fps": 29.97002997002997,
-      "duration": 2.1021,
-      "width": 640,
-      "height": 480,
-      "startTime": 0,
-      "endTime": 2.1021,
-      "poseUpperBodyOnly": true,
-      "landmarkScope": [
-        "rightHand",
-        "leftHand"
-      ],
-      "title": "ASL: Sailboat"
-    },
-    {
-      "clipName": "TURTLE",
-      "clipPath": "ASL/TURTLE.mp4",
-      "frameCount": 36,
-      "fps": 29.97,
-      "duration": 1.2012012012012012,
-      "width": 720,
-      "height": 480,
-      "startTime": 0,
-      "endTime": 1.2012012012012012,
-      "poseUpperBodyOnly": true,
-      "landmarkScope": [
-        "rightHand",
-        "leftHand"
-      ],
-      "title": "ASL: Turtle"
-    },
-    {
-      "clipName": "UMBRELLA",
-      "clipPath": "ASL/UMBRELLA.mp4",
-      "frameCount": 54,
-      "fps": 29.97,
-      "duration": 1.8018018018018018,
-      "width": 720,
-      "height": 480,
-      "startTime": 0,
-      "endTime": 1.8018018018018018,
-      "poseUpperBodyOnly": true,
-      "landmarkScope": [
-        "rightHand",
-        "leftHand"
-      ],
-      "title": "ASL: Umbrella"
-    }
-  ]
+  {
+    "clipName": "derulo",
+    "clipPath": "derulo.mp4",
+    "frameCount": 527,
+    "fps": 29.194436229205177,
+    "duration": 18.051384718051384,
+    "width": 576,
+    "height": 1024,
+    "startTime": 4.8,
+    "endTime": 15.0,
+    "poseUpperBodyOnly": true,
+    "landmarkScope": [
+      "pose"
+    ],
+    "title": "Savage Love"
+  },
+  {
+    "clipName": "itsafit",
+    "clipPath": "itsafit.mp4",
+    "frameCount": 414,
+    "fps": 29.97,
+    "duration": 13.813813813813814,
+    "width": 576,
+    "height": 1024,
+    "startTime": 1.0,
+    "endTime": 10.0,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose"
+    ],
+    "title": "It's a Fit"
+  },
+  {
+    "clipName": "renegade",
+    "clipPath": "renegade.mp4",
+    "frameCount": 367,
+    "fps": 30.0,
+    "duration": 12.233333333333333,
+    "width": 576,
+    "height": 1024,
+    "startTime": 0,
+    "endTime": 12.233333333333333,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose"
+    ],
+    "title": "Renegade"
+  },
+  {
+    "clipName": "unhhunh",
+    "clipPath": "unhhunh.mp4",
+    "frameCount": 578,
+    "fps": 30.0,
+    "duration": 19.266666666666666,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 19.266666666666666,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose"
+    ],
+    "title": "Unhhunh"
+  },
+  {
+    "clipName": "COCONUT",
+    "clipPath": "ASL/Cluster1/COCONUT.mov",
+    "frameCount": 42,
+    "fps": 29.97,
+    "duration": 1.4014014014014013,
+    "width": 720,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 1.4014014014014013,
+    "poseUpperBodyOnly": true,
+    "landmarkScope": [
+      "rightHand",
+      "leftHand"
+    ],
+    "title": "ASL: Coconut"
+  },
+  {
+    "clipName": "flipflops",
+    "clipPath": "ASL/Cluster1/flipflops.mp4",
+    "frameCount": 58,
+    "fps": 29.97002997002997,
+    "duration": 1.9352666666666667,
+    "width": 640,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 1.9352666666666667,
+    "poseUpperBodyOnly": true,
+    "landmarkScope": [
+      "rightHand",
+      "leftHand"
+    ],
+    "title": "ASL: FlipFlips"
+  },
+  {
+    "clipName": "ocean",
+    "clipPath": "ASL/Cluster1/ocean.mp4",
+    "frameCount": 61,
+    "fps": 29.97002997002997,
+    "duration": 2.0353666666666665,
+    "width": 640,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 2.0353666666666665,
+    "poseUpperBodyOnly": true,
+    "landmarkScope": [
+      "rightHand",
+      "leftHand"
+    ],
+    "title": "ASL: Ocean"
+  },
+  {
+    "clipName": "sailboat",
+    "clipPath": "ASL/Cluster1/sailboat.mp4",
+    "frameCount": 63,
+    "fps": 29.97002997002997,
+    "duration": 2.1021,
+    "width": 640,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 2.1021,
+    "poseUpperBodyOnly": true,
+    "landmarkScope": [
+      "rightHand",
+      "leftHand"
+    ],
+    "title": "ASL: Sailboat"
+  },
+  {
+    "clipName": "TURTLE",
+    "clipPath": "ASL/Cluster1/TURTLE.m4v",
+    "frameCount": 36,
+    "fps": 29.97,
+    "duration": 1.2012012012012012,
+    "width": 720,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 1.2012012012012012,
+    "poseUpperBodyOnly": true,
+    "landmarkScope": [
+      "rightHand",
+      "leftHand"
+    ],
+    "title": "ASL: Turtle"
+  },
+  {
+    "clipName": "UMBRELLA",
+    "clipPath": "ASL/Cluster1/UMBRELLA.m4v",
+    "frameCount": 54,
+    "fps": 29.97,
+    "duration": 1.8018018018018018,
+    "width": 720,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 1.8018018018018018,
+    "poseUpperBodyOnly": true,
+    "landmarkScope": [
+      "rightHand",
+      "leftHand"
+    ],
+    "title": "ASL: Umbrella"
+  },
+  {
+    "title": "fence",
+    "clipName": "fence",
+    "clipPath": "ASL/Cluster2/fence.mp4",
+    "frameCount": 58,
+    "fps": 29.97002997002997,
+    "duration": 1.9352666666666667,
+    "width": 640,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 1.9352666666666667,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ]
+  },
+  {
+    "title": "truck_2",
+    "clipName": "truck_2",
+    "clipPath": "ASL/Cluster2/truck_2.mp4",
+    "frameCount": 62,
+    "fps": 29.97002997002997,
+    "duration": 2.0687333333333333,
+    "width": 640,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 2.0687333333333333,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ]
+  },
+  {
+    "title": "shelf",
+    "clipName": "shelf",
+    "clipPath": "ASL/Cluster3/shelf.mp4",
+    "frameCount": 67,
+    "fps": 29.97002997002997,
+    "duration": 2.2355666666666667,
+    "width": 640,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 2.2355666666666667,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ]
+  },
+  {
+    "title": "bus",
+    "clipName": "bus",
+    "clipPath": "ASL/Cluster4/bus.mp4",
+    "frameCount": 47,
+    "fps": 29.97002997002997,
+    "duration": 1.5682333333333334,
+    "width": 640,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 1.5682333333333334,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ]
+  },
+  {
+    "title": "hen",
+    "clipName": "hen",
+    "clipPath": "ASL/Cluster4/hen.mp4",
+    "frameCount": 51,
+    "fps": 29.97002997002997,
+    "duration": 1.7017,
+    "width": 640,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 1.7017,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ]
+  },
+  {
+    "title": "CORN_2",
+    "clipName": "CORN_2",
+    "clipPath": "ASL/Cluster2/CORN_2.m4v",
+    "frameCount": 62,
+    "fps": 29.97002997002997,
+    "duration": 2.0687333333333333,
+    "width": 640,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 2.0687333333333333,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ]
+  },
+  {
+    "title": "GOAT",
+    "clipName": "GOAT",
+    "clipPath": "ASL/Cluster2/GOAT.m4v",
+    "frameCount": 38,
+    "fps": 29.97,
+    "duration": 1.2679346012679347,
+    "width": 720,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 1.2679346012679347,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ]
+  },
+  {
+    "title": "MILK",
+    "clipName": "MILK",
+    "clipPath": "ASL/Cluster2/MILK.m4v",
+    "frameCount": 31,
+    "fps": 29.97,
+    "duration": 1.0343677010343677,
+    "width": 720,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 1.0343677010343677,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ]
+  },
+  {
+    "title": "STRAWBERRY",
+    "clipName": "STRAWBERRY",
+    "clipPath": "ASL/Cluster2/STRAWBERRY.m4v",
+    "frameCount": 69,
+    "fps": 29.974344107841716,
+    "duration": 2.301968635301969,
+    "width": 720,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 2.301968635301969,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ]
+  },
+  {
+    "title": "airplane",
+    "clipName": "airplane",
+    "clipPath": "ASL/Cluster3/airplane.m4v",
+    "frameCount": 68,
+    "fps": 29.97002997002997,
+    "duration": 2.2689333333333335,
+    "width": 640,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 2.2689333333333335,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ]
+  },
+  {
+    "title": "BOX",
+    "clipName": "BOX",
+    "clipPath": "ASL/Cluster3/BOX.m4v",
+    "frameCount": 62,
+    "fps": 29.97002997002997,
+    "duration": 2.0687333333333333,
+    "width": 640,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 2.0687333333333333,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ]
+  },
+  {
+    "title": "PEACH",
+    "clipName": "PEACH",
+    "clipPath": "ASL/Cluster3/PEACH.m4v",
+    "frameCount": 45,
+    "fps": 29.97666148032896,
+    "duration": 1.5011678345011679,
+    "width": 640,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 1.5011678345011679,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ]
+  },
+  {
+    "title": "CHERRY",
+    "clipName": "CHERRY",
+    "clipPath": "ASL/Cluster4/CHERRY.m4v",
+    "frameCount": 63,
+    "fps": 29.97002997002997,
+    "duration": 2.1021,
+    "width": 640,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 2.1021,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ]
+  },
+  {
+    "title": "MONEY",
+    "clipName": "MONEY",
+    "clipPath": "ASL/Cluster4/MONEY.m4v",
+    "frameCount": 45,
+    "fps": 29.97002997002997,
+    "duration": 1.5015,
+    "width": 640,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 1.5015,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ]
+  },
+  {
+    "title": "PIE",
+    "clipName": "PIE",
+    "clipPath": "ASL/Cluster4/PIE.m4v",
+    "frameCount": 90,
+    "fps": 29.973330370041115,
+    "duration": 3.0026693360026693,
+    "width": 720,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 3.0026693360026693,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ]
+  },
+  {
+    "title": "CARROT",
+    "clipName": "CARROT",
+    "clipPath": "ASL/Cluster3/CARROT.mov",
+    "frameCount": 44,
+    "fps": 29.97,
+    "duration": 1.4681348014681348,
+    "width": 720,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 1.4681348014681348,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ]
+  },
+  {
+    "title": "MOUSE",
+    "clipName": "MOUSE",
+    "clipPath": "ASL/Cluster3/MOUSE.mov",
+    "frameCount": 39,
+    "fps": 29.97,
+    "duration": 1.3013013013013013,
+    "width": 720,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 1.3013013013013013,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ]
+  },
+  {
+    "title": "FLOWER",
+    "clipName": "FLOWER",
+    "clipPath": "ASL/Cluster4/FLOWER.mov",
+    "frameCount": 36,
+    "fps": 29.97,
+    "duration": 1.2012012012012012,
+    "width": 720,
+    "height": 480,
+    "startTime": 0,
+    "endTime": 1.2012012012012012,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ]
+  }
+]
