@@ -30,6 +30,7 @@ export interface Activity {
 
 export default interface DanceLesson {
   _id: string;
+  source: 'builtin' | 'custom';
   header: {
     clipName: string;
     lessonTitle: string;

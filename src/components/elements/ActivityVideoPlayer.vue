@@ -19,7 +19,6 @@
       />
 
     <div class="is-overlay instructions-overlay mb-4">
-      {{startTime}}
       <InstructionCarousel v-show="!activityFinished && timedInstructions().length > 0" :sizeClass="'is-large'" :instructions="timedInstructions()" class="m-2"/>
       <InstructionCarousel v-show="instructions.length > 0" :sizeClass="'is-large'" :instructions="instructions" class="m-2"/>
       <InstructionCarousel v-show="activity.staticInstruction" :sizeClass="'is-large'"  :instructions="[{id:0, text:activity.staticInstruction}]" class="m-2"/>
@@ -64,6 +63,7 @@ export default defineComponent({
     const { motion, lesson, activity } = toRefs(props);
     const state = ref(ActivityPlayState.AwaitingStart);
     const activityFinished = computed(() => state.value === ActivityPlayState.ActivityEnded);
+    const awaitingStart = computed(() => state.value === ActivityPlayState.AwaitingStart);
     const videoPlayer = ref(null as null | typeof PausingVideoPlayer);
     const videoTime = () => (videoPlayer.value as any)?.getVideoTime() ?? 0;
 
@@ -102,6 +102,8 @@ export default defineComponent({
       videoPlayer,
       videoTime,
       state,
+      ActivityPlayState,
+      awaitingStart,
       activityFinished,
       pauseInstructs,
 

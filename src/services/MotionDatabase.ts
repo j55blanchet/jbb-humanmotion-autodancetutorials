@@ -37,20 +37,33 @@ export class MotionDatabase {
 
     console.log(`Motion database: loaded ${this.motionsMap.size} videos`);
     defaultLessons.forEach((lesson) => {
-      this.addLesson(lesson as DanceLesson);
+      this.addLesson({
+        source: 'builtin',
+        ...lesson,
+      } as DanceLesson);
     });
     console.log(`Motion database: loaded ${defaultLessons.length} built-in lessons`);
+
+    const customLessonCount = this.loadCustomLessons();
+    console.log(`Motion database: loaded ${customLessonCount} custom lessons`);
+  }
+
+  hasLesson(lesson: DanceLesson): boolean {
+    const lessonList = this.lessons.get(lesson.header.clipName) ?? [];
+    const lessonIndex = lessonList.findIndex((val) => val._id === lesson._id);
+    return lessonIndex !== -1;
   }
 
   addLesson(lesson: DanceLesson) {
-    const lessonList = this.lessons.get(lesson.header.clipName);
-    if (lessonList === undefined) {
-      console.warn(`No video entry found for lesson ${lesson.header.clipName}`);
-      this.lessons.set(lesson.header.clipName, [lesson]);
-      return;
-    }
-
+    const lessonList = this.lessons.get(lesson.header.clipName) ?? [];
     lessonList.push(lesson);
+    this.lessons.set(lesson.header.clipName, lessonList);
+  }
+
+  removeLesson(lesson: DanceLesson) {
+    const lessonList = this.lessons.get(lesson.header.clipName) ?? [];
+    const lessonIndex = lessonList.findIndex((val) => val._id === lesson._id);
+    if (lessonIndex !== -1) lessonList.splice(lessonIndex, 1);
     this.lessons.set(lesson.header.clipName, lessonList);
   }
 
@@ -59,6 +72,48 @@ export class MotionDatabase {
     if (typeof videoEntry === 'object' && videoEntry !== null) lessons = this.lessons.get(videoEntry.clipName);
     else lessons = this.lessons.get(videoEntry);
     return lessons;
+  }
+
+  private static getCustomLessonIdsList(): Array<string> {
+    return JSON.parse(window.localStorage.getItem('custom-lessons') ?? '[]');
+  }
+
+  private static saveCustomLessonsIdsList(customLessonIds: Array<string>) {
+    window.localStorage.setItem('custom-lessons', JSON.stringify(customLessonIds));
+  }
+
+  private loadCustomLessons(): number {
+    const customLessonIds = MotionDatabase.getCustomLessonIdsList();
+    let countLoaded = 0;
+    for (let i = 0; i < customLessonIds.length; i += 1) {
+      const id = customLessonIds[i];
+      const custLesson = localStorage.getItem(`lesson-${id}`);
+      if (custLesson) {
+        this.addLesson(JSON.parse(custLesson) as DanceLesson);
+        countLoaded += 1;
+      }
+    }
+    return countLoaded;
+  }
+
+  saveCustomLesson(lesson: DanceLesson) {
+    this.addLesson(lesson);
+    window.localStorage.setItem(`lesson-${lesson._id}`, JSON.stringify(lesson));
+
+    const custLessonIds = MotionDatabase.getCustomLessonIdsList();
+    if (custLessonIds.indexOf(lesson._id) !== -1) custLessonIds.push(lesson._id);
+    MotionDatabase.saveCustomLessonsIdsList(custLessonIds);
+  }
+
+  deleteCustomLesson(lesson: DanceLesson) {
+    this.removeLesson(lesson);
+
+    const custLessonIds = MotionDatabase.getCustomLessonIdsList();
+    const lessonIdIndex = custLessonIds.indexOf(lesson._id);
+    if (lessonIdIndex !== -1) custLessonIds.splice(lessonIdIndex, 1);
+    MotionDatabase.saveCustomLessonsIdsList(custLessonIds);
+
+    window.localStorage.removeItem(`lesson-${lesson._id}`);
   }
 }
 
@@ -76,6 +131,7 @@ export function createBlankActivity(motion: DatabaseEntry, title: string): Activ
 export function createBlankLesson(videoEntry: DatabaseEntry): DanceLesson {
   return {
     _id: Utils.uuidv4(),
+    source: 'custom',
     header: {
       clipName: videoEntry.clipName,
       lessonTitle: 'New Lesson',

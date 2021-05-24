@@ -20,5 +20,6 @@ module.exports = {
     'padded-blocks': 'off',
     'max-len': 'off',
     'no-param-reassign': 'off',
+    'no-underscore-dangle': 'off',
   }
 };

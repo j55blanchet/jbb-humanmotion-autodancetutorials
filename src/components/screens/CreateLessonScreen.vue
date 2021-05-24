@@ -34,8 +34,8 @@
         </div>
       </div>
 
-      <div v-if="state === LessonCreationState.ModifyLesson" class="container block">
-        <div class="columns">
+      <div v-if="state === LessonCreationState.ModifyLesson" class="block">
+        <div class="columns is-multiline is-centered">
           <div class="column is-narrow">
             <div class="box">
               <h5 class="title is-5">Lesson</h5>
@@ -90,13 +90,13 @@
                     <div class="block has-text-right">
                       <!-- <span>Add New</span> -->
                       <input
-                          class="input narrow-number-input"
+                          class="input narrow-number-input is-info"
                           type="number"
                           v-model="newSegmentVal"
                           :min="0"
                           :step="0.01"
                           :max="motion.duration" />
-                      <button class="ml-1 button" @click="addSegmentBreak(newSegmentVal)">&plus;</button>
+                      <button class="ml-1 button is-info is-light" @click="addSegmentBreak(newSegmentVal)">Add Segment</button>
                     </div>
                   </div>
               </div>
@@ -119,9 +119,22 @@
                   </div>
                 </div>
               </div>
-
-              <button class="button is-primary" @click="saveLesson">Save Lesson</button>
-
+              <div class="field is-grouped is-grouped-right">
+                <div class="control" v-if="canDeleteLesson">
+                  <button class="button is-danger is-outlined" @click="deleteLesson">
+                    Delete
+                  </button>
+                </div>
+                <div class="control">
+                  <button class="button" @click="exportLesson">Export</button>
+                </div>
+                <div class="control">
+                  <button class="button is-primary" @click="saveLesson">
+                    <span v-if="lessonInDatabase">Update</span>
+                    <span v-else>Save</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -294,6 +307,8 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div class="column is-narrow">
 
             <div v-if="activePause" class="box">
               <h6 class="title is-5">Pause {{activePauseIndex + 1}} Details</h6>
@@ -334,6 +349,11 @@
                       <input type="text" class="input" v-model="activePause.instruction">
                     </div>
                   </div>
+                </div>
+              </div>
+              <div class="field">
+                <div class="control">
+                  <button class="button is-danger is-outlined" @click="deletePause(activePause)">Remove Pause {{activePauseIndex + 1}}</button>
                 </div>
               </div>
             </div> <!-- End pause detail section-->
@@ -382,29 +402,38 @@
                   </div>
                 </div>
               </div>
+              <div class="field">
+                <div class="control">
+                  <button class="button is-danger is-outlined" @click="deleteTimedInstruction(activeTimedInstruction)">Remove Timed Instruction {{activeTimedInstructionIndex + 1}}</button>
+                </div>
+              </div>
             </div> <!-- End timed instruction detail section-->
           </div>
 
-          <div class="column">
+          <div class="column is-narrow">
+            <div class="box">
+              <h5 class="title is-5">Demo</h5>
 
-            <h5 class="title is-5">Demo</h5>
+              <ActivityVideoPlayer
+                class="block"
+                ref="activityVideoPlayer"
+                :motion="motion"
+                :lesson="lessonUnderConstruction"
+                :activity="activeActivity"
+                :maxHeight="'400px'"
+                @progress="onProgress" />
 
-            <ActivityVideoPlayer
-              class="block"
-              ref="activityVideoPlayer"
-              :motion="motion"
-              :lesson="lessonUnderConstruction"
-              :activity="activeActivity"
-              :maxHeight="'400px'"
-              @progress="onProgress" />
+              <SegmentedProgressBar
+                class="block"
+                :segments="progressSegments"
+                :progress="activityProgress"/>
 
-            <SegmentedProgressBar
-            class="block"
-            :segments="progressSegments"
-            :progress="activityProgress"/>
-
-            <div class="block">
-              <button class="button" @click="playDemo">Play Activity</button>
+              <div class="buttons is-centered has-addons">
+                <button class="button" :disabled="!hasPreviousActivity" @click="activeActivityIndex -= 1">&lt;</button>
+                <button class="button is-primary" :disabled="!($refs.activityVideoPlayer?.awaitingStart ?? false)" @click="playDemo">Play Activity</button>
+                <button class="button" :disabled="!($refs.activityVideoPlayer?.activityFinished ?? false)" @click="$refs.activityVideoPlayer?.reset()">Reset</button>
+                <button class="button" :disabled="!hasNextActivity" @click="activeActivityIndex += 1">&gt;</button>
+              </div>
             </div>
           </div>
         </div>
@@ -458,6 +487,12 @@ export default defineComponent({
     };
   },
   computed: {
+    lessonInDatabase(): boolean {
+      return db.hasLesson(this.lessonUnderConstruction);
+    },
+    canDeleteLesson(): boolean {
+      return this.lessonInDatabase && this.lessonUnderConstruction.source === 'custom';
+    },
     lessonStartTime(): number {
       return this.lessonUnderConstruction?.segmentBreaks[0] ?? 0;
     },
@@ -479,6 +514,12 @@ export default defineComponent({
     },
     activeTimedInstruction(): null | TimedInstruction {
       return ((this as any).activeActivity.timedInstructions ?? [])[(this as any).activeTimedInstructionIndex] ?? null;
+    },
+    hasNextActivity(): boolean {
+      return this.activeActivityIndex + 1 < this.lessonUnderConstruction.activities.length;
+    },
+    hasPreviousActivity(): boolean {
+      return this.activeActivityIndex > 0;
     },
   },
   mounted() {
@@ -564,6 +605,13 @@ export default defineComponent({
       if (newIndex >= 0) this.activePauseIndex = newIndex;
       this.activeActivity.pauses = pauses;
     },
+    deletePause(pauseObj: PauseInfo) {
+      const pauses = this.activeActivity.pauses ?? [];
+      const pauseIndex = pauses.indexOf(pauseObj);
+      // eslint-disable-next-line no-alert
+      if (pauseIndex >= 0 && window.confirm('Are you sure you want to delete this pause?')) pauses.splice(pauseIndex, 1);
+      this.activeActivity.pauses = pauses;
+    },
     addTimedInstruction(targetIndex?: number) {
       const timedInstructions = this.activeActivity.timedInstructions ?? [];
       const newInstruction: TimedInstruction = {
@@ -594,6 +642,13 @@ export default defineComponent({
       if (newIndex >= 0) this.activeTimedInstructionIndex = newIndex;
       this.activeActivity.timedInstructions = timedInstructs;
     },
+    deleteTimedInstruction(timedInstruction: TimedInstruction) {
+      const timedInstructs = this.activeActivity.timedInstructions ?? [];
+      const tiIndex = timedInstructs.indexOf(timedInstruction);
+      // eslint-disable-next-line no-restricted-globals, no-alert
+      if (tiIndex >= 0 && window.confirm('Are you sure you want to delete this timed instruction?')) timedInstructs.splice(tiIndex, 1);
+      this.activeActivity.timedInstructions = timedInstructs;
+    },
     addSegmentBreak(breakTime: number) {
       breakTime = +breakTime;
       if (Number.isNaN(breakTime) || breakTime < 0 || breakTime > this.motion.duration) return;
@@ -609,6 +664,18 @@ export default defineComponent({
       this.activityProgress = progress;
     },
     saveLesson() {
+      db.saveCustomLesson(this.lessonUnderConstruction);
+    },
+    deleteLesson() {
+      // eslint-disable-next-line no-alert
+      if (!window.confirm('Are you sure you want to delete this lesson?')) {
+        return;
+      }
+
+      db.deleteCustomLesson(this.lessonUnderConstruction);
+      this.$emit('back-selected');
+    },
+    exportLesson() {
       Utils.PromptDownloadFile(`${this.lessonUnderConstruction.header.lessonTitle}.lesson.json`, JSON.stringify(this.lessonUnderConstruction));
     },
   },
