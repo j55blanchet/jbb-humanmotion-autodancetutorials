@@ -1,16 +1,18 @@
 <template>
-  <VideoPlayer
-    ref="videoPlayer"
-    :videoBaseUrl="videoSrc"
-    @progress="onProgress"
-    @playback-completed="onSegmentPlaybackCompleted"
-    :videoOpacity="videoOpacity"
-    :drawPoseLandmarks="drawPoseLandmarks"
-    :setDrawStyle="setDrawStyle"
-    :maxHeight="maxHeight"
-    :emphasizedJoints="emphasizedJoints"
-    :emphasizedJointStyle="emphasizedJointStyle"
-    />
+  <div class="is-relative" :style="{'max-height': maxHeight}">
+    <VideoPlayer
+      ref="videoPlayer"
+      :videoBaseUrl="videoSrc"
+      @progress="onProgress"
+      @playback-completed="onSegmentPlaybackCompleted"
+      :videoOpacity="videoOpacity"
+      :drawPoseLandmarks="drawPoseLandmarks"
+      :setDrawStyle="setDrawStyle"
+      :maxHeight="maxHeight"
+      :emphasizedJoints="emphasizedJoints"
+      :emphasizedJointStyle="emphasizedJointStyle"
+      />
+  </div>
 </template>
 
 <script lang="ts">

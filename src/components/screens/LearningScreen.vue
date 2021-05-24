@@ -119,6 +119,7 @@
 </template>
 
 <script lang="ts">
+import Constants from '@/services/Constants';
 import DanceLesson, { Activity, PauseInfo, DanceUtils } from '@/model/DanceLesson';
 import {
   computed, ComputedRef, defineComponent, nextTick, onBeforeUnmount, onMounted, Ref, ref, toRefs, watch,
@@ -136,7 +137,7 @@ import PausingVideoPlayer from '../elements/PausingVideoPlayer.vue';
 import WebcamBox from '../elements/WebcamBox.vue';
 import GestureIcon from '../elements/GestureIcon.vue';
 
-const DefaultPauseDuration = 1.5; // 1.5 seconds
+const { DefaultPauseDuration } = Constants; // 1.5 seconds
 
 const ActivityPlayState = Object.freeze({
   AwaitingPlayGesture: 'AwaitingPlayGesture',

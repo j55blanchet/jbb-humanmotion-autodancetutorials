@@ -18,7 +18,8 @@
         @pause-end="onPauseEnded"
       />
 
-    <div class="overlay instructions-overlay mb-4">
+    <div class="is-overlay instructions-overlay mb-4">
+      {{startTime}}
       <InstructionCarousel v-show="!activityFinished && timedInstructions().length > 0" :sizeClass="'is-large'" :instructions="timedInstructions()" class="m-2"/>
       <InstructionCarousel v-show="instructions.length > 0" :sizeClass="'is-large'" :instructions="instructions" class="m-2"/>
       <InstructionCarousel v-show="activity.staticInstruction" :sizeClass="'is-large'"  :instructions="[{id:0, text:activity.staticInstruction}]" class="m-2"/>
@@ -29,12 +30,13 @@
 <script lang="ts">
 
 import {
-  computed, ComputedRef, defineComponent, nextTick, onBeforeUnmount, onMounted, Ref, ref, toRefs, watch,
+  computed, ComputedRef, defineComponent, nextTick, onBeforeUnmount, onMounted, Ref, ref, toRefs, watch, watchEffect,
 } from 'vue';
 import InstructionCarousel, { Instruction } from '@/components/elements/InstructionCarousel.vue';
 import PausingVideoPlayer from '@/components/elements/PausingVideoPlayer.vue';
 import WebcamBox from '@/components/elements/WebcamBox.vue';
-import { Activity } from '@/model/DanceLesson';
+import { Activity, PauseInfo } from '@/model/DanceLesson';
+import Constants from '@/services/Constants';
 
 const ActivityPlayState = Object.freeze({
   AwaitingStart: 'AwaitingStart',
@@ -62,18 +64,49 @@ export default defineComponent({
     const { motion, lesson, activity } = toRefs(props);
     const state = ref(ActivityPlayState.AwaitingStart);
     const activityFinished = computed(() => state.value === ActivityPlayState.ActivityEnded);
-    const videoElement = ref(null as null | typeof PausingVideoPlayer);
-    const videoTime = () => (videoElement.value as any)?.getVideoTime() ?? 0;
+    const videoPlayer = ref(null as null | typeof PausingVideoPlayer);
+    const videoTime = () => (videoPlayer.value as any)?.getVideoTime() ?? 0;
 
-    const onPlaybackCompleted = () => {};
-    const onPauseHit = () => {};
-    const onPauseEnded = () => {};
+    const pauseInstructs = ref([] as Instruction[]);
+    const onPlaybackCompleted = () => {
+      state.value = ActivityPlayState.ActivityEnded;
+    };
+    const onPauseHit = (pause: PauseInfo) => {
+      if (pause.instruction) pauseInstructs.value.push({ id: pause.time, text: pause.instruction });
+    };
+    const onPauseEnded = () => pauseInstructs.value.splice(0);
+
+    const startTime = computed(() => activity?.value?.startTime ?? 0);
+
+    function reset(newTime?: number) {
+      pauseInstructs.value.splice(0);
+      state.value = ActivityPlayState.AwaitingStart;
+      const time = newTime ?? startTime.value ?? 0;
+
+      if (videoPlayer.value) videoPlayer.value.setTime(time);
+    }
+
+    watchEffect(() => reset(startTime.value));
+    // watch(
+    //   () => startTime,
+    //   (newStartTime: any) => {
+    //     reset(newStartTime);
+    //     console.log('Watch triggered');
+    //   },
+    // );
+    // watchEffect(() => {
+    //   console.log(`New startTime: ${startTime.value}`);
+    // });
 
     return {
-      videoElement,
+      videoPlayer,
       videoTime,
       state,
       activityFinished,
+      pauseInstructs,
+
+      reset,
+      startTime,
 
       onPlaybackCompleted,
       onPauseHit,
@@ -89,9 +122,11 @@ export default defineComponent({
       const instructs: Instruction[] = [];
 
       if ((this.state === ActivityPlayState.AwaitingStart || this.state === ActivityPlayState.PendingStart) && mActivity.startInstruction) {
+        let text = mActivity.startInstruction;
+        if (this.state === ActivityPlayState.PendingStart) { text += '...'; }
         instructs.push({
           id: 1,
-          text: mActivity.startInstruction,
+          text,
         });
       } else if (this.state === ActivityPlayState.Playing && mActivity.playingInstruction) {
         instructs.push({
@@ -105,10 +140,36 @@ export default defineComponent({
         });
       }
 
+      instructs.concat(this.pauseInstructs);
+
       return instructs;
     },
   },
   methods: {
+    play(delay?: number | undefined) {
+      this.reset();
+      const vidPlayer = this.videoPlayer;
+      const vidActivity = this.activity as Activity | null;
+      if (!vidActivity) return;
+      if (!vidPlayer) {
+        console.error('LEARNING SCREEN:: Aborting video playback: vidPlayer is null');
+        return;
+      }
+
+      this.state = ActivityPlayState.PendingStart;
+
+      vidPlayer.play(
+        vidActivity.startTime,
+        vidActivity.endTime,
+        vidActivity.practiceSpeed ?? 1,
+        vidActivity.pauses ?? [],
+        delay ?? Constants.DefaultPauseDuration,
+        () => {
+          this.state = ActivityPlayState.Playing;
+        },
+      );
+    },
+
     timedInstructions(): Instruction[] {
       const mActivity = this.activity as unknown as Activity | null;
       const time = this.videoTime();

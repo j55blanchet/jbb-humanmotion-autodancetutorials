@@ -37,261 +37,265 @@
       <div v-if="state === LessonCreationState.ModifyLesson" class="container block">
         <div class="columns">
           <div class="column is-narrow">
+            <div class="box">
+              <h5 class="title is-5">Lesson</h5>
 
-            <h5 class="title is-5">Lesson</h5>
-
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Clip</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <div class="control">
-                    <input class="input" disabled type="text" :value="motion.title">
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">Clip</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <input class="input" disabled type="text" :value="motion.title">
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Title</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <div class="control">
-                    <input class="input" type="text" v-model="lessonUnderConstruction.header.lessonTitle">
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">Title</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <input class="input" type="text" v-model="lessonUnderConstruction.header.lessonTitle">
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div class="field">
-              <label class="label">Segments</label>
-              <div class="control block">
-                <SegmentedProgressBar
-                 :segments="progressSegments"
-                  :progress="motion.duration"
-                  :enableAll="true"/>
-                </div>
+              <div class="field">
+                <label class="label">Segments</label>
                 <div class="control block">
-                  <div class="block">
-                    <span class="m-1" v-for="(segBreak, i) in lessonUnderConstruction.segmentBreaks" :key="i">
+                  <SegmentedProgressBar
+                  :segments="progressSegments"
+                    :progress="motion.duration"
+                    :enableAll="true"/>
+                  </div>
+                  <div class="control block">
+                    <div class="block">
+                      <span class="m-1" v-for="(segBreak, i) in lessonUnderConstruction.segmentBreaks" :key="i">
+                        <input
+                            class="input narrow-number-input"
+                            :key="i"
+                            type="number"
+                            v-model="lessonUnderConstruction.segmentBreaks[i]"
+                            :min="lessonUnderConstruction.segmentBreaks[i - 1] ?? 0"
+                            :step="0.01"
+                            :max="lessonUnderConstruction.segmentBreaks[i + 1] ?? motion.duration" />
+                      </span>
+                    </div>
+                    <div class="block has-text-right">
+                      <!-- <span>Add New</span> -->
                       <input
                           class="input narrow-number-input"
-                          :key="i"
                           type="number"
-                          v-model="lessonUnderConstruction.segmentBreaks[i]"
-                          :min="lessonUnderConstruction.segmentBreaks[i - 1] ?? 0"
+                          v-model="newSegmentVal"
+                          :min="0"
                           :step="0.01"
-                          :max="lessonUnderConstruction.segmentBreaks[i + 1] ?? motion.duration" />
-                    </span>
+                          :max="motion.duration" />
+                      <button class="ml-1 button" @click="addSegmentBreak(newSegmentVal)">&plus;</button>
+                    </div>
                   </div>
-                  <div class="block has-text-right">
-                    <!-- <span>Add New</span> -->
-                    <input
-                        class="input narrow-number-input"
-                        :key="i"
-                        type="number"
-                        v-model="newSegmentVal"
-                        :min="0"
-                        :step="0.01"
-                        :max="motion.duration" />
-                    <button class="ml-1 button" @click="addSegmentBreak(newSegmentVal)">&plus;</button>
-                  </div>
-                </div>
-            </div>
+              </div>
 
-            <div class="field is-horizontal">
-              <div class="field-label">
-                <label class="label">Activities</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <div class="control">
-                    <ul class="menu-list">
-                      <li v-for="(activity, i) in lessonUnderConstruction.activities" :key="i">
-                        <a :class="{'is-active': activeActivityIndex === i}" @click="selectActivity(i)"><strong>{{i+1}}&nbsp;</strong>&nbsp;{{activity.title}}</a>
-                      </li>
-                      <li><a @click="addActivity()">&plus; Add Activity</a></li>
-                      <li v-if="lessonUnderConstruction.activities.length === 0">No Activities</li>
-                    </ul>
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">Activities</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <ul class="menu-list">
+                        <li v-for="(activity, i) in lessonUnderConstruction.activities" :key="i">
+                          <a :class="{'is-active': activeActivityIndex === i}" @click="selectActivity(i)"><strong>{{i+1}}&nbsp;</strong>&nbsp;{{activity.title}}</a>
+                        </li>
+                        <li><a @click="addActivity()">&plus; Add Activity</a></li>
+                        <li v-if="lessonUnderConstruction.activities.length === 0">No Activities</li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
+
+              <button class="button is-primary" @click="saveLesson">Save Lesson</button>
+
             </div>
           </div>
 
           <div class="column is-narrow">
+            <div class="box">
+              <h5 class="title is-5">Activity</h5>
 
-            <h5 class="title is-5">Activity</h5>
-
-            <div class="field is-horizontal">
-              <div class="field-label">
-                <label class="label">Title</label>
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">Title</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <input type="text" class="input" v-model="activeActivity.title" />
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="field-body">
-                <div class="field">
-                  <div class="control">
-                    <input type="text" class="input" v-model="activeActivity.title" />
+
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">Playback Speed</label>
+                </div>
+                <div class="field-body">
+                  <div class="field is-narrow">
+                    <div class="control">
+                      <input type="number" class="input narrow-number-input" v-model.number="activeActivity.practiceSpeed" min="0" step="0.01" :max="2">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">Start Time</label>
+                </div>
+                <div class="field-body">
+                  <div class="field is-narrow">
+                    <div class="control">
+                      <input type="number" class="input narrow-number-input" v-model.number="activeActivity.startTime" min="0" step="0.01" :max="motion.duration">
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="control">
+                      <input type="range" class="input slider mt-0 mb-0" v-model.number="activeActivity.startTime" min="0" step="0.01" :max="motion.duration"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">End Time</label>
+                </div>
+                <div class="field-body">
+                  <div class="field is-narrow">
+                    <div class="control">
+                      <input type="number" class="input narrow-number-input" v-model.number="activeActivity.endTime" :min="0" step="0.01" :max="motion.duration">
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="control">
+                      <input type="range" class="input slider mt-0 mb-0" v-model.number="activeActivity.endTime" :min="0" step="0.01" :max="motion.duration"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">Start Instruction</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <input type="text" class="input" v-model="activeActivity.startInstruction" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">Playing Instruction</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <input type="text" class="input" v-model="activeActivity.playingInstruction" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">End Instruction</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <input type="text" class="input" v-model="activeActivity.endInstruction" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">Static Instruction</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <input type="text" class="input" v-model="activeActivity.staticInstruction" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">Pauses</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <ul class="menu-list">
+                        <li v-for="(pause, i) in activeActivity.pauses ?? []" :key="i">
+                          <a :class="{'is-active': activePauseIndex === i}" @click="selectPause(i)">
+                            <strong>#{{i+1}}</strong>
+                            for {{pause.pauseDuration ?? Constants.DefaultPauseDuration}}s
+                            @ {{pause.time}}s
+                            <small v-if="pause.instruction">&quot;{{pause.instruction}}&quot;</small>
+                          </a>
+                        </li>
+                        <li v-if="lessonUnderConstruction.activities.length === 0">No Pauses</li>
+                        <li><a @click="addPause()">&plus; Add Pause</a></li>
+                        <li v-show="(activeActivity.pauses?.length ?? 0) >= 2"><a @click="sortPauses()">Sort Pauses</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">Timed Instructions</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <ul class="menu-list">
+                        <li v-for="(ti, i) in activeActivity.timedInstructions ?? []" :key="i">
+                          <a :class="{'is-active': activeTimedInstructionIndex === i}" @click="selectTimedInstruction(i)">
+                            <strong>#{{i+1}}</strong>&nbsp;
+                            <small>&quot;{{ti.text}}&quot;</small>
+                            from {{ti.startTime}}s
+                            to {{ti.endTime}}s
+                          </a>
+                        </li>
+                        <li v-if="lessonUnderConstruction.activities.length === 0">No Timed Instructions</li>
+                        <li><a @click="addTimedInstruction()">&plus; Add Timed Instruction</a></li>
+                        <li v-show="(activeActivity.timedInstructions?.length ?? 0) >= 2"><a @click="sortTimedInstructions()">Sort Timed Instructions</a></li>
+                        <li v-if="lessonUnderConstruction.activities.length === 0">No Timed Instructions</li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="field is-horizontal">
-              <div class="field-label">
-                <label class="label">Playback Speed</label>
-              </div>
-              <div class="field-body">
-                <div class="field is-narrow">
-                  <div class="control">
-                    <input type="number" class="input narrow-number-input" v-model.number="activeActivity.practiceSpeed" min="0" step="0.01" :max="2">
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="field is-horizontal">
-              <div class="field-label">
-                <label class="label">Start Time</label>
-              </div>
-              <div class="field-body">
-                <div class="field is-narrow">
-                  <div class="control">
-                    <input type="number" class="input narrow-number-input" v-model.number="activeActivity.startTime" min="0" step="0.01" :max="motion.duration">
-                  </div>
-                </div>
-                <div class="field">
-                  <div class="control">
-                    <input type="range" class="input slider mt-0 mb-0" v-model.number="activeActivity.startTime" min="0" step="0.01" :max="motion.duration"/>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="field is-horizontal">
-              <div class="field-label">
-                <label class="label">End Time</label>
-              </div>
-              <div class="field-body">
-                <div class="field is-narrow">
-                  <div class="control">
-                    <input type="number" class="input narrow-number-input" v-model.number="activeActivity.endTime" :min="0" step="0.01" :max="motion.duration">
-                  </div>
-                </div>
-                <div class="field">
-                  <div class="control">
-                    <input type="range" class="input slider mt-0 mb-0" v-model.number="activeActivity.endTime" :min="0" step="0.01" :max="motion.duration"/>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="field is-horizontal">
-              <div class="field-label">
-                <label class="label">Start Instruction</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <div class="control">
-                    <input type="text" class="input" v-model="activeActivity.startInstruction" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="field is-horizontal">
-              <div class="field-label">
-                <label class="label">Playing Instruction</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <div class="control">
-                    <input type="text" class="input" v-model="activeActivity.playingInstruction" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="field is-horizontal">
-              <div class="field-label">
-                <label class="label">End Instruction</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <div class="control">
-                    <input type="text" class="input" v-model="activeActivity.endInstruction" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="field is-horizontal">
-              <div class="field-label">
-                <label class="label">Static Instruction</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <div class="control">
-                    <input type="text" class="input" v-model="activeActivity.staticInstruction" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="field is-horizontal">
-              <div class="field-label">
-                <label class="label">Pauses</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <div class="control">
-                    <ul class="menu-list">
-                      <li v-for="(pause, i) in activeActivity.pauses ?? []" :key="i">
-                        <a :class="{'is-active': activePauseIndex === i}" @click="selectPause(i)">
-                          <strong>#{{i+1}}</strong>
-                          for {{pause.pauseDuration ?? Constants.DefaultPauseDuration}}s
-                          @ {{pause.time}}s
-                          <small v-if="pause.instruction">&quot;{{pause.instruction}}&quot;</small>
-                        </a>
-                      </li>
-                      <li v-if="lessonUnderConstruction.activities.length === 0">No Pauses</li>
-                      <li><a @click="addPause()">&plus; Add Pause</a></li>
-                      <li v-show="(activeActivity.pauses?.length ?? 0) >= 2"><a @click="sortPauses()">Sort Pauses</a></li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="field is-horizontal">
-              <div class="field-label">
-                <label class="label">Timed Instructions</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <div class="control">
-                    <ul class="menu-list">
-                      <li v-for="(ti, i) in activeActivity.timedInstructions ?? []" :key="i">
-                        <a :class="{'is-active': activeTimedInstructionIndex === i}" @click="selectTimedInstruction(i)">
-                          <strong>#{{i+1}}</strong>&nbsp;
-                          <small>&quot;{{ti.text}}&quot;</small>
-                          from {{ti.startTime}}s
-                          to {{ti.endTime}}s
-                        </a>
-                      </li>
-                      <li v-if="lessonUnderConstruction.activities.length === 0">No Timed Instructions</li>
-                      <li><a @click="addTimedInstruction()">&plus; Add Timed Instruction</a></li>
-                      <li v-show="(activeActivity.timedInstructions?.length ?? 0) >= 2"><a @click="sortTimedInstructions()">Sort Timed Instructions</a></li>
-                      <li v-if="lessonUnderConstruction.activities.length === 0">No Timed Instructions</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div v-if="activePause">
+            <div v-if="activePause" class="box">
               <h6 class="title is-5">Pause {{activePauseIndex + 1}} Details</h6>
               <div class="field is-horizontal">
                 <div class="field-label"><label class="label">Time</label></div>
@@ -334,7 +338,7 @@
               </div>
             </div> <!-- End pause detail section-->
 
-            <div v-if="activeTimedInstruction">
+            <div v-if="activeTimedInstruction" class="box">
               <h6 class="title is-5">Timed Instruction {{activeTimedInstructionIndex + 1}} Details</h6>
               <div class="field is-horizontal">
                 <div class="field-label"><label class="label">Start Time</label></div>
@@ -386,15 +390,22 @@
             <h5 class="title is-5">Demo</h5>
 
             <ActivityVideoPlayer
+              class="block"
               ref="activityVideoPlayer"
               :motion="motion"
               :lesson="lessonUnderConstruction"
               :activity="activeActivity"
-              :maxHeight="'400px'" />
+              :maxHeight="'400px'"
+              @progress="onProgress" />
 
             <SegmentedProgressBar
+            class="block"
             :segments="progressSegments"
-            :progress="0"/>
+            :progress="activityProgress"/>
+
+            <div class="block">
+              <button class="button" @click="playDemo">Play Activity</button>
+            </div>
           </div>
         </div>
       </div>
@@ -443,6 +454,7 @@ export default defineComponent({
       newSegmentVal: 0,
       activePauseIndex: 0,
       activeTimedInstructionIndex: 0,
+      activityProgress: 0,
     };
   },
   computed: {
@@ -589,6 +601,15 @@ export default defineComponent({
       const newList = this.lessonUnderConstruction.segmentBreaks.sort();
       this.lessonUnderConstruction.segmentBreaks = newList;
       this.newSegmentVal = 0;
+    },
+    playDemo() {
+      (this.$refs.activityVideoPlayer as any).play();
+    },
+    onProgress(progress: number) {
+      this.activityProgress = progress;
+    },
+    saveLesson() {
+      Utils.PromptDownloadFile(`${this.lessonUnderConstruction.header.lessonTitle}.lesson.json`, JSON.stringify(this.lessonUnderConstruction));
     },
   },
 });
