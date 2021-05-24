@@ -27,9 +27,24 @@
           </div>
           <div class="card-content menu">
             <ul class="menu-list">
-              <li><a @click="startCreation(null)">(start from scratch)</a></li>
-              <li v-for="lesson in lessons" :key="lesson._id"><a @click="startCreation(lesson)">{{lesson.header.lessonTitle}}</a></li>
+              <li>
+                <a @click="activeLessonSelectionIndex = -1"
+                  :class="{'is-active': activeLessonSelectionIndex === -1}">(start from scratch)</a>
+              </li>
+              <li v-for="(lesson, i) in lessons" :key="lesson._id">
+                <a @click="activeLessonSelectionIndex = i" :class="{'is-active': activeLessonSelectionIndex === i}">
+                  <strong>#{{i+1}}</strong>&nbsp;{{lesson.header.lessonTitle}}
+                </a>
+              </li>
             </ul>
+          </div>
+          <div class="card-footer" v-if="canEditActiveLesson">
+            <a class="card-footer-item" @click="startCreation(false)">Edit</a>
+          </div><div class="card-footer">
+            <a class="card-footer-item" @click="startCreation(true)">
+              <span v-if="activeLessonSelectionIndex === -1">Start New</span>
+              <span v-else>Use as Template</span>
+            </a>
           </div>
         </div>
       </div>
@@ -481,12 +496,16 @@ export default defineComponent({
     return {
       newPauseTime: 0,
       newSegmentVal: 0,
+      activeLessonSelectionIndex: -1,
       activePauseIndex: 0,
       activeTimedInstructionIndex: 0,
       activityProgress: 0,
     };
   },
   computed: {
+    activeLessonSelection(): DanceLesson | null {
+      return this.lessons[this.activeLessonSelectionIndex] ?? null;
+    },
     lessonInDatabase(): boolean {
       return db.hasLesson(this.lessonUnderConstruction);
     },
@@ -521,10 +540,14 @@ export default defineComponent({
     hasPreviousActivity(): boolean {
       return this.activeActivityIndex > 0;
     },
+    canEditActiveLesson() {
+      const acLes = this.activeLessonSelection as DanceLesson;
+      return acLes?.source === 'custom';
+    },
   },
   mounted() {
     if (this.lessons.length === 0) {
-      this.startCreation(null);
+      this.startCreation(true);
     }
   },
   setup(props) {
@@ -552,13 +575,17 @@ export default defineComponent({
     };
   },
   methods: {
-    startCreation(lesson: DanceLesson | null) {
-      if (lesson) {
-        this.lessonUnderConstruction = Utils.deepCopy(lesson);
-        // eslint-disable-next-line no-underscore-dangle
+    startCreation(asTemplate: boolean) {
+      const existingLesson = this.activeLessonSelection;
+      if (existingLesson && asTemplate) {
+        console.log('Creating new lesson from template');
+        this.lessonUnderConstruction = Utils.deepCopy(existingLesson);
         this.lessonUnderConstruction._id = Utils.uuidv4();
-
+      } else if (existingLesson && !asTemplate) {
+        console.log('Editing existing lesson');
+        this.lessonUnderConstruction = existingLesson;
       } else {
+        console.log('Creating new lesson from scratch');
         this.lessonUnderConstruction = createBlankLesson(this.motion);
       }
       this.state = LessonCreationState.ModifyLesson;

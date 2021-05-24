@@ -11,7 +11,7 @@
       <form
         enctype="multipart/form-data"
         novalidate
-        v-if="isInitial || isSaving"
+        v-if="isInitial || isSaving || isFailed"
       >
         <div class="field">
         </div>
@@ -23,7 +23,7 @@
                 :name="uploadFieldName"
                 :disabled="isSaving"
                 @change="
-                  filesChange($event.target.name, $event.target.files);
+                  save($event.target.files, $event.target);
                   fileCount = $event.target.files.length;
                 "
                 :accept="uploadAccept"
@@ -35,10 +35,16 @@
               <p class="is-size-7" v-if="isSaving">
                 {{savingText}}
               </p>
+              <div class="is-size-7 has-text-centered" v-if="isFailed">
+                <p>Error saving:</p>
+                <p style="max-width:60ch;" class="has-text-danger">{{uploadError}}</p>
+                <p><strong>Please try again.</strong></p>
+              </div>
             </div>
           </div>
         </div>
       </form>
+      <div class="has-text-success" v-if="isSuccess">{{successText}}</div>
     </div>
   </div>
 </template>
@@ -62,20 +68,23 @@ export default defineComponent({
     },
     uploadInstructions: {
       type: String,
-      default: 'Upload your file here',
+      default: 'Click here or drag your file(s) over this area',
     },
     savingText: {
       type: String,
-      default: 'Processing File...',
+      default: 'Processing File(s)...',
     },
-    onFileSelected: {
+    onFilesSelected: {
       type: Function,
       default: () => {},
+    },
+    successText: {
+      type: String,
+      default: 'Files uploaded successfully',
     },
   },
   data() {
     return {
-      uploadedFiles: [],
       uploadError: null,
       currentStatus: null as null | string,
       uploadFieldName: 'files',
@@ -92,42 +101,24 @@ export default defineComponent({
     reset() {
       // reset form to initial state
       this.currentStatus = Status.Initial;
-      this.uploadedFiles = [];
       this.uploadError = null;
     },
-    async save(formData: FormData) {
+    async save(fileList: FileList) {
       // upload data to the server
       this.currentStatus = Status.Saving;
 
-      const result = await this.onFileSelected();
-      if (result) this.$emit('done');
-      // else
-
-      // upload(formData)
-      //   .then(x => {
-      //     this.uploadedFiles = [].concat(x);
-      //     this.currentStatus = Status.Success;
-      //   })
-      //   .catch(err => {
-      //     this.uploadError = err.response;
-      //     this.currentStatus = Status.Failed;
-      //   });
-    },
-    filesChange(fieldName: string, fileList: Array<any>) {
-      // handle file changes
-      const formData = new FormData();
-
-      if (!fileList.length) return;
-
-      // append the files to FormData
-      Array
-        .from(Array(fileList.length).keys())
-        .forEach((x) => {
-          formData.append(fieldName, fileList[x], fileList[x].name);
-        });
-
-      // save it
-      this.save(formData);
+      try {
+        const result = await this.onFilesSelected(fileList);
+        if (result) {
+          this.$emit('done');
+          this.currentStatus = Status.Success;
+        } else {
+          this.currentStatus = Status.Initial;
+        }
+      } catch (e) {
+        this.currentStatus = Status.Failed;
+        this.uploadError = e;
+      }
     },
   },
   mounted() {

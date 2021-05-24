@@ -37,7 +37,7 @@ export class MotionDatabase {
 
     console.log(`Motion database: loaded ${this.motionsMap.size} videos`);
     defaultLessons.forEach((lesson) => {
-      this.addLesson({
+      this.upsertLesson({
         source: 'builtin',
         ...lesson,
       } as DanceLesson);
@@ -54,9 +54,11 @@ export class MotionDatabase {
     return lessonIndex !== -1;
   }
 
-  addLesson(lesson: DanceLesson) {
+  upsertLesson(lesson: DanceLesson) {
     const lessonList = this.lessons.get(lesson.header.clipName) ?? [];
-    lessonList.push(lesson);
+    const existingIndex = lessonList.findIndex((les) => les._id === lesson._id);
+    if (existingIndex !== -1) lessonList[existingIndex] = lesson;
+    else lessonList.push(lesson);
     this.lessons.set(lesson.header.clipName, lessonList);
   }
 
@@ -89,19 +91,32 @@ export class MotionDatabase {
       const id = customLessonIds[i];
       const custLesson = localStorage.getItem(`lesson-${id}`);
       if (custLesson) {
-        this.addLesson(JSON.parse(custLesson) as DanceLesson);
+        this.upsertLesson(JSON.parse(custLesson) as DanceLesson);
         countLoaded += 1;
       }
     }
     return countLoaded;
   }
 
+  validateLesson(lesson: DanceLesson) {
+    if (!lesson) throw new Error('Lesson is null or undefined');
+    const clipName = lesson?.header?.clipName;
+    if (!clipName) throw new Error('Clip name missing');
+    if (!this.motionsMap.has(clipName)) throw new Error(`Matching video clip not found for ${clipName}`);
+    if (!Array.isArray(lesson.activities) || lesson.activities.length < 1) throw new Error('Lesson contains no activities');
+  }
+
   saveCustomLesson(lesson: DanceLesson) {
-    this.addLesson(lesson);
+    this.upsertLesson(lesson);
     window.localStorage.setItem(`lesson-${lesson._id}`, JSON.stringify(lesson));
 
     const custLessonIds = MotionDatabase.getCustomLessonIdsList();
-    if (custLessonIds.indexOf(lesson._id) !== -1) custLessonIds.push(lesson._id);
+    if (custLessonIds.indexOf(lesson._id) === -1) {
+      console.log(`Added custom lesson ${lesson.header.lessonTitle} id=${lesson._id} to localstorage`);
+      custLessonIds.push(lesson._id);
+    } else {
+      console.log(`Updated custom lesson ${lesson.header.lessonTitle} id=${lesson._id} in localstorage`);
+    }
     MotionDatabase.saveCustomLessonsIdsList(custLessonIds);
   }
 

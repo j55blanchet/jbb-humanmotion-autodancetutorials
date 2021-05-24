@@ -64,7 +64,12 @@
       <div class="modal-background"></div>
       <div class="modal-content">
         <UploadCard
+          v-if="uploadUIActive"
           @cancelled="uploadUIActive = false"
+          :uploadAccept="'*.json'"
+          :onFilesSelected="uploadFiles"
+          :savingText="'Loading lessons...'"
+          :successText="'Lessons loaded successfully'"
         />
       </div>
     </div>
@@ -107,6 +112,24 @@ export default defineComponent({
       createLessonSelected,
       uploadUIActive,
     };
+  },
+  methods: {
+    async uploadFiles(files: FileList) {
+      console.log('Upload files', files);
+
+      for (let i = 0; i < files.length; i += 1) {
+        const file = files.item(i);
+        if (!file) continue;
+        // eslint-disable-next-line no-await-in-loop
+        const text = await file.text();
+        const lesson = JSON.parse(text);
+        db.validateLesson(lesson);
+
+        // TODO: validate lesson
+        db.saveCustomLesson(lesson);
+      }
+      return true;
+    },
   },
 });
 </script>
