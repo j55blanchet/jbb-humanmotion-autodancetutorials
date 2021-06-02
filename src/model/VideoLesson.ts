@@ -28,7 +28,7 @@ export interface Activity {
   endInstruction?: string;
 }
 
-export default interface DanceLesson {
+export default interface VideoLesson {
   _id: string;
   source: 'builtin' | 'custom';
   header: {

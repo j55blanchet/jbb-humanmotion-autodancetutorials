@@ -11,7 +11,7 @@
               Lesson Creation
             </p>
             <p class="subtitle">
-              <span v-if="state === LessonCreationState.SelectOpenState">Tempalte Selection</span>
+              <span v-if="state === LessonCreationState.SelectOpenState">Template Selection</span>
               <span v-else>Editing &quot;{{lessonUnderConstruction.header.lessonTitle}}&quot;</span>
             </p>
           </div>
@@ -472,7 +472,7 @@ import ActivityVideoPlayer from '@/components/elements/ActivityVideoPlayer.vue';
 import PausingVideoPlayer from '@/components/elements/PausingVideoPlayer.vue';
 import VideoPlayer from '@/components/elements/VideoPlayer.vue';
 import db, { createBlankActivity, createBlankLesson, DatabaseEntry } from '@/services/MotionDatabase';
-import DanceLesson, { Activity, PauseInfo, TimedInstruction } from '@/model/DanceLesson';
+import DanceLesson, { Activity, PauseInfo, TimedInstruction } from '@/model/VideoLesson';
 import Utils from '@/services/Utils';
 import SegmentedProgressBar, { ProgressSegmentData, calculateProgressSegments } from '@/components/elements/SegmentedProgressBar.vue';
 

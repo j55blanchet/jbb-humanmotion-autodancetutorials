@@ -18,7 +18,7 @@
 <script lang="ts">
 
 import Constants from '@/services/Constants';
-import { PauseInfo } from '@/model/DanceLesson';
+import { PauseInfo } from '@/model/VideoLesson';
 import {
   computed, defineComponent, onBeforeUnmount, ref,
 } from 'vue';

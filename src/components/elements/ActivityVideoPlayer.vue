@@ -34,7 +34,7 @@ import {
 import InstructionCarousel, { Instruction } from '@/components/elements/InstructionCarousel.vue';
 import PausingVideoPlayer from '@/components/elements/PausingVideoPlayer.vue';
 import WebcamBox from '@/components/elements/WebcamBox.vue';
-import { Activity, PauseInfo } from '@/model/DanceLesson';
+import { Activity, PauseInfo } from '@/model/VideoLesson';
 import Constants from '@/services/Constants';
 
 const ActivityPlayState = Object.freeze({

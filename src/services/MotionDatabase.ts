@@ -1,4 +1,4 @@
-import DanceLesson, { Activity } from '@/model/DanceLesson';
+import VideoLesson, { Activity } from '@/model/VideoLesson';
 
 import videoDatabase from '@/model/videoDatabase.json';
 import defaultLessons from '@/model/bakedInLessons.json';
@@ -23,7 +23,7 @@ export class MotionDatabase {
 
   readonly motions = computed(() => Array.from(this.motionsMap.values()));
 
-  readonly lessons = reactive(new Map<string, DanceLesson[]>());
+  readonly lessons = reactive(new Map<string, VideoLesson[]>());
 
   constructor() {
 
@@ -40,7 +40,7 @@ export class MotionDatabase {
       this.upsertLesson({
         source: 'builtin',
         ...lesson,
-      } as DanceLesson);
+      } as VideoLesson);
     });
     console.log(`Motion database: loaded ${defaultLessons.length} built-in lessons`);
 
@@ -48,13 +48,13 @@ export class MotionDatabase {
     console.log(`Motion database: loaded ${customLessonCount} custom lessons`);
   }
 
-  hasLesson(lesson: DanceLesson): boolean {
+  hasLesson(lesson: VideoLesson): boolean {
     const lessonList = this.lessons.get(lesson.header.clipName) ?? [];
     const lessonIndex = lessonList.findIndex((val) => val._id === lesson._id);
     return lessonIndex !== -1;
   }
 
-  upsertLesson(lesson: DanceLesson) {
+  upsertLesson(lesson: VideoLesson) {
     const lessonList = this.lessons.get(lesson.header.clipName) ?? [];
     const existingIndex = lessonList.findIndex((les) => les._id === lesson._id);
     if (existingIndex !== -1) lessonList[existingIndex] = lesson;
@@ -62,7 +62,7 @@ export class MotionDatabase {
     this.lessons.set(lesson.header.clipName, lessonList);
   }
 
-  removeLesson(lesson: DanceLesson) {
+  removeLesson(lesson: VideoLesson) {
     const lessonList = this.lessons.get(lesson.header.clipName) ?? [];
     const lessonIndex = lessonList.findIndex((val) => val._id === lesson._id);
     if (lessonIndex !== -1) lessonList.splice(lessonIndex, 1);
@@ -70,7 +70,7 @@ export class MotionDatabase {
   }
 
   getLessons(videoEntry: DatabaseEntry | string) {
-    let lessons = undefined as undefined | DanceLesson[];
+    let lessons = undefined as undefined | VideoLesson[];
     if (typeof videoEntry === 'object' && videoEntry !== null) lessons = this.lessons.get(videoEntry.clipName);
     else lessons = this.lessons.get(videoEntry);
     return lessons;
@@ -91,14 +91,14 @@ export class MotionDatabase {
       const id = customLessonIds[i];
       const custLesson = localStorage.getItem(`lesson-${id}`);
       if (custLesson) {
-        this.upsertLesson(JSON.parse(custLesson) as DanceLesson);
+        this.upsertLesson(JSON.parse(custLesson) as VideoLesson);
         countLoaded += 1;
       }
     }
     return countLoaded;
   }
 
-  validateLesson(lesson: DanceLesson) {
+  validateLesson(lesson: VideoLesson) {
     if (!lesson) throw new Error('Lesson is null or undefined');
     const clipName = lesson?.header?.clipName;
     if (!clipName) throw new Error('Clip name missing');
@@ -106,7 +106,7 @@ export class MotionDatabase {
     if (!Array.isArray(lesson.activities) || lesson.activities.length < 1) throw new Error('Lesson contains no activities');
   }
 
-  saveCustomLesson(lesson: DanceLesson) {
+  saveCustomLesson(lesson: VideoLesson) {
     this.upsertLesson(lesson);
     window.localStorage.setItem(`lesson-${lesson._id}`, JSON.stringify(lesson));
 
@@ -120,7 +120,7 @@ export class MotionDatabase {
     MotionDatabase.saveCustomLessonsIdsList(custLessonIds);
   }
 
-  deleteCustomLesson(lesson: DanceLesson) {
+  deleteCustomLesson(lesson: VideoLesson) {
     this.removeLesson(lesson);
 
     const custLessonIds = MotionDatabase.getCustomLessonIdsList();
@@ -143,7 +143,7 @@ export function createBlankActivity(motion: DatabaseEntry, title: string): Activ
   };
 }
 
-export function createBlankLesson(videoEntry: DatabaseEntry): DanceLesson {
+export function createBlankLesson(videoEntry: DatabaseEntry): VideoLesson {
   return {
     _id: Utils.uuidv4(),
     source: 'custom',

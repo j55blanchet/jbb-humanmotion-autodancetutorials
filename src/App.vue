@@ -8,16 +8,16 @@
      <span id="topbarRight"></span>
   </div>
 
-  <DanceMenu
-        v-show="state === State.DanceMenu"
+  <MainMenu
+        v-show="state === State.MainMenu"
         @pose-drawer-selected="poseDrawerSelected"
-        @dance-selected="danceSelected"
+        @video-selected="videoEntrySelected"
         @create-lesson-selected="createLessonSelected"
       />
 
   <CreateLessonScreen
         v-if="state === State.CreateLesson"
-          :motion="currentDance"
+          :motion="currentVideo"
           @back-selected="goHome"
           @lesson-created="goHome" />
 
@@ -28,7 +28,7 @@
   <CameraSurface
     ref="cameraSurface"
     @tracking-attained="onTrackingAttained()"
-    v-show="[State.DanceMenu, State.CreateLesson, State.PoseDrawingTester].indexOf(state) === -1">
+    v-show="[State.MainMenu, State.CreateLesson, State.PoseDrawingTester].indexOf(state) === -1">
 
     <template v-slot:background>
       <img v-show="state == State.OnboardingLoading"
@@ -39,14 +39,14 @@
     <template v-slot:ui>
 
       <LearningScreen v-if="state == State.LessonActive"
-        :target-dance="currentDance"
+        :target-dance="currentVideo"
         :target-lesson="currentLesson"
         @lesson-completed="goHome"
         @back-selected="goHome"
       />
 
      <WebcamPromptCard v-if="state === State.PromptStartWebcam"
-      @cancel-selected="state = State.DanceMenu"
+      @cancel-selected="state = State.MainMenu"
       @startWebcamSelected="startWebcam"
      />
 
@@ -83,16 +83,16 @@ import webcamProvider from '@/services/WebcamProvider';
 import { DatabaseEntry } from '@/services/MotionDatabase';
 import CameraSurface from './components/CameraSurface.vue';
 import OnboardingUI from './components/OnboardingUI.vue';
-import DanceMenu from './components/screens/DanceMenu.vue';
+import MainMenu from './components/screens/MainMenu.vue';
 import LearningScreen from './components/screens/LearningScreen.vue';
-import DanceLesson from './model/DanceLesson';
+import VideoLesson from './model/VideoLesson';
 import WebcamPromptCard from './components/elements/WebcamPromptCard.vue';
 
 import PoseDrawerTest from './components/screens/PoseDrawerTest.vue';
 import CreateLessonScreen from './components/screens/CreateLessonScreen.vue';
 
 const State = {
-  DanceMenu: 'DanceMenu',
+  MainMenu: 'MainMenu',
   PromptStartWebcam: 'PromptStartWebcam',
   StartingWebcam: 'StartingWebcam',
   LoadingTracking: 'LoadingTracking',
@@ -107,22 +107,22 @@ export default defineComponent({
   components: {
     CameraSurface,
     OnboardingUI,
-    DanceMenu,
+    MainMenu,
     LearningScreen,
     WebcamPromptCard,
     PoseDrawerTest,
     CreateLessonScreen,
   },
   setup() {
-    const state = ref(State.DanceMenu);
+    const state = ref(State.MainMenu);
     const cameraSurface = ref(null as typeof CameraSurface | null);
     const hasCompletedOnboarding = ref(false);
 
-    const currentDance = ref(null as DatabaseEntry | null);
-    const currentLesson = ref(null as DanceLesson | null);
+    const currentVideo = ref(null as DatabaseEntry | null);
+    const currentLesson = ref(null as VideoLesson | null);
 
-    function danceSelected(dance: DatabaseEntry, lesson: DanceLesson) {
-      currentDance.value = dance;
+    function videoEntrySelected(videoEntry: DatabaseEntry, lesson: VideoLesson) {
+      currentVideo.value = videoEntry;
       currentLesson.value = lesson;
 
       if (webcamProvider.webcamStatus.value === 'running') state.value = State.LessonActive;
@@ -130,8 +130,8 @@ export default defineComponent({
     }
 
     function goHome() {
-      state.value = State.DanceMenu;
-      currentDance.value = null;
+      state.value = State.MainMenu;
+      currentVideo.value = null;
       currentLesson.value = null;
     }
 
@@ -156,7 +156,7 @@ export default defineComponent({
           console.error('Error starting webcam: ', e);
           // eslint-disable-next-line no-alert
           alert('Failed to start the webcam\n\nPlease ensure this is the only app using the camera and that you\'ve allowed camera access in your browser.');
-          state.value = State.DanceMenu;
+          state.value = State.MainMenu;
           return;
         }
       }
@@ -177,9 +177,9 @@ export default defineComponent({
     }
 
     return {
-      currentDance,
+      currentVideo,
       currentLesson,
-      danceSelected,
+      videoEntrySelected,
       goHome,
       startWebcam,
       onTrackingAttained,
@@ -193,7 +193,7 @@ export default defineComponent({
       this.state = State.PoseDrawingTester;
     },
     createLessonSelected(dance: DatabaseEntry) {
-      this.currentDance = dance;
+      this.currentVideo = dance;
       this.state = State.CreateLesson;
     },
   },

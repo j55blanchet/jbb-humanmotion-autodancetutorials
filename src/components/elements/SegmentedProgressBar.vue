@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, toRefs } from 'vue';
-import DanceLesson, { Activity } from '@/model/DanceLesson';
+import DanceLesson, { Activity } from '@/model/VideoLesson';
 
 export interface ProgressSegmentData {
   min: number;

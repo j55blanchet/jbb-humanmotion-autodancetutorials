@@ -8,13 +8,29 @@
             Main Menu
           </p>
           <p class="subtitle mb-0">
-            Which motion would you like to learn?
+            What do you want to learn?
           </p>
         </div>
       </div>
     </div>
 
-    <div class="menu container block">
+    <div class="tabs is-centered is-medium is-toggle is-toggle-rounded">
+      <ul>
+        <li v-for="(tab, i) in TabList" :key="i" :class="{'is-active': currentTab===tab}">
+          <a @click="setTab(tab)">{{tab}}</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="menu container block" v-show="currentTab === Tabs.Workflows">
+      <div class="box m-0 shrink-hover is-clickable"
+        v-for="workflow in workflows"
+        :key="workflow.id"
+        @click="$emit('workflow-selected', workflow.id)">{{workflow.title}}
+      </div>
+    </div>
+
+    <div class="menu container block" v-show="currentTab === Tabs.Videos">
       <div
         class="dance-card card is-clickable shrink-hover"
         v-for="dance in motionList"
@@ -32,19 +48,14 @@
           {{ dance.title }}
         </div>
       </div>
+    </div>
 
-      <div class="form-upload p-4">
-        <h4 class="title is-4">Other Actions</h4>
-        <div class="field">
-          <div class="control is-expanded shrink-hover">
-            <button class="button is-fullwidth" @click="uploadUIActive = true">Upload Custom Lesson</button>
-          </div>
-        </div>
-        <div class="field">
-          <div class="control is-expanded shrink-hover">
-            <button class="button is-fullwidth" @click="$emit('pose-drawer-selected')">Pose Drawer Test</button>
-          </div>
-        </div>
+    <div class="menu container block" v-show="currentTab === Tabs.Tools">
+      <div class="box shrink-hover is-clickable m-0" @click="uploadUIActive = true">
+        Upload Custom Lesson
+      </div>
+      <div class="box shrink-hover is-clickable m-0" @click="$emit('pose-drawer-selected')">
+        Pose Drawer Test
       </div>
     </div>
 
@@ -54,7 +65,7 @@
         <LessonCard
           :motion="selectedDance"
           @closed="selectedDance = null"
-          @lesson-selected="danceLessonSelected"
+          @lesson-selected="videoLessonSelected"
           @create-lesson-selected="createLessonSelected"
         />
       </div>
@@ -77,15 +88,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import LessonCard from '@/components/elements/LessonCard.vue';
 import UploadCard from '@/components/elements/UploadCard.vue';
 import db, { DatabaseEntry } from '@/services/MotionDatabase';
-import DanceLesson from '@/model/DanceLesson';
+import VideoLesson from '@/model/VideoLesson';
+import workflowManager from '@/services/WorkflowManager';
+
+const Tabs = Object.freeze({
+  Workflows: 'Workflows',
+  Videos: 'Videos',
+  Tools: 'Tools',
+});
+const TabSet = Object.freeze(new Set(Object.values(Tabs)));
+const TabList = Object.freeze(new Array(...Object.values(Tabs)));
 
 export default defineComponent({
-  name: 'DanceMenu',
-  emits: ['dance-selected', 'pose-drawer-selected', 'create-lesson-selected'],
+  name: 'MainMenu',
+  emits: [
+    'video-selected',
+    'pose-drawer-selected',
+    'create-lesson-selected',
+    'workflow-selected',
+  ],
   components: {
     LessonCard,
     UploadCard,
@@ -94,26 +119,43 @@ export default defineComponent({
     const motionList = db.motions;
     const selectedDance = ref(null as DatabaseEntry | null);
     const uploadUIActive = ref(false);
+    const currentTab = ref(Tabs.Workflows);
 
-    function danceLessonSelected(dance: DatabaseEntry, lesson: DanceLesson) {
-      ctx.emit('dance-selected', dance, lesson);
+    function videoLessonSelected(
+      videoEntry: DatabaseEntry,
+      lesson: VideoLesson,
+    ) {
+      ctx.emit('video-selected', videoEntry, lesson);
       selectedDance.value = null;
     }
 
-    function createLessonSelected(dance: DatabaseEntry) {
-      ctx.emit('create-lesson-selected', dance);
+    function createLessonSelected(videoEntry: DatabaseEntry) {
+      ctx.emit('create-lesson-selected', videoEntry);
       selectedDance.value = null;
     }
 
     return {
+      workflows: workflowManager.allWorkflows,
       selectedDance,
       motionList,
-      danceLessonSelected,
+      videoLessonSelected,
       createLessonSelected,
       uploadUIActive,
+
+      TabList,
+      Tabs,
+      currentTab,
     };
   },
   methods: {
+    setTab(tab: string) {
+      console.log('Switching to tab:', tab);
+      if (!TabSet.has(tab)) {
+        console.error(`Tab ${tab} not recognized!`);
+        return;
+      }
+      this.currentTab = tab;
+    },
     async uploadFiles(files: FileList) {
       console.log('Upload files', files);
 
@@ -135,14 +177,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-
 // .dance-menu {
-  // backdrop-filter: blur(4px);
-  // background: rgba(0, 0, 0, 0.2);
+// backdrop-filter: blur(4px);
+// background: rgba(0, 0, 0, 0.2);
 // }
 
 .dance-menu {
-
   .menu {
     text-align: left;
     display: grid;

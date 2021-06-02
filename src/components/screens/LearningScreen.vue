@@ -120,7 +120,7 @@
 
 <script lang="ts">
 import Constants from '@/services/Constants';
-import DanceLesson, { Activity, PauseInfo, DanceUtils } from '@/model/DanceLesson';
+import DanceLesson, { Activity, PauseInfo, DanceUtils } from '@/model/VideoLesson';
 import {
   computed, ComputedRef, defineComponent, nextTick, onBeforeUnmount, onMounted, Ref, ref, toRefs, watch,
 } from 'vue';
