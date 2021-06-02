@@ -1,12 +1,12 @@
 <template>
   <div class="activity-video-player">
 
-    <div class="overlay" v-show="activity && activity.userVisual !== 'none'">
+    <div class="is-overlay" v-show="activity && activity.userVisual !== 'none'">
       <WebcamBox :maxHeight="maxHeight"/>
     </div>
 
     <PausingVideoPlayer
-        :videoSrc="motion.videoSrc"
+        :videoSrc="motion?.videoSrc"
         ref="videoPlayer"
         :maxHeight="maxHeight"
         :drawPoseLandmarks="activity?.demoVisual === 'skeleton'"
@@ -21,7 +21,7 @@
     <div class="is-overlay instructions-overlay mb-4">
       <InstructionCarousel v-show="!activityFinished && timedInstructions().length > 0" :sizeClass="'is-large'" :instructions="timedInstructions()" class="m-2"/>
       <InstructionCarousel v-show="instructions.length > 0" :sizeClass="'is-large'" :instructions="instructions" class="m-2"/>
-      <InstructionCarousel v-show="activity.staticInstruction" :sizeClass="'is-large'"  :instructions="[{id:0, text:activity.staticInstruction}]" class="m-2"/>
+      <InstructionCarousel v-show="activity?.staticInstruction" :sizeClass="'is-large'"  :instructions="[{id:0, text:activity?.staticInstruction}]" class="m-2"/>
     </div>
   </div>
 </template>

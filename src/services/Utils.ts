@@ -91,4 +91,14 @@ export default class Utils {
 
     throw new Error(`Unable to copy object ${obj}! It's type isn't supported`);
   }
+
+  static shuffleArray<T>(array: Array<T>, fromIndex?: number, toIndex?: number) {
+    const sliceStart = fromIndex ?? 0;
+    const sliceEnd = toIndex ?? array.length - 1;
+
+    for (let i = sliceEnd; i > sliceStart; i -= 1) {
+      const j = sliceStart + Math.floor(Math.random() * (i - sliceStart + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
 }

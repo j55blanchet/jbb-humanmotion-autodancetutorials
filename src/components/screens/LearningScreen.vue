@@ -1,120 +1,111 @@
 <template>
-  <div class="learning-screen background-blur"
+  <div class="learning-screen"
     >
-    <teleport to="#topbarLeft">
-      <button class="button" @click="$emit('back-selected')">&lt; Back</button>
-    </teleport>
-    <teleport to="#topbarRight">
-      <span class="tag">{{activityId}} / {{activityCount}}</span>
-      <progress class="lessonProgress progress ml-2" :max="activityCount" :value="activityId">
-      </progress>
-    </teleport>
-    <teleport to="#topbarCenter">
-        <h3>{{activityTitle}}</h3>
-        <span class="tag ml-2">Time: {{videoTime.toFixed(2)}}</span>
-    </teleport>
 
-    <div class="overlay" v-show="activity && activity.userVisual !== 'none'">
-      <WebcamBox :maxHeight="'720px'"/>
+    <div class="block is-flex is-flex-direction-row is-justify-content-center is-align-items-center  is-align-content-space-evenly" style="gap: 1rem;">
+      <button class="button" @click="$emit('back-selected')">&lt; Back</button>
+      <span class="tag">{{activityId}} / {{activityCount}}</span>
+      <progress class="lessonProgress progress m-0" :max="activityCount" :value="activityId">
+      </progress>
+      <h3>{{activityTitle}}</h3>
+      <span class="tag ml-2">Time: {{videoTime.toFixed(2)}}</span>
     </div>
 
-    <div class="overlay">
-      <PausingVideoPlayer
-        :videoSrc="targetDance.videoSrc"
+    <div class="block is-relative" style="width: 100%; max-width: 1280px; height: 80vh;">
+      <div class="overlay" v-show="activity && activity.userVisual !== 'none'">
+        <WebcamBox :maxHeight="'720px'"/>
+      </div>
+
+
+      <ActivityVideoPlayer
+        :motion="targetDance"
+        :lesson="targetLesson"
+        :activity="activity"
         :maxHeight="'720px'"
         ref="videoPlayer"
-        @progress="onTimeChanged"
-        @playback-completed="onActivityFinished"
-        @pause-hit="onPauseHit"
-        @pause-end="onPauseEnded"
-        :drawPoseLandmarks="activity?.demoVisual === 'skeleton'"
-        :videoOpacity="activity?.demoVisual === 'video' ? 1 : 0"
-        :emphasizedJoints="emphasizedJoints"
-      />
+        @progress="onTimeChanged" />
+        <!-- :drawPoseLandmarks="activity?.demoVisual === 'skeleton'" -->
+        <!-- :videoOpacity="activity?.demoVisual === 'video' ? 1 : 0" -->
+        <!-- :emphasizedJoints="emphasizedJoints" -->
+      <!-- /> -->
+
+      <!-- <div class="overlay overlay-bottom overlay-right mb-6 mr-6" v-show="showPlayGestureIcon">
+        <div class="vcenter-parent">
+          <div class="content translucent-text activityStartGestureCard is-rounded" >
+            <GestureIcon class="activityEndGestureCard" :gesture="'play'" />
+            <p>Start Activity</p>
+          </div>
+        </div>
+      </div>
+      <div class="overlay overlay-left overlay-bottom mb-6 ml-6" v-show="activityFinished">
+        <div class="vcenter-parent ml-2">
+          <div class="content translucent-text p-5 is-rounded activityStartGestureCard">
+            <GestureIcon class="activityEndGestureCard" :gesture="'backward'" />
+            <p>Repeat this activity</p>
+          </div>
+        </div>
+      </div>
+      <div class="overlay overlay-right overlay-bottom mb-6 mr-6" v-show="activityFinished">
+        <div class="vcenter-parent">
+          <div class="content translucent-text p-5 is-rounded activityStartGestureCard">
+            <GestureIcon class="activityEndGestureCard" :gesture="'forward'" />
+            <p>Advance to next activity</p>
+          </div>
+        </div>
+      </div> -->
     </div>
 
-    <div class="overlay instructions-overlay mb-4">
-      <InstructionCarousel v-show="!activityFinished && timedInstructions.length > 0" :sizeClass="'is-large'" :instructions="timedInstructions" class="m-2"/>
-      <InstructionCarousel v-show="instructions.length > 0" :sizeClass="'is-large'" :instructions="instructions" class="m-2"/>
-      <InstructionCarousel v-show="activity.staticInstruction" :sizeClass="'is-large'"  :instructions="[{id:0, text:activity.staticInstruction}]" class="m-2"/>
+
+    <div class="is-flex is-flex-direction-column is-align-items-center is-justify-content-space-between">
+      <div class="master-bar mt-4">
+        <SegmentedProgressBar
+          :segments="progressSegments"
+          :progress="videoTime"
+        />
+      </div>
+      <!-- <div class="mt-4 mb-4 buttons is-centered">
+        <button
+          class="button"
+          @click="gotoPreviousActivity"
+          :class="{
+            'is-white': activityFinished,
+            'is-light': !activityFinished,
+          }"
+          :disabled="activityId === 0">Previous</button>
+        <button
+            class="button"
+          @click="repeatActivity"
+          :class="{
+            'is-white': activityFinished,
+            'is-light': !activityFinished,
+          }"
+          :disabled="!activityFinished">Repeat <i class="fa fa-repeat" aria-hidden="true"></i>
+        </button>
+        <button
+          class="button"
+          :class="{
+            'is-white': showPlayGestureIcon,
+            'is-light': !showPlayGestureIcon,
+          }"
+          @click="playActivity(undefined, true)"
+          :disabled="!showPlayGestureIcon">Start Activity</button>
+        <button
+          class="button"
+          @click="gotoNextActivity"
+          :class="{
+            'is-white': activityFinished,
+            'is-light': !activityFinished,
+          }">
+          <span v-if="hasNextActivity">Next</span>
+          <span v-else>Finish Lesson</span></button>
+        <button
+          class="button"
+          @click="startSaveFrames"
+          :disabled="!canSaveFrame"
+          :class="{'is-loading': isSavingFrames}">Save Frames</button> -->
+      <!-- </div> -->
     </div>
 
-    <div class="overlay overlay-bottom overlay-right mb-6 mr-6" v-show="showPlayGestureIcon">
-      <div class="vcenter-parent">
-        <div class="content translucent-text activityStartGestureCard is-rounded" >
-          <GestureIcon class="activityEndGestureCard" :gesture="'play'" />
-          <p>Start Activity</p>
-        </div>
-      </div>
-    </div>
-    <div class="overlay overlay-left overlay-bottom mb-6 ml-6" v-show="activityFinished">
-      <div class="vcenter-parent ml-2">
-        <div class="content translucent-text p-5 is-rounded activityStartGestureCard">
-          <GestureIcon class="activityEndGestureCard" :gesture="'backward'" />
-          <p>Repeat this activity</p>
-        </div>
-      </div>
-    </div>
-    <div class="overlay overlay-right overlay-bottom mb-6 mr-6" v-show="activityFinished">
-      <div class="vcenter-parent">
-        <div class="content translucent-text p-5 is-rounded activityStartGestureCard">
-          <GestureIcon class="activityEndGestureCard" :gesture="'forward'" />
-          <p>Advance to next activity</p>
-        </div>
-      </div>
-    </div>
-
-    <teleport to="#belowSurface">
-      <div>
-        <div class="master-bar mt-4">
-          <SegmentedProgressBar
-            :segments="progressSegments"
-            :progress="videoTime"
-          />
-        </div>
-        <div class="mt-4 mb-4 buttons is-centered">
-          <button
-            class="button"
-            @click="gotoPreviousActivity"
-            :class="{
-              'is-white': activityFinished,
-              'is-light': !activityFinished,
-            }"
-            :disabled="activityId === 0">Previous</button>
-          <button
-             class="button"
-            @click="repeatActivity"
-            :class="{
-              'is-white': activityFinished,
-              'is-light': !activityFinished,
-            }"
-            :disabled="!activityFinished">Repeat <i class="fa fa-repeat" aria-hidden="true"></i>
-          </button>
-          <button
-            class="button"
-            :class="{
-              'is-white': showPlayGestureIcon,
-              'is-light': !showPlayGestureIcon,
-            }"
-            @click="playActivity(undefined, true)"
-            :disabled="!showPlayGestureIcon">Start Activity</button>
-          <button
-            class="button"
-            @click="gotoNextActivity"
-            :class="{
-              'is-white': activityFinished,
-              'is-light': !activityFinished,
-            }">
-            <span v-if="hasNextActivity">Next</span>
-            <span v-else>Finish Lesson</span></button>
-          <button
-            class="button"
-            @click="startSaveFrames"
-            :disabled="!canSaveFrame"
-            :class="{'is-loading': isSavingFrames}">Save Frames</button>
-        </div>
-      </div>
-    </teleport>
   </div>
 </template>
 
@@ -133,7 +124,7 @@ import InstructionCarousel, { Instruction } from '@/components/elements/Instruct
 import { Landmark } from '@/services/MediaPipeTypes';
 import Utils from '@/services/Utils';
 import SegmentedProgressBar, { ProgressSegmentData, calculateProgressSegments } from '../elements/SegmentedProgressBar.vue';
-import PausingVideoPlayer from '../elements/PausingVideoPlayer.vue';
+import ActivityVideoPlayer from '@/components/elements/ActivityVideoPlayer.vue';
 import WebcamBox from '../elements/WebcamBox.vue';
 import GestureIcon from '../elements/GestureIcon.vue';
 
@@ -154,7 +145,7 @@ const ActivityPlayState = Object.freeze({
 
 const TRACKING_ID = 'LearningScreen';
 
-function setupFrameRecording(activity: ComputedRef<Activity | null>, videoTime: Ref<number>, videoPlayer: Ref<null | typeof PausingVideoPlayer>, playActivity: Function) {
+function setupFrameRecording(activity: ComputedRef<Activity | null>, videoTime: Ref<number>, videoPlayer: Ref<null | typeof ActivityVideoPlayer>, playActivity: Function) {
   const isSavingFrames = ref(false);
   let recordingSessionId = -1;
 
@@ -222,7 +213,7 @@ function setupFrameRecording(activity: ComputedRef<Activity | null>, videoTime: 
 export default defineComponent({
   components: {
     SegmentedProgressBar,
-    PausingVideoPlayer,
+    ActivityVideoPlayer,
     InstructionCarousel,
     WebcamBox,
     GestureIcon,
@@ -238,7 +229,7 @@ export default defineComponent({
     const activityState = ref(ActivityPlayState.AwaitingPlayGesture);
     const showPlayGestureIcon = computed(() => activityState.value === ActivityPlayState.AwaitingPlayGesture);
 
-    const videoPlayer = ref(null as null | typeof PausingVideoPlayer);
+    const videoPlayer = ref(null as null | typeof ActivityVideoPlayer);
     const videoTime = ref(0);
 
     const activityId = ref(0);
@@ -359,16 +350,16 @@ export default defineComponent({
         console.error('LEARNING SCREEN:: Aborting video playback: vidPlayer or lessonActivity is null', vidPlayer, vidActivity);
         return;
       }
-      const startingNow = forcePlay || (activityId.value !== 0 && !DanceUtils.shouldPauseBeforeActivity(vidActivity));
+      // const startingNow = forcePlay || (activityId.value !== 0 && !DanceUtils.shouldPauseBeforeActivity(vidActivity));
 
-      vidPlayer.setTime(vidActivity.startTime);
+      // vidPlayer.setTime(vidActivity.startTime);
 
-      if (startingNow) {
-        playVideo(vidActivity, pause);
-        console.log(`LEARNING SCREEN:: Scheduling playback for activity ${activityId.value}`);
-      } else {
-        console.log(`LEARNING SCREEN:: Setting start & pausing for userinput for activity ${activityId.value}`);
-      }
+      // if (startingNow) {
+      //   playVideo(vidActivity, pause);
+      //   console.log(`LEARNING SCREEN:: Scheduling playback for activity ${activityId.value}`);
+      // } else {
+      //   console.log(`LEARNING SCREEN:: Setting start & pausing for userinput for activity ${activityId.value}`);
+      // }
     }
 
     function gotoActivity(delta: number) {
@@ -498,7 +489,7 @@ export default defineComponent({
 }
 
 .master-bar {
-  width: 1280px;
+  width: 100%;
   // margin: 0 auto;
   // padding: 1rem 1rem 1rem 1rem;
   // border-radius: 0 0 0.5rem 0.5rem;

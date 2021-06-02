@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div class="menu container block" v-show="currentTab === Tabs.Videos">
+    <div class="grid-menu container block" v-show="currentTab === Tabs.Videos">
       <div
         class="dance-card card is-clickable shrink-hover"
         v-for="dance in motionList"
@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <div class="menu container block" v-show="currentTab === Tabs.Tools">
+    <div class="grid-menu container block" v-show="currentTab === Tabs.Tools">
       <div class="box shrink-hover is-clickable m-0" @click="uploadUIActive = true">
         Upload Custom Lesson
       </div>
@@ -141,6 +141,7 @@ export default defineComponent({
       videoLessonSelected,
       createLessonSelected,
       uploadUIActive,
+      workflowManager,
 
       TabList,
       Tabs,
@@ -183,12 +184,6 @@ export default defineComponent({
 // }
 
 .dance-menu {
-  .menu {
-    text-align: left;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-    grid-gap: 0.5em;
-  }
   .menu .card {
     display: block;
   }
@@ -204,15 +199,6 @@ export default defineComponent({
     // }
   }
 
-  .shrink-hover {
-    transition: transform 0.2s, box-shadow 0.2s;
-
-    &:hover {
-      box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.3),
-        0 0 0 2px rgba(10, 10, 10, 0.05);
-      transform: scale(0.98);
-    }
-  }
 
   img {
     object-fit: fill;

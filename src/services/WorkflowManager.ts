@@ -6,6 +6,7 @@ import { Workflow, WorkflowStage, WorkflowStep } from '@/model/Workflow';
 import workflowsJson from '@/model/workflows.json';
 import eventHub, { EventNames } from './EventHub';
 import utils from './Utils';
+import Utils from './Utils';
 
 const defaultWorkflows = workflowsJson as Workflow[];
 
@@ -26,7 +27,7 @@ const TestWorkflow = Object.freeze(
     title: 'ExperimentTest',
     id: 'e61789dhgbuiqd6129',
     stages: [{
-      title: 'Experiment Introduction',
+      title: 'Introduction',
       steps: [{
         title: 'Welcome',
         type: 'InstructionOnly',
@@ -38,7 +39,7 @@ const TestWorkflow = Object.freeze(
         },
       }],
     }, {
-      title: 'First Two Dances',
+      title: 'Learning Phase',
       steps: [{
         title: 'Savage Love',
         type: 'VideoLesson',
@@ -55,25 +56,29 @@ const TestWorkflow = Object.freeze(
           clipName: 'itsafit',
           lessonId: '14cac0d6-ec00-41ae-ac80-e738d5cc09a1',
         },
-      }],
-    }, {
-      title: 'Last Two Dances',
-      steps: [{
+      }, {
         title: 'Renegade',
         type: 'VideoLesson',
         activity: {
           clipName: 'renegade',
           lessonId: '4ecac1f9-b32c-42de-b290-d97c883437e5',
         },
-      }],
-    }, {
-      title: 'Last Two Dances',
-      steps: [{
+      }, {
         title: 'Unh-hunh',
         type: 'VideoLesson',
         activity: {
           clipName: 'unhhunh',
           lessonId: '580baf76-412f-41c3-9f50-54ebf01ace46',
+        },
+      }],
+    }, {
+      title: 'Feedback',
+      steps: [{
+        title: 'Performance',
+        type: 'UploadTask',
+        upload: {
+          identifier: 'end-upload',
+          prompt: 'Upload yourself performing all these dances in order',
         },
       }],
     }],
@@ -105,7 +110,7 @@ class WorkflowManager {
     this.workflows.set(TestWorkflow.id, TestWorkflow);
   }
 
-  private setActiveFlow(workflowId: string) {
+  public setActiveFlow(workflowId: string) {
     const matchingWorkflow = this.workflows.get(workflowId);
 
     if (!matchingWorkflow) {
@@ -124,6 +129,16 @@ class WorkflowManager {
         }) as TrackingWorkflowStep),
       } as TrackingWorkflowStage)),
     } as TrackingWorkflow;
+
+    trackingFlow.stages.forEach((stage) => {
+      const { steps } = stage;
+      const shuffleInfo = (stage as any).shuffle;
+      if (shuffleInfo) {
+        // Shuffle the sequences of steps, as appropiate
+        Utils.shuffleArray(steps, shuffleInfo.startIndex, shuffleInfo.endIndex);
+      }
+      stage.steps = steps;
+    });
 
     this.activeFlow.value = trackingFlow;
   }

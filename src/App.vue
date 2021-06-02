@@ -13,6 +13,7 @@
         @pose-drawer-selected="poseDrawerSelected"
         @video-selected="videoEntrySelected"
         @create-lesson-selected="createLessonSelected"
+        @workflow-selected="startWorkflow"
       />
 
   <CreateLessonScreen
@@ -21,6 +22,10 @@
           @back-selected="goHome"
           @lesson-created="goHome" />
 
+  <WorkflowMenu
+        v-if="state === State.WorkflowActive"
+        @back-selected="goHome"/>
+
   <PoseDrawerTest
         v-if="state === State.PoseDrawingTester"
         @back-selected="goHome" />
@@ -28,7 +33,7 @@
   <CameraSurface
     ref="cameraSurface"
     @tracking-attained="onTrackingAttained()"
-    v-show="[State.MainMenu, State.CreateLesson, State.PoseDrawingTester].indexOf(state) === -1">
+    v-show="showCameraSurface">
 
     <template v-slot:background>
       <img v-show="state == State.OnboardingLoading"
@@ -43,6 +48,8 @@
         :target-lesson="currentLesson"
         @lesson-completed="goHome"
         @back-selected="goHome"
+        style="width: 1280px"
+        height="auto"
       />
 
      <WebcamPromptCard v-if="state === State.PromptStartWebcam"
@@ -78,9 +85,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, nextTick, ref } from 'vue';
+import { computed, defineComponent, nextTick, ref } from 'vue';
 import webcamProvider from '@/services/WebcamProvider';
 import { DatabaseEntry } from '@/services/MotionDatabase';
+import WorkflowMenu from '@/components/screens/WorkflowMenu.vue';
 import CameraSurface from './components/CameraSurface.vue';
 import OnboardingUI from './components/OnboardingUI.vue';
 import MainMenu from './components/screens/MainMenu.vue';
@@ -90,6 +98,7 @@ import WebcamPromptCard from './components/elements/WebcamPromptCard.vue';
 
 import PoseDrawerTest from './components/screens/PoseDrawerTest.vue';
 import CreateLessonScreen from './components/screens/CreateLessonScreen.vue';
+import workflowManager from './services/WorkflowManager';
 
 const State = {
   MainMenu: 'MainMenu',
@@ -98,6 +107,7 @@ const State = {
   LoadingTracking: 'LoadingTracking',
   Onboarding: 'Onboarding',
   LessonActive: 'LessonActive',
+  WorkflowActive: 'WorkflowActive',
   PoseDrawingTester: 'PoseDrawingTester',
   CreateLesson: 'CreateLesson',
 };
@@ -108,6 +118,7 @@ export default defineComponent({
     CameraSurface,
     OnboardingUI,
     MainMenu,
+    WorkflowMenu,
     LearningScreen,
     WebcamPromptCard,
     PoseDrawerTest,
@@ -120,6 +131,14 @@ export default defineComponent({
 
     const currentVideo = ref(null as DatabaseEntry | null);
     const currentLesson = ref(null as VideoLesson | null);
+
+    const showCameraSurface = computed(() => [
+      State.PromptStartWebcam,
+      State.StartingWebcam,
+      State.LoadingTracking,
+      State.Onboarding,
+      State.LessonActive,
+    ].indexOf(state.value) !== -1);
 
     function videoEntrySelected(videoEntry: DatabaseEntry, lesson: VideoLesson) {
       currentVideo.value = videoEntry;
@@ -177,6 +196,7 @@ export default defineComponent({
     }
 
     return {
+      showCameraSurface,
       currentVideo,
       currentLesson,
       videoEntrySelected,
@@ -195,6 +215,11 @@ export default defineComponent({
     createLessonSelected(dance: DatabaseEntry) {
       this.currentVideo = dance;
       this.state = State.CreateLesson;
+    },
+    startWorkflow(workflowId: string) {
+      console.log('Starting workflow', workflowId);
+      workflowManager.setActiveFlow(workflowId);
+      this.state = State.WorkflowActive;
     },
   },
 });

@@ -3,6 +3,8 @@
 import Parser, { Row } from '@gregoranders/csv';
 import { Landmark } from '@/services/MediaPipeTypes';
 
+const VIDEO_EXTENSIONS = ['.mp4', '.m4v', '.mov'];
+
 export class PoseProvider {
 
   private poseFiles: Map<string, Readonly<Array<Readonly<Array<Readonly<Landmark>>>>>> = new Map();
@@ -10,7 +12,12 @@ export class PoseProvider {
   async GetPose(videoName: string) {
     if (videoName.length < 4) return [];
 
-    const poseFilename = videoName.replace('dances', 'poses').replace('.mp4', '.poses.csv')
+    let poseFilename = videoName.replace('videos', 'poses');
+    for (let i = 0; i < VIDEO_EXTENSIONS.length; i += 1) {
+      const extension = VIDEO_EXTENSIONS[i];
+      poseFilename = poseFilename.replace(extension, '.poses.csv');
+    }
+
     const cached = this.poseFiles.get(poseFilename);
     if (cached !== undefined) return cached;
 

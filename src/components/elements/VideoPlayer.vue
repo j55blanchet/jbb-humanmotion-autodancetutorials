@@ -249,7 +249,11 @@ export default defineComponent({
         return;
       }
 
-      poses.value = await poseProvider.GetPose(videoBaseUrl?.value ?? '');
+      try {
+        poses.value = await poseProvider.GetPose(videoBaseUrl?.value ?? '');
+      } catch (e) {
+        console.error("Couldn't get poses: ", e);
+      }
     });
     watch([canvasModified, currentPose, drawPoseLandmarks], () => {
       canvasModified.value = false;

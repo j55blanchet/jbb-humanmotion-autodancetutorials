@@ -23,7 +23,9 @@ export class MotionDatabase {
 
   readonly motions = computed(() => Array.from(this.motionsMap.values()));
 
-  readonly lessons = reactive(new Map<string, VideoLesson[]>());
+  readonly lessonsByVideo = reactive(new Map<string, VideoLesson[]>());
+
+  readonly lessonsById = reactive(new Map<string, VideoLesson>());
 
   constructor() {
 
@@ -32,7 +34,7 @@ export class MotionDatabase {
         videoSrc: `videos/${videoEntry.clipPath}`,
         ...videoEntry,
       });
-      this.lessons.set(videoEntry.clipName, []);
+      this.lessonsByVideo.set(videoEntry.clipName, []);
     });
 
     console.log(`Motion database: loaded ${this.motionsMap.size} videos`);
@@ -49,30 +51,34 @@ export class MotionDatabase {
   }
 
   hasLesson(lesson: VideoLesson): boolean {
-    const lessonList = this.lessons.get(lesson.header.clipName) ?? [];
+    const lessonList = this.lessonsByVideo.get(lesson.header.clipName) ?? [];
     const lessonIndex = lessonList.findIndex((val) => val._id === lesson._id);
     return lessonIndex !== -1;
   }
 
   upsertLesson(lesson: VideoLesson) {
-    const lessonList = this.lessons.get(lesson.header.clipName) ?? [];
+    const lessonList = this.lessonsByVideo.get(lesson.header.clipName) ?? [];
     const existingIndex = lessonList.findIndex((les) => les._id === lesson._id);
     if (existingIndex !== -1) lessonList[existingIndex] = lesson;
     else lessonList.push(lesson);
-    this.lessons.set(lesson.header.clipName, lessonList);
+    this.lessonsByVideo.set(lesson.header.clipName, lessonList);
+
+    this.lessonsById.set(lesson._id, lesson);
   }
 
   removeLesson(lesson: VideoLesson) {
-    const lessonList = this.lessons.get(lesson.header.clipName) ?? [];
+    const lessonList = this.lessonsByVideo.get(lesson.header.clipName) ?? [];
     const lessonIndex = lessonList.findIndex((val) => val._id === lesson._id);
     if (lessonIndex !== -1) lessonList.splice(lessonIndex, 1);
-    this.lessons.set(lesson.header.clipName, lessonList);
+    this.lessonsByVideo.set(lesson.header.clipName, lessonList);
+
+    this.lessonsById.delete(lesson._id);
   }
 
   getLessons(videoEntry: DatabaseEntry | string) {
     let lessons = undefined as undefined | VideoLesson[];
-    if (typeof videoEntry === 'object' && videoEntry !== null) lessons = this.lessons.get(videoEntry.clipName);
-    else lessons = this.lessons.get(videoEntry);
+    if (typeof videoEntry === 'object' && videoEntry !== null) lessons = this.lessonsByVideo.get(videoEntry.clipName);
+    else lessons = this.lessonsByVideo.get(videoEntry);
     return lessons;
   }
 

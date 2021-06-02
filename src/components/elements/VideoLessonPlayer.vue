@@ -1,0 +1,118 @@
+<template>
+  <div class="video-lesson-player">
+    <ActivityVideoPlayer
+      class="block"
+      ref="activityVideoPlayer"
+      :motion="videoEntry"
+      :lesson="videoLesson"
+      :activity="activeActivity"
+      :maxHeight="maxVideoHeight"
+      @progress="onProgress"
+    />
+
+    <SegmentedProgressBar
+      class="block"
+      :segments="progressSegments"
+      :progress="activityProgress"
+    />
+
+    <div class="buttons is-centered has-addons">
+      <button
+        class="button"
+        :disabled="!hasPreviousActivity"
+        @click="activeActivityIndex -= 1"
+      >
+        &lt;
+      </button>
+      <button
+        class="button"
+        :class="{
+          'is-primary': ($refs.activityVideoPlayer?.awaitingStart ?? false)
+        }"
+        :disabled="!($refs.activityVideoPlayer?.awaitingStart ?? false)"
+        @click="$refs.activityVideoPlayer.play()"
+      >
+        Play
+      </button>
+      <button
+        class="button"
+        :disabled="!($refs.activityVideoPlayer?.activityFinished ?? false)"
+        @click="$refs.activityVideoPlayer?.reset()"
+      >
+        Reset
+      </button>
+      <button
+        class="button"
+        :disabled="!hasNextActivity && !enableCompleteLesson"
+        :class="{
+          'is-success': (!hasNextActivity && enableCompleteLesson) || ($refs.activityVideoPlayer?.activityFinished ?? false)
+        }"
+        @click="nextActivity"
+      >
+        <span v-if="hasNextActivity || !enableCompleteLesson">&gt;</span>
+        <span v-else>Complete Lesson</span>
+      </button>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import VideoLesson, { Activity } from '@/model/VideoLesson';
+import { defineComponent } from 'vue';
+import ActivityVideoPlayer from '@/components/elements/ActivityVideoPlayer.vue';
+import SegmentedProgressBar, { calculateProgressSegments, ProgressSegmentData } from '@/components/elements/SegmentedProgressBar.vue';
+
+export default defineComponent({
+  name: 'VideoLessonPlayer',
+  components: {
+    SegmentedProgressBar,
+    ActivityVideoPlayer,
+  },
+  props: {
+    videoEntry: { type: Object },
+    videoLesson: { type: Object },
+    maxVideoHeight: { type: String, default: 'none' },
+    enableCompleteLesson: { type: Boolean, default: false },
+  },
+  emits: ['lesson-completed', 'previous-activity', 'next-activity'],
+  computed: {
+    lesson() {
+      const lesson = (this.$props.videoLesson ?? null) as null | VideoLesson;
+      return lesson;
+    },
+    activeActivity() {
+      const lesson = (this.$props.videoLesson ?? null) as null | VideoLesson;
+      const activityIndex = this.activeActivityIndex as number;
+      const activity = lesson?.activities[activityIndex] ?? null as null | Activity;
+      return activity;
+    },
+    progressSegments(): ProgressSegmentData[] {
+      if (this.activeActivity && this.lesson) return calculateProgressSegments(this.lesson, this.activeActivity);
+      return [];
+    },
+    hasNextActivity(): boolean {
+      return this.activeActivityIndex + 1 < (this.lesson?.activities.length ?? 0);
+    },
+    hasPreviousActivity(): boolean {
+      return this.activeActivityIndex > 0;
+    },
+  },
+  data() {
+    return {
+      activeActivityIndex: 0,
+      activityProgress: 0,
+    };
+  },
+  methods: {
+    onProgress(val: number) { this.activityProgress = val; },
+    playActivity() { (this.$refs.activityVideoPlayer as any).play(); },
+    nextActivity() {
+      if (this.hasNextActivity) this.activeActivityIndex += 1;
+      else this.$emit('lesson-completed');
+    },
+  },
+});
+</script>
+
+<style lang="scss">
+</style>

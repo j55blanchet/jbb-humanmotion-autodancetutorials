@@ -4,6 +4,7 @@
       ref="videoE" muted disablePictureInPicture
       :style="{
         'max-height': maxHeight,
+        'max-width': '100%',
       }"
     ></video>
     <div class="is-overlay" v-if="webcamStatus !== 'running'">
