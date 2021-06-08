@@ -76,12 +76,12 @@
         <button class="modal-close" @click="instructionsActive = false" aria-label="close"></button>
       </div>
 
-        <div v-bind:class="{ 'is-active': lessonActive }" class="modal">
+      <div v-bind:class="{ 'is-active': lessonActive }" class="modal">
         <div class="modal-background"></div>
         <div class="container">
           <div class="box" style="max-width: 100%; max-height: 100%;">
             <VideoLessonPlayer
-              v-if="lessonActive"
+              v-show="lessonActive"
               :videoEntry="currentVideoEntry"
               :videoLesson="currentLesson"
               @lesson-completed="lessonCompleted"

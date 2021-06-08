@@ -51,9 +51,12 @@
             <div class="level-item">
               {{ dance.title }}
             </div>
-            <div class="level-item" v-show="dance.hovering">
-              <button class="button is-primary" @click="selectedDance = dance">Go!</button>
-            </div>
+            <!-- <transition name="expand-down" appear> -->
+              <div class="level-item animate-height"
+                :class="{'collapsed': !dance.hovering}">
+                <button class="button is-primary is-small" @click="selectedDance = dance">Go!</button>
+              </div>
+            <!-- </transition> -->
           </div>
         </div>
       </div>
@@ -231,5 +234,27 @@ export default defineComponent({
     height: 100%;
     object-fit: cover;
   }
+}
+
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.expand-down-enter-active {
+  transition: all .3s ease;
+}
+.expand-down-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.expand-down-enter, .expand-down-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: scaleY(0);
+  height: 0;
+  opacity: 0;
+}
+.collapsed {
+  transform: scaleY(0);
+  height: 0;
+}
+.animate-height {
+  transition: transform 0.15s ease;
 }
 </style>

@@ -19,7 +19,7 @@
       />
 
     <div class="is-overlay instructions-overlay mb-4">
-      <InstructionCarousel v-show="!activityFinished && timedInstructions().length > 0" :sizeClass="'is-large'" :instructions="timedInstructions()" class="m-2"/>
+      <InstructionCarousel v-show="!activityFinished && timedInstructions.length > 0" :sizeClass="'is-large'" :instructions="timedInstructions" class="m-2"/>
       <InstructionCarousel v-show="instructions.length > 0" :sizeClass="'is-large'" :instructions="instructions" class="m-2"/>
       <InstructionCarousel v-show="activity?.staticInstruction" :sizeClass="'is-large'"  :instructions="[{id:0, text:activity?.staticInstruction}]" class="m-2"/>
     </div>
@@ -65,13 +65,14 @@ export default defineComponent({
     const activityFinished = computed(() => state.value === ActivityPlayState.ActivityEnded);
     const awaitingStart = computed(() => state.value === ActivityPlayState.AwaitingStart);
     const videoPlayer = ref(null as null | typeof PausingVideoPlayer);
-    const videoTime = () => (videoPlayer.value as any)?.getVideoTime() ?? 0;
+    const videoTime = ref(0);
 
     const pauseInstructs = ref([] as Instruction[]);
     const onPlaybackCompleted = () => {
       state.value = ActivityPlayState.ActivityEnded;
     };
     const onPauseHit = (pause: PauseInfo) => {
+      console.log(`Hit pause${pause}`);
       if (pause.instruction) pauseInstructs.value.push({ id: pause.time, text: pause.instruction });
     };
     const onPauseEnded = () => pauseInstructs.value.splice(0);
@@ -146,6 +147,25 @@ export default defineComponent({
 
       return instructs;
     },
+    timedInstructions(): Instruction[] {
+      const mActivity = this.activity as unknown as Activity | null;
+      const time = this.videoTime;
+
+      if (!mActivity) return [];
+
+      const activeTimedInstructions = mActivity.timedInstructions?.map(
+        (ti, i) => ({
+          id: i,
+          text: ti.text,
+          start: ti.startTime,
+          end: ti.endTime,
+        })
+      ).filter((ti) => ti.start <= time && time < ti.end) ?? [];
+
+      // console.log(`TimedI updated for time ${time}, count=${activeTimedInstructions.length}`, mActivity.timedInstructions);
+
+      return activeTimedInstructions;
+    },
   },
   methods: {
     play(delay?: number | undefined) {
@@ -171,24 +191,8 @@ export default defineComponent({
         },
       );
     },
-
-    timedInstructions(): Instruction[] {
-      const mActivity = this.activity as unknown as Activity | null;
-      const time = this.videoTime();
-      if (!mActivity) return [];
-
-      const activeTimedInstructions = mActivity.timedInstructions?.map(
-        (ti, i) => ({
-          id: i,
-          text: ti.text,
-          start: ti.startTime,
-          end: ti.endTime,
-        })
-      ).filter((ti) => ti.start <= time && time < ti.end) ?? [];
-
-      return activeTimedInstructions;
-    },
     onProgress(val: number) {
+      this.videoTime = val;
       this.$emit('progress', val);
     },
   },

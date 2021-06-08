@@ -85,7 +85,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, ref } from 'vue';
+import {
+  computed, defineComponent, nextTick, ref,
+} from 'vue';
 import webcamProvider from '@/services/WebcamProvider';
 import { DatabaseEntry } from '@/services/MotionDatabase';
 import WorkflowMenu from '@/components/screens/WorkflowMenu.vue';
