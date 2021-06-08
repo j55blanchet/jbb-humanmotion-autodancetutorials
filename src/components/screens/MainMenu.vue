@@ -37,14 +37,15 @@
         class="dance-card card hover-expand"
         v-for="dance in motionList"
         :key="dance.title"
-        @mouseover="hover = dance.hovering = true"
-        @mouseleave="hover = dance.hovering = false"
+        @mouseover="dance.hovering = true"
+        @mouseleave="dance.hovering = false"
+        @click = "dance.clicked = !dance.clicked"
       >
         <div class="card-image">
-          <figure class="image is-2by3" v-if="!dance.hovering">
+          <figure class="image is-2by3" v-if="(!dance.hovering) && (!dance.clicked)">
             <img :src="dance.thumbnailSrc" class="is-contain" />
           </figure>
-          <figure class="image is-2by3" v-else><video controls :src="dance.videoSrc" ></video></figure>
+          <figure class="image is-2by3" v-else><video controls :src="dance.videoSrc" @playing="dance.clicked=True"></video></figure>
         </div>
         <div class="card-content" >
           <div class="level">
@@ -53,7 +54,7 @@
             </div>
             <!-- <transition name="expand-down" appear> -->
               <div class="level-item animate-height"
-                :class="{'collapsed': !dance.hovering}">
+                :class="{'collapsed': (!dance.clicked ) && (!dance.hovering)}">
                 <button class="button is-primary is-small" @click="selectedDance = dance">Go!</button>
               </div>
             <!-- </transition> -->
