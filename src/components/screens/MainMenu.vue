@@ -23,38 +23,47 @@
     </div>
 
     <div class="menu container block" v-show="currentTab === Tabs.Workflows">
-      <div class="box m-0 shrink-hover is-clickable"
+      <div class="box m-0 hover-expand is-clickable"
         v-for="workflow in workflows"
         :key="workflow.id"
         @click="$emit('workflow-selected', workflow.id)">{{workflow.title}}
       </div>
     </div>
 
-    <div class="grid-menu container block" v-show="currentTab === Tabs.Videos">
+    <div class="grid-menu container block"
+      v-show="currentTab === Tabs.Videos"
+    >
       <div
-        class="dance-card card is-clickable shrink-hover"
+        class="dance-card card hover-expand"
         v-for="dance in motionList"
         :key="dance.title"
         @mouseover="hover = dance.hovering = true"
         @mouseleave="hover = dance.hovering = false"
-        @click="selectedDance = dance"
       >
         <div class="card-image">
-          <figure class="image is-2by3">
-            <video :src="dance.videoSrc" />
+          <figure class="image is-2by3" v-if="!dance.hovering">
+            <img :src="dance.thumbnailSrc" class="is-contain" />
           </figure>
+          <figure class="image is-2by3" v-else><video controls :src="dance.videoSrc" ></video></figure>
         </div>
-        <div class="card-content">
-          {{ dance.title }}
+        <div class="card-content" >
+          <div class="level">
+            <div class="level-item">
+              {{ dance.title }}
+            </div>
+            <div class="level-item" v-show="dance.hovering">
+              <button class="button is-primary" @click="selectedDance = dance">Go!</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="grid-menu container block" v-show="currentTab === Tabs.Tools">
-      <div class="box shrink-hover is-clickable m-0" @click="uploadUIActive = true">
+      <div class="box hover-expand is-clickable m-0" @click="uploadUIActive = true">
         Upload Custom Lesson
       </div>
-      <div class="box shrink-hover is-clickable m-0" @click="$emit('pose-drawer-selected')">
+      <div class="box hover-expand is-clickable m-0" @click="$emit('pose-drawer-selected')">
         Pose Drawer Test
       </div>
     </div>
@@ -199,9 +208,8 @@ export default defineComponent({
     // }
   }
 
-
   img {
-    object-fit: fill;
+    object-fit: cover;
   }
 
   .subtitle {

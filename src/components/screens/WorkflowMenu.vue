@@ -19,23 +19,45 @@
       <p class="subtitle has-text-centered">{{stage.title}}</p>
 
       <div class="grid-menu container block">
-        <div
-          :class="{
-            'is-clickable': isClickable(step),
-            'shrink-hover': isClickable(step),
-            'has-text-grey': !isClickable(step),
-          }"
-          @click="startWorkflowStep(step)"
-          class="box is-flex is-align-items-center is-flex-direction-row is-justify-content-space-between"
-          v-for="(step, j) in stage.steps" :key="j"
-          style="max-width:300px"
-        >
-          <span v-text="step.title"></span>
-          <span class="icon">
-            <i class="far fa-check-circle has-text-success" v-if="step.status==='completed'"></i>
-            <i class="far fa-play-circle" v-if="step===nextStep"></i>
-            <i class="far fa-circle" v-if="step !== nextStep && step.status==='notstarted'"></i>
-          </span>
+        <div class="box m-4"
+            :class="{
+                  'is-clickable': isClickable(stepInfo.step),
+                  'hover-expand': isClickable(stepInfo.step),
+                  'has-text-grey': !isClickable(stepInfo.step),
+                  'has-background-grey-lighter': !isClickable(stepInfo.step),
+                  'has-border-success': stepInfo.step.status === 'completed',
+                  'has-border-grey': stepInfo.step === nextStep
+                }"
+            @click="startWorkflowStep(stepInfo.step)"
+            v-for="(stepInfo, j) in getStepInfo(stage)" :key="j">
+          <article
+            class="level"
+          >
+            <div class="level-left">
+              <div class="level-item">
+                <p class="image is-48x48" v-if="stepInfo.dbEntry?.thumbnailSrc">
+                  <img class="is-100percent is-contain" :src="stepInfo.dbEntry?.thumbnailSrc" :alt="stepInfo.step.title">
+                </p>
+                <p class="icon is-large" v-else>
+                  <i class="fas fa-2x fa-align-center" v-if="stepInfo.step.type === 'InstructionOnly'"></i>
+                  <i class="fas fa-2x photo-video" v-if="stepInfo.step.type === 'VideoLesson'"></i>
+                  <i class="fas fa-2x fa-camera" v-if="stepInfo.step.type === 'UploadTask'"></i>
+                </p>
+              </div>
+              <div class="level-item">
+                <span v-text="stepInfo.step.title"></span>
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <span class="icon is-large">
+                  <i class="far fa-check-circle has-text-success" v-if="stepInfo.step.status==='completed'"></i>
+                  <i class="far fa-play-circle" v-if="stepInfo.step===nextStep"></i>
+                  <i class="far fa-circle" v-if="stepInfo.step !== nextStep && stepInfo.step.status==='notstarted'"></i>
+                </span>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
 
@@ -69,7 +91,7 @@
       </div>
 
       <!-- <div
-        class="dance-card card is-clickable shrink-hover"
+        class="dance-card card is-clickable hover-expand"
         v-for="dance in motionList"
         :key="dance.title"
         @mouseover="hover = dance.hovering = true"
@@ -146,11 +168,18 @@ export default defineComponent({
     };
   },
   methods: {
+    getStepInfo(stage: TrackingWorkflowStage) {
+
+      return stage.steps.map((step) => ({
+        step,
+        dbEntry: db.motionsMap.get(step.activity?.clipName ?? '') ?? null,
+      }));
+    },
     instructionsFinished() {
       this.instructionsActive = false;
       const step = this.currentStep;
       if (!step) return;
-      step.status === 'inprogress';
+      step.status = 'inprogress';
       this.continueWorkflowStep(step);
     },
     isClickable(step: TrackingWorkflowStep) {

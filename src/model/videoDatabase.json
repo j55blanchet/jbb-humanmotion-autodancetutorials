@@ -1,5 +1,6 @@
 [
   {
+    "title": "Savage Love",
     "clipName": "derulo",
     "clipPath": "derulo.mp4",
     "frameCount": 527,
@@ -13,9 +14,10 @@
     "landmarkScope": [
       "pose"
     ],
-    "title": "Savage Love"
+    "thumbnailSrc": "derulo.jpg"
   },
   {
+    "title": "It's a Fit",
     "clipName": "itsafit",
     "clipPath": "itsafit.mp4",
     "frameCount": 414,
@@ -29,9 +31,10 @@
     "landmarkScope": [
       "pose"
     ],
-    "title": "It's a Fit"
+    "thumbnailSrc": "itsafit.jpg"
   },
   {
+    "title": "Renegade",
     "clipName": "renegade",
     "clipPath": "renegade.mp4",
     "frameCount": 367,
@@ -45,9 +48,10 @@
     "landmarkScope": [
       "pose"
     ],
-    "title": "Renegade"
+    "thumbnailSrc": "renegade.jpg"
   },
   {
+    "title": "Unhhunh",
     "clipName": "unhhunh",
     "clipPath": "unhhunh.mp4",
     "frameCount": 578,
@@ -61,9 +65,10 @@
     "landmarkScope": [
       "pose"
     ],
-    "title": "Unhhunh"
+    "thumbnailSrc": "unhhunh.jpg"
   },
   {
+    "title": "ASL: Coconut",
     "clipName": "COCONUT",
     "clipPath": "ASL/Cluster1/COCONUT.mov",
     "frameCount": 42,
@@ -78,9 +83,10 @@
       "rightHand",
       "leftHand"
     ],
-    "title": "ASL: Coconut"
+    "thumbnailSrc": "ASL/Cluster1/COCONUT.jpg"
   },
   {
+    "title": "ASL: FlipFlips",
     "clipName": "flipflops",
     "clipPath": "ASL/Cluster1/flipflops.mp4",
     "frameCount": 58,
@@ -95,9 +101,10 @@
       "rightHand",
       "leftHand"
     ],
-    "title": "ASL: FlipFlips"
+    "thumbnailSrc": "ASL/Cluster1/flipflops.jpg"
   },
   {
+    "title": "ASL: Ocean",
     "clipName": "ocean",
     "clipPath": "ASL/Cluster1/ocean.mp4",
     "frameCount": 61,
@@ -112,9 +119,10 @@
       "rightHand",
       "leftHand"
     ],
-    "title": "ASL: Ocean"
+    "thumbnailSrc": "ASL/Cluster1/ocean.jpg"
   },
   {
+    "title": "ASL: Sailboat",
     "clipName": "sailboat",
     "clipPath": "ASL/Cluster1/sailboat.mp4",
     "frameCount": 63,
@@ -129,9 +137,10 @@
       "rightHand",
       "leftHand"
     ],
-    "title": "ASL: Sailboat"
+    "thumbnailSrc": "ASL/Cluster1/sailboat.jpg"
   },
   {
+    "title": "ASL: Turtle",
     "clipName": "TURTLE",
     "clipPath": "ASL/Cluster1/TURTLE.m4v",
     "frameCount": 36,
@@ -146,9 +155,10 @@
       "rightHand",
       "leftHand"
     ],
-    "title": "ASL: Turtle"
+    "thumbnailSrc": "ASL/Cluster1/TURTLE.jpg"
   },
   {
+    "title": "ASL: Umbrella",
     "clipName": "UMBRELLA",
     "clipPath": "ASL/Cluster1/UMBRELLA.m4v",
     "frameCount": 54,
@@ -163,7 +173,7 @@
       "rightHand",
       "leftHand"
     ],
-    "title": "ASL: Umbrella"
+    "thumbnailSrc": "ASL/Cluster1/UMBRELLA.jpg"
   },
   {
     "title": "fence",
@@ -182,7 +192,8 @@
       "rightHand",
       "leftHand",
       "face"
-    ]
+    ],
+    "thumbnailSrc": "ASL/Cluster2/fence.jpg"
   },
   {
     "title": "truck_2",
@@ -201,7 +212,8 @@
       "rightHand",
       "leftHand",
       "face"
-    ]
+    ],
+    "thumbnailSrc": "ASL/Cluster2/truck_2.jpg"
   },
   {
     "title": "shelf",
@@ -220,7 +232,8 @@
       "rightHand",
       "leftHand",
       "face"
-    ]
+    ],
+    "thumbnailSrc": "ASL/Cluster3/shelf.jpg"
   },
   {
     "title": "bus",
@@ -239,7 +252,8 @@
       "rightHand",
       "leftHand",
       "face"
-    ]
+    ],
+    "thumbnailSrc": "ASL/Cluster4/bus.jpg"
   },
   {
     "title": "hen",
@@ -258,7 +272,8 @@
       "rightHand",
       "leftHand",
       "face"
-    ]
+    ],
+    "thumbnailSrc": "ASL/Cluster4/hen.jpg"
   },
   {
     "title": "CORN_2",
@@ -277,7 +292,8 @@
       "rightHand",
       "leftHand",
       "face"
-    ]
+    ],
+    "thumbnailSrc": "ASL/Cluster2/CORN_2.jpg"
   },
   {
     "title": "GOAT",
@@ -296,7 +312,8 @@
       "rightHand",
       "leftHand",
       "face"
-    ]
+    ],
+    "thumbnailSrc": "ASL/Cluster2/GOAT.jpg"
   },
   {
     "title": "MILK",
@@ -315,7 +332,8 @@
       "rightHand",
       "leftHand",
       "face"
-    ]
+    ],
+    "thumbnailSrc": "ASL/Cluster2/MILK.jpg"
   },
   {
     "title": "STRAWBERRY",
@@ -334,7 +352,8 @@
       "rightHand",
       "leftHand",
       "face"
-    ]
+    ],
+    "thumbnailSrc": "ASL/Cluster2/STRAWBERRY.jpg"
   },
   {
     "title": "airplane",
@@ -353,7 +372,8 @@
       "rightHand",
       "leftHand",
       "face"
-    ]
+    ],
+    "thumbnailSrc": "ASL/Cluster3/airplane.jpg"
   },
   {
     "title": "BOX",
@@ -372,7 +392,8 @@
       "rightHand",
       "leftHand",
       "face"
-    ]
+    ],
+    "thumbnailSrc": "ASL/Cluster3/BOX.jpg"
   },
   {
     "title": "PEACH",
@@ -391,7 +412,8 @@
       "rightHand",
       "leftHand",
       "face"
-    ]
+    ],
+    "thumbnailSrc": "ASL/Cluster3/PEACH.jpg"
   },
   {
     "title": "CHERRY",
@@ -410,7 +432,8 @@
       "rightHand",
       "leftHand",
       "face"
-    ]
+    ],
+    "thumbnailSrc": "ASL/Cluster4/CHERRY.jpg"
   },
   {
     "title": "MONEY",
@@ -429,7 +452,8 @@
       "rightHand",
       "leftHand",
       "face"
-    ]
+    ],
+    "thumbnailSrc": "ASL/Cluster4/MONEY.jpg"
   },
   {
     "title": "PIE",
@@ -448,7 +472,8 @@
       "rightHand",
       "leftHand",
       "face"
-    ]
+    ],
+    "thumbnailSrc": "ASL/Cluster4/PIE.jpg"
   },
   {
     "title": "CARROT",
@@ -467,7 +492,8 @@
       "rightHand",
       "leftHand",
       "face"
-    ]
+    ],
+    "thumbnailSrc": "ASL/Cluster3/CARROT.jpg"
   },
   {
     "title": "MOUSE",
@@ -486,7 +512,8 @@
       "rightHand",
       "leftHand",
       "face"
-    ]
+    ],
+    "thumbnailSrc": "ASL/Cluster3/MOUSE.jpg"
   },
   {
     "title": "FLOWER",
@@ -505,6 +532,7 @@
       "rightHand",
       "leftHand",
       "face"
-    ]
+    ],
+    "thumbnailSrc": "ASL/Cluster4/FLOWER.jpg"
   }
 ]

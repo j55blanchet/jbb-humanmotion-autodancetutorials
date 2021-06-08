@@ -50,13 +50,13 @@ $family-sans-serif: "Nunito", sans-serif;
     }
 }
 
-.shrink-hover {
+.hover-expand {
     transition: transform 0.2s, box-shadow 0.2s;
 
     &:hover {
         box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.3),
         0 0 0 2px rgba(10, 10, 10, 0.05);
-        transform: scale(0.98);
+        transform: scale(1.02);
     }
 }
 
@@ -65,5 +65,38 @@ $family-sans-serif: "Nunito", sans-serif;
     color: red;
 }
 
+.is-cover {
+    object-fit: cover;
+}
+.is-contain {
+    object-fit: contain;
+}
+.is-fill {
+    object-fit: fill;
+}
+.is-scale-down {
+    object-fit: scale-down;
+}
+.is-100percent {
+    width: 100% !important;
+    height: 100% !important;
+}
+
 @import '~bulma';
 @import '~bulma-slider';
+
+@each $name, $pair in $colors {
+  $color: nth($pair, 1);
+  .has-border-#{$name} {
+    border: 2px solid $color !important;
+  }
+  .has-outline-#{name} {
+    outline: 10px solid $color !important;
+  }
+}
+@each $name, $pair in $shades {
+  $color: nth($pair, 1);
+  .has-border-#{$name} {
+    border: 2px solid $color !important;
+  }
+}

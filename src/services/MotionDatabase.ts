@@ -16,6 +16,7 @@ export interface DatabaseEntry {
   width: number;
   height: number;
   videoSrc: string;
+  thumbnailSrc: string;
 }
 
 export class MotionDatabase {
@@ -33,6 +34,7 @@ export class MotionDatabase {
       this.motionsMap.set(videoEntry.clipName, {
         videoSrc: `videos/${videoEntry.clipPath}`,
         ...videoEntry,
+        thumbnailSrc: `thumbs/${videoEntry.thumbnailSrc}`,
       });
       this.lessonsByVideo.set(videoEntry.clipName, []);
     });
