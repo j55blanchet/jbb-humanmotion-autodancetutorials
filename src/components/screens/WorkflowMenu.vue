@@ -67,11 +67,13 @@
           <div class="box content">
             <h3>{{currentStep?.instructions?.heading}}</h3>
             <p>{{currentStep?.instructions?.body}}</p>
-            <div class="has-text-right">
-              <button class="button" @click="instructionsFinished">Continue</button>
+            <div class="buttons is-right">
+              <button class="button is-outlined is-danger" @click="instructionsActive = false">Close</button>
+              <button class="button is-primary" @click="instructionsFinished">Continue</button>
             </div>
           </div>
         </div>
+        <button class="modal-close" @click="instructionsActive = false" aria-label="close"></button>
       </div>
 
         <div v-bind:class="{ 'is-active': lessonActive }" class="modal">
