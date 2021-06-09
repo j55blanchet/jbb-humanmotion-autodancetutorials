@@ -22,8 +22,8 @@
       </ul>
     </div>
 
-    <div class="menu container block" v-show="currentTab === Tabs.Workflows">
-      <div class="box m-0 hover-expand is-clickable"
+    <div class="grid-menu container block" v-show="currentTab === Tabs.Workflows">
+      <div class="box m-4 hover-expand is-clickable"
         v-for="workflow in workflows"
         :key="workflow.id"
         @click="$emit('workflow-selected', workflow.id)">{{workflow.title}}
@@ -34,7 +34,7 @@
       v-show="currentTab === Tabs.Videos"
     >
       <div
-        class="dance-card card hover-expand"
+        class="video-card card hover-expand"
         v-for="dance in motionList"
         :key="dance.title"
         @mouseover="dance.hovering = true"
@@ -53,9 +53,18 @@
               {{ dance.title }}
             </div>
             <!-- <transition name="expand-down" appear> -->
-              <div class="level-item animate-height"
-                :class="{'collapsed': (!dance.clicked ) && (!dance.hovering)}">
-                <button class="button is-primary is-small" @click="selectedDance = dance">Go!</button>
+              <div class="level-item">
+                <button
+                  class="button is-small transition-all is-primary"
+                  :class="{
+                    'is-outlined': !(dance.clicked || dance.hovering)
+                  }"
+                  @click="selectedDance = dance">
+                  <span>Go</span>
+                  <span class="icon is-small">
+                    <i class="fas fa-arrow-right"></i>
+                  </span>
+                  </button>
               </div>
             <!-- </transition> -->
           </div>
@@ -64,10 +73,10 @@
     </div>
 
     <div class="grid-menu container block" v-show="currentTab === Tabs.Tools">
-      <div class="box hover-expand is-clickable m-0" @click="uploadUIActive = true">
+      <div class="box hover-expand is-clickable m-4" @click="uploadUIActive = true">
         Upload Custom Lesson
       </div>
-      <div class="box hover-expand is-clickable m-0" @click="$emit('pose-drawer-selected')">
+      <div class="box hover-expand is-clickable m-4" @click="$emit('pose-drawer-selected')">
         Pose Drawer Test
       </div>
     </div>
@@ -196,21 +205,11 @@ export default defineComponent({
 // background: rgba(0, 0, 0, 0.2);
 // }
 
-.dance-menu {
-  .menu .card {
-    display: block;
-  }
-  .dance-card {
-    height: max-content;
-    overflow: hidden;
-    // transition: transform 0.2s, box-shadow 0.2s;
-
-    // &:hover {
-    //   box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.3),
-    //     0 0 0 2px rgba(10, 10, 10, 0.05);
-    //   transform: scale(0.98);
-    // }
-  }
+.video-card {
+  width: 210px;
+  flex-grow: 1;
+  max-width: 300px;
+  margin: 1em;
 
   img {
     object-fit: cover;
@@ -257,5 +256,9 @@ export default defineComponent({
 }
 .animate-height {
   transition: transform 0.15s ease;
+}
+
+.transition-all {
+  transition: all 0.15s ease;
 }
 </style>

@@ -24,7 +24,8 @@
 
   <WorkflowMenu
         v-if="state === State.WorkflowActive"
-        @back-selected="goHome"/>
+        @back-selected="goHome"
+        :showBackButton="!startedWithWorkflow"/>
 
   <PoseDrawerTest
         v-if="state === State.PoseDrawingTester"
@@ -101,6 +102,7 @@ import WebcamPromptCard from './components/elements/WebcamPromptCard.vue';
 import PoseDrawerTest from './components/screens/PoseDrawerTest.vue';
 import CreateLessonScreen from './components/screens/CreateLessonScreen.vue';
 import workflowManager from './services/WorkflowManager';
+import optionsManager from './services/OptionsManager';
 
 const State = {
   MainMenu: 'MainMenu',
@@ -208,7 +210,15 @@ export default defineComponent({
       state,
       cameraSurface,
       State,
+      startedWithWorkflow: ref(false),
     };
+  },
+  mounted() {
+    // If app was launched with a workflowId, skip straight
+    // to that workflow
+    if (optionsManager.workflowId.value) {
+      this.startWorkflow(optionsManager.workflowId.value);
+    }
   },
   methods: {
     poseDrawerSelected() {
@@ -220,8 +230,10 @@ export default defineComponent({
     },
     startWorkflow(workflowId: string) {
       console.log('Starting workflow', workflowId);
-      workflowManager.setActiveFlow(workflowId);
-      this.state = State.WorkflowActive;
+      if (workflowManager.setActiveFlow(workflowId)) {
+        this.state = State.WorkflowActive;
+        this.startedWithWorkflow = true;
+      }
     },
   },
 });

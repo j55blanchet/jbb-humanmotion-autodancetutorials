@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <div class="container block">
+    <div class="container block" v-if="showBackButton">
       <button class="button" @click="$emit('back-selected')">&lt; Back</button>
     </div>
 
@@ -66,7 +66,7 @@
         <div class="modal-content">
           <div class="box content">
             <h3>{{currentStep?.instructions?.heading}}</h3>
-            <p>{{currentStep?.instructions?.body}}</p>
+            <p v-for="(text,i) in currentStep?.instructions?.paragraphs ?? []" :key="i">{{text}}</p>
             <div class="buttons is-right">
               <button class="button is-outlined is-danger" @click="instructionsActive = false">Close</button>
               <button class="button is-primary" @click="instructionsFinished">Continue</button>
@@ -124,6 +124,10 @@ import workflowManager, { TrackingWorkflowStage, TrackingWorkflowStep } from '@/
 export default defineComponent({
   name: 'WorkflowMenu',
   props: {
+    showBackButton: {
+      type: Boolean,
+      default: true,
+    },
   },
   emits: [
     'back-selected',

@@ -5,7 +5,7 @@
  */
 export interface Instructions {
   heading: string;
-  body: string;
+  paragraphs: string[];
 }
 
 export interface WorkflowStep {
@@ -33,6 +33,7 @@ export interface WorkflowStage {
 
 export interface Workflow {
   title: string;
+  instructions?: Instructions;
   id: string;
   stages: WorkflowStage[];
 }

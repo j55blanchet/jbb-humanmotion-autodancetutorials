@@ -5,7 +5,6 @@ import VideoLesson from '@/model/VideoLesson';
 import { Workflow, WorkflowStage, WorkflowStep } from '@/model/Workflow';
 import workflowsJson from '@/model/workflows.json';
 import eventHub, { EventNames } from './EventHub';
-import utils from './Utils';
 import Utils from './Utils';
 
 const defaultWorkflows = workflowsJson as Workflow[];
@@ -24,7 +23,7 @@ export interface TrackingWorkflow extends Workflow {
 
 const TestWorkflow = Object.freeze(
   {
-    title: 'ExperimentTest',
+    title: '4-Tiktoks (Example Workflow)',
     id: 'e61789dhgbuiqd6129',
     stages: [{
       title: 'Introduction',
@@ -33,9 +32,9 @@ const TestWorkflow = Object.freeze(
         type: 'InstructionOnly',
         instructions: {
           heading: 'Test Experiment',
-          body: 'This an example experiment. You\'ll be taken through '
+          paragraphs: ['This an example experiment. You\'ll be taken through '
           + 'a flow of activites and will be shown instructions '
-          + 'along the way.',
+          + 'along the way.', "First, you'll learn 4 dances", "Then, you'll be asked to upload a video of you performing the dances"],
         },
       }],
     }, {
@@ -95,11 +94,6 @@ class WorkflowManager {
 
   constructor() {
     this.loadWorkflows();
-
-    const workflowId = optionsManager.workflowId.value;
-    if (workflowId) {
-      this.setActiveFlow(workflowId);
-    }
   }
 
   private loadWorkflows() {
@@ -115,10 +109,10 @@ class WorkflowManager {
 
     if (!matchingWorkflow) {
       console.error(`setActiveFlow: Couldn't find workflow with id ${workflowId}`);
-      return;
+      return false;
     }
 
-    const flow = utils.deepCopy(matchingWorkflow);
+    const flow = Utils.deepCopy(matchingWorkflow);
     const trackingFlow = {
       ...flow,
       stages: flow.stages.map((stage) => ({
@@ -141,6 +135,7 @@ class WorkflowManager {
     });
 
     this.activeFlow.value = trackingFlow;
+    return true;
   }
 }
 
