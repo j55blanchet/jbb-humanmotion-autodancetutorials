@@ -84,6 +84,24 @@ const TestWorkflow = Object.freeze(
   } as Workflow,
 );
 
+const sampleUploadWorkflow: Workflow = {
+  id: '1472189',
+  stages: [
+    {
+      title: 'Upload',
+      steps: [{
+        title: 'SampleUpload',
+        type: 'UploadTask',
+        upload: {
+          identifier: 'UploadIdentifier123',
+          prompt: 'Upload Something PLzzz',
+        },
+      }],
+    },
+  ],
+  title: 'SingleUpload',
+};
+
 class WorkflowManager {
 
   private workflows = reactive(new Map() as Map<string, Workflow>);
@@ -102,6 +120,7 @@ class WorkflowManager {
       this.workflows.set(workflow.id, workflow);
     }
     this.workflows.set(TestWorkflow.id, TestWorkflow);
+    this.workflows.set(sampleUploadWorkflow.id, sampleUploadWorkflow);
   }
 
   public setActiveFlow(workflowId: string) {

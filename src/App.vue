@@ -1,12 +1,5 @@
 <template>
 <div class="app">
-   <div id="aboveSurface" class="pb-4 pt-4">
-     <span id="topbarLeft"></span>
-     <span class="spacer"></span>
-     <span id="topbarCenter"></span>
-     <span class="spacer"></span>
-     <span id="topbarRight"></span>
-  </div>
 
   <MainMenu
         v-show="state === State.MainMenu"
@@ -31,6 +24,13 @@
         v-if="state === State.PoseDrawingTester"
         @back-selected="goHome" />
 
+  <div id="aboveSurface" class="pb-4 pt-4">
+     <span id="topbarLeft"></span>
+     <span class="spacer"></span>
+     <span id="topbarCenter"></span>
+     <span class="spacer"></span>
+     <span id="topbarRight"></span>
+  </div>
   <CameraSurface
     ref="cameraSurface"
     @tracking-attained="onTrackingAttained()"
@@ -217,7 +217,9 @@ export default defineComponent({
     // If app was launched with a workflowId, skip straight
     // to that workflow
     if (optionsManager.workflowId.value) {
-      this.startWorkflow(optionsManager.workflowId.value);
+      if (this.startWorkflow(optionsManager.workflowId.value)) {
+        this.startedWithWorkflow = true;
+      }
     }
   },
   methods: {
@@ -232,8 +234,9 @@ export default defineComponent({
       console.log('Starting workflow', workflowId);
       if (workflowManager.setActiveFlow(workflowId)) {
         this.state = State.WorkflowActive;
-        this.startedWithWorkflow = true;
+        return true;
       }
+      return false;
     },
   },
 });
@@ -255,11 +258,6 @@ body, html {
 
   background-size: 100vw 100vh;
   background-attachment: fixed;
-}
-
-.card {
-  display: inline-block;
-  max-width: 90%;
 }
 
 .vcenter-parent {

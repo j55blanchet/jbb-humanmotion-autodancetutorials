@@ -6,6 +6,8 @@ class OptionsManager {
 
   public participantId = ref(null as string | null);
 
+  public participantIdWasSet = ref(false);
+
   constructor() {
     this.parsePath();
     window.addEventListener('hashchange', this.parsePath);
@@ -18,6 +20,9 @@ class OptionsManager {
 
     this.workflowId.value = urlParams.get('experimentId');
     this.participantId.value = urlParams.get('participantId');
+    if (this.participantId.value) {
+      this.participantIdWasSet.value = true;
+    }
   }
 }
 

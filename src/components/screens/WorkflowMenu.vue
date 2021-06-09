@@ -92,34 +92,38 @@
         <button class="modal-close is-large" aria-label="close" @click="lessonActive=false"></button>
       </div>
 
-      <!-- <div
-        class="dance-card card is-clickable hover-expand"
-        v-for="dance in motionList"
-        :key="dance.title"
-        @mouseover="hover = dance.hovering = true"
-        @mouseleave="hover = dance.hovering = false"
-        @click="selectedDance = dance"
-      >
-        <div class="card-image">
-          <figure class="image is-2by3">
-            <video :src="dance.videoSrc" />
-          </figure>
+      <div :class="{'is-active': uploadActive}" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+          <div class="container">
+            <div class="box">
+              <FeedbackUploadScreen
+                :prompt="currentStep?.upload?.prompt"
+                :title="workflow?.title"
+                :subtitle="currentStep?.title"
+                :uploadFilename="uploadFilename"
+                @upload-canceled="uploadActive = false"
+                @upload-completed="uploadComplete"
+              />
+            </div>
+          </div>
         </div>
-        <div class="card-content">
-          {{ dance.title }}
-        </div>
-      </div> -->
+      </div>
     </div>
 
   </section>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import {
+  computed, defineComponent, ref, toRefs, watch, watchEffect,
+} from 'vue';
 import VideoLessonPlayer from '@/components/elements/VideoLessonPlayer.vue';
 import db, { DatabaseEntry } from '@/services/MotionDatabase';
 import VideoLesson from '@/model/VideoLesson';
 import workflowManager, { TrackingWorkflowStage, TrackingWorkflowStep } from '@/services/WorkflowManager';
+import FeedbackUploadScreen from '@/components/screens/FeedbackUploadScreen.vue';
+import optionsManager from '@/services/OptionsManager';
 
 export default defineComponent({
   name: 'WorkflowMenu',
@@ -134,6 +138,7 @@ export default defineComponent({
   ],
   components: {
     VideoLessonPlayer,
+    FeedbackUploadScreen,
   },
   computed: {
     stages() { return ((this as any).workflow?.stages ?? []) as TrackingWorkflowStage[]; },
@@ -159,12 +164,24 @@ export default defineComponent({
       }
       return null;
     },
+    uploadFilename(): string {
+      const uploadId = this.currentStep?.upload?.identifier ?? 'NoIdentifier';
+      const participantId = optionsManager.participantId.value ?? 'Anonomous';
+      const workflowId = this.workflow?.id ?? 'NullWorkflow';
+
+      return `${workflowId}-${participantId}-${uploadId}`;
+    },
   },
   setup(props, ctx) {
     const currentStep = ref(null as null | TrackingWorkflowStep);
     const instructionsActive = ref(false);
     const lessonActive = ref(false);
     const uploadActive = ref(false);
+
+    watch(workflowManager.activeFlow, () => {
+      currentStep.value = null;
+    });
+
     return {
       currentStep,
       instructionsActive,

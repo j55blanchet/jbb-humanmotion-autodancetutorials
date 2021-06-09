@@ -128,7 +128,7 @@ export default defineComponent({
       if (!vidPlayer) return;
 
       clearTimeout(playTimeoutId);
-      playTimeoutId = setTimeout(() => {
+      playTimeoutId = window.setTimeout(() => {
         if (emitResume ?? false) {
           emit('pause-end');
         }

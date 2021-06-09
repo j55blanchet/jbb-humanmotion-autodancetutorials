@@ -56,7 +56,7 @@ export default defineComponent({
 
     let timerId = -1;
     onMounted(() => {
-      timerId = setInterval(() => {
+      timerId = window.setInterval(() => {
         isActivelyTracking.value = mpIsTracking();
       }, 500);
     });
@@ -100,7 +100,7 @@ export default defineComponent({
         videoE.onloadedmetadata = null;
       };
 
-      this.trackingIntervalId = setInterval(() => {
+      this.trackingIntervalId = window.setInterval(() => {
 
         if (this.hasStartedTracking) {
           clearInterval(this.trackingIntervalId);
