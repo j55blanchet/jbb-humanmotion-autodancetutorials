@@ -1,11 +1,14 @@
 <template>
   <div class="activity-video-player">
 
-    <div class="is-overlay" v-show="activity && activity.userVisual !== 'none'">
-      <WebcamBox :maxHeight="maxHeight"/>
+    <div v-show="showingWebcam">
+      <WebcamBox ref="webcamBox" :maxHeight="maxHeight" :showStartWebcamButton="false"/>
     </div>
 
-    <PausingVideoPlayer
+    <div :class="{
+          'is-overlay': showingWebcam
+        }">
+      <PausingVideoPlayer
         :videoSrc="motion?.videoSrc"
         ref="videoPlayer"
         :maxHeight="maxHeight"
@@ -17,6 +20,7 @@
         @pause-hit="onPauseHit"
         @pause-end="onPauseEnded"
       />
+    </div>
 
     <div class="is-overlay instructions-overlay mb-4">
       <InstructionCarousel v-show="!activityFinished && timedInstructions.length > 0" :sizeClass="'is-large'" :instructions="timedInstructions" class="m-2"/>
@@ -65,6 +69,7 @@ export default defineComponent({
     const activityFinished = computed(() => state.value === ActivityPlayState.ActivityEnded);
     const awaitingStart = computed(() => state.value === ActivityPlayState.AwaitingStart);
     const videoPlayer = ref(null as null | typeof PausingVideoPlayer);
+    const webcamBox = ref(null as null | typeof WebcamBox);
     const videoTime = ref(0);
 
     const pauseInstructs = ref([] as Instruction[]);
@@ -88,18 +93,9 @@ export default defineComponent({
     }
 
     watchEffect(() => reset(startTime.value));
-    // watch(
-    //   () => startTime,
-    //   (newStartTime: any) => {
-    //     reset(newStartTime);
-    //     console.log('Watch triggered');
-    //   },
-    // );
-    // watchEffect(() => {
-    //   console.log(`New startTime: ${startTime.value}`);
-    // });
 
     return {
+      webcamBox,
       videoPlayer,
       videoTime,
       state,
@@ -117,6 +113,9 @@ export default defineComponent({
     };
   },
   computed: {
+    showingWebcam() {
+      return (this as any)?.activity?.userVisual !== 'none';
+    },
     emphasizedJoints(): number[] { return this.activity?.emphasizedJoints ?? []; },
     instructions(): Instruction[] {
       const mActivity = this.activity;
@@ -168,6 +167,9 @@ export default defineComponent({
     },
   },
   methods: {
+    async startWebcam() {
+      return this.webcamBox?.startWebcam() ?? new Error('WebcamBox is null');
+    },
     play(delay?: number | undefined) {
       this.reset();
       const vidPlayer = this.videoPlayer;

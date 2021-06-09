@@ -1,5 +1,5 @@
 <template>
-  <transition-group name="slide-fade" tag="div" class="instructionCarousel">
+  <transition-group name="slide-fade" mode="out-in" tag="div" class="instructionCarousel">
     <p
       class="tag"
       :class="[sizeClass, tagClass]"

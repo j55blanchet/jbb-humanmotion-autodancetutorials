@@ -25,6 +25,7 @@
         &lt;
       </button>
       <button
+        v-show="!needsStartWebcam"
         class="button"
         :class="{
           'is-primary': ($refs.activityVideoPlayer?.awaitingStart ?? false)
@@ -33,6 +34,13 @@
         @click="$refs.activityVideoPlayer.play()"
       >
         Play
+      </button>
+      <button
+        class="button is-primary"
+        v-show="needsStartWebcam"
+        :class="{'is-loading': webcamStatus==='loading'}"
+        @click="startWebcam">
+        Start Webcam
       </button>
       <button
         class="button"
@@ -45,7 +53,7 @@
         class="button"
         :disabled="!hasNextActivity && !enableCompleteLesson"
         :class="{
-          'is-success': (!hasNextActivity && enableCompleteLesson) || ($refs.activityVideoPlayer?.activityFinished ?? false)
+          'is-primary': (!hasNextActivity && enableCompleteLesson) || ($refs.activityVideoPlayer?.activityFinished ?? false)
         }"
         @click="nextActivity"
       >
@@ -61,6 +69,7 @@ import VideoLesson, { Activity } from '@/model/VideoLesson';
 import { defineComponent } from 'vue';
 import ActivityVideoPlayer from '@/components/elements/ActivityVideoPlayer.vue';
 import SegmentedProgressBar, { calculateProgressSegments, ProgressSegmentData } from '@/components/elements/SegmentedProgressBar.vue';
+import webcamProvider from '@/services/WebcamProvider';
 
 export default defineComponent({
   name: 'VideoLessonPlayer',
@@ -96,11 +105,15 @@ export default defineComponent({
     hasPreviousActivity(): boolean {
       return this.activeActivityIndex > 0;
     },
+    needsStartWebcam(): boolean {
+      return this.activeActivity !== null && this.activeActivity?.userVisual !== 'none' && webcamProvider.webcamStatus.value !== 'running';
+    },
   },
   data() {
     return {
       activeActivityIndex: 0,
       activityProgress: 0,
+      webcamStatus: webcamProvider.webcamStatus,
     };
   },
   methods: {
@@ -109,6 +122,9 @@ export default defineComponent({
     nextActivity() {
       if (this.hasNextActivity) this.activeActivityIndex += 1;
       else this.$emit('lesson-completed');
+    },
+    async startWebcam() {
+      return (this.$refs.activityVideoPlayer as any)?.startWebcam();
     },
   },
 });

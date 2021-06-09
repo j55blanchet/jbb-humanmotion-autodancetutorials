@@ -13,6 +13,7 @@
           {{this.webcamStartError}}
         </div>
         <button
+          v-if="showStartWebcamButton"
           @click="startWebcam"
           class="button is-primary"
           v-show="webcamStatus !== 'running'"
@@ -35,6 +36,10 @@ import webcamProvider from '@/services/WebcamProvider';
 export default defineComponent({
   name: 'WebcamBox',
   props: {
+    showStartWebcamButton: {
+      type: Boolean,
+      default: true,
+    },
     enableRecordButton: {
       type: Boolean,
       default: false,
@@ -73,6 +78,11 @@ export default defineComponent({
       isRecording: webcamProvider.isRecording,
     };
   },
+  computed: {
+    webcamStarted() {
+      return (this as any).webcamStatus === 'stopped';
+    },
+  },
   methods: {
     async startWebcam() {
       this.webcamStartError = null;
@@ -81,10 +91,13 @@ export default defineComponent({
         await webcamProvider.startWebcam();
       } catch (e) {
         this.webcamStartError = e;
+        return e;
       }
 
       if (!this.videoE) throw new Error('videoE is null');
       await webcamProvider.connectVideoElement(this.videoE);
+
+      return false;
     },
     playVideo() {
       if (!this.videoE) throw new Error('videoE is null');
