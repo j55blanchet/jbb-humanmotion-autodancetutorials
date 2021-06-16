@@ -79,6 +79,9 @@
       <div class="box hover-expand is-clickable m-4" @click="$emit('pose-drawer-selected')">
         Pose Drawer Test
       </div>
+      <div class="box hover-expand is-clickable m-4" @click="$emit('create-workflow-selected')">
+        Workflow Editor
+      </div>
     </div>
 
     <div v-bind:class="{ 'is-active': selectedDance }" class="modal">
@@ -132,6 +135,7 @@ export default defineComponent({
     'pose-drawer-selected',
     'create-lesson-selected',
     'workflow-selected',
+    'create-workflow-selected',
   ],
   components: {
     LessonCard,

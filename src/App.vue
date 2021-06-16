@@ -7,6 +7,7 @@
         @video-selected="videoEntrySelected"
         @create-lesson-selected="createLessonSelected"
         @workflow-selected="startWorkflow"
+        @create-workflow-selected="state = State.CreateWorkflow"
       />
 
   <CreateLessonScreen
@@ -14,6 +15,12 @@
           :motion="currentVideo"
           @back-selected="goHome"
           @lesson-created="goHome" />
+
+  <CreateWorkflowScreen
+    v-if="state === State.CreateWorkflow"
+    @back-selected="goHome"
+    @workflow-created="goHome"
+    />
 
   <WorkflowMenu
         v-if="state === State.WorkflowActive"
@@ -92,6 +99,7 @@ import {
 import webcamProvider from '@/services/WebcamProvider';
 import { DatabaseEntry } from '@/services/MotionDatabase';
 import WorkflowMenu from '@/components/screens/WorkflowMenu.vue';
+import CreateWorkflowScreen from '@/components/screens/CreateWorkflowScreen.vue';
 import CameraSurface from './components/CameraSurface.vue';
 import OnboardingUI from './components/OnboardingUI.vue';
 import MainMenu from './components/screens/MainMenu.vue';
@@ -114,6 +122,7 @@ const State = {
   WorkflowActive: 'WorkflowActive',
   PoseDrawingTester: 'PoseDrawingTester',
   CreateLesson: 'CreateLesson',
+  CreateWorkflow: 'CreateWorkflow',
 };
 
 export default defineComponent({
@@ -127,6 +136,7 @@ export default defineComponent({
     WebcamPromptCard,
     PoseDrawerTest,
     CreateLessonScreen,
+    CreateWorkflowScreen,
   },
   setup() {
     const state = ref(State.MainMenu);

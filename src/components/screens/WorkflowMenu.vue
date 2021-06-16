@@ -1,7 +1,7 @@
 <template>
   <section class="section workflow-menu">
 
-    <div class="hero is-primary block">
+    <div class="hero is-primary block" v-if="showHeader">
       <div class="hero-body">
         <div class="container">
           <p class="title">
@@ -16,7 +16,13 @@
     </div>
 
     <div class="block" v-for="(stage, i) in workflow?.stages ?? []" :key="i">
-      <p class="subtitle has-text-centered">{{stage.title}}</p>
+
+      <p class="subtitle has-text-centered">
+        <span class="icon-text">
+          <span v-text="stage.title"></span>
+          <span class="icon" v-if="isStageCompleted(stage)"><i class="fa fa-check"></i></span>
+        </span>
+      </p>
 
       <div class="grid-menu container block">
         <div class="box m-4"
@@ -66,7 +72,7 @@
         <div class="modal-content">
           <div class="box content">
             <h3>{{currentStep?.instructions?.heading}}</h3>
-            <p v-for="(text,i) in currentStep?.instructions?.paragraphs ?? []" :key="i">{{text}}</p>
+            <p style="white-space: pre-wrap;">{{currentStep?.instructions?.text}}</p>
             <div class="buttons is-right">
               <button class="button is-outlined is-danger" @click="instructionsActive = false">Close</button>
               <button class="button is-primary" @click="instructionsFinished">Continue</button>
@@ -128,6 +134,10 @@ import optionsManager from '@/services/OptionsManager';
 export default defineComponent({
   name: 'WorkflowMenu',
   props: {
+    showHeader: {
+      type: Boolean,
+      default: true,
+    },
     showBackButton: {
       type: Boolean,
       default: true,
@@ -237,6 +247,9 @@ export default defineComponent({
     uploadComplete() {
       this.uploadActive = false;
       if (this.currentStep) this.currentStep.status = 'completed';
+    },
+    isStageCompleted(stage: TrackingWorkflowStage) {
+      return stage.steps.reduce((wasTrue: boolean, thisStep: TrackingWorkflowStep) => wasTrue && thisStep.status === 'completed', true);
     },
   },
 });

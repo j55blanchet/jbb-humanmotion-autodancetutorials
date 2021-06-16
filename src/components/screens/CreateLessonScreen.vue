@@ -134,6 +134,7 @@
                   </div>
                 </div>
               </div>
+
               <div class="field is-grouped is-grouped-right">
                 <div class="control" v-if="canDeleteLesson">
                   <button class="button is-danger is-outlined" @click="deleteLesson">

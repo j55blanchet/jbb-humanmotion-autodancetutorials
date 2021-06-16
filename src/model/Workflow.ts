@@ -1,3 +1,6 @@
+import Utils from '@/services/Utils';
+import VideoLesson from './VideoLesson';
+
 /**
  * Userflow.ts
  *
@@ -5,7 +8,7 @@
  */
 export interface Instructions {
   heading: string;
-  paragraphs: string[];
+  text: string;
 }
 
 export interface WorkflowStep {
@@ -16,6 +19,7 @@ export interface WorkflowStep {
     clipName: string;
     lessonId: string;
   };
+  embeddedLesson?: VideoLesson;
   upload?: {
     identifier: string;
     prompt: string;
@@ -33,7 +37,15 @@ export interface WorkflowStage {
 
 export interface Workflow {
   title: string;
-  instructions?: Instructions;
+  // instructions?: Instructions;
   id: string;
   stages: WorkflowStage[];
+}
+
+export function CreateBlankWorkflow() {
+  return {
+    title: 'New Workflow',
+    id: Utils.uuidv4(),
+    stages: [],
+  } as Workflow;
 }
