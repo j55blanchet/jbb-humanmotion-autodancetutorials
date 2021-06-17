@@ -43,31 +43,31 @@ const TestWorkflow = Object.freeze(
       title: 'Learning Phase',
       steps: [{
         title: 'Savage Love',
-        type: 'VideoLesson',
+        type: 'VideoLessonReference',
         // instructions: {},
-        activity: {
+        videoLessonReference: {
           clipName: 'derulo',
           lessonId: 'cde1c09d-299a-4aed-8ad2-efa6c9d1b276',
         },
       }, {
         title: "It's a Fit",
-        type: 'VideoLesson',
+        type: 'VideoLessonReference',
         // instructions: {},
-        activity: {
+        videoLessonReference: {
           clipName: 'itsafit',
           lessonId: '14cac0d6-ec00-41ae-ac80-e738d5cc09a1',
         },
       }, {
         title: 'Renegade',
-        type: 'VideoLesson',
-        activity: {
+        type: 'VideoLessonReference',
+        videoLessonReference: {
           clipName: 'renegade',
           lessonId: '4ecac1f9-b32c-42de-b290-d97c883437e5',
         },
       }, {
         title: 'Unh-hunh',
-        type: 'VideoLesson',
-        activity: {
+        type: 'VideoLessonReference',
+        videoLessonReference: {
           clipName: 'unhhunh',
           lessonId: '580baf76-412f-41c3-9f50-54ebf01ace46',
         },

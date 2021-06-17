@@ -1,5 +1,9 @@
 <template>
-  <section class="section create-workflow-screen">
+  <section class="section create-workflow-screen" :class="{
+      'is-clipped': editLessonActive,
+    }" :style="{
+      'max-height:100vh': editLessonActive,
+    }">
     <div class="hero is-primary block">
       <div class="hero-body">
         <div class="container">
@@ -100,7 +104,7 @@
               </div>
             </div>
           </div>
-
+          <hr>
           <div class="field is-grouped is-grouped-right">
             <div class="control" v-if="workflowInDatabase">
               <button class="button is-danger is-outlined" @click="deleteWorkflow">
@@ -125,7 +129,7 @@
 
       <div class="column" v-if="activeStage">
         <div class="box">
-          <div class="title is-5">Stage #{{selectedStageIndex + 1}}: &quot;{{activeStage.title}}&quot;</div>
+          <div class="title is-5">Stage #{{selectedStageIndex + 1}}: <code>{{activeStage.title}}</code></div>
 
           <div class="field is-horizontal">
             <div class="field-label is-normal">
@@ -158,12 +162,16 @@
               </div>
             </div>
           </div>
+          <hr>
+          <div class="buttons is-right">
+            <button class="button is-danger is-outlined" @click="deleteStage">Delete</button>
+          </div>
         </div>
       </div>
 
       <div class="column" v-if="activeStep">
         <div class="box">
-          <div class="title is-5">Step #{{selectedStepIndex + 1}}: &quot;{{activeStep.title}}&quot;</div>
+          <div class="title is-5">Step #{{selectedStepIndex + 1}}: <code>{{activeStep.title}}</code></div>
 
         <div class="field is-horizontal">
           <div class="field-label is-normal">
@@ -188,7 +196,8 @@
                 <div class="select">
                   <select v-model="activeStep.type">
                     <option :value="'InstructionOnly'">Instruction</option>
-                    <option :value="'VideoLesson'">Mini Lesson</option>
+                    <option :value="'VideoLessonReference'">Mini Lesson (Reference)</option>
+                    <option :value="'VideoLessonEmbedded'">Mini Lesson (Embedded)</option>
                     <option :value="'UploadTask'">Video Upload</option>
                   </select>
                 </div>
@@ -198,7 +207,8 @@
         </div>
 
         <hr>
-        <div v-if="isInstructionStep">
+
+        <div v-if="isInstructionStep" class="block">
             <div class="field is-horizontal">
             <div class="field-label is-normal">
               <label class="label">Heading</label>
@@ -224,8 +234,90 @@
             </div>
           </div>
         </div>
-        <div v-if="isLessonStep"></div>
-        <div v-if="isVideoUploadStep"></div>
+
+        <div v-if="isLessonEmbeddedStep" class="block">
+          <div v-if="activeStep.videoLessonEmbedded" class="card">
+            <header class="card-header">
+              <p class="card-header-title">{{activeStep.videoLessonEmbedded.header.lessonTitle}}</p>
+            </header>
+            <div class="card-content">
+              <div class="content">
+                <ol>
+                  <li v-for="(activity, i) in activeStep.videoLessonEmbedded.activities" :key="i">
+                    {{activity.title}}
+                  </li>
+                </ol>
+              </div>
+            </div>
+            <div class="card-footer">
+              <a class="card-footer-item is-danger" @click="removeEmbeddedLesson">Remove</a>
+              <a class="card-footer-item" @click="editEmbeddedLesson">Edit</a>
+            </div>
+          </div>
+          <div v-else class="has-text-centered">
+            <p>No Embedded Lesson</p>
+
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                <div class="select is-fullwidth">
+                  <select class="select" v-model="newEmbeddedLessonClipName">
+                    <option disabled value="">Select a clip</option>
+                    <option v-for="clipName in availableClips" :key="clipName">{{clipName}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="control">
+                <button class="button is-primary" :disabled="!canCreateEmbeddedLesson" @click="startCreateEmbeddedLesson">Create</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="isLessonReferenceStep" class="block">
+          <div class="field is-horizontal">
+            <div class="field-label">
+              <label class="label">Clip</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <div class="select" v-if="activeStep.videoLessonReference">
+                    <select v-model="activeStep.videoLessonReference.clipName">
+                      <option disabled value="">Select a clip</option>
+                      <option v-for="clipName in availableClips" :key="clipName">{{clipName}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label">
+              <label class="label">Lesson</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <div class="select">
+                    <select v-model="activeStep.videoLessonReference.lessonId">
+                      <option disabled value="">Select a lesson</option>
+                      <option v-for="lesson in availableReferenceLessons" :key="lesson._id" :value="lesson._id">{{lesson.header.lessonTitle}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="isVideoUploadStep" class="block"></div>
+
+        <hr>
+
+        <div class="buttons is-right">
+          <button class="button is-danger is-outlined" @click="deleteStep">Delete</button>
+        </div>
         </div>
       </div>
 
@@ -236,13 +328,39 @@
         <WorkflowMenu :showHeader="true" :showBackButton="false"/>
       </div>
     </div>
+
+    <div v-bind:class="{ 'is-active': editLessonActive }" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-content" style="width: 96%; height: 100vh;">
+        <div class="box">
+          <CreateLessonScreen v-if="editLessonActive"
+            :motion="embeddedLessonMotion"
+            :lessonToEdit="activeStep.videoLessonEmbedded"
+            @back-selected="editLessonActive = false"
+            @lesson-saved="updateEmbeddedLesson"
+            :saveToDatabase="false"
+            :showBackButton="false"
+            :showCloseButton="true"
+            :showExportButton="false"
+          />
+        </div>
+        <!-- <UploadCard
+          v-if="uploadUIActive"
+          @cancelled="uploadUIActive = false"
+          :uploadAccept="'*.json'"
+          :onFilesSelected="uploadFiles"
+          :savingText="'Loading lessons...'"
+          :successText="'Lessons loaded successfully'"
+        /> -->
+      </div>
+    </div>
   </section>
 </template>
 
 <script lang="ts">
 
 import {
-  CreateBlankWorkflow, Instructions, Workflow, WorkflowStage, WorkflowStep,
+  CreateBlankWorkflow, GetVideoEntryForWorkflowStep, Instructions, Workflow, WorkflowStage, WorkflowStep,
 } from '@/model/Workflow';
 import Utils from '@/services/Utils';
 import workflowManager, { WorkflowManager } from '@/services/WorkflowManager';
@@ -250,14 +368,20 @@ import WorkflowMenu from '@/components/screens/WorkflowMenu.vue';
 import {
   computed, defineComponent, nextTick, ref, watch, watchEffect,
 } from 'vue';
+import motionDb, { createBlankLesson } from '@/services/MotionDatabase';
+import VideoLesson from '@/model/VideoLesson';
+import CreateLessonScreen from '@/components/screens/CreateLessonScreen.vue';
 
 export default defineComponent({
   name: 'CreateWorkflowScreen',
   emits: ['back-selected', 'workflow-created'],
   components: {
     WorkflowMenu,
+    CreateLessonScreen,
   },
   setup() {
+
+    const isDirty = ref(false);
 
     const activeWorkflow = ref(null as null | Workflow);
     const selectingWorkflowIndex = ref(-1);
@@ -271,9 +395,19 @@ export default defineComponent({
     const selectedStepIndex = ref(-1);
     const activeStep = computed(() => activeStage.value?.steps[selectedStepIndex.value] ?? null);
     const isVideoUploadStep = computed(() => activeStep.value?.type === 'UploadTask');
-    const isLessonStep = computed(() => activeStep.value?.type === 'VideoLesson');
+    const isLessonReferenceStep = computed(() => activeStep.value?.type === 'VideoLessonReference');
+    const isLessonEmbeddedStep = computed(() => activeStep.value?.type === 'VideoLessonEmbedded');
     const isInstructionStep = computed(() => activeStep.value?.type === 'InstructionOnly');
-    const isDirty = ref(false);
+    const availableReferenceLessons = computed(() => {
+      if (!activeStep.value) return [] as VideoLesson[];
+      if (!activeStep.value.videoLessonReference?.clipName) return [] as VideoLesson[];
+      return motionDb.lessonsByVideo.get(activeStep.value.videoLessonReference.clipName) ?? [];
+    });
+    const embeddedLessonMotion = computed(() => (activeStep.value ? GetVideoEntryForWorkflowStep(motionDb, activeStep.value) : null));
+    const newEmbeddedLessonClipName = ref('');
+    const newEmbeddedLessonMotion = computed(() => motionDb.motionsMap.get(newEmbeddedLessonClipName.value) ?? null);
+    const canCreateEmbeddedLesson = computed(() => newEmbeddedLessonMotion.value !== null);
+    const editLessonActive = ref(false);
 
     watchEffect(() => {
       if (activeWorkflow.value) {
@@ -290,13 +424,21 @@ export default defineComponent({
           heading: 'Instructions Heading',
           text: '',
         } as Instructions;
-        activeStep.value.activity = undefined;
-        activeStep.value.upload = undefined;
-        activeStep.value.embeddedLesson = undefined;
-      } else if (isLessonStep.value) {
+      } else if (isLessonReferenceStep.value) {
+        activeStep.value.videoLessonReference = activeStep.value.videoLessonReference ?? {} as any;
+        //  ?? {
 
-      } else if (isInstructionStep.value) {
+        // };
+      } else if (isLessonEmbeddedStep.value) {
+        // activeStep.value.videoLessonEmbedded = activeStep.value.videoLessonEmbedded;
+        //  ?? {
 
+        // };
+      } else if (isVideoUploadStep.value) {
+        activeStep.value.upload = activeStep.value.upload ?? {
+          identifier: activeStep.value.title,
+          prompt: 'Upload your video here',
+        };
       }
     });
 
@@ -312,8 +454,16 @@ export default defineComponent({
       selectedStepIndex,
       activeStep,
       isVideoUploadStep,
-      isLessonStep,
+      isLessonReferenceStep,
+      isLessonEmbeddedStep,
       isInstructionStep,
+      availableClips: motionDb.motionNames,
+      availableReferenceLessons,
+      newEmbeddedLessonClipName,
+      newEmbeddedLessonMotion,
+      embeddedLessonMotion,
+      canCreateEmbeddedLesson,
+      editLessonActive,
 
       isDirty,
     };
@@ -403,6 +553,17 @@ export default defineComponent({
       } as WorkflowStage);
       this.selectStage(workflow.stages.length - 1);
     },
+    deleteStage() {
+      const workflow = this.activeWorkflow;
+      if (!workflow) return;
+      // eslint-disable-next-line no-alert
+      if (!window.confirm(`Are you sure you want to delete Stage #${this.selectedStageIndex + 1}?`)) return;
+
+      const { stages } = workflow;
+      stages.splice(this.selectedStageIndex, 1);
+      workflow.stages = stages;
+      this.selectedStageIndex = Math.min(this.selectedStageIndex, stages.length - 1);
+    },
     selectStep(stepIndex: number) {
       this.selectedStepIndex = stepIndex;
       workflowManager.completeActivitesPriorToStageAndStep(this.selectedStageIndex, this.selectedStepIndex);
@@ -415,6 +576,41 @@ export default defineComponent({
         title: `New-Step-${stage.steps.length + 1}`,
         type: 'InstructionOnly',
       } as WorkflowStep);
+      this.selectStep(stage.steps.length - 1);
+    },
+    deleteStep() {
+      const stage = this.activeStage;
+      if (!stage) return;
+      // eslint-disable-next-line no-alert
+      if (!window.confirm(`Are you sure you want to delete Step #${this.selectedStepIndex + 1}?`)) return;
+
+      const { steps } = stage;
+      steps.splice(this.selectedStepIndex, 1);
+      stage.steps = steps;
+      this.selectedStepIndex = Math.min(this.selectedStepIndex, steps.length - 1);
+    },
+    updateEmbeddedLesson(lesson: VideoLesson) {
+      if (!this.activeStep) return;
+      this.activeStep.videoLessonEmbedded = lesson;
+      console.log('Updated embedded lesson', lesson);
+    },
+    startCreateEmbeddedLesson() {
+      if (!this.activeStep) return;
+      if (!this.newEmbeddedLessonMotion) return;
+      this.activeStep.videoLessonEmbedded = createBlankLesson(this.newEmbeddedLessonMotion);
+      this.activeStep.videoLessonEmbedded.header.lessonTitle = this.activeStep.title;
+      this.editLessonActive = true;
+    },
+    editEmbeddedLesson() {
+      if (!this.activeStep || !this.activeStep.videoLessonEmbedded) return;
+      this.editLessonActive = true;
+    },
+    removeEmbeddedLesson() {
+      if (!this.activeStep?.videoLessonEmbedded) return;
+      // eslint-disable-next-line no-alert
+      if (window.confirm(`Are you sure you want to delete the embedded lesson ${this.activeStep.videoLessonEmbedded.header.lessonTitle}?`)) {
+        this.activeStep.videoLessonEmbedded = undefined;
+      }
     },
   },
 });

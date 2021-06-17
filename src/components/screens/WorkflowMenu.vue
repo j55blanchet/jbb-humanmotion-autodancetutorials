@@ -46,7 +46,7 @@
                 </p>
                 <p class="icon is-large" v-else>
                   <i class="fas fa-2x fa-align-center" v-if="stepInfo.step.type === 'InstructionOnly'"></i>
-                  <i class="fas fa-2x photo-video" v-if="stepInfo.step.type === 'VideoLesson'"></i>
+                  <i class="fas fa-2x fa-images" v-if="stepInfo.step.type === 'VideoLessonEmbedded' || stepInfo.step.type === 'VideoLessonReference'"></i>
                   <i class="fas fa-2x fa-camera" v-if="stepInfo.step.type === 'UploadTask'"></i>
                 </p>
               </div>
@@ -84,8 +84,8 @@
 
       <div v-bind:class="{ 'is-active': lessonActive }" class="modal">
         <div class="modal-background"></div>
-        <div class="container">
-          <div class="box" style="max-width: 100%; max-height: 100%;">
+        <div class="container" style="max-width: 100%; max-height: 100%;">
+          <div class="box" >
             <VideoLessonPlayer
               v-show="lessonActive"
               :videoEntry="currentVideoEntry"
@@ -130,6 +130,7 @@ import VideoLesson from '@/model/VideoLesson';
 import workflowManager, { TrackingWorkflowStage, TrackingWorkflowStep } from '@/services/WorkflowManager';
 import FeedbackUploadScreen from '@/components/screens/FeedbackUploadScreen.vue';
 import optionsManager from '@/services/OptionsManager';
+import { GetVideoEntryForWorkflowStep, IsVideoLessonStep } from '@/model/Workflow';
 
 export default defineComponent({
   name: 'WorkflowMenu',
@@ -163,14 +164,20 @@ export default defineComponent({
       return null;
     },
     currentVideoEntry(): DatabaseEntry | null {
-      if (this.currentStep?.activity) {
-        return db.motionsMap.get(this.currentStep.activity.clipName) ?? null;
+      if (this.currentStep?.videoLessonReference) {
+        return db.motionsMap.get(this.currentStep.videoLessonReference.clipName) ?? null;
+      }
+      if (this.currentStep?.videoLessonEmbedded?.header.clipName) {
+        return db.motionsMap.get(this.currentStep.videoLessonEmbedded.header.clipName) ?? null;
       }
       return null;
     },
     currentLesson(): VideoLesson | null {
-      if (this.currentStep?.activity) {
-        return db.lessonsById.get(this.currentStep.activity.lessonId) ?? null;
+      if (this.currentStep?.type === 'VideoLessonReference' && this.currentStep?.videoLessonReference) {
+        return db.lessonsById.get(this.currentStep.videoLessonReference.lessonId) ?? null;
+      }
+      if (this.currentStep?.type === 'VideoLessonEmbedded' && this.currentStep?.videoLessonEmbedded) {
+        return this.currentStep.videoLessonEmbedded;
       }
       return null;
     },
@@ -205,7 +212,7 @@ export default defineComponent({
 
       return stage.steps.map((step) => ({
         step,
-        dbEntry: db.motionsMap.get(step.activity?.clipName ?? '') ?? null,
+        dbEntry: GetVideoEntryForWorkflowStep(db, step),
       }));
     },
     instructionsFinished() {
@@ -222,7 +229,7 @@ export default defineComponent({
     startWorkflowStep(item: TrackingWorkflowStep) {
       if (!this.isClickable(item)) return;
       this.currentStep = item;
-      if ((item.status === 'notstarted' && item.instructions) || (item.type === 'InstructionOnly')) {
+      if (item.type === 'InstructionOnly') {
         this.instructionsActive = true;
         return;
       }
@@ -232,7 +239,7 @@ export default defineComponent({
       if (item.type === 'InstructionOnly') {
         // Instructions only - there's nothing else to do. Move to next activity!
         item.status = 'completed';
-      } else if (item.type === 'VideoLesson') {
+      } else if (item.type === 'VideoLessonReference' || item.type === 'VideoLessonEmbedded') {
         this.lessonActive = true;
       } else if (item.type === 'UploadTask') {
         this.uploadActive = true;

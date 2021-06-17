@@ -18,7 +18,20 @@
         </div>
       </div>
 
-      <div class="container block"><button class="button" @click="$emit('back-selected')">&lt; Back</button></div>
+      <div class="container block">
+        <div class="buttons is-centered has-addons">
+          <button v-if="showBackButton" class="button" :class="{'is-danger': isDirty, 'is-outlined': isDirty, 'is-primary': !isDirty}" @click="goBack">&lt; Back</button>
+          <button v-if="showCloseButton" class="button" :class="{'is-danger': isDirty, 'is-outlined': isDirty, 'is-primary': !isDirty}" @click="goBack"><i class="fa fa-close"></i> Close</button>
+          <button v-if="state === LessonCreationState.ModifyLesson && canDeleteLesson" class="button is-danger is-outlined" @click="deleteLesson">
+            Delete
+          </button>
+          <button v-if="state === LessonCreationState.ModifyLesson && showExportButton" class="button" @click="exportLesson">Export</button>
+          <button v-if="state === LessonCreationState.ModifyLesson" class="button" :class="{'is-primary': isDirty}" :disabled="!isDirty" @click="saveLesson">
+            <span v-if="lessonInDatabase">Update</span>
+            <span v-else>Save</span>
+          </button>
+        </div>
+      </div>
 
       <div v-if="state === LessonCreationState.SelectOpenLesson" class="container has-text-centered">
         <div class="card block center-block has-text-left">
@@ -132,23 +145,6 @@
                       </ul>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              <div class="field is-grouped is-grouped-right">
-                <div class="control" v-if="canDeleteLesson">
-                  <button class="button is-danger is-outlined" @click="deleteLesson">
-                    Delete
-                  </button>
-                </div>
-                <div class="control">
-                  <button class="button" @click="exportLesson">Export</button>
-                </div>
-                <div class="control">
-                  <button class="button is-primary" @click="saveLesson">
-                    <span v-if="lessonInDatabase">Update</span>
-                    <span v-else>Save</span>
-                  </button>
                 </div>
               </div>
             </div>
@@ -465,15 +461,13 @@
 
 import {
   computed,
-  defineComponent, ref, toRefs, watchEffect,
+  defineComponent, nextTick, ref, toRefs, watchEffect,
 } from 'vue';
 
 import Constants from '@/services/Constants';
 import ActivityVideoPlayer from '@/components/elements/ActivityVideoPlayer.vue';
-import PausingVideoPlayer from '@/components/elements/PausingVideoPlayer.vue';
-import VideoPlayer from '@/components/elements/VideoPlayer.vue';
 import db, { createBlankActivity, createBlankLesson, DatabaseEntry } from '@/services/MotionDatabase';
-import DanceLesson, { Activity, PauseInfo, TimedInstruction } from '@/model/VideoLesson';
+import VideoLesson, { Activity, PauseInfo, TimedInstruction } from '@/model/VideoLesson';
 import Utils from '@/services/Utils';
 import SegmentedProgressBar, { ProgressSegmentData, calculateProgressSegments } from '@/components/elements/SegmentedProgressBar.vue';
 
@@ -491,8 +485,37 @@ export default defineComponent({
     // ActivityVideoPlayer,
     // VideoPlayer,
   },
-  props: ['motion'],
-  emits: ['back-selected', 'lesson-created'],
+  props: {
+    motion: {
+      type: Object,
+      required: true,
+    },
+    saveReference: {
+      type: Boolean,
+      default: true,
+    },
+    showBackButton: {
+      type: Boolean,
+      default: true,
+    },
+    showCloseButton: {
+      type: Boolean,
+      default: false,
+    },
+    showExportButton: {
+      type: Boolean,
+      default: true,
+    },
+    lessonToEdit: {
+      type: Object,
+      default: null,
+    },
+    saveToDatabase: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  emits: ['back-selected', 'lesson-saved'],
   data() {
     return {
       newPauseTime: 0,
@@ -504,7 +527,7 @@ export default defineComponent({
     };
   },
   computed: {
-    activeLessonSelection(): DanceLesson | null {
+    activeLessonSelection(): VideoLesson | null {
       return this.lessons[this.activeLessonSelectionIndex] ?? null;
     },
     lessonInDatabase(): boolean {
@@ -542,20 +565,25 @@ export default defineComponent({
       return this.activeActivityIndex > 0;
     },
     canEditActiveLesson() {
-      const acLes = this.activeLessonSelection as DanceLesson;
+      const acLes = this.activeLessonSelection as VideoLesson;
       return acLes?.source === 'custom';
     },
   },
   mounted() {
-    if (this.lessons.length === 0) {
+    const passedInLesson = this.$props.lessonToEdit as VideoLesson | null;
+    if (passedInLesson) {
+      this.startCreation(false, Utils.deepCopy(passedInLesson));
+      nextTick(() => { this.isDirty = false; });
+    } else if (this.lessons.length === 0) {
       this.startCreation(true);
     }
   },
   setup(props) {
     const { motion } = toRefs(props);
+    const isDirty = ref(false);
     const typedMotion = computed(() => motion.value as unknown as DatabaseEntry);
     const state = ref(LessonCreationState.SelectOpenLesson);
-    const lessonUnderConstruction = ref(createBlankLesson(motion));
+    const lessonUnderConstruction = ref(createBlankLesson(typedMotion.value));
     const activeActivityIndex = ref(0);
     const activeActivity = computed(() => lessonUnderConstruction.value.activities[activeActivityIndex.value]);
 
@@ -566,6 +594,7 @@ export default defineComponent({
     });
 
     return {
+      isDirty,
       state,
       typedMotion,
       LessonCreationState,
@@ -575,9 +604,23 @@ export default defineComponent({
       Constants,
     };
   },
+  watch: {
+    lessonUnderConstruction: {
+      handler() {
+        this.isDirty = true;
+      },
+      deep: true,
+    },
+  },
   methods: {
-    startCreation(asTemplate: boolean) {
-      const existingLesson = this.activeLessonSelection;
+    goBack() {
+      // eslint-disable-next-line no-alert
+      if (!this.isDirty || window.confirm('Are you sure you want to go back without saving?')) {
+        this.$emit('back-selected');
+      }
+    },
+    startCreation(asTemplate: boolean, sourceLesson?: VideoLesson) {
+      const existingLesson = sourceLesson ?? this.activeLessonSelection;
       if (existingLesson && asTemplate) {
         console.log('Creating new lesson from template');
         this.lessonUnderConstruction = Utils.deepCopy(existingLesson);
@@ -587,7 +630,7 @@ export default defineComponent({
         this.lessonUnderConstruction = existingLesson;
       } else {
         console.log('Creating new lesson from scratch');
-        this.lessonUnderConstruction = createBlankLesson(this.motion);
+        this.lessonUnderConstruction = createBlankLesson(this.typedMotion);
       }
       this.state = LessonCreationState.ModifyLesson;
     },
@@ -692,7 +735,11 @@ export default defineComponent({
       this.activityProgress = progress;
     },
     saveLesson() {
-      db.saveCustomLesson(this.lessonUnderConstruction);
+      if (this.$props.saveToDatabase) {
+        db.saveCustomLesson(this.lessonUnderConstruction);
+      }
+      this.$emit('lesson-saved', this.lessonUnderConstruction);
+      this.isDirty = false;
     },
     deleteLesson() {
       // eslint-disable-next-line no-alert

@@ -145,7 +145,7 @@ export default defineComponent({
     const motionList = db.motions;
     const selectedDance = ref(null as DatabaseEntry | null);
     const uploadUIActive = ref(false);
-    const currentTab = ref(Tabs.Workflows);
+    const currentTab = ref(Tabs.Tools);
 
     function videoLessonSelected(
       videoEntry: DatabaseEntry,

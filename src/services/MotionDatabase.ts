@@ -24,6 +24,8 @@ export class MotionDatabase {
 
   readonly motions = computed(() => Array.from(this.motionsMap.values()));
 
+  readonly motionNames = computed(() => this.motions.value.map((dbEntry) => dbEntry.clipName));
+
   readonly lessonsByVideo = reactive(new Map<string, VideoLesson[]>());
 
   readonly lessonsById = reactive(new Map<string, VideoLesson>());

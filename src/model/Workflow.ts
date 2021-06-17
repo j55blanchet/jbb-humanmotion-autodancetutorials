@@ -1,3 +1,4 @@
+import { DatabaseEntry } from '@/services/MotionDatabase';
 import Utils from '@/services/Utils';
 import VideoLesson from './VideoLesson';
 
@@ -12,14 +13,14 @@ export interface Instructions {
 }
 
 export interface WorkflowStep {
-  type: 'InstructionOnly' | 'VideoLesson' | 'UploadTask';
+  type: 'InstructionOnly' | 'VideoLessonReference' | 'VideoLessonEmbedded' | 'UploadTask';
   title: string;
   instructions?: Instructions;
-  activity?: {
+  videoLessonReference?: {
     clipName: string;
     lessonId: string;
   };
-  embeddedLesson?: VideoLesson;
+  videoLessonEmbedded?: VideoLesson;
   upload?: {
     identifier: string;
     prompt: string;
@@ -48,4 +49,19 @@ export function CreateBlankWorkflow() {
     id: Utils.uuidv4(),
     stages: [],
   } as Workflow;
+}
+
+export function IsVideoLessonStep(step: WorkflowStep) {
+  return step.type === 'VideoLessonReference' || step.type === 'VideoLessonEmbedded';
+}
+export function GetWorkflowStepVideoClipName(step: WorkflowStep) {
+  return IsVideoLessonStep(step)
+    ? (step.type === 'VideoLessonReference'
+      ? step.videoLessonReference?.clipName ?? null
+      : step.videoLessonEmbedded?.header.clipName) ?? null
+    : null;
+}
+export function GetVideoEntryForWorkflowStep(db: any, step: WorkflowStep): DatabaseEntry | null{
+  if (!IsVideoLessonStep(step)) return null;
+  return db.motionsMap.get(GetWorkflowStepVideoClipName(step));
 }
