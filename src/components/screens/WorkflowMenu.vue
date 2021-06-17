@@ -164,10 +164,10 @@ export default defineComponent({
       return null;
     },
     currentVideoEntry(): DatabaseEntry | null {
-      if (this.currentStep?.videoLessonReference) {
+      if (this.currentStep?.type === 'VideoLessonReference' && this.currentStep?.videoLessonReference) {
         return db.motionsMap.get(this.currentStep.videoLessonReference.clipName) ?? null;
       }
-      if (this.currentStep?.videoLessonEmbedded?.header.clipName) {
+      if (this.currentStep?.type === 'VideoLessonEmbedded' && this.currentStep?.videoLessonEmbedded?.header.clipName) {
         return db.motionsMap.get(this.currentStep.videoLessonEmbedded.header.clipName) ?? null;
       }
       return null;

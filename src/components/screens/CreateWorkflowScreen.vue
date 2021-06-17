@@ -19,11 +19,25 @@
     </div>
 
     <div class="container block">
-      <button class="button" :class="{
-        'is-danger': isDirty,
-        'is-inverted': isDirty,
-      }"
-      @click="goBack()">&lt; Back</button>
+      <div class="buttons is-centered">
+        <button class="button" :class="{
+          'is-success': !isDirty && activeWorkflow,
+        }"
+        @click="goBack()">&lt; Back</button>
+        <button v-if="activeWorkflow && workflowInDatabase" class="button is-danger" @click="deleteWorkflow">
+          Delete
+        </button>
+        <button v-if="activeWorkflow" class="button" @click="exportWorkflow">Export</button>
+        <button v-if="activeWorkflow" class="button"
+                :class="{
+                  'is-primary': isDirty
+                }"
+                :disabled="!isDirty"
+                @click="saveWorkflow">
+          <span v-if="workflowInDatabase">Update</span>
+          <span v-else>Save</span>
+        </button>
+      </div>
     </div>
 
     <div class="container block has-text-centered" v-if="!activeWorkflow">
@@ -104,26 +118,6 @@
               </div>
             </div>
           </div>
-          <hr>
-          <div class="field is-grouped is-grouped-right">
-            <div class="control" v-if="workflowInDatabase">
-              <button class="button is-danger is-outlined" @click="deleteWorkflow">
-                Delete
-              </button>
-            </div>
-            <div class="control">
-              <button class="button" @click="exportWorkflow">Export</button>
-            </div>
-            <div class="control">
-              <button class="button is-primary"
-                :disabled="!isDirty"
-                @click="saveWorkflow">
-                <span v-if="workflowInDatabase">Update</span>
-                <span v-else>Save</span>
-              </button>
-            </div>
-          </div>
-
         </div>
       </div>
 
@@ -241,17 +235,22 @@
               <p class="card-header-title">{{activeStep.videoLessonEmbedded.header.lessonTitle}}</p>
             </header>
             <div class="card-content">
-              <div class="content">
-                <ol>
-                  <li v-for="(activity, i) in activeStep.videoLessonEmbedded.activities" :key="i">
+              <div class="content" v-if="activeStepLesson.activities">
+                <ol v-if="activeStepLesson.activities.length <= 6">
+                  <li v-for="(activity, i) in activeStepLesson.activities" :key="i">
                     {{activity.title}}
                   </li>
+                </ol>
+                <ol v-else>
+                    <li v-for="(activity, i) in activeStepLesson.activities.slice(0, 3)" :key="i">{{activity.title}}</li>
+                    <li style="list-style:none;">&hellip;</li>
+                    <li v-for="(activity, i) in activeStepLesson.activities.slice(-3)" :key="i" :value="activeStepLesson.activities.length - 2 + i">{{activity.title}}</li>
                 </ol>
               </div>
             </div>
             <div class="card-footer">
               <a class="card-footer-item is-danger" @click="removeEmbeddedLesson">Remove</a>
-              <a class="card-footer-item" @click="editEmbeddedLesson">Edit</a>
+              <a class="card-footer-item" @click="editWorkflowStepLesson">Edit</a>
             </div>
           </div>
           <div v-else class="has-text-centered">
@@ -301,13 +300,42 @@
                 <div class="control">
                   <div class="select">
                     <select v-model="activeStep.videoLessonReference.lessonId">
-                      <option disabled value="">Select a lesson</option>
+                      <option value="">&plus; Create New</option>
+                      <option disabled>──────────</option>
                       <option v-for="lesson in availableReferenceLessons" :key="lesson._id" :value="lesson._id">{{lesson.header.lessonTitle}}</option>
                     </select>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+
+          <hr>
+          <div v-if="activeStepLesson" class="card">
+            <header class="card-header">
+              <p class="card-header-title">{{activeStepLesson.header.lessonTitle}}</p>
+            </header>
+            <div class="card-content">
+              <div class="content">
+                <ol v-if="activeStepLesson.activities.length <= 6">
+                  <li v-for="(activity, i) in activeStepLesson.activities" :key="i">
+                    {{activity.title}}
+                  </li>
+                </ol>
+                <ol v-else>
+                    <li v-for="(activity, i) in activeStepLesson.activities.slice(0, 3)" :key="i">{{activity.title}}</li>
+                    <li style="list-style:none;">&hellip;</li>
+                    <li v-for="(activity, i) in activeStepLesson.activities.slice(-3)" :key="i" :value="activeStepLesson.activities.length - 2 + i">{{activity.title}}</li>
+                </ol>
+              </div>
+            </div>
+            <div class="card-footer">
+              <a v-if="canEditActiveStepLessonReference" class="card-footer-item" @click="editWorkflowStepLesson">Edit Referenced Lesson</a>
+              <p v-else class="card-footer-item">Unable to edit a built-in lesson</p>
+            </div>
+          </div>
+          <div v-else class="buttons is-centered">
+            <button class="button is-outlined is-primary" @click="createReferencedLesson"><span class="icon is-small"><i class="fa fa-plus"></i></span><span>Create Referenced Lesson</span></button>
           </div>
         </div>
 
@@ -335,13 +363,13 @@
         <div class="box">
           <CreateLessonScreen v-if="editLessonActive"
             :motion="embeddedLessonMotion"
-            :lessonToEdit="activeStep.videoLessonEmbedded"
+            :lessonToEdit="activeStepLesson"
             @back-selected="editLessonActive = false"
-            @lesson-saved="updateEmbeddedLesson"
-            :saveToDatabase="false"
+            @lesson-saved="updateWorkflowStepLesson"
+            :saveToDatabase="isLessonReferenceStep"
             :showBackButton="false"
             :showCloseButton="true"
-            :showExportButton="false"
+            :showExportButton="isLessonReferenceStep"
           />
         </div>
         <!-- <UploadCard
@@ -404,6 +432,13 @@ export default defineComponent({
       return motionDb.lessonsByVideo.get(activeStep.value.videoLessonReference.clipName) ?? [];
     });
     const embeddedLessonMotion = computed(() => (activeStep.value ? GetVideoEntryForWorkflowStep(motionDb, activeStep.value) : null));
+    const activeStepLesson = computed(() => {
+      if (!activeStep.value) return null;
+      if (isLessonReferenceStep.value && activeStep.value.videoLessonReference?.lessonId) return motionDb.lessonsById.get(activeStep.value.videoLessonReference.lessonId) ?? null;
+      if (isLessonEmbeddedStep.value) return activeStep.value.videoLessonEmbedded ?? null;
+      return null;
+    });
+    const canEditActiveStepLessonReference = computed(() => activeStepLesson.value?.source === 'custom');
     const newEmbeddedLessonClipName = ref('');
     const newEmbeddedLessonMotion = computed(() => motionDb.motionsMap.get(newEmbeddedLessonClipName.value) ?? null);
     const canCreateEmbeddedLesson = computed(() => newEmbeddedLessonMotion.value !== null);
@@ -464,6 +499,8 @@ export default defineComponent({
       embeddedLessonMotion,
       canCreateEmbeddedLesson,
       editLessonActive,
+      activeStepLesson,
+      canEditActiveStepLessonReference,
 
       isDirty,
     };
@@ -589,10 +626,16 @@ export default defineComponent({
       stage.steps = steps;
       this.selectedStepIndex = Math.min(this.selectedStepIndex, steps.length - 1);
     },
-    updateEmbeddedLesson(lesson: VideoLesson) {
+    updateWorkflowStepLesson(lesson: VideoLesson) {
       if (!this.activeStep) return;
-      this.activeStep.videoLessonEmbedded = lesson;
-      console.log('Updated embedded lesson', lesson);
+      if (this.isLessonEmbeddedStep) {
+        this.activeStep.videoLessonEmbedded = lesson;
+        console.log('Updated embedded lesson', lesson.header.lessonTitle);
+      }
+      if (this.isLessonReferenceStep && this.activeStep.videoLessonReference) {
+        this.activeStep.videoLessonReference.lessonId = lesson._id;
+        console.log('Updated reference lesson', lesson);
+      }
     },
     startCreateEmbeddedLesson() {
       if (!this.activeStep) return;
@@ -601,8 +644,14 @@ export default defineComponent({
       this.activeStep.videoLessonEmbedded.header.lessonTitle = this.activeStep.title;
       this.editLessonActive = true;
     },
-    editEmbeddedLesson() {
-      if (!this.activeStep || !this.activeStep.videoLessonEmbedded) return;
+    createReferencedLesson() {
+      if (!this.isLessonReferenceStep) return;
+      if (this.activeStep?.videoLessonReference?.lessonId === '') {
+        this.editLessonActive = true;
+      }
+    },
+    editWorkflowStepLesson() {
+      if (!this.activeStepLesson) return;
       this.editLessonActive = true;
     },
     removeEmbeddedLesson() {
