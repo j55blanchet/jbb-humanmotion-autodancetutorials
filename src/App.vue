@@ -4,7 +4,7 @@
   <MainMenu
         v-show="state === State.MainMenu"
         @pose-drawer-selected="poseDrawerSelected"
-        @video-selected="videoEntrySelected"
+        @lesson-selected="lessonSelected"
         @create-lesson-selected="createLessonSelected"
         @workflow-selected="startWorkflow"
         @create-workflow-selected="state = State.CreateWorkflow"
@@ -31,6 +31,24 @@
         v-if="state === State.PoseDrawingTester"
         @back-selected="goHome" />
 
+  <div v-bind:class="{ 'is-active': state == State.LessonActive }" class="modal">
+    <div class="modal-background"></div>
+    <div class="container" style="height=100%; width=100%;">
+      <div class="vcenter-parent">
+        <div class="box" >
+          <VideoLessonPlayer
+            v-if="state == State.LessonActive"
+            :videoEntry="currentVideo"
+            :videoLesson="currentLesson"
+            @lesson-completed="goHome"
+            :maxVideoHeight="'80vh'"
+            :enableCompleteLesson="true"/>
+        </div>
+      </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" @click="goHome"></button>
+  </div>
+
   <div id="aboveSurface" class="pb-4 pt-4">
      <span id="topbarLeft"></span>
      <span class="spacer"></span>
@@ -51,14 +69,14 @@
 
     <template v-slot:ui>
 
-      <LearningScreen v-if="state == State.LessonActive"
+      <!-- <LearningScreen v-if="state == State.LessonActive"
         :target-dance="currentVideo"
         :target-lesson="currentLesson"
         @lesson-completed="goHome"
         @back-selected="goHome"
         style="width: 1280px"
         height="auto"
-      />
+      /> -->
 
      <WebcamPromptCard v-if="state === State.PromptStartWebcam"
       @cancel-selected="state = State.MainMenu"
@@ -100,10 +118,11 @@ import webcamProvider from '@/services/WebcamProvider';
 import { DatabaseEntry } from '@/services/MotionDatabase';
 import WorkflowMenu from '@/components/screens/WorkflowMenu.vue';
 import CreateWorkflowScreen from '@/components/screens/CreateWorkflowScreen.vue';
+import VideoLessonPlayer from '@/components/elements/VideoLessonPlayer.vue';
 import CameraSurface from './components/CameraSurface.vue';
 import OnboardingUI from './components/OnboardingUI.vue';
 import MainMenu from './components/screens/MainMenu.vue';
-import LearningScreen from './components/screens/LearningScreen.vue';
+// import LearningScreen from './components/screens/LearningScreen.vue';
 import VideoLesson from './model/VideoLesson';
 import WebcamPromptCard from './components/elements/WebcamPromptCard.vue';
 
@@ -132,11 +151,12 @@ export default defineComponent({
     OnboardingUI,
     MainMenu,
     WorkflowMenu,
-    LearningScreen,
+    // LearningScreen,
     WebcamPromptCard,
     PoseDrawerTest,
     CreateLessonScreen,
     CreateWorkflowScreen,
+    VideoLessonPlayer,
   },
   setup() {
     const state = ref(State.MainMenu);
@@ -151,15 +171,16 @@ export default defineComponent({
       State.StartingWebcam,
       State.LoadingTracking,
       State.Onboarding,
-      State.LessonActive,
+      // State.LessonActive,
     ].indexOf(state.value) !== -1);
 
-    function videoEntrySelected(videoEntry: DatabaseEntry, lesson: VideoLesson) {
+    function lessonSelected(videoEntry: DatabaseEntry, lesson: VideoLesson) {
       currentVideo.value = videoEntry;
       currentLesson.value = lesson;
 
-      if (webcamProvider.webcamStatus.value === 'running') state.value = State.LessonActive;
-      else state.value = State.PromptStartWebcam;
+      state.value = State.LessonActive;
+      // if (webcamProvider.webcamStatus.value === 'running') state.value = State.LessonActive;
+      // else state.value = State.PromptStartWebcam;
     }
 
     function goHome() {
@@ -213,7 +234,7 @@ export default defineComponent({
       showCameraSurface,
       currentVideo,
       currentLesson,
-      videoEntrySelected,
+      lessonSelected,
       goHome,
       startWebcam,
       onTrackingAttained,
@@ -264,7 +285,7 @@ body, html {
   // background-color: #FF9A8B;
   // background-image: linear-gradient(135deg, #B721FF 0%, #145eb3 100%);
 
-  background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+  background-image: linear-gradient(120deg, #daece1 0%, #d1d1d1 100%);
 
   background-size: 100vw 100vh;
   background-attachment: fixed;

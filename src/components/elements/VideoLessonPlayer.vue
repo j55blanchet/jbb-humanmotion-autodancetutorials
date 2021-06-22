@@ -1,19 +1,18 @@
 <template>
   <div class="video-lesson-player">
-    <div class="columns">
-      <div class="column">
-        <ActivityVideoPlayer
-          class="block"
-          ref="activityVideoPlayer"
-          :motion="videoEntry"
-          :lesson="videoLesson"
-          :activity="activeActivity"
-          :maxHeight="maxVideoHeight"
-          @progress="onProgress"
-        />
-      </div>
-      <div class="column is-narrow">
-        <nav class="panel" :style="{
+    <div class="columns is-flex-grow-1">
+      <!-- <div class="column is-narrow" v-if="videoLesson">
+        <div class="tile is-ancestor is-vertical" style="overflow-y:auto;" :style="{
+              'max-height':maxVideoHeight
+            }">
+          <div class="tile is-child box has-text-centered m-4"
+               v-for="(activity, i) in videoLesson.activities" :key="i"
+               :class="{'is-active': activeActivityIndex === i}"
+          >
+            <p class="subtitle" v-text="activity.title"></p>
+          </div>
+        </div> -->
+        <!-- <nav class="panel" :style="{
               'max-height':maxVideoHeight,
               'overflow-y': 'scroll',
             }"
@@ -27,9 +26,21 @@
             <strong class="panel-icon">{{i+1}}&nbsp;</strong>&nbsp;{{activity.title}}
           </a>
         </nav>
+      </div> -->
+      <div class="column">
+        <ActivityVideoPlayer
+          class="block"
+          ref="activityVideoPlayer"
+          :motion="videoEntry"
+          :lesson="videoLesson"
+          :activity="activeActivity"
+          :maxHeight="maxVideoHeight"
+          @progress="onProgress"
+        />
       </div>
+
     </div>
-    <div>
+    <div class="is-flex-grow-0">
       <SegmentedProgressBar
         class="block"
         :segments="progressSegments"
@@ -38,49 +49,59 @@
 
       <div class="buttons is-centered has-addons">
         <button
-          class="button"
-          :disabled="!hasPreviousActivity"
-          @click="activeActivityIndex -= 1"
-        >
-          &lt;
-        </button>
-        <button
-          v-show="!needsStartWebcam"
+          v-if="!needsStartWebcam && !$refs.activityVideoPlayer?.activityFinished"
           class="button"
           :class="{
-            'is-primary': ($refs.activityVideoPlayer?.awaitingStart ?? false)
+            'is-primary': ($refs.activityVideoPlayer?.awaitingStart ?? false),
+            'is-loading': ($refs.activityVideoPlayer?.isPlaying ?? false),
           }"
-          :disabled="!($refs.activityVideoPlayer?.awaitingStart ?? false)"
+          :disabled="($refs.activityVideoPlayer?.isPlaying ?? (!$refs.activityVideoPlayer?.awaitingStart) ?? false)"
           @click="$refs.activityVideoPlayer.play()"
         >
-          Play
+          <span class="icon"><i class="fas fa-play"></i></span>
         </button>
         <button
           class="button is-primary"
-          v-show="needsStartWebcam"
+          v-if="needsStartWebcam"
           :class="{'is-loading': webcamStatus==='loading'}"
           @click="startWebcam">
           Start Webcam
         </button>
         <button
           class="button"
-          :disabled="!($refs.activityVideoPlayer?.activityFinished ?? false)"
-          @click="$refs.activityVideoPlayer?.reset()"
+          v-if="$refs.activityVideoPlayer?.activityFinished"
+          @click="repeat()"
         >
-          Reset
+          <div class="icon"><i class="fas fa-redo fa-flip-horizontal"></i></div>
         </button>
         <button
           class="button"
-          :disabled="!hasNextActivity && !enableCompleteLesson"
+          v-if="$refs.activityVideoPlayer?.activityFinished && (hasNextActivity || enableCompleteLesson)"
           :class="{
             'is-primary': (!hasNextActivity && enableCompleteLesson && $refs.activityVideoPlayer?.activityFinished) || ($refs.activityVideoPlayer?.activityFinished ?? false)
           }"
           @click="nextActivity"
         >
-          <span v-if="hasNextActivity || !enableCompleteLesson">&gt;</span>
-          <span v-else>Complete Lesson</span>
+          <span v-if="hasNextActivity || !enableCompleteLesson" class="icon"><i class="fas fa-step-forward"></i></span>
+          <span v-else>
+            <span class="icon"><i class="fas fa-check"></i></span>
+            <span>Done</span>
+          </span>
         </button>
       </div>
+
+      <nav class="pagination is-centered">
+        <div class="pagination-list">
+          <li  v-for="(activity, i) in videoLesson.activities" :key="i">
+            <a class="pagination-link"
+               :class="{'is-current': activeActivityIndex === i}"
+               @click="gotoActivity(i)">
+               {{i+1}}
+            </a>
+          </li>
+        </div>
+      </nav>
+
     </div>
   </div>
 </template>
@@ -150,9 +171,21 @@ export default defineComponent({
     async startWebcam() {
       return (this.$refs.activityVideoPlayer as any)?.startWebcam();
     },
+    repeat() {
+      const vidPlayer = (this.$refs.activityVideoPlayer as any);
+      vidPlayer.reset();
+      vidPlayer.play();
+    },
   },
 });
 </script>
 
 <style lang="scss">
+
+.video-lesson-player {
+  display: flex;
+  flex-flow: column;
+  max-height: 100vh;
+  max-width: 100vw;
+}
 </style>

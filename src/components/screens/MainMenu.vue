@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <div class="tabs is-centered is-medium is-toggle is-toggle-rounded">
+    <div class="tabs is-centered is-medium-desktop is-small-mobile is-toggle is-toggle-rounded">
       <ul>
         <li v-for="(tab, i) in TabList" :key="i" :class="{'is-active': currentTab===tab}">
           <a @click="setTab(tab)">{{tab}}</a>
@@ -90,7 +90,7 @@
         <LessonCard
           :motion="selectedDance"
           @closed="selectedDance = null"
-          @lesson-selected="videoLessonSelected"
+          @lesson-selected="onLessonSelected"
           @create-lesson-selected="createLessonSelected"
         />
       </div>
@@ -131,7 +131,7 @@ const TabList = Object.freeze(new Array(...Object.values(Tabs)));
 export default defineComponent({
   name: 'MainMenu',
   emits: [
-    'video-selected',
+    'lesson-selected',
     'pose-drawer-selected',
     'create-lesson-selected',
     'workflow-selected',
@@ -147,11 +147,11 @@ export default defineComponent({
     const uploadUIActive = ref(false);
     const currentTab = ref(Tabs.Tools);
 
-    function videoLessonSelected(
+    function onLessonSelected(
       videoEntry: DatabaseEntry,
       lesson: VideoLesson,
     ) {
-      ctx.emit('video-selected', videoEntry, lesson);
+      ctx.emit('lesson-selected', videoEntry, lesson);
       selectedDance.value = null;
     }
 
@@ -164,7 +164,7 @@ export default defineComponent({
       workflows: workflowManager.allWorkflows,
       selectedDance,
       motionList,
-      videoLessonSelected,
+      onLessonSelected,
       createLessonSelected,
       uploadUIActive,
       workflowManager,

@@ -68,9 +68,9 @@
           </div>
         </div>
     </div>
-    <div class="block columns" v-else>
+    <div class="block columns is-multiline" v-else>
 
-      <div class="column">
+      <div class="column is-narrow">
         <div class="box">
           <p class="title is-5">Workflow</p>
 
@@ -122,7 +122,7 @@
         </div>
       </div>
 
-      <div class="column" v-if="activeStage">
+      <div class="column is-narrow" v-if="activeStage">
         <div class="box">
           <div class="title is-5">Stage #{{selectedStageIndex + 1}}: <code>{{activeStage.title}}</code></div>
 
@@ -188,7 +188,7 @@
         </div>
       </div>
 
-      <div class="column" v-if="activeStep">
+      <div class="column is-narrow" v-if="activeStep">
         <div class="box">
           <div class="title is-5">Step #{{selectedStepIndex + 1}}: <code>{{activeStep.title}}</code></div>
 
@@ -297,7 +297,8 @@
                 </div>
               </div>
               <div class="card-footer">
-                <a class="card-footer-item is-danger" @click="removeEmbeddedLesson">Remove</a>
+                <a class="card-footer-item has-text-danger" @click="removeEmbeddedLesson">Remove</a>
+                <a class="card-footer-item" @click="convertEmbeddedLessonToReference">Make Reference</a>
                 <a class="card-footer-item" @click="editWorkflowStepLesson">Edit</a>
               </div>
             </div>
@@ -418,6 +419,7 @@
             :showBackButton="false"
             :showCloseButton="true"
             :showExportButton="isLessonReferenceStep"
+            :disableEditingExisting="true"
           />
         </div>
         <!-- <UploadCard
@@ -466,9 +468,9 @@ export default defineComponent({
       return workflow && workflowManager.isCustomWorkflow(workflow.id);
     });
     const workflowInDatabase = computed(() => activeWorkflow.value?.id && WorkflowManager.hasSavedCustomLesson(activeWorkflow.value.id));
-    const selectedStageIndex = ref(-1);
+    const selectedStageIndex = ref(0);
     const activeStage = computed(() => activeWorkflow.value?.stages[selectedStageIndex.value] ?? null);
-    const selectedStepIndex = ref(-1);
+    const selectedStepIndex = ref(0);
     const activeStep = computed(() => activeStage.value?.steps[selectedStepIndex.value] ?? null);
     const isVideoUploadStep = computed(() => activeStep.value?.type === 'UploadTask');
     const isLessonReferenceStep = computed(() => activeStep.value?.type === 'VideoLessonReference');
@@ -479,7 +481,6 @@ export default defineComponent({
       if (!activeStep.value.videoLessonReference?.clipName) return [] as VideoLesson[];
       return motionDb.lessonsByVideo.get(activeStep.value.videoLessonReference.clipName) ?? [];
     });
-    const embeddedLessonMotion = computed(() => (activeStep.value ? GetVideoEntryForWorkflowStep(motionDb, activeStep.value) : null));
     const activeStepLesson = computed(() => {
       if (!activeStep.value) return null;
       if (isLessonReferenceStep.value && activeStep.value.videoLessonReference?.lessonId) return motionDb.lessonsById.get(activeStep.value.videoLessonReference.lessonId) ?? null;
@@ -491,6 +492,13 @@ export default defineComponent({
     const newEmbeddedLessonMotion = computed(() => motionDb.motionsMap.get(newEmbeddedLessonClipName.value) ?? null);
     const canCreateEmbeddedLesson = computed(() => newEmbeddedLessonMotion.value !== null);
     const editLessonActive = ref(false);
+    const embeddedLessonMotion = computed(() => {
+      if (!activeStep.value) return null;
+      if (isLessonEmbeddedStep.value && activeStep.value.videoLessonEmbedded) return GetVideoEntryForWorkflowStep(motionDb, activeStep.value);
+      if (isLessonEmbeddedStep.value) return newEmbeddedLessonMotion.value;
+      if (isLessonReferenceStep.value) return GetVideoEntryForWorkflowStep(motionDb, activeStep.value);
+      return null;
+    });
 
     watchEffect(() => {
       if (activeWorkflow.value) {
@@ -773,8 +781,8 @@ export default defineComponent({
     startCreateEmbeddedLesson() {
       if (!this.activeStep) return;
       if (!this.newEmbeddedLessonMotion) return;
-      this.activeStep.videoLessonEmbedded = createBlankLesson(this.newEmbeddedLessonMotion);
-      this.activeStep.videoLessonEmbedded.header.lessonTitle = this.activeStep.title;
+      // this.activeStep.videoLessonEmbedded = createBlankLesson(this.newEmbeddedLessonMotion);
+      // this.activeStep.videoLessonEmbedded.header.lessonTitle = this.activeStep.title;
       this.editLessonActive = true;
     },
     createReferencedLesson() {
@@ -793,6 +801,23 @@ export default defineComponent({
       if (window.confirm(`Are you sure you want to delete the embedded lesson ${this.activeStep.videoLessonEmbedded.header.lessonTitle}?`)) {
         this.activeStep.videoLessonEmbedded = undefined;
       }
+    },
+    convertEmbeddedLessonToReference() {
+      if (!this.activeStep?.videoLessonEmbedded) return;
+      // eslint-disable-next-line no-alert
+      if (!window.confirm('Are you sure you want to save this lesson into a new file and convert this to a reference?'
+                         + '\n\nNote: be sure to save the lesson.json!')
+      ) return;
+
+      motionDb.saveCustomLesson(this.activeStep.videoLessonEmbedded);
+      this.activeStep.videoLessonReference = {
+        clipName: this.activeStep.videoLessonEmbedded.header.clipName,
+        lessonId: this.activeStep.videoLessonEmbedded._id,
+      };
+      const exportLessonData = this.activeStep.videoLessonEmbedded;
+      this.activeStep.type = 'VideoLessonReference';
+      this.activeStep.videoLessonEmbedded = undefined;
+      Utils.PromptDownloadFile(`${exportLessonData.header.lessonTitle}.lesson.json`, JSON.stringify(exportLessonData));
     },
   },
 });

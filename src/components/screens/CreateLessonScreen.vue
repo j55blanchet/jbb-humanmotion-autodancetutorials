@@ -11,7 +11,7 @@
               Lesson Creation
             </p>
             <p class="subtitle">
-              <span v-if="state === LessonCreationState.SelectOpenState">Template Selection</span>
+              <span v-if="state === LessonCreationState.SelectOpenLesson">Template Selection</span>
               <span v-else>Editing &quot;{{lessonUnderConstruction.header.lessonTitle}}&quot;</span>
             </p>
           </div>
@@ -51,8 +51,9 @@
               </li>
             </ul>
           </div>
-          <div class="card-footer" v-if="canEditActiveLesson">
-            <a class="card-footer-item" @click="startCreation(false)">Edit</a>
+          <div class="card-footer" v-if="canEditActiveLesson && !disableEditingExisting">
+            <p v-if="disableEditingExisting" class="card-footer-item">Editing disabled</p>
+            <a v-else class="card-footer-item" @click="startCreation(false)">Edit</a>
           </div><div class="card-footer">
             <a class="card-footer-item" @click="startCreation(true)">
               <span v-if="activeLessonSelectionIndex === -1">Start New</span>
@@ -153,6 +154,29 @@
           <div class="column is-narrow">
             <div class="box">
               <h5 class="title is-5">Activity</h5>
+
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">Order</label>
+                </div>
+                <div class="field-body">
+                  <div class="field has-addons">
+                    <div class="control">
+                      <button class="button" :disabled="!canReorderActivity(activeActivityIndex, -1)" @click="reorderActivity(activeActivityIndex, -1)">
+                        <div class="icon"><i class="fas fa-chevron-down"></i></div>
+                      </button>
+                    </div>
+                    <div class="control is-expanded">
+                      <input class="input" type="text" disabled :value="activeActivityIndex + 1">
+                    </div>
+                    <div class="control">
+                      <button class="button" :disabled="!canReorderActivity(activeActivityIndex, 1)" @click="reorderActivity(activeActivityIndex, 1)">
+                        <div class="icon"><i class="fas fa-chevron-up"></i></div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <div class="field is-horizontal">
                 <div class="field-label">
@@ -279,9 +303,9 @@
                         <li v-for="(pause, i) in activeActivity.pauses ?? []" :key="i">
                           <a :class="{'is-active': activePauseIndex === i}" @click="selectPause(i)">
                             <strong>#{{i+1}}</strong>
-                            for {{pause.pauseDuration ?? Constants.DefaultPauseDuration}}s
-                            @ {{pause.time}}s
-                            <small v-if="pause.instruction">&quot;{{pause.instruction}}&quot;</small>
+                            at <span class="is-underlined">{{pause.time}}</span>
+                            for <span class="is-underlined">{{pause.pauseDuration ?? Constants.DefaultPauseDuration}}</span>s
+                            <small v-if="pause.instruction">&nbsp; : &nbsp;<span>&quot;{{pause.instruction}}&quot;</span></small>
                           </a>
                         </li>
                         <li v-if="lessonUnderConstruction.activities.length === 0">No Pauses</li>
@@ -305,8 +329,8 @@
                           <a :class="{'is-active': activeTimedInstructionIndex === i}" @click="selectTimedInstruction(i)">
                             <strong>#{{i+1}}</strong>&nbsp;
                             <small>&quot;{{ti.text}}&quot;</small>
-                            from {{ti.startTime}}s
-                            to {{ti.endTime}}s
+                            from <span class="is-underlined">{{ti.startTime}}</span>s
+                            to <span class="is-underlined">{{ti.endTime}}</span>s
                           </a>
                         </li>
                         <li v-if="lessonUnderConstruction.activities.length === 0">No Timed Instructions</li>
@@ -317,6 +341,10 @@
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div class="block buttons is-right">
+                <button class="button is-outlined is-danger" :disabled="!canDeleteActivity(activeActivityIndex)" @click="deleteActivity(activeActivityIndex)">Delete Activity #{{activeActivityIndex + 1}}</button>
               </div>
             </div>
           </div>
@@ -514,6 +542,10 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    disableEditingExisting: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['back-selected', 'lesson-saved'],
   data() {
@@ -572,9 +604,11 @@ export default defineComponent({
   mounted() {
     const passedInLesson = this.$props.lessonToEdit as VideoLesson | null;
     if (passedInLesson) {
+      console.log('CreateLessonScreen:: using passed in lesson', passedInLesson);
       this.startCreation(false, Utils.deepCopy(passedInLesson));
       nextTick(() => { this.isDirty = false; });
     } else if (this.lessons.length === 0) {
+      console.log('CreateLessonScreen:: creating blank lesson (no templates available)');
       this.startCreation(true);
     }
   },
@@ -611,6 +645,16 @@ export default defineComponent({
       },
       deep: true,
     },
+    'activePause.time': {
+      handler() {
+        this.sortPauses();
+      },
+    },
+    'activeTimedInstruction.startTime': {
+      handler() {
+        this.sortTimedInstructions();
+      },
+    },
   },
   methods: {
     goBack() {
@@ -628,6 +672,7 @@ export default defineComponent({
       } else if (existingLesson && !asTemplate) {
         console.log('Editing existing lesson');
         this.lessonUnderConstruction = existingLesson;
+        nextTick(() => { this.isDirty = false; });
       } else {
         console.log('Creating new lesson from scratch');
         this.lessonUnderConstruction = createBlankLesson(this.typedMotion);
@@ -647,6 +692,43 @@ export default defineComponent({
     },
     selectActivity(targetIndex: number) {
       this.activeActivityIndex = targetIndex;
+    },
+    canDeleteActivity(targetIndex: number) {
+      return this.lessonUnderConstruction.activities.length > 1;
+    },
+    canReorderActivity(targetIndex: number, indexDelta: number) {
+      const curActivity = this.lessonUnderConstruction.activities[targetIndex];
+      const swapActivity = this.lessonUnderConstruction.activities[targetIndex + indexDelta];
+      return (curActivity !== undefined && swapActivity !== undefined);
+    },
+    reorderActivity(targetIndex: number, indexDelta: number) {
+      const curActivity = this.lessonUnderConstruction.activities[targetIndex];
+      const swapIndex = targetIndex + indexDelta;
+      const swapActivity = this.lessonUnderConstruction.activities[swapIndex];
+      if (curActivity === undefined || swapActivity === undefined) {
+        console.error(`Cannot reorder activities ${targetIndex} and ${swapIndex}`);
+        return;
+      }
+
+      this.lessonUnderConstruction.activities[swapIndex] = curActivity;
+      this.lessonUnderConstruction.activities[targetIndex] = swapActivity;
+      if (this.activeActivityIndex === targetIndex) {
+        this.activeActivityIndex = swapIndex;
+      }
+    },
+    deleteActivity(targetIndex: number) {
+      const indexToDelete = targetIndex ?? this.activeActivityIndex;
+      const activities = this.lessonUnderConstruction.activities ?? [];
+      if (activities.length < 2) {
+        console.error("Can't delete activity - no activities would be left");
+        return;
+      }
+      // eslint-disable-next-line no-alert
+      if (!window.confirm('Are you sure you want to delete this activity?')) return;
+      console.log('Deleting activity at index', indexToDelete);
+      activities.splice(indexToDelete, 1);
+      this.lessonUnderConstruction.activities = activities;
+      this.activeActivityIndex = Math.max(Math.min(activities.length - 1, this.activeActivityIndex), 0);
     },
     addPause(targetIndex?: number) {
       const pauses = this.activeActivity.pauses ?? [];

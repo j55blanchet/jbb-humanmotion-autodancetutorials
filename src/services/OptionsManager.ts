@@ -18,7 +18,7 @@ class OptionsManager {
 
     console.log('Parsing path....', urlParams);
 
-    this.workflowId.value = urlParams.get('experimentId');
+    this.workflowId.value = urlParams.get('workflowId');
     this.participantId.value = urlParams.get('participantId');
     if (this.participantId.value) {
       this.participantIdWasSet.value = true;

@@ -74,8 +74,7 @@
             <h3>{{currentStep?.instructions?.heading}}</h3>
             <p style="white-space: pre-wrap;">{{currentStep?.instructions?.text}}</p>
             <div class="buttons is-right">
-              <button class="button is-outlined is-danger" @click="instructionsActive = false">Close</button>
-              <button class="button is-primary" @click="instructionsFinished">Continue</button>
+              <button class="button is-primary" @click="instructionsFinished">OK</button>
             </div>
           </div>
         </div>

@@ -68,6 +68,7 @@ export default defineComponent({
     const state = ref(ActivityPlayState.AwaitingStart);
     const activityFinished = computed(() => state.value === ActivityPlayState.ActivityEnded);
     const awaitingStart = computed(() => state.value === ActivityPlayState.AwaitingStart);
+    const isPlaying = computed(() => state.value === ActivityPlayState.Playing);
     const videoPlayer = ref(null as null | typeof PausingVideoPlayer);
     const webcamBox = ref(null as null | typeof WebcamBox);
     const videoTime = ref(0);
@@ -103,6 +104,7 @@ export default defineComponent({
       awaitingStart,
       activityFinished,
       pauseInstructs,
+      isPlaying,
 
       reset,
       startTime,
