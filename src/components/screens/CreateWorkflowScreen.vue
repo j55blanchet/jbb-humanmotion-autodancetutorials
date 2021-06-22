@@ -127,6 +127,29 @@
 
           <div class="field is-horizontal">
             <div class="field-label is-normal">
+              <label class="label">Order</label>
+            </div>
+            <div class="field-body">
+              <div class="field has-addons">
+                <div class="control">
+                  <button class="button" :disabled="!canReorderStage(-1)" @click="reorderStage(-1)">
+                    <div class="icon"><i class="fas fa-chevron-down"></i></div>
+                  </button>
+                </div>
+                <div class="control is-expanded">
+                  <input class="input" type="text" disabled :value="selectedStageIndex + 1">
+                </div>
+                <div class="control">
+                  <button class="button" :disabled="!canReorderStage(1)" @click="reorderStage(1)">
+                    <div class="icon"><i class="fas fa-chevron-up"></i></div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
               <label class="label">Title</label>
             </div>
             <div class="field-body">
@@ -167,125 +190,37 @@
         <div class="box">
           <div class="title is-5">Step #{{selectedStepIndex + 1}}: <code>{{activeStep.title}}</code></div>
 
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <label class="label">Title</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <div class="control">
-                <input class="input" type="text" v-model="activeStep.title">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="field is-horizontal">
-          <div class="field-label">
-            <label class="label">Type</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <div class="control">
-                <div class="select">
-                  <select v-model="activeStep.type">
-                    <option :value="'InstructionOnly'">Instruction</option>
-                    <option :value="'VideoLessonReference'">Mini Lesson (Reference)</option>
-                    <option :value="'VideoLessonEmbedded'">Mini Lesson (Embedded)</option>
-                    <option :value="'UploadTask'">Video Upload</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <hr>
-
-        <div v-if="isInstructionStep" class="block">
-            <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label">Heading</label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <div class="control">
-                  <input class="input" type="text" v-model="activeStep.instructions.heading">
-                </div>
-              </div>
-            </div>
-          </div>
           <div class="field is-horizontal">
             <div class="field-label is-normal">
-              <label class="label">Text</label>
+              <label class="label">Order</label>
             </div>
             <div class="field-body">
-              <div class="field">
+              <div class="field has-addons">
                 <div class="control">
-                  <textarea class="textarea" v-model="activeStep.instructions.text"></textarea>
+                  <button class="button" :disabled="!canReorderStep(-1)" @click="reorderStep(-1)">
+                    <div class="icon"><i class="fas fa-chevron-down"></i></div>
+                  </button>
+                </div>
+                <div class="control is-expanded">
+                  <input class="input" type="text" disabled :value="selectedStepIndex + 1">
+                </div>
+                <div class="control">
+                  <button class="button" :disabled="!canReorderStep(1)" @click="reorderStep(1)">
+                    <div class="icon"><i class="fas fa-chevron-up"></i></div>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div v-if="isLessonEmbeddedStep" class="block">
-          <div v-if="activeStep.videoLessonEmbedded" class="card">
-            <header class="card-header">
-              <p class="card-header-title">{{activeStep.videoLessonEmbedded.header.lessonTitle}}</p>
-            </header>
-            <div class="card-content">
-              <div class="content" v-if="activeStepLesson.activities">
-                <ol v-if="activeStepLesson.activities.length <= 6">
-                  <li v-for="(activity, i) in activeStepLesson.activities" :key="i">
-                    {{activity.title}}
-                  </li>
-                </ol>
-                <ol v-else>
-                    <li v-for="(activity, i) in activeStepLesson.activities.slice(0, 3)" :key="i">{{activity.title}}</li>
-                    <li style="list-style:none;">&hellip;</li>
-                    <li v-for="(activity, i) in activeStepLesson.activities.slice(-3)" :key="i" :value="activeStepLesson.activities.length - 2 + i">{{activity.title}}</li>
-                </ol>
-              </div>
-            </div>
-            <div class="card-footer">
-              <a class="card-footer-item is-danger" @click="removeEmbeddedLesson">Remove</a>
-              <a class="card-footer-item" @click="editWorkflowStepLesson">Edit</a>
-            </div>
-          </div>
-          <div v-else class="has-text-centered">
-            <p>No Embedded Lesson</p>
-
-            <div class="field has-addons">
-              <div class="control is-expanded">
-                <div class="select is-fullwidth">
-                  <select class="select" v-model="newEmbeddedLessonClipName">
-                    <option disabled value="">Select a clip</option>
-                    <option v-for="clipName in availableClips" :key="clipName">{{clipName}}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="control">
-                <button class="button is-primary" :disabled="!canCreateEmbeddedLesson" @click="startCreateEmbeddedLesson">Create</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div v-if="isLessonReferenceStep" class="block">
           <div class="field is-horizontal">
-            <div class="field-label">
-              <label class="label">Clip</label>
+            <div class="field-label is-normal">
+              <label class="label">Title</label>
             </div>
             <div class="field-body">
               <div class="field">
                 <div class="control">
-                  <div class="select" v-if="activeStep.videoLessonReference">
-                    <select v-model="activeStep.videoLessonReference.clipName">
-                      <option disabled value="">Select a clip</option>
-                      <option v-for="clipName in availableClips" :key="clipName">{{clipName}}</option>
-                    </select>
-                  </div>
+                  <input class="input" type="text" v-model="activeStep.title">
                 </div>
               </div>
             </div>
@@ -293,16 +228,17 @@
 
           <div class="field is-horizontal">
             <div class="field-label">
-              <label class="label">Lesson</label>
+              <label class="label">Type</label>
             </div>
             <div class="field-body">
               <div class="field">
                 <div class="control">
                   <div class="select">
-                    <select v-model="activeStep.videoLessonReference.lessonId">
-                      <option value="">&plus; Create New</option>
-                      <option disabled>──────────</option>
-                      <option v-for="lesson in availableReferenceLessons" :key="lesson._id" :value="lesson._id">{{lesson.header.lessonTitle}}</option>
+                    <select v-model="activeStep.type">
+                      <option :value="'InstructionOnly'">Instruction</option>
+                      <option :value="'VideoLessonReference'">Mini Lesson (Reference)</option>
+                      <option :value="'VideoLessonEmbedded'">Mini Lesson (Embedded)</option>
+                      <option :value="'UploadTask'">Video Upload</option>
                     </select>
                   </div>
                 </div>
@@ -311,41 +247,151 @@
           </div>
 
           <hr>
-          <div v-if="activeStepLesson" class="card">
-            <header class="card-header">
-              <p class="card-header-title">{{activeStepLesson.header.lessonTitle}}</p>
-            </header>
-            <div class="card-content">
-              <div class="content">
-                <ol v-if="activeStepLesson.activities.length <= 6">
-                  <li v-for="(activity, i) in activeStepLesson.activities" :key="i">
-                    {{activity.title}}
-                  </li>
-                </ol>
-                <ol v-else>
-                    <li v-for="(activity, i) in activeStepLesson.activities.slice(0, 3)" :key="i">{{activity.title}}</li>
-                    <li style="list-style:none;">&hellip;</li>
-                    <li v-for="(activity, i) in activeStepLesson.activities.slice(-3)" :key="i" :value="activeStepLesson.activities.length - 2 + i">{{activity.title}}</li>
-                </ol>
+
+          <div v-if="isInstructionStep" class="block">
+              <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Heading</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <input class="input" type="text" v-model="activeStep.instructions.heading">
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="card-footer">
-              <a v-if="canEditActiveStepLessonReference" class="card-footer-item" @click="editWorkflowStepLesson">Edit Referenced Lesson</a>
-              <p v-else class="card-footer-item">Unable to edit a built-in lesson</p>
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Text</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <textarea class="textarea" v-model="activeStep.instructions.text"></textarea>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div v-else class="buttons is-centered">
-            <button class="button is-outlined is-primary" @click="createReferencedLesson"><span class="icon is-small"><i class="fa fa-plus"></i></span><span>Create Referenced Lesson</span></button>
+
+          <div v-if="isLessonEmbeddedStep" class="block">
+            <div v-if="activeStep.videoLessonEmbedded" class="card">
+              <header class="card-header">
+                <p class="card-header-title">{{activeStep.videoLessonEmbedded.header.lessonTitle}}</p>
+              </header>
+              <div class="card-content">
+                <div class="content" v-if="activeStepLesson.activities">
+                  <ol v-if="activeStepLesson.activities.length <= 6">
+                    <li v-for="(activity, i) in activeStepLesson.activities" :key="i">
+                      {{activity.title}}
+                    </li>
+                  </ol>
+                  <ol v-else>
+                      <li v-for="(activity, i) in activeStepLesson.activities.slice(0, 3)" :key="i">{{activity.title}}</li>
+                      <li style="list-style:none;">&hellip;</li>
+                      <li v-for="(activity, i) in activeStepLesson.activities.slice(-3)" :key="i" :value="activeStepLesson.activities.length - 2 + i">{{activity.title}}</li>
+                  </ol>
+                </div>
+              </div>
+              <div class="card-footer">
+                <a class="card-footer-item is-danger" @click="removeEmbeddedLesson">Remove</a>
+                <a class="card-footer-item" @click="editWorkflowStepLesson">Edit</a>
+              </div>
+            </div>
+            <div v-else class="has-text-centered">
+              <p>No Embedded Lesson</p>
+
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  <div class="select is-fullwidth">
+                    <select class="select" v-model="newEmbeddedLessonClipName">
+                      <option disabled value="">Select a clip</option>
+                      <option v-for="clipName in availableClips" :key="clipName">{{clipName}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="control">
+                  <button class="button is-primary" :disabled="!canCreateEmbeddedLesson" @click="startCreateEmbeddedLesson">Create</button>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div v-if="isVideoUploadStep" class="block"></div>
+          <div v-if="isLessonReferenceStep" class="block">
+            <div class="field is-horizontal">
+              <div class="field-label">
+                <label class="label">Clip</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <div class="select" v-if="activeStep.videoLessonReference">
+                      <select v-model="activeStep.videoLessonReference.clipName">
+                        <option disabled value="">Select a clip</option>
+                        <option v-for="clipName in availableClips" :key="clipName">{{clipName}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        <hr>
+            <div class="field is-horizontal">
+              <div class="field-label">
+                <label class="label">Lesson</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <div class="select">
+                      <select v-model="activeStep.videoLessonReference.lessonId">
+                        <option value="">&plus; Create New</option>
+                        <option disabled>──────────</option>
+                        <option v-for="lesson in availableReferenceLessons" :key="lesson._id" :value="lesson._id">{{lesson.header.lessonTitle}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        <div class="buttons is-right">
-          <button class="button is-danger is-outlined" @click="deleteStep">Delete</button>
-        </div>
+            <hr>
+            <div v-if="activeStepLesson" class="card">
+              <header class="card-header">
+                <p class="card-header-title">{{activeStepLesson.header.lessonTitle}}</p>
+              </header>
+              <div class="card-content">
+                <div class="content">
+                  <ol v-if="activeStepLesson.activities.length <= 6">
+                    <li v-for="(activity, i) in activeStepLesson.activities" :key="i">
+                      {{activity.title}}
+                    </li>
+                  </ol>
+                  <ol v-else>
+                      <li v-for="(activity, i) in activeStepLesson.activities.slice(0, 3)" :key="i">{{activity.title}}</li>
+                      <li style="list-style:none;">&hellip;</li>
+                      <li v-for="(activity, i) in activeStepLesson.activities.slice(-3)" :key="i" :value="activeStepLesson.activities.length - 2 + i">{{activity.title}}</li>
+                  </ol>
+                </div>
+              </div>
+              <div class="card-footer">
+                <a v-if="canEditActiveStepLessonReference" class="card-footer-item" @click="editWorkflowStepLesson">Edit Referenced Lesson</a>
+                <p v-else class="card-footer-item">Unable to edit a built-in lesson</p>
+              </div>
+            </div>
+            <div v-else class="buttons is-centered">
+              <button class="button is-outlined is-primary" @click="createReferencedLesson"><span class="icon is-small"><i class="fa fa-plus"></i></span><span>Create Referenced Lesson</span></button>
+            </div>
+          </div>
+
+          <div v-if="isVideoUploadStep" class="block"></div>
+
+          <hr>
+
+          <div class="buttons is-right">
+            <button class="button is-danger is-outlined" @click="deleteStep">Delete</button>
+          </div>
         </div>
       </div>
 
@@ -588,6 +634,30 @@ export default defineComponent({
       this.selectedStepIndex = -1;
       workflowManager.completeActivitesPriorToStageAndStep(stageIndex, this.selectedStepIndex);
     },
+    canReorderStage(increment: number) {
+      const workflow = this.activeWorkflow;
+      if (!workflow) return false;
+      const { stages } = workflow;
+      const curStage = stages[this.selectedStageIndex];
+      const swapStage = stages[this.selectedStageIndex + increment];
+      return (curStage !== undefined) && (swapStage !== undefined);
+    },
+    reorderStage(increment: number) {
+      const workflow = this.activeWorkflow;
+      if (!workflow) return;
+      const { stages } = workflow;
+      const swapIndex = this.selectedStageIndex + increment;
+      const curSelected = stages[this.selectedStageIndex];
+      const toSwap = stages[swapIndex];
+      if ((curSelected === undefined) || (toSwap === undefined)) {
+        console.warn(`Unable to swap stages ${this.selectedStageIndex} and ${swapIndex}`);
+        return;
+      }
+      stages[this.selectedStageIndex] = toSwap;
+      stages[swapIndex] = curSelected;
+      this.selectedStageIndex = swapIndex;
+      workflow.stages = stages;
+    },
     addStage() {
       const workflow = this.activeWorkflow;
       if (!workflow) return;
@@ -619,6 +689,32 @@ export default defineComponent({
       this.selectedStepIndex = stepIndex;
 
       workflowManager.completeActivitesPriorToStageAndStep(this.selectedStageIndex, this.selectedStepIndex);
+    },
+    canReorderStep(increment: number) {
+      const workflow = this.activeWorkflow;
+      if (!workflow) return false;
+      const steps = workflow.stages[this.selectedStageIndex]?.steps;
+      if (!steps) return false;
+      const curStep = steps[this.selectedStepIndex];
+      const swapStep = steps[this.selectedStepIndex + increment];
+      return (curStep !== undefined) && (swapStep !== undefined);
+    },
+    reorderStep(increment: number) {
+      const workflow = this.activeWorkflow;
+      if (!workflow) return;
+      const steps = workflow.stages[this.selectedStageIndex]?.steps;
+      if (!steps) return;
+      const swapIndex = this.selectedStepIndex + increment;
+      const curStep = steps[this.selectedStepIndex];
+      const swapStep = steps[swapIndex];
+      if ((curStep === undefined) || (swapStep === undefined)) {
+        console.warn(`Unable to swap steps ${this.selectedStepIndex} and ${swapIndex}`);
+        return;
+      }
+      steps[this.selectedStageIndex] = swapStep;
+      steps[swapIndex] = curStep;
+      this.selectedStepIndex = swapIndex;
+      workflow.stages[this.selectedStageIndex].steps = steps;
     },
     addStep() {
       const stage = this.activeStage;
