@@ -576,6 +576,14 @@ export default defineComponent({
       workflowManager.setActiveFlow(this.activeWorkflow.id);
     },
     selectStage(stageIndex: number) {
+
+      // Clear selection if this stage was already selected
+      if (stageIndex === this.selectedStageIndex) {
+        this.selectedStageIndex = -1;
+        this.selectedStepIndex = -1;
+        return;
+      }
+
       this.selectedStageIndex = stageIndex;
       this.selectedStepIndex = -1;
       workflowManager.completeActivitesPriorToStageAndStep(stageIndex, this.selectedStepIndex);
@@ -602,7 +610,14 @@ export default defineComponent({
       this.selectedStageIndex = Math.min(this.selectedStageIndex, stages.length - 1);
     },
     selectStep(stepIndex: number) {
+
+      // Clear selectedStep if already selected
+      if (this.selectedStepIndex === stepIndex) {
+        this.selectedStepIndex = -1;
+        return;
+      }
       this.selectedStepIndex = stepIndex;
+
       workflowManager.completeActivitesPriorToStageAndStep(this.selectedStageIndex, this.selectedStepIndex);
     },
     addStep() {
