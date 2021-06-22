@@ -111,7 +111,8 @@
                     <li v-for="(stage, i) in activeWorkflow.stages" :key="i">
                       <a :class="{'is-active': selectedStageIndex === i}" @click="selectStage(i)"><strong>{{i+1}}&nbsp;</strong>&nbsp;{{stage.title}}</a>
                     </li>
-                    <li><a @click="addStage()">&plus; Add Stage</a></li>
+                    <li v-if="activeStage"><a @click="duplicateStage()"><span class="icon"><i class="far fa-copy"></i></span><span>Duplicate</span></a></li>
+                    <li><a @click="addStage()"><span class="icon">&plus;</span><span>Add Stage</span></a></li>
                     <li v-if="activeWorkflow.stages.length === 0">No Stages</li>
                   </ul>
                 </div>
@@ -172,6 +173,7 @@
                     <li v-for="(step, i) in activeStage.steps" :key="i">
                       <a :class="{'is-active': selectedStepIndex === i}" @click="selectStep(i)"><strong>{{i+1}}&nbsp;</strong>&nbsp;{{step.title}}</a>
                     </li>
+                    <li v-if="activeStep"><a @click="duplicateStep()"><span class="icon"><i class="far fa-copy"></i></span><span>Duplicate</span></a></li>
                     <li><a @click="addStep()">&plus; Add Step</a></li>
                     <li v-if="activeStage.steps.length === 0">No Steps</li>
                   </ul>
@@ -668,6 +670,16 @@ export default defineComponent({
       } as WorkflowStage);
       this.selectStage(workflow.stages.length - 1);
     },
+    duplicateStage() {
+      const workflow = this.activeWorkflow;
+      if (!workflow) return;
+      const { stages } = workflow;
+      const curStage = stages[this.selectedStageIndex];
+      if (!curStage) return;
+      stages.splice(this.selectedStageIndex, 0, Utils.deepCopy(curStage));
+      workflow.stages = stages;
+      this.selectedStageIndex += 1;
+    },
     deleteStage() {
       const workflow = this.activeWorkflow;
       if (!workflow) return;
@@ -725,6 +737,16 @@ export default defineComponent({
         type: 'InstructionOnly',
       } as WorkflowStep);
       this.selectStep(stage.steps.length - 1);
+    },
+    duplicateStep() {
+      const workflow = this.activeWorkflow;
+      if (!workflow) return;
+      const curStep = this.activeWorkflow?.stages[this.selectedStageIndex]?.steps[this.selectedStepIndex];
+      if (!curStep) return;
+      const { steps } = workflow.stages[this.selectedStageIndex];
+      steps.splice(this.selectedStepIndex, 0, Utils.deepCopy(curStep));
+      workflow.stages[this.selectedStageIndex].steps = steps;
+      this.selectedStepIndex += 1;
     },
     deleteStep() {
       const stage = this.activeStage;
