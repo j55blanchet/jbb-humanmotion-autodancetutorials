@@ -47,7 +47,7 @@
         :progress="activityProgress"
       />
 
-      <div class="buttons is-centered has-addons">
+      <!-- <div class="buttons is-centered has-addons">
         <button
           v-if="!needsStartWebcam && !$refs.activityVideoPlayer?.activityFinished"
           class="button"
@@ -88,7 +88,7 @@
             <span>Done</span>
           </span>
         </button>
-      </div>
+      </div> -->
 
       <nav class="pagination is-centered" v-if="videoLesson">
         <div class="pagination-list" style="flex-wrap:nowrap;max-width:calc(100vw - 2.5rem);">
@@ -96,11 +96,54 @@
             <a class="pagination-link"
                :class="{'is-current': activeActivityIndex === i}"
                @click="gotoActivity(i)"
-               v-if="i >= 0">
+               disabled
+               v-if="i >= 0 && i !== activeActivityIndex">
                {{i + 1}}
             </a>
             <span class="pagination-ellipses" v-if="i<0">
               &hellip;
+            </span>
+            <span class="pagination-ellipses buttons has-addons" v-if="i===activeActivityIndex">
+              <button
+                v-if="!needsStartWebcam && !$refs.activityVideoPlayer?.activityFinished"
+                class="button"
+                :class="{
+                  'is-primary': ($refs.activityVideoPlayer?.awaitingStart ?? false),
+                  'is-loading': ($refs.activityVideoPlayer?.isPlaying ?? false),
+                }"
+                :disabled="($refs.activityVideoPlayer?.isPlaying ?? (!$refs.activityVideoPlayer?.awaitingStart) ?? false)"
+                @click="$refs.activityVideoPlayer.play()"
+              >
+                <span class="icon"><i class="fas fa-play"></i></span>
+              </button>
+              <button
+                class="button is-primary"
+                v-if="needsStartWebcam"
+                :class="{'is-loading': webcamStatus==='loading'}"
+                @click="startWebcam">
+                Start Webcam
+              </button>
+              <button
+                class="button"
+                v-if="$refs.activityVideoPlayer?.activityFinished"
+                @click="repeat()"
+              >
+                <div class="icon"><i class="fas fa-redo fa-flip-horizontal"></i></div>
+              </button>
+              <button
+                class="button"
+                v-if="$refs.activityVideoPlayer?.activityFinished && (hasNextActivity || enableCompleteLesson)"
+                :class="{
+                  'is-primary': (!hasNextActivity && enableCompleteLesson && $refs.activityVideoPlayer?.activityFinished) || ($refs.activityVideoPlayer?.activityFinished ?? false)
+                }"
+                @click="nextActivity"
+              >
+                <span v-if="hasNextActivity || !enableCompleteLesson" class="icon"><i class="fas fa-step-forward"></i></span>
+                <span v-else>
+                  <span class="icon"><i class="fas fa-check"></i></span>
+                  <span>Done</span>
+                </span>
+              </button>
             </span>
           </li>
         </div>
