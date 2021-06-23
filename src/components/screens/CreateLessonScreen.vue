@@ -71,6 +71,19 @@
 
               <div class="field is-horizontal">
                 <div class="field-label is-normal">
+                  <label class="label">Id</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <input class="input" disabled type="text" :value="lessonUnderConstruction._id">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
                   <label class="label">Clip</label>
                 </div>
                 <div class="field-body">

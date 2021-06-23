@@ -17,7 +17,7 @@
         <div class="column">
           <div class="menu">
             <p class="menu-label">
-              Pick a lesson
+              Pick a mini-lesson
             </p>
             <ul class="menu-list">
               <li v-for="lesson in lessons" :key="lesson._id">
