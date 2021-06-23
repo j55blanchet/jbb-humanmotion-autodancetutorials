@@ -83,14 +83,14 @@
 
       <div v-bind:class="{ 'is-active': lessonActive }" class="modal">
         <div class="modal-background"></div>
-        <div class="container" style="max-width: 100%; max-height: 100%;">
-          <div class="box" >
+        <div class="container" style="max-width: 100vw; max-height: 100vh;">
+          <div class="box" style="max-height: 100%" >
             <VideoLessonPlayer
               v-show="lessonActive"
               :videoEntry="currentVideoEntry"
               :videoLesson="currentLesson"
               @lesson-completed="lessonCompleted"
-              :maxVideoHeight="'80vh'"
+              :maxVideoHeight="'calc(100vh - 152px - 3.75rem)'"
               :enableCompleteLesson="true"/>
           </div>
         </div>

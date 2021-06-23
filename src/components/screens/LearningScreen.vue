@@ -16,7 +16,6 @@
         <WebcamBox :maxHeight="'720px'"/>
       </div>
 
-
       <ActivityVideoPlayer
         :motion="targetDance"
         :lesson="targetLesson"
@@ -54,7 +53,6 @@
         </div>
       </div> -->
     </div>
-
 
     <div class="is-flex is-flex-direction-column is-align-items-center is-justify-content-space-between">
       <div class="master-bar mt-4">
@@ -123,8 +121,8 @@ import motionRecorder from '@/services/MotionRecorder';
 import InstructionCarousel, { Instruction } from '@/components/elements/InstructionCarousel.vue';
 import { Landmark } from '@/services/MediaPipeTypes';
 import Utils from '@/services/Utils';
-import SegmentedProgressBar, { ProgressSegmentData, calculateProgressSegments } from '../elements/SegmentedProgressBar.vue';
 import ActivityVideoPlayer from '@/components/elements/ActivityVideoPlayer.vue';
+import SegmentedProgressBar, { ProgressSegmentData, calculateProgressSegments } from '../elements/SegmentedProgressBar.vue';
 import WebcamBox from '../elements/WebcamBox.vue';
 import GestureIcon from '../elements/GestureIcon.vue';
 
@@ -348,7 +346,7 @@ export default defineComponent({
       const vidPlayer = videoPlayer.value;
       if (!vidPlayer || !vidActivity) {
         console.error('LEARNING SCREEN:: Aborting video playback: vidPlayer or lessonActivity is null', vidPlayer, vidActivity);
-        return;
+
       }
       // const startingNow = forcePlay || (activityId.value !== 0 && !DanceUtils.shouldPauseBeforeActivity(vidActivity));
 
@@ -493,13 +491,6 @@ export default defineComponent({
   // margin: 0 auto;
   // padding: 1rem 1rem 1rem 1rem;
   // border-radius: 0 0 0.5rem 0.5rem;
-}
-
-.instructions-overlay {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
 }
 
 .lessonProgress {

@@ -76,6 +76,9 @@ $family-sans-serif: "Nunito", sans-serif;
     width: 100% !important;
     height: 100% !important;
 }
+.is-100percent-v {
+    height: 100% !important;
+}
 
 @import '~bulma';
 @import '~bulma-slider';

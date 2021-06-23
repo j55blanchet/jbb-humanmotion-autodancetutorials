@@ -1,6 +1,6 @@
 <template>
   <div class="video-lesson-player">
-    <div class="columns is-flex-grow-1">
+    <div class="columns is-flex-grow-1 is-flex-shrink-1">
       <!-- <div class="column is-narrow" v-if="videoLesson">
         <div class="tile is-ancestor is-vertical" style="overflow-y:auto;" :style="{
               'max-height':maxVideoHeight
@@ -40,7 +40,7 @@
       </div>
 
     </div>
-    <div class="is-flex-grow-0">
+    <div class="is-flex-grow-0 is-flex-shrink-0">
       <SegmentedProgressBar
         class="block"
         :segments="progressSegments"
@@ -90,14 +90,18 @@
         </button>
       </div>
 
-      <nav class="pagination is-centered">
-        <div class="pagination-list">
-          <li  v-for="(activity, i) in videoLesson.activities" :key="i">
+      <nav class="pagination is-centered" v-if="videoLesson">
+        <div class="pagination-list" style="flex-wrap:nowrap;max-width:calc(100vw - 2.5rem);">
+          <li  v-for="(i, index) in nearbyActivityIndices" :key="index">
             <a class="pagination-link"
                :class="{'is-current': activeActivityIndex === i}"
-               @click="gotoActivity(i)">
-               {{i+1}}
+               @click="gotoActivity(i)"
+               v-if="i >= 0">
+               {{i + 1}}
             </a>
+            <span class="pagination-ellipses" v-if="i<0">
+              &hellip;
+            </span>
           </li>
         </div>
       </nav>
@@ -113,6 +117,10 @@ import ActivityVideoPlayer from '@/components/elements/ActivityVideoPlayer.vue';
 import SegmentedProgressBar, { calculateProgressSegments, ProgressSegmentData } from '@/components/elements/SegmentedProgressBar.vue';
 import webcamProvider from '@/services/WebcamProvider';
 
+function range(size: number, startAt = 0) {
+  return [...Array(size).keys()].map((i) => i + startAt);
+}
+
 export default defineComponent({
   name: 'VideoLessonPlayer',
   components: {
@@ -127,6 +135,18 @@ export default defineComponent({
   },
   emits: ['lesson-completed', 'previous-activity', 'next-activity'],
   computed: {
+    nearbyActivityIndices(): number[] {
+      const margin = 1;
+      const minIndex = Math.max(0, this.activeActivityIndex - margin);
+      const maxActivityIndex = (this.lesson?.activities.length ?? 0) - 1;
+      const maxIndex = Math.min(maxActivityIndex, this.activeActivityIndex + margin);
+      const count = (maxIndex + 1) - minIndex;
+      let indices: number[] = [];
+      if (minIndex > 0) indices = indices.concat([0, -1]);
+      indices = indices.concat(range(count, minIndex));
+      if (maxIndex < maxActivityIndex) indices = indices.concat([-1, maxActivityIndex]);
+      return indices;
+    },
     lesson() {
       const lesson = (this.$props.videoLesson ?? null) as null | VideoLesson;
       return lesson;
@@ -185,7 +205,7 @@ export default defineComponent({
 .video-lesson-player {
   display: flex;
   flex-flow: column;
-  max-height: 100vh;
-  max-width: 100vw;
+  max-height: 100%;
+  max-width: 100%;
 }
 </style>

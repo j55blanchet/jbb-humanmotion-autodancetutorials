@@ -1,13 +1,13 @@
 <template>
   <div class="activity-video-player">
 
-    <div v-show="showingWebcam">
+    <div v-show="showingWebcam" class="is-100percent-v ">
       <WebcamBox ref="webcamBox" :maxHeight="maxHeight" :showStartWebcamButton="false"/>
     </div>
 
     <div :class="{
           'is-overlay': showingWebcam
-        }">
+        }" class="is-100percent-v">
       <PausingVideoPlayer
         :videoSrc="motion?.videoSrc"
         ref="videoPlayer"
@@ -23,9 +23,9 @@
     </div>
 
     <div class="is-overlay instructions-overlay mb-4">
-      <InstructionCarousel v-show="!activityFinished && timedInstructions.length > 0" :sizeClass="'is-large'" :instructions="timedInstructions" class="m-2"/>
-      <InstructionCarousel v-show="instructions.length > 0" :sizeClass="'is-large'" :instructions="instructions" class="m-2"/>
-      <InstructionCarousel v-show="activity?.staticInstruction" :sizeClass="'is-large'"  :instructions="[{id:0, text:activity?.staticInstruction}]" class="m-2"/>
+      <InstructionCarousel v-show="!activityFinished && timedInstructions.length > 0" :sizeClass="''" :instructions="timedInstructions" class="m-2"/>
+      <InstructionCarousel v-show="instructions.length > 0" :sizeClass="''" :instructions="instructions" class="m-2"/>
+      <InstructionCarousel v-show="activity?.staticInstruction" :sizeClass="''"  :instructions="[{id:0, text:activity?.staticInstruction}]" class="m-2"/>
     </div>
   </div>
 </template>
@@ -209,6 +209,13 @@ export default defineComponent({
 .activity-video-player {
   // background: black;
   position: relative;
+}
+
+.instructions-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 </style>
