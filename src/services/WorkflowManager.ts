@@ -4,10 +4,12 @@ import motionDB, { DatabaseEntry, MotionDatabase } from '@/services/MotionDataba
 import MiniLesson from '@/model/MiniLesson';
 import { Workflow, WorkflowStage, WorkflowStep } from '@/model/Workflow';
 import workflowsJson from '@/model/workflows.json';
+import customWorkflowsJson from '@/model/customWorkflows.json';
 import eventHub, { EventNames } from './EventHub';
 import Utils from './Utils';
 
 const defaultWorkflows = workflowsJson as Workflow[];
+const customWorkflows = customWorkflowsJson as Workflow[];
 
 export interface TrackingWorkflowStep extends WorkflowStep {
   status: 'notstarted' | 'inprogress' | 'completed';
@@ -20,89 +22,6 @@ export interface TrackingWorkflowStage extends WorkflowStage {
 export interface TrackingWorkflow extends Workflow {
   stages: TrackingWorkflowStage[];
 }
-
-const TestWorkflow = Object.freeze(
-  {
-    title: '4-Tiktoks (Example Workflow)',
-    id: 'e61789dhgbuiqd6129',
-    stages: [{
-      title: 'Introduction',
-      steps: [{
-        title: 'Welcome',
-        type: 'InstructionOnly',
-        instructions: {
-          heading: 'Test Experiment',
-          text: 'This an example experiment. You\'ll be taken through '
-          + 'a flow of activites and will be shown instructions '
-          + 'along the way.\n'
-          + "First, you'll learn 4 dances\n"
-          + "Then, you'll be asked to upload a video of you performing the dances",
-        },
-      }],
-    }, {
-      title: 'Learning Phase',
-      steps: [{
-        title: 'Savage Love',
-        type: 'VideoLessonReference',
-        // instructions: {},
-        videoLessonReference: {
-          clipName: 'derulo',
-          lessonId: 'cde1c09d-299a-4aed-8ad2-efa6c9d1b276',
-        },
-      }, {
-        title: "It's a Fit",
-        type: 'VideoLessonReference',
-        // instructions: {},
-        videoLessonReference: {
-          clipName: 'itsafit',
-          lessonId: '14cac0d6-ec00-41ae-ac80-e738d5cc09a1',
-        },
-      }, {
-        title: 'Renegade',
-        type: 'VideoLessonReference',
-        videoLessonReference: {
-          clipName: 'renegade',
-          lessonId: '4ecac1f9-b32c-42de-b290-d97c883437e5',
-        },
-      }, {
-        title: 'Unh-hunh',
-        type: 'VideoLessonReference',
-        videoLessonReference: {
-          clipName: 'unhhunh',
-          lessonId: '580baf76-412f-41c3-9f50-54ebf01ace46',
-        },
-      }],
-    }, {
-      title: 'Feedback',
-      steps: [{
-        title: 'Performance',
-        type: 'UploadTask',
-        upload: {
-          identifier: 'end-upload',
-          prompt: 'Upload yourself performing all these dances in order',
-        },
-      }],
-    }],
-  } as Workflow,
-);
-
-const sampleUploadWorkflow: Workflow = {
-  id: '1472189',
-  stages: [
-    {
-      title: 'Upload',
-      steps: [{
-        title: 'SampleUpload',
-        type: 'UploadTask',
-        upload: {
-          identifier: 'UploadIdentifier123',
-          prompt: 'Upload Something PLzzz',
-        },
-      }],
-    },
-  ],
-  title: 'SingleUpload',
-};
 
 export class WorkflowManager {
 
@@ -124,10 +43,11 @@ export class WorkflowManager {
       this.workflows.set(workflow.id, workflow);
       this.bakedInWorkflows.add(workflow.id);
     }
-    this.workflows.set(TestWorkflow.id, TestWorkflow);
-    this.bakedInWorkflows.add(TestWorkflow.id);
-    this.workflows.set(sampleUploadWorkflow.id, sampleUploadWorkflow);
-    this.bakedInWorkflows.add(sampleUploadWorkflow.id);
+    for (let i = 0; i < customWorkflows.length; i += 1) {
+      const workflow = customWorkflows[i];
+      this.workflows.set(workflow.id, workflow);
+      this.bakedInWorkflows.add(workflow.id);
+    }
 
     const customWorkflowIds = WorkflowManager.getCustomWorkflowIdsList();
     for (let i = 0; i < customWorkflowIds.length; i += 1) {

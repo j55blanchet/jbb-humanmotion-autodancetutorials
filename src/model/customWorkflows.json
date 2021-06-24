@@ -1,0 +1,542 @@
+[{
+    "title": "Renegade - Slow to Fast",
+    "id": "be4bcee4-893e-4a08-94d4-a1341f3ddb7d",
+    "stages": [
+        {
+            "title": "Preview",
+            "steps": [
+                {
+                    "type": "VideoLessonEmbedded",
+                    "title": "Entire Dance",
+                    "videoLessonEmbedded": {
+                        "_id": "22dc54f2-b7e8-4055-b1ce-379751085508",
+                        "header": {
+                            "clipName": "renegade",
+                            "lessonTitle": "Entire Dance"
+                        },
+                        "segmentBreaks": [
+                            0,
+                            12.233333333333333
+                        ],
+                        "activities": [
+                            {
+                                "title": "Dance Segment Preview",
+                                "startTime": 0,
+                                "endTime": 12.233333333333333,
+                                "demoVisual": "video",
+                                "userVisual": "none",
+                                "focusedSegments": [
+                                    0
+                                ],
+                                "pauses": [],
+                                "practiceSpeeds": [
+                                    1
+                                ],
+                                "automaticStart": false,
+                                "startInstruction": "Here's the dance you'll be learning...",
+                                "timedInstructions": []
+                            }
+                        ],
+                        "fps": 30,
+                        "source": "builtin"
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Slow Speed Learning",
+            "steps": [
+                {
+                    "type": "VideoLessonEmbedded",
+                    "title": "Segment 1",
+                    "videoLessonEmbedded": {
+                        "_id": "f60a2a6c-6324-4cb0-8034-38f3ac077a17",
+                        "header": {
+                            "clipName": "renegade",
+                            "lessonTitle": "Segment 1 Slow"
+                        },
+                        "segmentBreaks": [
+                            0,
+                            2.3333333333333335,
+                            7.7,
+                            12.233333333333333
+                        ],
+                        "activities": [
+                            {
+                                "title": "Segment 1 Slow",
+                                "startTime": 0,
+                                "endTime": 2.3333333333333335,
+                                "demoVisual": "video",
+                                "userVisual": "none",
+                                "focusedSegments": [
+                                    1
+                                ],
+                                "pauses": [],
+                                "practiceSpeeds": [
+                                    0.5
+                                ],
+                                "automaticStart": true,
+                                "startInstruction": "Let's learn this first part",
+                                "timedInstructions": [],
+                                "practiceSpeed": 0.5,
+                                "endInstruction": "Repeat until you've got it!",
+                                "playingInstruction": "Try following along..."
+                            }
+                        ],
+                        "fps": 30,
+                        "source": "builtin"
+                    }
+                },
+                {
+                    "type": "VideoLessonEmbedded",
+                    "title": "Segment 2",
+                    "videoLessonEmbedded": {
+                        "_id": "f60a2a6c-6324-4cb0-8034-38f3ac077a17",
+                        "header": {
+                            "clipName": "renegade",
+                            "lessonTitle": "Segment 2 Slow"
+                        },
+                        "segmentBreaks": [
+                            0,
+                            2.3333333333333335,
+                            7.7,
+                            12.233333333333333
+                        ],
+                        "activities": [
+                            {
+                                "title": "Segment 2 Slow",
+                                "startTime": 2.3333333333333335,
+                                "endTime": 7.7,
+                                "demoVisual": "video",
+                                "userVisual": "none",
+                                "focusedSegments": [
+                                    1
+                                ],
+                                "pauses": [],
+                                "practiceSpeeds": [
+                                    0.5
+                                ],
+                                "automaticStart": true,
+                                "startInstruction": "Now let's learn this second part",
+                                "timedInstructions": [],
+                                "practiceSpeed": 0.5,
+                                "endInstruction": "Repeat until you've got it!",
+                                "playingInstruction": "Try following along..."
+                            },
+                            {
+                                "title": "Segment 1-2 Slow",
+                                "startTime": 0,
+                                "endTime": 7.7,
+                                "demoVisual": "video",
+                                "userVisual": "none",
+                                "focusedSegments": [
+                                    0,
+                                    1
+                                ],
+                                "pauses": [],
+                                "practiceSpeeds": [
+                                    0.5
+                                ],
+                                "automaticStart": true,
+                                "startInstruction": "Lets practice these first two parts together",
+                                "timedInstructions": [],
+                                "practiceSpeed": 0.5,
+                                "endInstruction": "Repeat until you've got it!",
+                                "playingInstruction": "Try following along..."
+                            }
+                        ],
+                        "fps": 30,
+                        "source": "builtin"
+                    }
+                },
+                {
+                    "type": "VideoLessonEmbedded",
+                    "title": "Segment 3",
+                    "videoLessonEmbedded": {
+                        "_id": "f60a2a6c-6324-4cb0-8034-38f3ac077a17",
+                        "header": {
+                            "clipName": "renegade",
+                            "lessonTitle": "Segment 3 Slow"
+                        },
+                        "segmentBreaks": [
+                            0,
+                            2.3333333333333335,
+                            7.7,
+                            12.233333333333333
+                        ],
+                        "activities": [
+                            {
+                                "title": "Segment 3 Slow",
+                                "startTime": 7.7,
+                                "endTime": 12.233333333333333,
+                                "demoVisual": "video",
+                                "userVisual": "none",
+                                "focusedSegments": [
+                                    2
+                                ],
+                                "pauses": [],
+                                "practiceSpeeds": [
+                                    0.5
+                                ],
+                                "automaticStart": true,
+                                "startInstruction": "Now let's learn this last part",
+                                "timedInstructions": [],
+                                "practiceSpeed": 0.5,
+                                "endInstruction": "Repeat until you've got it!",
+                                "playingInstruction": "Try following along..."
+                            },
+                            {
+                                "title": "Segment 2-3 Slow",
+                                "startTime": 2.3333333333333335,
+                                "endTime": 12.233333333333333,
+                                "demoVisual": "video",
+                                "userVisual": "none",
+                                "focusedSegments": [
+                                    1,
+                                    2
+                                ],
+                                "pauses": [],
+                                "practiceSpeeds": [
+                                    0.5
+                                ],
+                                "automaticStart": true,
+                                "startInstruction": "Now, let's try these last two parts together",
+                                "timedInstructions": [],
+                                "practiceSpeed": 0.5,
+                                "endInstruction": "Repeat until you've got it!",
+                                "playingInstruction": "Try following along..."
+                            }
+                        ],
+                        "fps": 30,
+                        "source": "builtin"
+                    }
+                },
+                {
+                    "type": "VideoLessonEmbedded",
+                    "title": "Full Dance",
+                    "videoLessonEmbedded": {
+                        "_id": "f60a2a6c-6324-4cb0-8034-38f3ac077a17",
+                        "header": {
+                            "clipName": "renegade",
+                            "lessonTitle": "Full Dance"
+                        },
+                        "segmentBreaks": [
+                            0,
+                            2.3333333333333335,
+                            7.7,
+                            12.233333333333333
+                        ],
+                        "activities": [
+                            {
+                                "title": "Full Dance",
+                                "startTime": 0,
+                                "endTime": 12.233333333333333,
+                                "demoVisual": "video",
+                                "userVisual": "none",
+                                "focusedSegments": [
+                                    0,
+                                    1,
+                                    2
+                                ],
+                                "pauses": [],
+                                "practiceSpeeds": [
+                                    0.5
+                                ],
+                                "automaticStart": true,
+                                "startInstruction": "Let's bring it all together!",
+                                "timedInstructions": [],
+                                "practiceSpeed": 0.5,
+                                "endInstruction": "Repeat until you've got it!",
+                                "playingInstruction": "Try following along..."
+                            }
+                        ],
+                        "fps": 30,
+                        "source": "builtin"
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Mastery",
+            "steps": [
+                {
+                    "type": "VideoLessonEmbedded",
+                    "title": "Without the Video",
+                    "videoLessonEmbedded": {
+                        "_id": "f60a2a6c-6324-4cb0-8034-38f3ac077a17",
+                        "header": {
+                            "clipName": "renegade",
+                            "lessonTitle": "Practice with Video"
+                        },
+                        "segmentBreaks": [
+                            0,
+                            2.3333333333333335,
+                            7.7,
+                            12.233333333333333
+                        ],
+                        "activities": [
+                            {
+                                "title": "Refresher",
+                                "startTime": 0,
+                                "endTime": 12.233333333333333,
+                                "demoVisual": "video",
+                                "userVisual": "none",
+                                "focusedSegments": [
+                                    0,
+                                    1,
+                                    2
+                                ],
+                                "pauses": [],
+                                "practiceSpeeds": [
+                                    0.5
+                                ],
+                                "automaticStart": true,
+                                "startInstruction": "Try it with the video one last time",
+                                "timedInstructions": [],
+                                "practiceSpeed": 0.5,
+                                "endInstruction": "Next you'll try it WIHOUT the video!",
+                                "playingInstruction": "Follow along"
+                            },
+                            {
+                                "title": "No Video!",
+                                "startTime": 0,
+                                "endTime": 12.233333333333333,
+                                "demoVisual": "skeleton",
+                                "userVisual": "video",
+                                "focusedSegments": [
+                                    0,
+                                    1,
+                                    2
+                                ],
+                                "pauses": [],
+                                "practiceSpeeds": [
+                                    0.5
+                                ],
+                                "automaticStart": true,
+                                "startInstruction": "Follow along with the teacher skeleton!",
+                                "timedInstructions": [],
+                                "practiceSpeed": 0.5,
+                                "endInstruction": "Repeat until you've got it!",
+                                "playingInstruction": ""
+                            }
+                        ],
+                        "fps": 30,
+                        "source": "builtin"
+                    }
+                },
+                {
+                    "type": "VideoLessonEmbedded",
+                    "title": "Going Faster (65%)",
+                    "videoLessonEmbedded": {
+                        "_id": "f60a2a6c-6324-4cb0-8034-38f3ac077a17",
+                        "header": {
+                            "clipName": "renegade",
+                            "lessonTitle": "65% Practice"
+                        },
+                        "segmentBreaks": [
+                            0,
+                            2.3333333333333335,
+                            7.7,
+                            12.233333333333333
+                        ],
+                        "activities": [
+                            {
+                                "title": "Refresher",
+                                "startTime": 0,
+                                "endTime": 12.233333333333333,
+                                "demoVisual": "video",
+                                "userVisual": "none",
+                                "focusedSegments": [
+                                    0,
+                                    1,
+                                    2
+                                ],
+                                "pauses": [],
+                                "practiceSpeeds": [
+                                    0.5
+                                ],
+                                "automaticStart": true,
+                                "startInstruction": "We're going to speed it up a bit now",
+                                "timedInstructions": [],
+                                "practiceSpeed": 0.65,
+                                "endInstruction": "Next you'll try it at this speed WITHOUT the video!",
+                                "playingInstruction": "Follow along"
+                            },
+                            {
+                                "title": "No Video",
+                                "startTime": 0,
+                                "endTime": 12.233333333333333,
+                                "demoVisual": "skeleton",
+                                "userVisual": "video",
+                                "focusedSegments": [
+                                    0,
+                                    1,
+                                    2
+                                ],
+                                "pauses": [],
+                                "practiceSpeeds": [
+                                    0.5
+                                ],
+                                "automaticStart": true,
+                                "startInstruction": "Follow along with the teacher skeleton!",
+                                "timedInstructions": [],
+                                "practiceSpeed": 0.65,
+                                "endInstruction": "Repeat until you've got it!",
+                                "playingInstruction": ""
+                            }
+                        ],
+                        "fps": 30,
+                        "source": "builtin"
+                    }
+                },
+                {
+                    "type": "VideoLessonEmbedded",
+                    "title": "Going Faster (80%)",
+                    "videoLessonEmbedded": {
+                        "_id": "f60a2a6c-6324-4cb0-8034-38f3ac077a17",
+                        "header": {
+                            "clipName": "renegade",
+                            "lessonTitle": "80% Practice"
+                        },
+                        "segmentBreaks": [
+                            0,
+                            2.3333333333333335,
+                            7.7,
+                            12.233333333333333
+                        ],
+                        "activities": [
+                            {
+                                "title": "Refresher",
+                                "startTime": 0,
+                                "endTime": 12.233333333333333,
+                                "demoVisual": "video",
+                                "userVisual": "none",
+                                "focusedSegments": [
+                                    0,
+                                    1,
+                                    2
+                                ],
+                                "pauses": [],
+                                "practiceSpeeds": [
+                                    0.5
+                                ],
+                                "automaticStart": true,
+                                "startInstruction": "We're going to speed it up a bit more",
+                                "timedInstructions": [],
+                                "practiceSpeed": 0.8,
+                                "endInstruction": "Next you'll try it at this speed WITHOUT the video!",
+                                "playingInstruction": "Follow along"
+                            },
+                            {
+                                "title": "No Video",
+                                "startTime": 0,
+                                "endTime": 12.233333333333333,
+                                "demoVisual": "skeleton",
+                                "userVisual": "video",
+                                "focusedSegments": [
+                                    0,
+                                    1,
+                                    2
+                                ],
+                                "pauses": [],
+                                "practiceSpeeds": [
+                                    0.5
+                                ],
+                                "automaticStart": true,
+                                "startInstruction": "Follow along with the teacher skeleton!",
+                                "timedInstructions": [],
+                                "practiceSpeed": 0.8,
+                                "endInstruction": "Repeat until you've got it!",
+                                "playingInstruction": ""
+                            }
+                        ],
+                        "fps": 30,
+                        "source": "builtin"
+                    }
+                },
+                {
+                    "type": "VideoLessonEmbedded",
+                    "title": "Full Speed",
+                    "videoLessonEmbedded": {
+                        "_id": "f60a2a6c-6324-4cb0-8034-38f3ac077a17",
+                        "header": {
+                            "clipName": "renegade",
+                            "lessonTitle": "100% Practice"
+                        },
+                        "segmentBreaks": [
+                            0,
+                            2.3333333333333335,
+                            7.7,
+                            12.233333333333333
+                        ],
+                        "activities": [
+                            {
+                                "title": "Refresher",
+                                "startTime": 0,
+                                "endTime": 12.233333333333333,
+                                "demoVisual": "video",
+                                "userVisual": "none",
+                                "focusedSegments": [
+                                    0,
+                                    1,
+                                    2
+                                ],
+                                "pauses": [],
+                                "practiceSpeeds": [
+                                    0.5
+                                ],
+                                "automaticStart": true,
+                                "startInstruction": "Let's try it at full speed!",
+                                "timedInstructions": [],
+                                "practiceSpeed": 1,
+                                "endInstruction": "Next you'll try it at this speed WITHOUT the video!",
+                                "playingInstruction": "Follow along"
+                            },
+                            {
+                                "title": "No Video",
+                                "startTime": 0,
+                                "endTime": 12.233333333333333,
+                                "demoVisual": "skeleton",
+                                "userVisual": "video",
+                                "focusedSegments": [
+                                    0,
+                                    1,
+                                    2
+                                ],
+                                "pauses": [],
+                                "practiceSpeeds": [
+                                    0.5
+                                ],
+                                "automaticStart": true,
+                                "startInstruction": "Follow along with the teacher skeleton!",
+                                "timedInstructions": [],
+                                "practiceSpeed": 1,
+                                "endInstruction": "Repeat until you've got it!",
+                                "playingInstruction": ""
+                            }
+                        ],
+                        "fps": 30,
+                        "source": "builtin"
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Performance",
+            "steps": [
+                {
+                    "title": "Video Upload",
+                    "type": "UploadTask",
+                    "instructions": {
+                        "heading": "Instructions Heading",
+                        "text": ""
+                    },
+                    "upload": {
+                        "identifier": "Video Upload",
+                        "prompt": "Upload your video here"
+                    }
+                }
+            ]
+        }
+    ]
+}]

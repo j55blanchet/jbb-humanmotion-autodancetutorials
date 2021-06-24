@@ -271,6 +271,25 @@
 
               <div class="field is-horizontal">
                 <div class="field-label">
+                  <label class="label">Mode</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <div class="select">
+                        <select v-model="displayMode">
+                          <option value="other" disabled>Other</option>
+                          <option value="video-demo">Video Demo</option>
+                          <option value="skeleton-overlay">Skeleton Overlay</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field is-horizontal">
+                <div class="field-label">
                   <label class="label">Start Instruction</label>
                 </div>
                 <div class="field-body">
@@ -594,6 +613,24 @@ export default defineComponent({
     };
   },
   computed: {
+    displayMode: {
+      get() {
+        const demoVisual = this.activeActivity.demoVisual ?? 'video';
+        const userVisual = this.activeActivity.userVisual ?? 'none';
+        if (demoVisual === 'video') return 'video-demo';
+        if (demoVisual === 'skeleton') return 'skeleton-overlay';
+        return 'other';
+      },
+      set(newVal: 'other' | 'video-demo' | 'skeleton-overlay') {
+        if (newVal === 'video-demo') {
+          this.activeActivity.demoVisual = 'video';
+          this.activeActivity.userVisual = 'none';
+        } else if (newVal === 'skeleton-overlay') {
+          this.activeActivity.demoVisual = 'skeleton';
+          this.activeActivity.userVisual = 'video';
+        }
+      },
+    },
     activeActivityFocusedSegments() {
       const segBreaks = (this as any).lessonUnderConstruction.segmentBreaks as number[];
       const segs: number[] = (this as any).activeActivity?.focusedSegments ?? [];
