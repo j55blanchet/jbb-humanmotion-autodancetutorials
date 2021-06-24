@@ -223,8 +223,12 @@
                   <label class="label">Focused Segments</label>
                 </div>
                 <div class="field-body">
-                  <div class="field is-narrow" v-for="(focused, i) in activeActivityFocusedSegments" :key="i">
-                    {{focused}}
+                  <div class="field">
+                    <div v-for="(segInfo, i) in activeActivityFocusedSegments" :key="i">
+                      <label class="checkbox">
+                        <input type="checkbox" :checked="activeActivityFocusedSegments[i].isFocused" @input="setFocusedSegment(i, $event)">&nbsp;<strong>{{i+1}}</strong>: <code>{{segInfo.startTime}}</code>-<code>{{segInfo.endTime}}</code>
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -529,6 +533,12 @@ const LessonCreationState = Object.freeze({
   ModifyLesson: 'ModifyLesson',
 });
 
+interface SegmentInfo {
+  isFocused: boolean;
+  startTime: number;
+  endTime: number;
+}
+
 export default defineComponent({
   name: 'CreateLessonScreen',
   components: {
@@ -584,17 +594,17 @@ export default defineComponent({
     };
   },
   computed: {
-    activeActivityFocusedSegments: {
-      get() {
-        const segs: number[] = (this as any).activeActivity?.focusedSegments ?? [];
-        const segsSet = new Set(segs);
-        const boolArray = Utils.range((this as any).lessonUnderConstruction.segmentBreaks.length - 1)
-          .map((i) => segsSet.has(i));
-        return boolArray;
-      },
-      set(newValue: boolean[]) {
-        this.activeActivity.focusedSegments = newValue.map((val, i) => (val ? i : -i)).filter((i) => i >= 0);
-      },
+    activeActivityFocusedSegments() {
+      const segBreaks = (this as any).lessonUnderConstruction.segmentBreaks as number[];
+      const segs: number[] = (this as any).activeActivity?.focusedSegments ?? [];
+      const segsSet = new Set(segs);
+      const boolArray = Utils.range((this as any).lessonUnderConstruction.segmentBreaks.length - 1)
+        .map((i) => ({
+          isFocused: segsSet.has(i),
+          startTime: segBreaks[i],
+          endTime: segBreaks[i + 1],
+        } as SegmentInfo));
+      return boolArray;
     },
     activeLessonSelection(): MiniLesson | null {
       return this.lessons[this.activeLessonSelectionIndex] ?? null;
@@ -861,6 +871,19 @@ export default defineComponent({
       const newList = this.lessonUnderConstruction.segmentBreaks.sort((a, b) => a - b);
       this.lessonUnderConstruction.segmentBreaks = newList;
       this.newSegmentVal = 0;
+    },
+    setFocusedSegment(i: number, event: InputEvent) {
+      const focusedSegments = this.activeActivity.focusedSegments ?? [];
+      const curIndex = focusedSegments.indexOf(i);
+      const isFocused: boolean = (event.target as any)?.checked ?? false;
+      if (curIndex === -1 && isFocused) {
+        focusedSegments.push(i);
+        focusedSegments.sort();
+      } else if (curIndex !== -1 && !isFocused) {
+        focusedSegments.splice(curIndex, 1);
+      }
+
+      this.activeActivity.focusedSegments = focusedSegments;
     },
     sortSegmentBreaks() {
       this.lessonUnderConstruction.segmentBreaks = this.lessonUnderConstruction.segmentBreaks.sort((a, b) => a - b);
