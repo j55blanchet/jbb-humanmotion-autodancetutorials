@@ -154,6 +154,7 @@
                         <li v-for="(activity, i) in lessonUnderConstruction.activities" :key="i">
                           <a :class="{'is-active': activeActivityIndex === i}" @click="selectActivity(i)"><strong>{{i+1}}&nbsp;</strong>&nbsp;{{activity.title}}</a>
                         </li>
+                        <li v-if="activeActivity"><a @click="duplicateActivity()"><span class="icon"><i class="far fa-copy"></i></span><span>Duplicate</span></a></li>
                         <li><a @click="addActivity()">&plus; Add Activity</a></li>
                         <li v-if="lessonUnderConstruction.activities.length === 0">No Activities</li>
                       </ul>
@@ -743,6 +744,14 @@ export default defineComponent({
       activities.splice(indexToDelete, 1);
       this.lessonUnderConstruction.activities = activities;
       this.activeActivityIndex = Math.max(Math.min(activities.length - 1, this.activeActivityIndex), 0);
+    },
+    duplicateActivity() {
+      const activity = this.activeActivity;
+      const lesson = this.lessonUnderConstruction;
+      if (!activity || !lesson) return;
+      const dupActivity = Utils.deepCopy(activity);
+      lesson.activities.splice(this.activeActivityIndex, 0, dupActivity);
+      this.activeActivityIndex += 1;
     },
     addPause(targetIndex?: number) {
       const pauses = this.activeActivity.pauses ?? [];
