@@ -248,6 +248,33 @@
             </div>
           </div>
 
+          <div class="field is-grouped is-grouped-right" v-if="(activeWorkflow?.stages ?? []).length > 1">
+            <div class="control">
+              <div class="dropdown is-right" :class="{'is-active': isMoveStepDropdownActive}">
+                <div class="dropdown-trigger">
+                  <button class="button" @click="isMoveStepDropdownActive = !isMoveStepDropdownActive">
+                    <span>Move Stage</span>
+                    <span class="icon is-small" v-if="!isMoveStepDropdownActive"><i class="fas fa-angle-down" aria-hidden="true"></i></span>
+                    <span class="icon is-small" v-if="isMoveStepDropdownActive"><i class="fas fa-angle-up" aria-hidden="true"></i></span>
+                  </button>
+                </div>
+                <div class="dropdown-menu">
+                  <div class="box has-background-white">
+                    <div class="menu">
+                      <p class="menu-label">Move to stage:</p>
+                      <ul class="menu-list">
+                        <li v-for="(stage, stageI) in this.activeWorkflow?.stages ?? []" :key="stageI">
+                          <a @click="moveStep(stageI)" :class="{'is-active': selectedStageIndex === stageI }">
+                            <strong>{{stageI + 1}}</strong>&nbsp;&nbsp;{{stage.title}}
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <hr>
 
           <div v-if="isInstructionStep" class="block">
@@ -447,7 +474,7 @@ import {
   computed, defineComponent, nextTick, ref, watch, watchEffect,
 } from 'vue';
 import motionDb, { createBlankLesson } from '@/services/MotionDatabase';
-import VideoLesson from '@/model/VideoLesson';
+import VideoLesson from '@/model/MiniLesson';
 import CreateLessonScreen from '@/components/screens/CreateLessonScreen.vue';
 
 export default defineComponent({
@@ -557,6 +584,7 @@ export default defineComponent({
       editLessonActive,
       activeStepLesson,
       canEditActiveStepLessonReference,
+      isMoveStepDropdownActive: ref(false),
 
       isDirty,
     };
@@ -755,6 +783,19 @@ export default defineComponent({
       steps.splice(this.selectedStepIndex, 0, Utils.deepCopy(curStep));
       workflow.stages[this.selectedStageIndex].steps = steps;
       this.selectedStepIndex += 1;
+    },
+    moveStep(targetPhaseIndex: number) {
+      if (targetPhaseIndex === this.selectedStageIndex) return;
+      const stage = this.activeStage;
+      const stepToMove = this.activeStep;
+      const targetPhase = this.activeWorkflow?.stages[targetPhaseIndex];
+      if (!stage || !stepToMove || !targetPhase) return;
+      const { steps } = stage;
+      steps.splice(this.selectedStepIndex, 1);
+      stage.steps = steps;
+      targetPhase.steps.push(stepToMove);
+      this.selectedStepIndex = Math.min(steps.length - 1, this.selectedStepIndex);
+      this.isMoveStepDropdownActive = false;
     },
     deleteStep() {
       const stage = this.activeStage;

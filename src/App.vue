@@ -123,7 +123,7 @@ import CameraSurface from './components/CameraSurface.vue';
 import OnboardingUI from './components/OnboardingUI.vue';
 import MainMenu from './components/screens/MainMenu.vue';
 // import LearningScreen from './components/screens/LearningScreen.vue';
-import VideoLesson from './model/VideoLesson';
+import VideoLesson from './model/MiniLesson';
 import WebcamPromptCard from './components/elements/WebcamPromptCard.vue';
 
 import PoseDrawerTest from './components/screens/PoseDrawerTest.vue';

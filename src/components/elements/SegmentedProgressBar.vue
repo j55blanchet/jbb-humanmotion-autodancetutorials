@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, toRefs } from 'vue';
-import DanceLesson, { Activity } from '@/model/VideoLesson';
+import MiniLesson, { MiniLessonActivity } from '@/model/MiniLesson';
 
 export interface ProgressSegmentData {
   min: number;
@@ -22,7 +22,7 @@ export interface ProgressSegmentData {
   enabled: boolean;
 }
 
-export function calculateProgressSegments(lesson: DanceLesson, activity: Activity) {
+export function calculateProgressSegments(lesson: MiniLesson, activity: MiniLessonActivity) {
   if (!lesson) return [];
 
   let last = undefined as undefined | number;

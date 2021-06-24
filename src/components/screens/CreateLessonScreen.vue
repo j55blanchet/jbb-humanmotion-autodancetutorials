@@ -508,7 +508,7 @@ import {
 import Constants from '@/services/Constants';
 import ActivityVideoPlayer from '@/components/elements/ActivityVideoPlayer.vue';
 import db, { createBlankActivity, createBlankLesson, DatabaseEntry } from '@/services/MotionDatabase';
-import VideoLesson, { Activity, PauseInfo, TimedInstruction } from '@/model/VideoLesson';
+import MiniLesson, { MiniLessonActivity, PauseInfo, TimedInstruction } from '@/model/MiniLesson';
 import Utils from '@/services/Utils';
 import SegmentedProgressBar, { ProgressSegmentData, calculateProgressSegments } from '@/components/elements/SegmentedProgressBar.vue';
 
@@ -572,7 +572,7 @@ export default defineComponent({
     };
   },
   computed: {
-    activeLessonSelection(): VideoLesson | null {
+    activeLessonSelection(): MiniLesson | null {
       return this.lessons[this.activeLessonSelectionIndex] ?? null;
     },
     lessonInDatabase(): boolean {
@@ -610,12 +610,12 @@ export default defineComponent({
       return this.activeActivityIndex > 0;
     },
     canEditActiveLesson() {
-      const acLes = this.activeLessonSelection as VideoLesson;
+      const acLes = this.activeLessonSelection as MiniLesson;
       return acLes?.source === 'custom';
     },
   },
   mounted() {
-    const passedInLesson = this.$props.lessonToEdit as VideoLesson | null;
+    const passedInLesson = this.$props.lessonToEdit as MiniLesson | null;
     if (passedInLesson) {
       console.log('CreateLessonScreen:: using passed in lesson', passedInLesson);
       this.startCreation(false, Utils.deepCopy(passedInLesson));
@@ -676,12 +676,13 @@ export default defineComponent({
         this.$emit('back-selected');
       }
     },
-    startCreation(asTemplate: boolean, sourceLesson?: VideoLesson) {
+    startCreation(asTemplate: boolean, sourceLesson?: MiniLesson) {
       const existingLesson = sourceLesson ?? this.activeLessonSelection;
       if (existingLesson && asTemplate) {
         console.log('Creating new lesson from template');
         this.lessonUnderConstruction = Utils.deepCopy(existingLesson);
         this.lessonUnderConstruction._id = Utils.uuidv4();
+        this.lessonUnderConstruction.source = 'custom';
       } else if (existingLesson && !asTemplate) {
         console.log('Editing existing lesson');
         this.lessonUnderConstruction = existingLesson;
@@ -693,7 +694,7 @@ export default defineComponent({
       this.state = LessonCreationState.ModifyLesson;
     },
     addActivity(targetIndex?: number) {
-      const newActivity: Activity = createBlankActivity(this.typedMotion, `Activity ${this.lessonUnderConstruction.activities.length + 1}`);
+      const newActivity: MiniLessonActivity = createBlankActivity(this.typedMotion, `Activity ${this.lessonUnderConstruction.activities.length + 1}`);
 
       if (targetIndex === undefined) {
         this.lessonUnderConstruction.activities.push(newActivity);

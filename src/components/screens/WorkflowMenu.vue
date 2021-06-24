@@ -86,7 +86,7 @@
         <div class="container" style="max-width: 100vw; max-height: 100vh;">
           <div class="box" style="max-height: 100%" >
             <VideoLessonPlayer
-              v-show="lessonActive"
+              v-if="lessonActive"
               :videoEntry="currentVideoEntry"
               :videoLesson="currentLesson"
               @lesson-completed="lessonCompleted"
@@ -125,7 +125,7 @@ import {
 } from 'vue';
 import VideoLessonPlayer from '@/components/elements/VideoLessonPlayer.vue';
 import db, { DatabaseEntry } from '@/services/MotionDatabase';
-import VideoLesson from '@/model/VideoLesson';
+import VideoLesson from '@/model/MiniLesson';
 import workflowManager, { TrackingWorkflowStage, TrackingWorkflowStep } from '@/services/WorkflowManager';
 import FeedbackUploadScreen from '@/components/screens/FeedbackUploadScreen.vue';
 import optionsManager from '@/services/OptionsManager';

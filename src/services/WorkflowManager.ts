@@ -1,7 +1,7 @@
 import { computed, reactive, ref } from 'vue';
 import optionsManager from '@/services/OptionsManager';
 import motionDB, { DatabaseEntry, MotionDatabase } from '@/services/MotionDatabase';
-import VideoLesson from '@/model/VideoLesson';
+import MiniLesson from '@/model/MiniLesson';
 import { Workflow, WorkflowStage, WorkflowStep } from '@/model/Workflow';
 import workflowsJson from '@/model/workflows.json';
 import eventHub, { EventNames } from './EventHub';

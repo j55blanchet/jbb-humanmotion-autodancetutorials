@@ -109,7 +109,7 @@
 
 <script lang="ts">
 import Constants from '@/services/Constants';
-import DanceLesson, { Activity, PauseInfo, DanceUtils } from '@/model/VideoLesson';
+import DanceLesson, { Activity, PauseInfo, DanceUtils } from '@/model/MiniLesson';
 import {
   computed, ComputedRef, defineComponent, nextTick, onBeforeUnmount, onMounted, Ref, ref, toRefs, watch,
 } from 'vue';

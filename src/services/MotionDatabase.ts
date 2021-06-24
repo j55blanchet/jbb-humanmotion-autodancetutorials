@@ -1,4 +1,4 @@
-import VideoLesson, { Activity } from '@/model/VideoLesson';
+import MiniLesson, { MiniLessonActivity } from '@/model/MiniLesson';
 
 import videoDatabase from '@/model/videoDatabase.json';
 import defaultLessons from '@/model/bakedInLessons.json';
@@ -26,9 +26,9 @@ export class MotionDatabase {
 
   readonly motionNames = computed(() => this.motions.value.map((dbEntry) => dbEntry.clipName));
 
-  readonly lessonsByVideo = reactive(new Map<string, VideoLesson[]>());
+  readonly lessonsByVideo = reactive(new Map<string, MiniLesson[]>());
 
-  readonly lessonsById = reactive(new Map<string, VideoLesson>());
+  readonly lessonsById = reactive(new Map<string, MiniLesson>());
 
   constructor() {
 
@@ -46,7 +46,7 @@ export class MotionDatabase {
       this.upsertLesson({
         source: 'builtin',
         ...lesson,
-      } as VideoLesson);
+      } as MiniLesson);
     });
     console.log(`Motion database: loaded ${defaultLessons.length} built-in lessons`);
 
@@ -54,13 +54,13 @@ export class MotionDatabase {
     console.log(`Motion database: loaded ${customLessonCount} custom lessons`);
   }
 
-  hasLesson(lesson: VideoLesson): boolean {
+  hasLesson(lesson: MiniLesson): boolean {
     const lessonList = this.lessonsByVideo.get(lesson.header.clipName) ?? [];
     const lessonIndex = lessonList.findIndex((val) => val._id === lesson._id);
     return lessonIndex !== -1;
   }
 
-  upsertLesson(lesson: VideoLesson) {
+  upsertLesson(lesson: MiniLesson) {
     const lessonList = this.lessonsByVideo.get(lesson.header.clipName) ?? [];
     const existingIndex = lessonList.findIndex((les) => les._id === lesson._id);
     if (existingIndex !== -1) lessonList[existingIndex] = lesson;
@@ -70,7 +70,7 @@ export class MotionDatabase {
     this.lessonsById.set(lesson._id, lesson);
   }
 
-  removeLesson(lesson: VideoLesson) {
+  removeLesson(lesson: MiniLesson) {
     const lessonList = this.lessonsByVideo.get(lesson.header.clipName) ?? [];
     const lessonIndex = lessonList.findIndex((val) => val._id === lesson._id);
     if (lessonIndex !== -1) lessonList.splice(lessonIndex, 1);
@@ -80,7 +80,7 @@ export class MotionDatabase {
   }
 
   getLessons(videoEntry: DatabaseEntry | string) {
-    let lessons = undefined as undefined | VideoLesson[];
+    let lessons = undefined as undefined | MiniLesson[];
     if (typeof videoEntry === 'object' && videoEntry !== null) lessons = this.lessonsByVideo.get(videoEntry.clipName);
     else lessons = this.lessonsByVideo.get(videoEntry);
     return lessons;
@@ -101,14 +101,14 @@ export class MotionDatabase {
       const id = customLessonIds[i];
       const custLesson = localStorage.getItem(`lesson-${id}`);
       if (custLesson) {
-        this.upsertLesson(JSON.parse(custLesson) as VideoLesson);
+        this.upsertLesson(JSON.parse(custLesson) as MiniLesson);
         countLoaded += 1;
       }
     }
     return countLoaded;
   }
 
-  validateLesson(lesson: VideoLesson) {
+  validateLesson(lesson: MiniLesson) {
     if (!lesson) throw new Error('Lesson is null or undefined');
     const clipName = lesson?.header?.clipName;
     if (!clipName) throw new Error('Clip name missing');
@@ -116,7 +116,7 @@ export class MotionDatabase {
     if (!Array.isArray(lesson.activities) || lesson.activities.length < 1) throw new Error('Lesson contains no activities');
   }
 
-  saveCustomLesson(lesson: VideoLesson) {
+  saveCustomLesson(lesson: MiniLesson) {
     this.upsertLesson(lesson);
     window.localStorage.setItem(`lesson-${lesson._id}`, JSON.stringify(lesson));
 
@@ -130,7 +130,7 @@ export class MotionDatabase {
     MotionDatabase.saveCustomLessonsIdsList(custLessonIds);
   }
 
-  deleteCustomLesson(lesson: VideoLesson) {
+  deleteCustomLesson(lesson: MiniLesson) {
     this.removeLesson(lesson);
 
     const custLessonIds = MotionDatabase.getCustomLessonIdsList();
@@ -142,7 +142,7 @@ export class MotionDatabase {
   }
 }
 
-export function createBlankActivity(motion: DatabaseEntry, title: string): Activity {
+export function createBlankActivity(motion: DatabaseEntry, title: string): MiniLessonActivity {
   return {
     title,
     startTime: 0,
@@ -153,7 +153,7 @@ export function createBlankActivity(motion: DatabaseEntry, title: string): Activ
   };
 }
 
-export function createBlankLesson(videoEntry: DatabaseEntry): VideoLesson {
+export function createBlankLesson(videoEntry: DatabaseEntry): MiniLesson {
   return {
     _id: Utils.uuidv4(),
     source: 'custom',
@@ -163,7 +163,6 @@ export function createBlankLesson(videoEntry: DatabaseEntry): VideoLesson {
     },
     segmentBreaks: [0, videoEntry.duration],
     activities: [createBlankActivity(videoEntry, 'Activity 1')],
-    fps: videoEntry.fps,
   };
 }
 

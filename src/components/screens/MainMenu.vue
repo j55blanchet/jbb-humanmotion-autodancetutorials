@@ -117,7 +117,7 @@ import { computed, defineComponent, ref } from 'vue';
 import LessonCard from '@/components/elements/LessonCard.vue';
 import UploadCard from '@/components/elements/UploadCard.vue';
 import db, { DatabaseEntry } from '@/services/MotionDatabase';
-import VideoLesson from '@/model/VideoLesson';
+import VideoLesson from '@/model/MiniLesson';
 import workflowManager from '@/services/WorkflowManager';
 
 const Tabs = Object.freeze({

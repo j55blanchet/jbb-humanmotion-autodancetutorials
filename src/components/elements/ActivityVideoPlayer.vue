@@ -38,7 +38,7 @@ import {
 import InstructionCarousel, { Instruction } from '@/components/elements/InstructionCarousel.vue';
 import PausingVideoPlayer from '@/components/elements/PausingVideoPlayer.vue';
 import WebcamBox from '@/components/elements/WebcamBox.vue';
-import { Activity, PauseInfo } from '@/model/VideoLesson';
+import { MiniLessonActivity, PauseInfo } from '@/model/MiniLesson';
 import Constants from '@/services/Constants';
 
 const ActivityPlayState = Object.freeze({
@@ -69,6 +69,7 @@ export default defineComponent({
     const activityFinished = computed(() => state.value === ActivityPlayState.ActivityEnded);
     const awaitingStart = computed(() => state.value === ActivityPlayState.AwaitingStart);
     const isPlaying = computed(() => state.value === ActivityPlayState.Playing);
+    const isPendingStart = computed(() => state.value === ActivityPlayState.PendingStart);
     const videoPlayer = ref(null as null | typeof PausingVideoPlayer);
     const webcamBox = ref(null as null | typeof WebcamBox);
     const videoTime = ref(0);
@@ -105,6 +106,7 @@ export default defineComponent({
       activityFinished,
       pauseInstructs,
       isPlaying,
+      isPendingStart,
 
       reset,
       startTime,
@@ -149,7 +151,7 @@ export default defineComponent({
       return instructs;
     },
     timedInstructions(): Instruction[] {
-      const mActivity = this.activity as unknown as Activity | null;
+      const mActivity = this.activity as unknown as MiniLessonActivity | null;
       const time = this.videoTime;
 
       if (!mActivity) return [];
@@ -175,7 +177,7 @@ export default defineComponent({
     play(delay?: number | undefined) {
       this.reset();
       const vidPlayer = this.videoPlayer;
-      const vidActivity = this.activity as Activity | null;
+      const vidActivity = this.activity as MiniLessonActivity | null;
       if (!vidActivity) return;
       if (!vidPlayer) {
         console.error('LEARNING SCREEN:: Aborting video playback: vidPlayer is null');

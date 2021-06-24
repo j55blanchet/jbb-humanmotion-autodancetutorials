@@ -11,7 +11,7 @@ export interface PauseInfo {
     manualResume?: boolean;
 }
 
-export interface Activity {
+export interface MiniLessonActivity {
   title: string;
   startTime: number;
   endTime: number;
@@ -28,7 +28,7 @@ export interface Activity {
   endInstruction?: string;
 }
 
-export default interface VideoLesson {
+export default interface MiniLesson {
   _id: string;
   source: 'builtin' | 'custom';
   header: {
@@ -36,14 +36,15 @@ export default interface VideoLesson {
     lessonTitle: string;
   };
   segmentBreaks: number[];
-  activities: Array<Activity>;
-  fps: number;
+  activities: Array<MiniLessonActivity>;
+
+  // fps: number;
   // poseScope: 'all' | 'upperBody';
   // eslint-disable-next-line
 }
 
 export class DanceUtils {
-  static shouldPauseBeforeActivity(activity: Activity) {
+  static shouldPauseBeforeActivity(activity: MiniLessonActivity) {
     return activity.userVisual !== 'none';
   }
 }

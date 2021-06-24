@@ -1,6 +1,6 @@
 import { DatabaseEntry } from '@/services/MotionDatabase';
 import Utils from '@/services/Utils';
-import VideoLesson from './VideoLesson';
+import MiniLesson from './MiniLesson';
 
 /**
  * Userflow.ts
@@ -20,7 +20,7 @@ export interface WorkflowStep {
     clipName: string;
     lessonId: string;
   };
-  videoLessonEmbedded?: VideoLesson;
+  videoLessonEmbedded?: MiniLesson;
   upload?: {
     identifier: string;
     prompt: string;

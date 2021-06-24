@@ -105,14 +105,14 @@
             </span>
             <span class="pagination-ellipses buttons has-addons" v-if="i===activeActivityIndex">
               <button
-                v-if="!needsStartWebcam && !$refs.activityVideoPlayer?.activityFinished"
+                v-if="!needsStartWebcam && !activityVideoPlayer?.activityFinished"
                 class="button"
                 :class="{
-                  'is-primary': ($refs.activityVideoPlayer?.awaitingStart ?? false),
-                  'is-loading': ($refs.activityVideoPlayer?.isPlaying ?? false),
+                  'is-primary': (activityVideoPlayer?.awaitingStart ?? false) || (activityVideoPlayer?.isPendingStart ?? false),
+                  'is-loading': (!activityVideoPlayer) || (activityVideoPlayer?.isPlaying ?? false) || (activityVideoPlayer?.isPendingStart ?? false),
                 }"
-                :disabled="($refs.activityVideoPlayer?.isPlaying ?? (!$refs.activityVideoPlayer?.awaitingStart) ?? false)"
-                @click="$refs.activityVideoPlayer.play()"
+                :disabled="!(activityVideoPlayer?.awaitingStart ?? false)"
+                @click="activityVideoPlayer.play()"
               >
                 <span class="icon"><i class="fas fa-play"></i></span>
               </button>
@@ -125,16 +125,16 @@
               </button>
               <button
                 class="button"
-                v-if="$refs.activityVideoPlayer?.activityFinished"
+                v-if="activityVideoPlayer?.activityFinished"
                 @click="repeat()"
               >
                 <div class="icon"><i class="fas fa-redo fa-flip-horizontal"></i></div>
               </button>
               <button
                 class="button"
-                v-if="$refs.activityVideoPlayer?.activityFinished && (hasNextActivity || enableCompleteLesson)"
+                v-if="activityVideoPlayer?.activityFinished && (hasNextActivity || enableCompleteLesson)"
                 :class="{
-                  'is-primary': (!hasNextActivity && enableCompleteLesson && $refs.activityVideoPlayer?.activityFinished) || ($refs.activityVideoPlayer?.activityFinished ?? false)
+                  'is-primary': (!hasNextActivity && enableCompleteLesson && activityVideoPlayer?.activityFinished) || (activityVideoPlayer?.activityFinished ?? false)
                 }"
                 @click="nextActivity"
               >
@@ -154,8 +154,8 @@
 </template>
 
 <script lang="ts">
-import VideoLesson, { Activity } from '@/model/VideoLesson';
-import { defineComponent } from 'vue';
+import MiniLesson, { MiniLessonActivity } from '@/model/MiniLesson';
+import { defineComponent, ref } from 'vue';
 import ActivityVideoPlayer from '@/components/elements/ActivityVideoPlayer.vue';
 import SegmentedProgressBar, { calculateProgressSegments, ProgressSegmentData } from '@/components/elements/SegmentedProgressBar.vue';
 import webcamProvider from '@/services/WebcamProvider';
@@ -176,6 +176,12 @@ export default defineComponent({
     maxVideoHeight: { type: String, default: 'none' },
     enableCompleteLesson: { type: Boolean, default: false },
   },
+  setup() {
+    const activityVideoPlayer = ref(null as null | typeof ActivityVideoPlayer);
+    return {
+      activityVideoPlayer,
+    };
+  },
   emits: ['lesson-completed', 'previous-activity', 'next-activity'],
   computed: {
     nearbyActivityIndices(): number[] {
@@ -191,13 +197,13 @@ export default defineComponent({
       return indices;
     },
     lesson() {
-      const lesson = (this.$props.videoLesson ?? null) as null | VideoLesson;
+      const lesson = (this.$props.videoLesson ?? null) as null | MiniLesson;
       return lesson;
     },
     activeActivity() {
-      const lesson = (this.$props.videoLesson ?? null) as null | VideoLesson;
+      const lesson = (this.$props.videoLesson ?? null) as null | MiniLesson;
       const activityIndex = this.activeActivityIndex as number;
-      const activity = lesson?.activities[activityIndex] ?? null as null | Activity;
+      const activity = lesson?.activities[activityIndex] ?? null as null | MiniLessonActivity;
       return activity;
     },
     progressSegments(): ProgressSegmentData[] {
