@@ -4,6 +4,10 @@
 
 export default class Utils {
 
+  static range(size: number, startAt = 0) {
+    return [...Array(size).keys()].map((i) => i + startAt);
+  }
+
   static sleep(secs: number): Promise<void> {
     return new Promise((res) => setTimeout(res, secs * 1000));
   }

@@ -123,10 +123,10 @@
                             class="input narrow-number-input"
                             :key="i"
                             type="number"
-                            v-model="lessonUnderConstruction.segmentBreaks[i]"
-                            :min="lessonUnderConstruction.segmentBreaks[i - 1] ?? 0"
+                            v-model.number="lessonUnderConstruction.segmentBreaks[i]"
+                            :min="0"
                             :step="0.01"
-                            :max="lessonUnderConstruction.segmentBreaks[i + 1] ?? motion.duration" />
+                            :max="motion.duration" />
                       </span>
                     </div>
                     <div class="block has-text-right">
@@ -134,7 +134,7 @@
                       <input
                           class="input narrow-number-input is-info"
                           type="number"
-                          v-model="newSegmentVal"
+                          v-model.number="newSegmentVal"
                           :min="0"
                           :step="0.01"
                           :max="motion.duration" />
@@ -214,6 +214,17 @@
                     <div class="control">
                       <input type="number" class="input narrow-number-input" v-model.number="activeActivity.practiceSpeed" min="0" step="0.01" :max="2">
                     </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">Focused Segments</label>
+                </div>
+                <div class="field-body">
+                  <div class="field is-narrow" v-for="(focused, i) in activeActivityFocusedSegments" :key="i">
+                    {{focused}}
                   </div>
                 </div>
               </div>
@@ -573,6 +584,18 @@ export default defineComponent({
     };
   },
   computed: {
+    activeActivityFocusedSegments: {
+      get() {
+        const segs: number[] = (this as any).activeActivity?.focusedSegments ?? [];
+        const segsSet = new Set(segs);
+        const boolArray = Utils.range((this as any).lessonUnderConstruction.segmentBreaks.length - 1)
+          .map((i) => segsSet.has(i));
+        return boolArray;
+      },
+      set(newValue: boolean[]) {
+        this.activeActivity.focusedSegments = newValue.map((val, i) => (val ? i : -i)).filter((i) => i >= 0);
+      },
+    },
     activeLessonSelection(): MiniLesson | null {
       return this.lessons[this.activeLessonSelectionIndex] ?? null;
     },
@@ -656,6 +679,12 @@ export default defineComponent({
     lessonUnderConstruction: {
       handler() {
         this.isDirty = true;
+      },
+      deep: true,
+    },
+    'lessonUnderConstruction.segmentBreaks': {
+      handler() {
+        this.sortSegmentBreaks();
       },
       deep: true,
     },
@@ -829,9 +858,12 @@ export default defineComponent({
       breakTime = +breakTime;
       if (Number.isNaN(breakTime) || breakTime < 0 || breakTime > this.motion.duration) return;
       this.lessonUnderConstruction.segmentBreaks.push(breakTime);
-      const newList = this.lessonUnderConstruction.segmentBreaks.sort();
+      const newList = this.lessonUnderConstruction.segmentBreaks.sort((a, b) => a - b);
       this.lessonUnderConstruction.segmentBreaks = newList;
       this.newSegmentVal = 0;
+    },
+    sortSegmentBreaks() {
+      this.lessonUnderConstruction.segmentBreaks = this.lessonUnderConstruction.segmentBreaks.sort((a, b) => a - b);
     },
     playDemo() {
       (this.$refs.activityVideoPlayer as any).play();

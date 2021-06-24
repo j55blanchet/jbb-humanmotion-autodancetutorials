@@ -23,9 +23,9 @@
     </div>
 
     <div class="is-overlay instructions-overlay mb-4">
-      <InstructionCarousel v-show="!activityFinished && timedInstructions.length > 0" :sizeClass="''" :instructions="timedInstructions" class="m-2"/>
-      <InstructionCarousel v-show="instructions.length > 0" :sizeClass="''" :instructions="instructions" class="m-2"/>
-      <InstructionCarousel v-show="activity?.staticInstruction" :sizeClass="''"  :instructions="[{id:0, text:activity?.staticInstruction}]" class="m-2"/>
+      <InstructionCarousel v-show="!activityFinished && timedInstructions.length > 0" :sizeClass="'is-medium'" :instructions="timedInstructions" class="m-2"/>
+      <InstructionCarousel v-show="instructions.length > 0" :sizeClass="'is-medium'" :instructions="instructions" class="m-2"/>
+      <InstructionCarousel v-show="activity?.staticInstruction" :sizeClass="'is-medium'"  :instructions="[{id:0, text:activity?.staticInstruction}]" class="m-2"/>
     </div>
   </div>
 </template>

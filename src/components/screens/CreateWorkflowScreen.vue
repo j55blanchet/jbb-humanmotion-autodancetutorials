@@ -253,7 +253,7 @@
               <div class="dropdown is-right" :class="{'is-active': isMoveStepDropdownActive}">
                 <div class="dropdown-trigger">
                   <button class="button" @click="isMoveStepDropdownActive = !isMoveStepDropdownActive">
-                    <span>Move Stage</span>
+                    <span>Move to stage&hellip;</span>
                     <span class="icon is-small" v-if="!isMoveStepDropdownActive"><i class="fas fa-angle-down" aria-hidden="true"></i></span>
                     <span class="icon is-small" v-if="isMoveStepDropdownActive"><i class="fas fa-angle-up" aria-hidden="true"></i></span>
                   </button>
@@ -311,6 +311,7 @@
               </header>
               <div class="card-content">
                 <div class="content" v-if="activeStepLesson.activities">
+                  <p>Activities</p>
                   <ol v-if="activeStepLesson.activities.length <= 6">
                     <li v-for="(activity, i) in activeStepLesson.activities" :key="i">
                       {{activity.title}}
@@ -393,6 +394,7 @@
               </header>
               <div class="card-content">
                 <div class="content">
+                  <p>Activities</p>
                   <ol v-if="activeStepLesson.activities.length <= 6">
                     <li v-for="(activity, i) in activeStepLesson.activities" :key="i">
                       {{activity.title}}
@@ -471,9 +473,9 @@ import Utils from '@/services/Utils';
 import workflowManager, { WorkflowManager } from '@/services/WorkflowManager';
 import WorkflowMenu from '@/components/screens/WorkflowMenu.vue';
 import {
-  computed, defineComponent, nextTick, ref, watch, watchEffect,
+  computed, defineComponent, nextTick, ref, watchEffect,
 } from 'vue';
-import motionDb, { createBlankLesson } from '@/services/MotionDatabase';
+import motionDb from '@/services/MotionDatabase';
 import VideoLesson from '@/model/MiniLesson';
 import CreateLessonScreen from '@/components/screens/CreateLessonScreen.vue';
 
@@ -784,17 +786,18 @@ export default defineComponent({
       workflow.stages[this.selectedStageIndex].steps = steps;
       this.selectedStepIndex += 1;
     },
-    moveStep(targetPhaseIndex: number) {
-      if (targetPhaseIndex === this.selectedStageIndex) return;
+    moveStep(targetStageIndex: number) {
+      if (targetStageIndex === this.selectedStageIndex) return;
       const stage = this.activeStage;
       const stepToMove = this.activeStep;
-      const targetPhase = this.activeWorkflow?.stages[targetPhaseIndex];
+      const targetPhase = this.activeWorkflow?.stages[targetStageIndex];
       if (!stage || !stepToMove || !targetPhase) return;
       const { steps } = stage;
       steps.splice(this.selectedStepIndex, 1);
       stage.steps = steps;
       targetPhase.steps.push(stepToMove);
-      this.selectedStepIndex = Math.min(steps.length - 1, this.selectedStepIndex);
+      this.selectedStageIndex = targetStageIndex;
+      this.selectedStepIndex = this.activeStage?.steps.length ?? 0;
       this.isMoveStepDropdownActive = false;
     },
     deleteStep() {

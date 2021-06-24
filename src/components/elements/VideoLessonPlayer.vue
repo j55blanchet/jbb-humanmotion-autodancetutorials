@@ -159,10 +159,7 @@ import { defineComponent, ref } from 'vue';
 import ActivityVideoPlayer from '@/components/elements/ActivityVideoPlayer.vue';
 import SegmentedProgressBar, { calculateProgressSegments, ProgressSegmentData } from '@/components/elements/SegmentedProgressBar.vue';
 import webcamProvider from '@/services/WebcamProvider';
-
-function range(size: number, startAt = 0) {
-  return [...Array(size).keys()].map((i) => i + startAt);
-}
+import Utils from '@/services/Utils';
 
 export default defineComponent({
   name: 'VideoLessonPlayer',
@@ -192,7 +189,7 @@ export default defineComponent({
       const count = (maxIndex + 1) - minIndex;
       let indices: number[] = [];
       if (minIndex > 0) indices = indices.concat([0, -1]);
-      indices = indices.concat(range(count, minIndex));
+      indices = indices.concat(Utils.range(count, minIndex));
       if (maxIndex < maxActivityIndex) indices = indices.concat([-1, maxActivityIndex]);
       return indices;
     },
