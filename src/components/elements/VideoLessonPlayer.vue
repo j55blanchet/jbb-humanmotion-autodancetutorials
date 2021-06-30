@@ -128,21 +128,22 @@
                 v-if="activityVideoPlayer?.activityFinished"
                 @click="repeat()"
               >
-                <div class="icon"><i class="fas fa-redo fa-flip-horizontal"></i></div>
+                <span class="icon"><i class="fas fa-redo fa-flip-horizontal"></i></span>
+                <span>Repeat</span>
               </button>
               <button
-                class="button"
-                v-if="activityVideoPlayer?.activityFinished && (hasNextActivity || enableCompleteLesson)"
-                :class="{
-                  'is-primary': (!hasNextActivity && enableCompleteLesson && activityVideoPlayer?.activityFinished) || (activityVideoPlayer?.activityFinished ?? false)
-                }"
+                class="button is-primary"
+                v-if="activityVideoPlayer?.activityFinished && hasNextActivity"
                 @click="nextActivity"
               >
-                <span v-if="hasNextActivity || !enableCompleteLesson" class="icon"><i class="fas fa-step-forward"></i></span>
-                <span v-else>
-                  <span class="icon"><i class="fas fa-check"></i></span>
-                  <span>Done</span>
-                </span>
+                <span>Next </span>
+                <span class="icon"><i class="fas fa-step-forward"></i></span>
+              </button>
+              <button class="button is-primary"
+                    v-if="activityVideoPlayer?.activityFinished && !hasNextActivity && enableCompleteLesson"
+                    @click="completeLesson">
+                <span class="icon"><i class="fas fa-check"></i></span>
+                <span>Done</span>
               </button>
             </span>
           </li>
@@ -229,7 +230,9 @@ export default defineComponent({
     playActivity() { (this.$refs.activityVideoPlayer as any).play(); },
     nextActivity() {
       if (this.hasNextActivity) this.activeActivityIndex += 1;
-      else this.$emit('lesson-completed');
+    },
+    completeLesson() {
+      this.$emit('lesson-completed');
     },
     gotoActivity(i: number) {
       this.activeActivityIndex = i;

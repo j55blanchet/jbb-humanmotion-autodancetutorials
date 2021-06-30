@@ -1,6 +1,8 @@
 <template>
 <div class="app">
 
+  <LayoutTest v-if="state === State.LayoutTest" />
+
   <MainMenu
         v-show="state === State.MainMenu"
         @pose-drawer-selected="poseDrawerSelected"
@@ -119,6 +121,7 @@ import { DatabaseEntry } from '@/services/MotionDatabase';
 import WorkflowMenu from '@/components/screens/WorkflowMenu.vue';
 import CreateWorkflowScreen from '@/components/screens/CreateWorkflowScreen.vue';
 import VideoLessonPlayer from '@/components/elements/VideoLessonPlayer.vue';
+import LayoutTest from '@/components/elements/LayoutTest.vue';
 import CameraSurface from './components/CameraSurface.vue';
 import OnboardingUI from './components/OnboardingUI.vue';
 import MainMenu from './components/screens/MainMenu.vue';
@@ -132,6 +135,7 @@ import workflowManager from './services/WorkflowManager';
 import optionsManager from './services/OptionsManager';
 
 const State = {
+  LayoutTest: 'LayoutTest',
   MainMenu: 'MainMenu',
   PromptStartWebcam: 'PromptStartWebcam',
   StartingWebcam: 'StartingWebcam',
@@ -150,6 +154,7 @@ export default defineComponent({
     CameraSurface,
     OnboardingUI,
     MainMenu,
+    LayoutTest,
     WorkflowMenu,
     // LearningScreen,
     WebcamPromptCard,
@@ -159,7 +164,7 @@ export default defineComponent({
     VideoLessonPlayer,
   },
   setup() {
-    const state = ref(State.MainMenu);
+    const state = ref(State.LayoutTest);
     const cameraSurface = ref(null as typeof CameraSurface | null);
     const hasCompletedOnboarding = ref(false);
 

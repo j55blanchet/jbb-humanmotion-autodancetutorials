@@ -1,21 +1,17 @@
 <template>
   <div
-    class="is-relative video-player-container"
-    :style="{
-      'max-height': maxHeight
-    }"
+    class="video-player-container"
   >
     <video
       :src="videoUrl"
       :style="{
-        'max-height': maxHeight,
         opacity: '' + videoOpacity,
       }"
       ref="videoElement"
       @loadedmetadata="scheduleCanvasResizing"
       @ended="endReported = true"
     ></video>
-    <canvas class="is-overlay" ref="canvasElement"> </canvas>
+    <canvas class="is-overlay" ref="canvasElement" v-show="drawPoseLandmarks"></canvas>
   </div>
 </template>
 
@@ -33,6 +29,7 @@ import {
   nextTick,
   Ref,
   watch,
+  resolveTransitionHooks,
 } from 'vue';
 
 function onResize(canvasE: HTMLCanvasElement, videoE: HTMLVideoElement, modified: Ref<boolean>) {
@@ -127,7 +124,6 @@ export default defineComponent({
   name: 'VideoPlayer',
   props: {
     videoBaseUrl: String,
-    maxHeight: String,
     drawPoseLandmarks: {
       type: Boolean,
       default: false,
@@ -234,16 +230,19 @@ export default defineComponent({
       drawCtx.clearRect(0, 0, canvasE.width, canvasE.height);
     }
     function drawPose(lms: Landmark[]) {
+      const videoE = videoElement.value;
+      const sourceAR = (videoE?.videoHeight && videoE.videoHeight) ? videoE.videoWidth / videoE.videoHeight : 1;
       const drawCtx = canvasCtx.value;
       if (!drawCtx) return;
       setDrawStyle.value(drawCtx);
       DrawPose(drawCtx, lms, {
         emphasizedJoints: emphasizedJoints.value as number[],
         emphasisStroke: emphasizedJointStyle.value,
+        sourceAspectRatio: sourceAR,
       });
     }
 
-    watch([videoBaseUrl, drawPoseLandmarks], async () => {
+    const retieveClearPoseFile = async () => {
       if (!drawPoseLandmarks.value) {
         poses.value = [];
         return;
@@ -254,7 +253,11 @@ export default defineComponent({
       } catch (e) {
         console.error("Couldn't get poses: ", e);
       }
-    });
+    };
+
+    watch([videoBaseUrl, drawPoseLandmarks], retieveClearPoseFile);
+    onMounted(retieveClearPoseFile);
+
     watch([canvasModified, currentPose, drawPoseLandmarks], () => {
       canvasModified.value = false;
       clearDrawing();
@@ -262,6 +265,14 @@ export default defineComponent({
       if (drawPoseLandmarks.value) {
         drawPose(currentPose.value as any);
       }
+    });
+
+    let resizeTimerId = -1;
+    onMounted(() => {
+      resizeTimerId = window.setInterval(resizeCanvas, 500);
+    });
+    onBeforeUnmount(() => {
+      clearInterval(resizeTimerId);
     });
 
     return {
@@ -301,15 +312,25 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.video-player-container {
+.video-player-container, .canvas-layer {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+
   canvas {
     margin: auto;
   }
 
   video {
+    flex: 1 1 auto;
     border-radius: 0.25rem;
     display: block;
     margin: auto;
+    height: auto;
+    max-height: 100%;
   }
 }
 </style>

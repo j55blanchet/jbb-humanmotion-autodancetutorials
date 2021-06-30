@@ -1,5 +1,5 @@
 <template>
-  <div class="is-relative" :style="{'max-height': maxHeight}">
+  <div class="is-relative" :style="{'max-height': 'min(100%, ' + maxHeight + ')'}">
     <VideoPlayer
       ref="videoPlayer"
       :videoBaseUrl="videoSrc"
