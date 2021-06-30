@@ -1,7 +1,7 @@
 <template>
   <div class="layout-test">
-    <VideoPlayer
-      :videoBaseUrl="'videos/derulo.mp4'"
+    <PausingVideoPlayer
+      :videoSrc="'videos/derulo.mp4'"
       :drawPoseLandmarks="true"
     />
   </div>
@@ -9,11 +9,11 @@
 
 <script>
 import { defineComponent } from 'vue';
-import VideoPlayer from '@/components/elements/VideoPlayer.vue';
+import PausingVideoPlayer from '@/components/elements/PausingVideoPlayer.vue';
 
 export default defineComponent({
   components: {
-    VideoPlayer,
+    PausingVideoPlayer,
   },
 
 });
@@ -26,8 +26,8 @@ export default defineComponent({
   padding: 0;
   // margin: 0 auto;
 
-  // width: 100vw;
-  // height: calc(100vh - 32px);
+  width: 100vw;
+  height: calc(100vh - 32px);
 
   overflow: hidden;
   box-sizing: border-box;

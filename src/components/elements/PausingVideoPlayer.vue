@@ -1,18 +1,15 @@
 <template>
-  <div class="is-relative" :style="{'max-height': 'min(100%, ' + maxHeight + ')'}">
-    <VideoPlayer
-      ref="videoPlayer"
-      :videoBaseUrl="videoSrc"
-      @progress="onProgress"
-      @playback-completed="onSegmentPlaybackCompleted"
-      :videoOpacity="videoOpacity"
-      :drawPoseLandmarks="drawPoseLandmarks"
-      :setDrawStyle="setDrawStyle"
-      :maxHeight="maxHeight"
-      :emphasizedJoints="emphasizedJoints"
-      :emphasizedJointStyle="emphasizedJointStyle"
-      />
-  </div>
+  <VideoPlayer
+        ref="videoPlayer"
+        :videoBaseUrl="videoSrc"
+        @progress="onProgress"
+        @playback-completed="onSegmentPlaybackCompleted"
+        :videoOpacity="videoOpacity"
+        :drawPoseLandmarks="drawPoseLandmarks"
+        :setDrawStyle="setDrawStyle"
+        :emphasizedJoints="emphasizedJoints"
+        :emphasizedJointStyle="emphasizedJointStyle"
+        />
 </template>
 
 <script lang="ts">
@@ -101,9 +98,6 @@ export default defineComponent({
     emphasizedJointStyle: {
       type: String,
       default: 'red',
-    },
-    maxHeight: {
-      type: String,
     },
   },
   emits: ['playback-completed', 'progress', 'pause-hit', 'pause-end'],
