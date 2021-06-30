@@ -51,13 +51,6 @@
     <button class="modal-close is-large" aria-label="close" @click="goHome"></button>
   </div>
 
-  <div id="aboveSurface" class="pb-4 pt-4">
-     <span id="topbarLeft"></span>
-     <span class="spacer"></span>
-     <span id="topbarCenter"></span>
-     <span class="spacer"></span>
-     <span id="topbarRight"></span>
-  </div>
   <CameraSurface
     ref="cameraSurface"
     @tracking-attained="onTrackingAttained()"
@@ -108,7 +101,6 @@
     </template>
 
   </CameraSurface>
-  <div id="belowSurface"></div>
 </div>
 </template>
 
@@ -164,7 +156,7 @@ export default defineComponent({
     VideoLessonPlayer,
   },
   setup() {
-    const state = ref(State.LayoutTest);
+    const state = ref(State.MainMenu);
     const cameraSurface = ref(null as typeof CameraSurface | null);
     const hasCompletedOnboarding = ref(false);
 

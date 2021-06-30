@@ -1,9 +1,8 @@
 <template>
-  <div class="is-relative webcam-box">
+  <div class="webcam-box-container">
     <video
       ref="videoE" muted disablePictureInPicture
       :style="{
-        'max-height': maxHeight,
         'max-width': '100%',
       }"
     ></video>
@@ -109,17 +108,25 @@ export default defineComponent({
 
 <style lang="scss">
 
-.webcam-box {
+.webcam-box-container {
 
-  max-width: 100%;
-  max-height: 100%;
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+
+  // max-width: 100%;
 
   video {
-    background: rgba(128, 128, 128, 0.5);
-    width: 1280px;
-    // height: 720px;
+    background: rgba(128, 128, 128, 0.2);
+    flex: 1 1 auto;
     max-height: 100%;
-    max-width: 100%;
+    // width: 1280px;
+    // height: 720px;
+    // max-height: 100%;
+    // max-width: 100%;
 
     transform: scaleX(-1);
   }

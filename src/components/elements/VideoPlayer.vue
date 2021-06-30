@@ -29,7 +29,6 @@ import {
   nextTick,
   Ref,
   watch,
-  resolveTransitionHooks,
 } from 'vue';
 
 function onResize(canvasE: HTMLCanvasElement, videoE: HTMLVideoElement, modified: Ref<boolean>) {

@@ -1,17 +1,20 @@
 <template>
   <div class="activity-video-player">
 
-    <div v-show="showingWebcam" class="is-100percent-v ">
-      <WebcamBox ref="webcamBox" :maxHeight="maxHeight" :showStartWebcamButton="false"/>
-    </div>
+    <WebcamBox
+      ref="webcamBox"
+      class="is-flex-grow-1 is-flex-shrink-1" style="height:0"
+      :showStartWebcamButton="false"
+      v-show="showingWebcam"/>
 
     <div :class="{
           'is-overlay': showingWebcam
-        }" class="is-100percent-v">
+        }" class="is-flex-grow-1 is-flex-shrink-1" :style="{
+          height: showingWebcam ? '100%' : 0,
+        }">
       <PausingVideoPlayer
         :videoSrc="motion?.videoSrc"
         ref="videoPlayer"
-        :maxHeight="maxHeight"
         :drawPoseLandmarks="activity?.demoVisual === 'skeleton'"
         :videoOpacity="activity?.demoVisual === 'video' ? 1 : 0"
         :emphasizedJoints="emphasizedJoints"
@@ -53,7 +56,6 @@ export default defineComponent({
   emits: ['progress', 'activityEnded'],
   props: {
     motion: { type: Object },
-    lesson: { type: Object },
     activity: { type: Object },
     defaultPauseDuration: { type: Number, default: 1.5 },
     maxHeight: { type: String, default: '400px' },
@@ -63,8 +65,8 @@ export default defineComponent({
     InstructionCarousel,
     WebcamBox,
   },
-  setup(props, { emit }) {
-    const { motion, lesson, activity } = toRefs(props);
+  setup(props) {
+    const { activity } = toRefs(props);
     const state = ref(ActivityPlayState.AwaitingStart);
     const activityFinished = computed(() => state.value === ActivityPlayState.ActivityEnded);
     const awaitingStart = computed(() => state.value === ActivityPlayState.AwaitingStart);
@@ -209,8 +211,13 @@ export default defineComponent({
 <style lang="scss">
 
 .activity-video-player {
-  // background: black;
   position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: stretch;
+  align-items: stretch;
+  height: 100%;
+  width: 100%;
 }
 
 .instructions-overlay {

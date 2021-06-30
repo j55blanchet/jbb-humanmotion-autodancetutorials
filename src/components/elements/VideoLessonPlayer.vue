@@ -1,102 +1,27 @@
 <template>
   <div class="video-lesson-player">
-    <div class="columns is-flex-grow-1 is-flex-shrink-1">
-      <!-- <div class="column is-narrow" v-if="videoLesson">
-        <div class="tile is-ancestor is-vertical" style="overflow-y:auto;" :style="{
-              'max-height':maxVideoHeight
-            }">
-          <div class="tile is-child box has-text-centered m-4"
-               v-for="(activity, i) in videoLesson.activities" :key="i"
-               :class="{'is-active': activeActivityIndex === i}"
-          >
-            <p class="subtitle" v-text="activity.title"></p>
-          </div>
-        </div> -->
-        <!-- <nav class="panel" :style="{
-              'max-height':maxVideoHeight,
-              'overflow-y': 'scroll',
-            }"
-            v-if="videoLesson">
-          <div class="panel-heading">Activities</div>
-          <a class="panel-block is-size-7"
-            v-for="(activity, i) in videoLesson.activities" :key="i"
-            :class="{'is-active': activeActivityIndex === i}"
-            @click="gotoActivity(i)"
-            >
-            <strong class="panel-icon">{{i+1}}&nbsp;</strong>&nbsp;{{activity.title}}
-          </a>
-        </nav>
-      </div> -->
-      <div class="column">
-        <ActivityVideoPlayer
-          class="block"
-          ref="activityVideoPlayer"
-          :motion="videoEntry"
-          :lesson="videoLesson"
-          :activity="activeActivity"
-          :maxHeight="maxVideoHeight"
-          @progress="onProgress"
-        />
-      </div>
-
+    <div class="video-container">
+      <ActivityVideoPlayer
+        ref="activityVideoPlayer"
+        :motion="videoEntry"
+        :activity="activeActivity"
+        @progress="onProgress"
+      />
     </div>
     <div class="is-flex-grow-0 is-flex-shrink-0">
+      <div class="block"></div>
       <SegmentedProgressBar
         class="block"
         :segments="progressSegments"
         :progress="activityProgress"
       />
-
-      <!-- <div class="buttons is-centered has-addons">
-        <button
-          v-if="!needsStartWebcam && !$refs.activityVideoPlayer?.activityFinished"
-          class="button"
-          :class="{
-            'is-primary': ($refs.activityVideoPlayer?.awaitingStart ?? false),
-            'is-loading': ($refs.activityVideoPlayer?.isPlaying ?? false),
-          }"
-          :disabled="($refs.activityVideoPlayer?.isPlaying ?? (!$refs.activityVideoPlayer?.awaitingStart) ?? false)"
-          @click="$refs.activityVideoPlayer.play()"
-        >
-          <span class="icon"><i class="fas fa-play"></i></span>
-        </button>
-        <button
-          class="button is-primary"
-          v-if="needsStartWebcam"
-          :class="{'is-loading': webcamStatus==='loading'}"
-          @click="startWebcam">
-          Start Webcam
-        </button>
-        <button
-          class="button"
-          v-if="$refs.activityVideoPlayer?.activityFinished"
-          @click="repeat()"
-        >
-          <div class="icon"><i class="fas fa-redo fa-flip-horizontal"></i></div>
-        </button>
-        <button
-          class="button"
-          v-if="$refs.activityVideoPlayer?.activityFinished && (hasNextActivity || enableCompleteLesson)"
-          :class="{
-            'is-primary': (!hasNextActivity && enableCompleteLesson && $refs.activityVideoPlayer?.activityFinished) || ($refs.activityVideoPlayer?.activityFinished ?? false)
-          }"
-          @click="nextActivity"
-        >
-          <span v-if="hasNextActivity || !enableCompleteLesson" class="icon"><i class="fas fa-step-forward"></i></span>
-          <span v-else>
-            <span class="icon"><i class="fas fa-check"></i></span>
-            <span>Done</span>
-          </span>
-        </button>
-      </div> -->
-
       <nav class="pagination is-centered" v-if="videoLesson">
         <div class="pagination-list" style="flex-wrap:nowrap;max-width:calc(100vw - 2.5rem);">
           <li  v-for="(i, index) in nearbyActivityIndices" :key="index">
             <a class="pagination-link"
                :class="{'is-current': activeActivityIndex === i}"
                @click="gotoActivity(i)"
-               disabled
+
                v-if="i >= 0 && i !== activeActivityIndex">
                {{i + 1}}
             </a>
@@ -149,7 +74,6 @@
           </li>
         </div>
       </nav>
-
     </div>
   </div>
 </template>
@@ -171,7 +95,7 @@ export default defineComponent({
   props: {
     videoEntry: { type: Object },
     videoLesson: { type: Object },
-    maxVideoHeight: { type: String, default: 'none' },
+    // maxVideoHeight: { type: String, default: 'none' },
     enableCompleteLesson: { type: Boolean, default: false },
   },
   setup() {
@@ -254,7 +178,18 @@ export default defineComponent({
 .video-lesson-player {
   display: flex;
   flex-flow: column;
-  max-height: 100%;
-  max-width: 100%;
+  height: 100%;
+  width: 100%;
+
+  .video-container {
+    flex: 1 1 0;
+    // background: lightblue;
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    height: 0px;
+  }
 }
 </style>

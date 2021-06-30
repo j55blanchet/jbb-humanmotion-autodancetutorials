@@ -1,7 +1,7 @@
 <template>
   <transition-group name="slide-fade" mode="out-in" tag="div" class="instructionCarousel">
     <p
-      class="tag"
+      class="flextag"
       :class="[sizeClass, tagClass]"
       v-for="inst in instructions"
       :key="inst.id">{{inst.text}}</p>
@@ -41,6 +41,16 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-flow: row wrap;
+  width: 100%;
+
+  .flextag {
+    border-radius: 0.25rem;
+    text-align: center;
+    border: 1px solid black;
+    background: #CCC;
+    padding: 0.25rem 0.5rem;
+  }
 }
 
 /* Enter and leave animations can use different */
