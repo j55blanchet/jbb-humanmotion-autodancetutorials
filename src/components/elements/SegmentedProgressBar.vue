@@ -29,10 +29,11 @@ export function calculateProgressSegments(lesson: MiniLesson, activity: MiniLess
   const segs = lesson.segmentBreaks.map((timestamp, i) => {
     let segData = undefined as undefined | ProgressSegmentData;
     if (last !== undefined) {
+      const doesOverlap = Math.max(last, activity.startTime) < Math.min(timestamp, activity.endTime);
       segData = {
         min: last,
         max: timestamp,
-        enabled: activity?.focusedSegments ? activity.focusedSegments.indexOf(i - 1) !== -1 : true,
+        enabled: activity?.focusedSegments ? activity.focusedSegments.indexOf(i - 1) !== -1 : doesOverlap,
       };
     }
     last = timestamp;

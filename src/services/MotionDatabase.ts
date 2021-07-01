@@ -42,12 +42,12 @@ export class MotionDatabase {
     });
 
     console.log(`Motion database: loaded ${this.motionsMap.size} videos`);
-    defaultLessons.forEach((lesson) => {
-      this.upsertLesson({
-        source: 'builtin',
-        ...lesson,
-      } as MiniLesson);
-    });
+    // defaultLessons.forEach((lesson) => {
+    //   this.upsertLesson({
+    //     source: 'builtin',
+    //     ...lesson,
+    //   } as MiniLesson);
+    // });
     console.log(`Motion database: loaded ${defaultLessons.length} built-in lessons`);
 
     const customLessonCount = this.loadCustomLessons();

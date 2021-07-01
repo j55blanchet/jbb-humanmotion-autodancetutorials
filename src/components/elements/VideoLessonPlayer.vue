@@ -18,13 +18,16 @@
       <nav class="pagination is-centered" v-if="videoLesson">
         <div class="pagination-list" style="flex-wrap:nowrap;max-width:calc(100vw - 2.5rem);">
           <li  v-for="(i, index) in nearbyActivityIndices" :key="index">
-            <a class="pagination-link"
-               :class="{'is-current': activeActivityIndex === i}"
-               @click="gotoActivity(i)"
-
-               v-if="i >= 0 && i !== activeActivityIndex">
-               {{i + 1}}
-            </a>
+            <span class="pagination-ellipses">
+              <button
+                class="button"
+                :class="{'is-primary': activityVideoPlayer?.activityFinished && activeActivityIndex + 1 === i}"
+                @click="gotoActivity(i)"
+                v-if="i >= 0 && i !== activeActivityIndex">
+                <span class="icon" v-if="activityVideoPlayer?.activityFinished && activeActivityIndex + 1 === i"><i class="fas fa-step-forward"></i></span>
+                <span><strong>{{i+1}}</strong>&nbsp;|&nbsp;<span>{{activities[i]?.title}}</span></span>
+              </button>
+            </span>
             <span class="pagination-ellipses" v-if="i<0">
               &hellip;
             </span>
@@ -39,6 +42,8 @@
                 :disabled="!(activityVideoPlayer?.awaitingStart ?? false)"
                 @click="activityVideoPlayer.play()"
               >
+                <strong>{{i+1}}</strong>&nbsp;|&nbsp;
+                <span>{{activeActivity?.title}}</span>
                 <span class="icon"><i class="fas fa-play"></i></span>
               </button>
               <button
@@ -53,17 +58,19 @@
                 v-if="activityVideoPlayer?.activityFinished"
                 @click="repeat()"
               >
+                <strong>{{i+1}}</strong>&nbsp;|&nbsp;
+                <span>{{activeActivity?.title}}</span>
                 <span class="icon"><i class="fas fa-redo fa-flip-horizontal"></i></span>
-                <span>Repeat</span>
+                <!-- <span>Repeat</span> -->
               </button>
-              <button
+              <!-- <button
                 class="button is-primary"
                 v-if="activityVideoPlayer?.activityFinished && hasNextActivity"
                 @click="nextActivity"
               >
                 <span>Next </span>
                 <span class="icon"><i class="fas fa-step-forward"></i></span>
-              </button>
+              </button> -->
               <button class="button is-primary"
                     v-if="activityVideoPlayer?.activityFinished && !hasNextActivity && enableCompleteLesson"
                     @click="completeLesson">
@@ -80,7 +87,7 @@
 
 <script lang="ts">
 import MiniLesson, { MiniLessonActivity } from '@/model/MiniLesson';
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, nextTick } from 'vue';
 import ActivityVideoPlayer from '@/components/elements/ActivityVideoPlayer.vue';
 import SegmentedProgressBar, { calculateProgressSegments, ProgressSegmentData } from '@/components/elements/SegmentedProgressBar.vue';
 import webcamProvider from '@/services/WebcamProvider';
@@ -122,6 +129,9 @@ export default defineComponent({
       const lesson = (this.$props.videoLesson ?? null) as null | MiniLesson;
       return lesson;
     },
+    activities(): MiniLessonActivity[] {
+      return (this.lesson as any)?.activities ?? [];
+    },
     activeActivity() {
       const lesson = (this.$props.videoLesson ?? null) as null | MiniLesson;
       const activityIndex = this.activeActivityIndex as number;
@@ -154,6 +164,9 @@ export default defineComponent({
     playActivity() { (this.$refs.activityVideoPlayer as any).play(); },
     nextActivity() {
       if (this.hasNextActivity) this.activeActivityIndex += 1;
+      nextTick(() => {
+        if (!this.needsStartWebcam) this.playActivity();
+      });
     },
     completeLesson() {
       this.$emit('lesson-completed');
