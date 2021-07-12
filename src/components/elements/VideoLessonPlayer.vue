@@ -71,9 +71,11 @@
                 <span>Next </span>
                 <span class="icon"><i class="fas fa-step-forward"></i></span>
               </button> -->
-              <button class="button is-primary"
-                    v-if="activityVideoPlayer?.activityFinished && !hasNextActivity && enableCompleteLesson"
-                    @click="completeLesson">
+            </span>
+          </li>
+          <li>
+            <span class="pagination-ellipses" v-if="activityVideoPlayer?.activityFinished && !hasNextActivity && enableCompleteLesson">
+              <button class="button is-primary" @click="completeLesson">
                 <span class="icon"><i class="fas fa-check"></i></span>
                 <span>Done</span>
               </button>

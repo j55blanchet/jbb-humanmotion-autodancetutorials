@@ -2,7 +2,7 @@
   {
     "title": "Savage Love",
     "clipName": "derulo",
-    "clipPath": "derulo.mp4",
+    "clipPath": "tiktok/derulo.mp4",
     "frameCount": 527,
     "fps": 29.194436229205177,
     "duration": 18.051384718051384,
@@ -14,12 +14,12 @@
     "landmarkScope": [
       "pose"
     ],
-    "thumbnailSrc": "derulo.jpg"
+    "thumbnailSrc": "tiktok/derulo.jpg"
   },
   {
     "title": "It's a Fit",
     "clipName": "itsafit",
-    "clipPath": "itsafit.mp4",
+    "clipPath": "tiktok/itsafit.mp4",
     "frameCount": 414,
     "fps": 29.97,
     "duration": 13.813813813813814,
@@ -31,12 +31,12 @@
     "landmarkScope": [
       "pose"
     ],
-    "thumbnailSrc": "itsafit.jpg"
+    "thumbnailSrc": "tiktok/itsafit.jpg"
   },
   {
     "title": "Renegade",
     "clipName": "renegade",
-    "clipPath": "renegade.mp4",
+    "clipPath": "tiktok/renegade.mp4",
     "frameCount": 367,
     "fps": 30.0,
     "duration": 12.233333333333333,
@@ -48,12 +48,12 @@
     "landmarkScope": [
       "pose"
     ],
-    "thumbnailSrc": "renegade.jpg"
+    "thumbnailSrc": "tiktok/renegade.jpg"
   },
   {
     "title": "Unhhunh",
     "clipName": "unhhunh",
-    "clipPath": "unhhunh.mp4",
+    "clipPath": "tiktok/unhhunh.mp4",
     "frameCount": 578,
     "fps": 30.0,
     "duration": 19.266666666666666,
@@ -65,7 +65,7 @@
     "landmarkScope": [
       "pose"
     ],
-    "thumbnailSrc": "unhhunh.jpg"
+    "thumbnailSrc": "tiktok/unhhunh.jpg"
   },
   {
     "title": "ASL: Coconut",
@@ -534,5 +534,124 @@
       "face"
     ],
     "thumbnailSrc": "ASL/Cluster4/FLOWER.jpg"
+  },
+  {
+    "title": "sayso",
+    "clipName": "sayso",
+    "clipPath": "tiktok/sayso.mp4",
+    "frameCount": 1733,
+    "fps": 29.729858006904372,
+    "duration": 58.29156666666667,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 58.29156666666667,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/sayso.jpg"
+  },
+  {
+    "title": "ahichallenge",
+    "clipName": "ahichallenge",
+    "clipPath": "tiktok/ahichallenge.mp4",
+    "frameCount": 415,
+    "fps": 29.02097902097902,
+    "duration": 14.3,
+    "width": 720,
+    "height": 1280,
+    "startTime": 0,
+    "endTime": 14.3,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/ahichallenge.jpg"
+  },
+  {
+    "title": "getup",
+    "clipName": "getup",
+    "clipPath": "tiktok/getup.mp4",
+    "frameCount": 527,
+    "fps": 29.22365988909427,
+    "duration": 18.03333333333333,
+    "width": 720,
+    "height": 1280,
+    "startTime": 0,
+    "endTime": 18.03333333333333,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/getup.jpg"
+  },
+  {
+    "title": "blindinglights",
+    "clipName": "blindinglights",
+    "clipPath": "tiktok/blindinglights.mp4",
+    "frameCount": 458,
+    "fps": 30.0,
+    "duration": 15.266666666666667,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 15.266666666666667,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/blindinglights.jpg"
+  },
+  {
+    "title": "supalonely",
+    "clipName": "supalonely",
+    "clipPath": "tiktok/supalonely.mp4",
+    "frameCount": 637,
+    "fps": 29.97002997002997,
+    "duration": 21.254566666666665,
+    "width": 720,
+    "height": 1280,
+    "startTime": 0,
+    "endTime": 21.254566666666665,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/supalonely.jpg"
+  },
+  {
+    "title": "debbieallenchallenge",
+    "clipName": "debbieallenchallenge",
+    "clipPath": "tiktok/debbieallenchallenge.mp4",
+    "frameCount": 922,
+    "fps": 30.0,
+    "duration": 30.733333333333334,
+    "width": 576,
+    "height": 1024,
+    "startTime": 0,
+    "endTime": 30.733333333333334,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/debbieallenchallenge.jpg"
+  },
+  {
+    "title": "thegitup",
+    "clipName": "thegitup",
+    "clipPath": "tiktok/thegitup.mp4",
+    "frameCount": 543,
+    "fps": 29.97002997002997,
+    "duration": 18.118100000000002,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 18.118100000000002,
+    "poseUpperBodyOnly": false,
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/thegitup.jpg"
   }
 ]
