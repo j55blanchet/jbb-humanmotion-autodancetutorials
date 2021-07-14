@@ -113,7 +113,7 @@ export default defineComponent({
       activityVideoPlayer,
     };
   },
-  emits: ['lesson-completed', 'previous-activity', 'next-activity'],
+  emits: ['lesson-completed', 'activity-changed'],
   computed: {
     nearbyActivityIndices(): number[] {
       const margin = 1;
@@ -183,6 +183,11 @@ export default defineComponent({
       const vidPlayer = (this.$refs.activityVideoPlayer as any);
       vidPlayer.reset();
       vidPlayer.play();
+    },
+  },
+  watch: {
+    activeActivityIndex(newVal: number) {
+      this.$emit('activity-changed', newVal);
     },
   },
 });

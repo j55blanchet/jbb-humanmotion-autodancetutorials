@@ -406,8 +406,9 @@
               </div>
             </div>
           </div>
-          <div class="column is-half is-one-third-widescreen is-one-quarter-fullhd">
 
+          <div class="column is-half is-one-third-widescreen is-one-quarter-fullhd"
+               v-if="activePause || activeTimedInstruction">
             <div v-if="activePause" class="box">
               <h6 class="title is-5">Pause {{activePauseIndex + 1}} Details</h6>
               <div class="field is-horizontal">
@@ -512,6 +513,19 @@
             <div class="box">
               <h5 class="title is-5">Demo</h5>
 
+              <div class="image is-square">
+                <!-- <div style="height:400px;width:100%;"> -->
+                  <VideoLessonPlayer
+                   class="is-overlay"
+                    ref="videoLessonPlayer"
+                    @activity-changed="selectActivity"
+                    :videoEntry="motion"
+                    :videoLesson="lessonUnderConstruction"
+                    :enableCompleteLesson="false"
+                  />
+                <!-- </div> -->
+              </div>
+            <!--
               <ActivityVideoPlayer
                 class="block"
                 ref="activityVideoPlayer"
@@ -531,7 +545,7 @@
                 <button class="button is-primary" :disabled="!($refs.activityVideoPlayer?.awaitingStart ?? false)" @click="playDemo">Play Activity</button>
                 <button class="button" :disabled="!($refs.activityVideoPlayer?.activityFinished ?? false)" @click="$refs.activityVideoPlayer?.reset()">Reset</button>
                 <button class="button" :disabled="!hasNextActivity" @click="activeActivityIndex += 1">&gt;</button>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -551,6 +565,7 @@ import {
 } from 'vue';
 
 import Constants from '@/services/Constants';
+import VideoLessonPlayer from '@/components/elements/VideoLessonPlayer.vue';
 import ActivityVideoPlayer from '@/components/elements/ActivityVideoPlayer.vue';
 import db, { createBlankActivity, createBlankLesson, DatabaseEntry } from '@/services/MotionDatabase';
 import MiniLesson, { MiniLessonActivity, PauseInfo, TimedInstruction } from '@/model/MiniLesson';
@@ -571,7 +586,7 @@ interface SegmentInfo {
 export default defineComponent({
   name: 'CreateLessonScreen',
   components: {
-    ActivityVideoPlayer,
+    VideoLessonPlayer,
     SegmentedProgressBar,
     // VideoPlayer,
     // ActivityVideoPlayer,
@@ -619,7 +634,7 @@ export default defineComponent({
       activeLessonSelectionIndex: -1,
       activePauseIndex: 0,
       activeTimedInstructionIndex: 0,
-      activityProgress: 0,
+      // activityProgress: 0,
     };
   },
   computed: {
@@ -733,6 +748,11 @@ export default defineComponent({
     };
   },
   watch: {
+    activeActivityIndex: {
+      handler(newVal: number) {
+        (this.$refs.videoLessonPlayer as any).activeActivityIndex = newVal;
+      },
+    },
     lessonUnderConstruction: {
       handler() {
         this.isDirty = true;
@@ -944,12 +964,12 @@ export default defineComponent({
     removeSegmentBreak(i: number) {
       this.lessonUnderConstruction.segmentBreaks.splice(i, 1);
     },
-    playDemo() {
-      (this.$refs.activityVideoPlayer as any).play();
-    },
-    onProgress(progress: number) {
-      this.activityProgress = progress;
-    },
+    // playDemo() {
+    //   (this.$refs.activityVideoPlayer as any).play();
+    // },
+    // onProgress(progress: number) {
+    //   this.activityProgress = progress;
+    // },
     saveLesson() {
       if (this.$props.saveToDatabase) {
         db.saveCustomLesson(this.lessonUnderConstruction);
