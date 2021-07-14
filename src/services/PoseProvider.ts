@@ -19,7 +19,7 @@ export class PoseProvider {
     }
 
     const cached = this.poseFiles.get(poseFilename);
-    if (cached !== undefined) return cached;
+    // if (cached !== undefined) return cached;
 
     const stored = localStorage.getItem(poseFilename);
     if (stored !== null) {
@@ -57,7 +57,7 @@ export class PoseProvider {
     if (row[0].startsWith('#')) return [];
 
     const lms = [] as Array<Readonly<Landmark>>;
-    for (let i = 0; i + 2 < row.length; i += 3) {
+    for (let i = 1; i + 2 < row.length; i += 3) {
       lms.push(
         Object.freeze({
           x: Number.parseFloat(row[i]),

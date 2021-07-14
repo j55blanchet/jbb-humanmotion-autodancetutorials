@@ -171,8 +171,9 @@ export default defineComponent({
     const endReported = ref(false);
 
     const poses = ref([] as Readonly<Array<Readonly<Array<Readonly<Landmark>>>>>);
+    const currentFrame = computed(() => Math.floor(currentTime.value * fps.value));
     const currentPose = computed(() => {
-      const frame = Math.floor(currentTime.value * fps.value);
+      const frame = currentFrame.value;
       const pose = poses.value[frame] ?? [];
       return pose;
     });
@@ -286,6 +287,7 @@ export default defineComponent({
       poses,
       currentTime,
       currentPose,
+      currentFrame,
       endReported,
 
       getVideoDimensions: () => ({

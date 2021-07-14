@@ -42,7 +42,7 @@
         </div>
 
         <div class="table-container" style="overflow:auto auto; max-height: 500px;">
-          <table class="table is-fullwidth is-hoverable is-bordered" v-if="videoPlayer && videoPlayer.cPose">
+          <table class="table is-fullwidth is-hoverable is-bordered" v-if="videoPlayer && videoPlayer.currentPose">
             <thead>
               <tr>
                 <th>id</th>
@@ -52,7 +52,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(lm, index) in videoPlayer.cPose" :key="index">
+              <tr v-for="(lm, index) in videoPlayer.currentPose" :key="index">
                 <td>{{index}}</td>
                 <td>{{lm.x}}</td>
                 <td>{{lm.y}}</td>
@@ -62,13 +62,15 @@
           </table>
         </div>
       </div>
-      <div class="column is-one-third">
+      <div class="column is-one-third" v-if="activeVideoEntry">
         <VideoPlayer
         :videoBaseUrl="videoSrc"
-        :height="'500px'"
         ref="videoPlayer"
         :drawPoseLandmarks="true"
         @progress="onProgress"/>
+        <div>
+          <input class="mt-0 slider is-fullwidth is-primary" type="range" @input="changeTime($event)" :min="0" :max="activeVideoEntry.duration" step="0.01" />
+        </div>
       </div>
     </div>
 
@@ -90,17 +92,19 @@ export default defineComponent({
     const { motions } = db;
     const videoPlayer = ref(null as null | typeof VideoPlayer);
     const dropdownOpen = ref(false);
-    const clipName = ref('');
-    const videoSrc = computed(() => (clipName.value ? (`dances/${clipName.value}.mp4`) : ''));
+
+    const activeVideoEntry = ref(null as null | DatabaseEntry);
+    const clipName = computed(() => activeVideoEntry.value?.clipName ?? 'No clip selected');
+    const videoSrc = computed(() => activeVideoEntry.value?.videoSrc ?? '');
     const videoTime = ref(0);
     const fps = ref(30);
     const error = ref(null as string | null);
 
-    async function loadMotion(motion: DatabaseEntry) {
+    async function loadMotion(entry: DatabaseEntry) {
+      activeVideoEntry.value = entry;
       error.value = null;
       dropdownOpen.value = false;
-      clipName.value = motion.clipName;
-      fps.value = motion.fps;
+      fps.value = entry.fps;
     }
 
     function playVideo() {
@@ -120,6 +124,7 @@ export default defineComponent({
 
     return {
       motions,
+      activeVideoEntry,
       videoPlayer,
       error,
       loadMotion,
@@ -130,6 +135,14 @@ export default defineComponent({
       pauseVideo,
       onProgress,
     };
+  },
+  methods: {
+    changeTime(event: InputEvent) {
+      const vidPlayer = this.videoPlayer;
+      if (!vidPlayer) return;
+      const time = (event.target as HTMLInputElement).valueAsNumber;
+      if (!Number.isNaN(time)) vidPlayer.setTime(time);
+    },
   },
 });
 </script>

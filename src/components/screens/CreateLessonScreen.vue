@@ -131,11 +131,11 @@
                               :max="motion.duration" />
                           </span>
                           <span class="control">
-                            <a class="button is-danger is-small is-light" @click="removeSegmentBreak(i)">
+                            <button class="button is-danger is-small is-light" :disabled="!canDeleteSegment(i)" @click="removeSegmentBreak(i)">
                               <span class="icon">
                                 <i class="fas fa-times"></i>
                               </span>
-                            </a>
+                            </button>
                           </span>
                       </div>
                     </div>
@@ -777,6 +777,9 @@ export default defineComponent({
     },
   },
   methods: {
+    canDeleteSegment(segmentIndex: number) {
+      return this.progressSegments.length > 1;
+    },
     goBack() {
       // eslint-disable-next-line no-alert
       if (!this.isDirty || window.confirm('Are you sure you want to go back without saving?')) {
