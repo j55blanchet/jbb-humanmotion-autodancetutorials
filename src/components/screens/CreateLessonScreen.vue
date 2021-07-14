@@ -65,7 +65,7 @@
 
       <div v-if="state === LessonCreationState.ModifyLesson" class="block">
         <div class="columns is-multiline is-centered">
-          <div class="column is-narrow">
+          <div class="column is-half is-one-third-widescreen is-one-quarter-fullhd">
             <div class="box">
               <h5 class="title is-5">Lesson</h5>
 
@@ -118,16 +118,26 @@
                   </div>
                   <div class="control block">
                     <div class="block">
-                      <span class="m-1" v-for="(segBreak, i) in lessonUnderConstruction.segmentBreaks" :key="i">
-                        <input
-                            class="input narrow-number-input"
-                            :key="i"
-                            type="number"
-                            v-model.number="lessonUnderConstruction.segmentBreaks[i]"
-                            :min="0"
-                            :step="0.01"
-                            :max="motion.duration" />
-                      </span>
+                      <div class="field has-addons is-inline-block m-1" v-for="(segBreak, i) in lessonUnderConstruction.segmentBreaks" :key="i">
+                        <span class="control">
+                          <input
+                              class="input narrow-number-input is-small"
+                              :key="i"
+                              type="number"
+                              :value="lessonUnderConstruction.segmentBreaks[i].toFixed(2)"
+                              @input="setSegmentBreak(i, $event)"
+                              :min="0"
+                              :step="0.01"
+                              :max="motion.duration" />
+                          </span>
+                          <span class="control">
+                            <a class="button is-danger is-small is-light" @click="removeSegmentBreak(i)">
+                              <span class="icon">
+                                <i class="fas fa-times"></i>
+                              </span>
+                            </a>
+                          </span>
+                      </div>
                     </div>
                     <div class="block has-text-right">
                       <!-- <span>Add New</span> -->
@@ -165,7 +175,7 @@
             </div>
           </div>
 
-          <div class="column is-narrow">
+          <div class="column is-half is-one-third-widescreen is-one-quarter-fullhd">
             <div class="box">
               <h5 class="title is-5">Activity</h5>
 
@@ -226,7 +236,7 @@
                   <div class="field">
                     <div v-for="(segInfo, i) in activeActivityFocusedSegments" :key="i">
                       <label class="checkbox">
-                        <input type="checkbox" :checked="activeActivityFocusedSegments[i].isFocused" @input="setFocusedSegment(i, $event)">&nbsp;<strong>{{i+1}}</strong>: <code>{{segInfo.startTime}}</code>-<code>{{segInfo.endTime}}</code>
+                        <input type="checkbox" :checked="activeActivityFocusedSegments[i].isFocused" @input="setFocusedSegment(i, $event)">&nbsp;<strong>{{i+1}}</strong>: <code>{{segInfo.startTime.toFixed(2)}}</code>-<code>{{segInfo.endTime.toFixed(2)}}</code>
                       </label>
                     </div>
                   </div>
@@ -351,8 +361,8 @@
                         <li v-for="(pause, i) in activeActivity.pauses ?? []" :key="i">
                           <a :class="{'is-active': activePauseIndex === i}" @click="selectPause(i)">
                             <strong>#{{i+1}}</strong>
-                            at <span class="is-underlined">{{pause.time}}</span>
-                            for <span class="is-underlined">{{pause.pauseDuration ?? Constants.DefaultPauseDuration}}</span>s
+                            at <span class="is-underlined">{{pause.time.toFixed(2)}}</span>
+                            for <span class="is-underlined">{{(pause.pauseDuration ?? Constants.DefaultPauseDuration).toFixed(2)}}</span>s
                             <small v-if="pause.instruction">&nbsp; : &nbsp;<span>&quot;{{pause.instruction}}&quot;</span></small>
                           </a>
                         </li>
@@ -377,8 +387,8 @@
                           <a :class="{'is-active': activeTimedInstructionIndex === i}" @click="selectTimedInstruction(i)">
                             <strong>#{{i+1}}</strong>&nbsp;
                             <small>&quot;{{ti.text}}&quot;</small>
-                            from <span class="is-underlined">{{ti.startTime}}</span>s
-                            to <span class="is-underlined">{{ti.endTime}}</span>s
+                            from <span class="is-underlined">{{ti.startTime.toFixed(2)}}</span>s
+                            to <span class="is-underlined">{{ti.endTime.toFixed(2)}}</span>s
                           </a>
                         </li>
                         <li v-if="lessonUnderConstruction.activities.length === 0">No Timed Instructions</li>
@@ -396,7 +406,7 @@
               </div>
             </div>
           </div>
-          <div class="column is-narrow">
+          <div class="column is-half is-one-third-widescreen is-one-quarter-fullhd">
 
             <div v-if="activePause" class="box">
               <h6 class="title is-5">Pause {{activePauseIndex + 1}} Details</h6>
@@ -498,7 +508,7 @@
             </div> <!-- End timed instruction detail section-->
           </div>
 
-          <div class="column is-narrow">
+          <div class="column is-half-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd">
             <div class="box">
               <h5 class="title is-5">Demo</h5>
 
@@ -617,8 +627,8 @@ export default defineComponent({
       get() {
         const demoVisual = this.activeActivity.demoVisual ?? 'video';
         const userVisual = this.activeActivity.userVisual ?? 'none';
-        if (demoVisual === 'video') return 'video-demo';
-        if (demoVisual === 'skeleton') return 'skeleton-overlay';
+        if (demoVisual === 'video' && userVisual === 'none') return 'video-demo';
+        if (demoVisual === 'skeleton' && userVisual === 'video') return 'skeleton-overlay';
         return 'other';
       },
       set(newVal: 'other' | 'video-demo' | 'skeleton-overlay') {
@@ -924,6 +934,15 @@ export default defineComponent({
     },
     sortSegmentBreaks() {
       this.lessonUnderConstruction.segmentBreaks = this.lessonUnderConstruction.segmentBreaks.sort((a, b) => a - b);
+    },
+    setSegmentBreak(i: number, event: InputEvent) {
+      const val = parseFloat((event.target as any)?.value ?? '');
+      if (!Number.isNaN(val) && val >= 0 && val <= this.motion.duration) {
+        this.lessonUnderConstruction.segmentBreaks[i] = val;
+      }
+    },
+    removeSegmentBreak(i: number) {
+      this.lessonUnderConstruction.segmentBreaks.splice(i, 1);
     },
     playDemo() {
       (this.$refs.activityVideoPlayer as any).play();
