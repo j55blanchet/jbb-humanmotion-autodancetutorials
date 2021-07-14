@@ -416,12 +416,12 @@
                 <div class="field-body">
                   <div class="field is-narrow">
                     <div class="control">
-                      <input type="number" class="input narrow-number-input" v-model.number="activePause.time" min="0" step="0.01" :max="motion.duration">
+                      <input type="number" class="input narrow-number-input" v-model.number="activePause.time" :min="activeActivity.startTime" step="0.01" :max="activeActivity.endTime">
                     </div>
                   </div>
                   <div class="field">
                     <div class="control">
-                      <input type="range" class="input slider mt-0 mb-0" v-model.number="activePause.time" min="0" step="0.01" :max="motion.duration"/>
+                      <input type="range" class="input slider mt-0 mb-0" v-model.number="activePause.time" :min="activeActivity.startTime" step="0.01" :max="activeActivity.endTime"/>
                     </div>
                   </div>
                 </div>
