@@ -73,8 +73,11 @@
     </div>
 
     <div class="grid-menu container block" v-show="currentTab === Tabs.Tools">
-      <div class="box hover-expand is-clickable m-4" @click="uploadUIActive = true">
+      <div class="box hover-expand is-clickable m-4" @click="uploadLessonUIActive = true">
         Upload Custom Lesson
+      </div>
+      <div class="box hover-expand is-clickable m-4" @click="uploadWorkflowUIActive = true">
+        Upload Custom Workflow
       </div>
       <div class="box hover-expand is-clickable m-4" @click="$emit('pose-drawer-selected')">
         Pose Drawer Test
@@ -96,16 +99,30 @@
       </div>
     </div>
 
-    <div v-bind:class="{ 'is-active': uploadUIActive }" class="modal">
+    <div v-bind:class="{ 'is-active': uploadLessonUIActive }" class="modal">
       <div class="modal-background"></div>
       <div class="modal-content">
         <UploadCard
-          v-if="uploadUIActive"
-          @cancelled="uploadUIActive = false"
+          v-if="uploadLessonUIActive"
+          @cancelled="uploadLessonUIActive = false"
           :uploadAccept="'*.json'"
-          :onFilesSelected="uploadFiles"
+          :onFilesSelected="uploadLessons"
           :savingText="'Loading lessons...'"
           :successText="'Lessons loaded successfully'"
+        />
+      </div>
+    </div>
+
+    <div v-bind:class="{ 'is-active': uploadWorkflowUIActive }" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <UploadCard
+          v-if="uploadWorkflowUIActive"
+          @cancelled="uploadWorkflowUIActive = false"
+          :uploadAccept="'*.json'"
+          :onFilesSelected="uploadWorkflows"
+          :savingText="'Loading workflows...'"
+          :successText="'Workflows loaded successfully'"
         />
       </div>
     </div>
@@ -118,7 +135,7 @@ import LessonCard from '@/components/elements/LessonCard.vue';
 import UploadCard from '@/components/elements/UploadCard.vue';
 import db, { DatabaseEntry } from '@/services/MotionDatabase';
 import VideoLesson from '@/model/MiniLesson';
-import workflowManager from '@/services/WorkflowManager';
+import workflowManager, { WorkflowManager } from '@/services/WorkflowManager';
 
 const Tabs = Object.freeze({
   Workflows: 'Workflows',
@@ -144,7 +161,7 @@ export default defineComponent({
   setup(props, ctx) {
     const motionList = db.motions;
     const selectedDance = ref(null as DatabaseEntry | null);
-    const uploadUIActive = ref(false);
+    const uploadLessonUIActive = ref(false);
     const currentTab = ref(Tabs.Tools);
 
     function onLessonSelected(
@@ -166,7 +183,8 @@ export default defineComponent({
       motionList,
       onLessonSelected,
       createLessonSelected,
-      uploadUIActive,
+      uploadLessonUIActive,
+      uploadWorkflowUIActive: ref(false),
       workflowManager,
 
       TabList,
@@ -183,8 +201,8 @@ export default defineComponent({
       }
       this.currentTab = tab;
     },
-    async uploadFiles(files: FileList) {
-      console.log('Upload files', files);
+    async uploadLessons(files: FileList) {
+      console.log('Uploading lessons', files);
 
       for (let i = 0; i < files.length; i += 1) {
         const file = files.item(i);
@@ -193,9 +211,27 @@ export default defineComponent({
         const text = await file.text();
         const lesson = JSON.parse(text);
         db.validateLesson(lesson);
-
-        // TODO: validate lesson
         db.saveCustomLesson(lesson);
+      }
+      return true;
+    },
+    async uploadWorkflows(files: FileList) {
+      console.log('Uploading workflows', files);
+
+      for (let i = 0; i < files.length; i += 1) {
+        const file = files.item(i);
+        if (!file) continue;
+        // eslint-disable-next-line no-await-in-loop
+        const text = await file.text();
+        const workflow = JSON.parse(text);
+        WorkflowManager.validateWorkflow(workflow);
+
+        if (workflowManager.hasBakedInWorkflow(workflow.id)) throw new Error(`Cannot overwrite baked in workflow ${workflowManager.workflows.get(workflow.id)?.title}`);
+
+        // eslint-disable-next-line no-alert
+        if (!workflowManager.hasWorkflow(workflow.id) || window.confirm(`Are you sure you want to overwrite workflow '${workflowManager.workflows.get(workflow.id)?.title}'?`)) {
+          workflowManager.upsertCustomWorkflow(workflow);
+        }
       }
       return true;
     },

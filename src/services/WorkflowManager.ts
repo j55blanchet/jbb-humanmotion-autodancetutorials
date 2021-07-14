@@ -27,7 +27,7 @@ export class WorkflowManager {
 
   private bakedInWorkflows = new Set<string>();
 
-  private workflows = reactive(new Map() as Map<string, Workflow>);
+  public workflows = reactive(new Map() as Map<string, Workflow>);
 
   public allWorkflows = computed(() => new Array(...this.workflows.values()))
 
@@ -57,6 +57,14 @@ export class WorkflowManager {
 
   public isCustomWorkflow(id: string) {
     return !this.bakedInWorkflows.has(id);
+  }
+
+  public hasWorkflow(id: string) {
+    return this.workflows.has(id);
+  }
+
+  public hasBakedInWorkflow(id: string) {
+    return this.bakedInWorkflows.has(id);
   }
 
   public reloadCustomWorkflow(id: string) {
@@ -168,6 +176,54 @@ export class WorkflowManager {
           steps[j].status = j < stepIndex ? 'completed' : 'notstarted';
         }
       }
+    }
+  }
+
+  public static validateWorkflow(workflow: Workflow) {
+    if (!workflow?.id) throw new Error('Workflow must have an id');
+    if (!workflow?.title) throw new Error('Workflow must have an title');
+    if (!Array.isArray(workflow.stages)) throw new Error('Workflow must have stages');
+    workflow.stages.forEach((stage) => {
+      WorkflowManager.validateWorkflowStage(stage);
+    });
+  }
+
+  public static validateWorkflowStage(stage: WorkflowStage) {
+    if (!stage.title) throw new Error('Stage must have a title');
+    if (!Array.isArray(stage.steps)) throw new Error('Stage must have steps');
+    stage.steps.forEach((step) => {
+      WorkflowManager.validateWorkflowStep(step);
+    });
+  }
+
+  public static validateWorkflowStep(step: WorkflowStep) {
+    if (!step.title) throw new Error('Step must have a title');
+    if (!step.type) throw new Error('Step must have a type');
+
+    if (step.type === 'InstructionOnly') {
+      if (!step.instructions) throw new Error('Step must have an instruction');
+      if (!step.instructions.text) throw new Error('Step instruction must have a text');
+      if (!step.instructions.heading) throw new Error('Step instruction must have a heading');
+
+    } else if (step.type === 'VideoLessonReference') {
+      if (!step.videoLessonReference) throw new Error('Step must have a referenced lesson');
+      if (!motionDB.lessonsById.has(step.videoLessonReference.lessonId)) throw new Error(`Step's referenced lesson id ${step.videoLessonReference.lessonId} does not exist`);
+      if (!motionDB.lessonsByVideo.has(step.videoLessonReference.clipName)) throw new Error(`Step's referenced lesson clipName ${step.videoLessonReference.clipName} does not exist`);
+
+    } else if (step.type === 'VideoLessonEmbedded') {
+      if (!step.videoLessonEmbedded) throw new Error('Step must have a embedded lesson');
+
+      try {
+        motionDB.validateLesson(step.videoLessonEmbedded);
+      } catch (e) {
+        throw new Error(`Step ${step.title} has an invalid embedded lesson. Error: ${e}`);
+      }
+
+    } else if (step.type === 'UploadTask') {
+      if (!step.upload) throw new Error('Step must have an upload task');
+
+    } else {
+      throw new Error(`Step type ${step.type} is not supported`);
     }
   }
 }
