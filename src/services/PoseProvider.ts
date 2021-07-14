@@ -15,7 +15,7 @@ export class PoseProvider {
     let poseFilename = videoName.replace('videos', 'poses');
     for (let i = 0; i < VIDEO_EXTENSIONS.length; i += 1) {
       const extension = VIDEO_EXTENSIONS[i];
-      poseFilename = poseFilename.replace(extension, '.poses.csv');
+      poseFilename = poseFilename.replace(extension, '.pose.csv');
     }
 
     const cached = this.poseFiles.get(poseFilename);

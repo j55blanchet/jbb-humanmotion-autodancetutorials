@@ -27,7 +27,7 @@
       <div class="grid-menu container block">
         <div class="box m-4"
             :class="{
-                  'is-clickable': isClickable(stepInfo.step),
+                  'is-clickable': true,
                   'hover-expand': isClickable(stepInfo.step),
                   'has-text-grey': !isClickable(stepInfo.step),
                   'has-background-grey-lighter': !isClickable(stepInfo.step),
@@ -226,7 +226,7 @@ export default defineComponent({
       || (step.type === 'InstructionOnly' && step.status === 'completed');
     },
     startWorkflowStep(item: TrackingWorkflowStep) {
-      if (!this.isClickable(item)) return;
+      // if (!this.isClickable(item)) return;
       this.currentStep = item;
       if (item.type === 'InstructionOnly') {
         this.instructionsActive = true;
