@@ -38,10 +38,10 @@
     <div class="container" style="max-height=100vh; max-width=100vw;">
       <div class="vcenter-parent">
         <div class="box" >
-          <VideoLessonPlayer
+          <MiniLessonPlayer
             v-if="state == State.LessonActive"
             :videoEntry="currentVideo"
-            :videoLesson="currentLesson"
+            :miniLesson="currentLesson"
             @lesson-completed="goHome"
             :maxVideoHeight="'calc(100vh - 152px - 3.75rem)'"
             :enableCompleteLesson="true"/>
@@ -112,13 +112,13 @@ import webcamProvider from '@/services/WebcamProvider';
 import { DatabaseEntry } from '@/services/MotionDatabase';
 import WorkflowMenu from '@/components/screens/WorkflowMenu.vue';
 import CreateWorkflowScreen from '@/components/screens/CreateWorkflowScreen.vue';
-import VideoLessonPlayer from '@/components/elements/VideoLessonPlayer.vue';
+import MiniLessonPlayer from '@/components/elements/MiniLessonPlayer.vue';
 import LayoutTest from '@/components/elements/LayoutTest.vue';
 import CameraSurface from './components/CameraSurface.vue';
 import OnboardingUI from './components/OnboardingUI.vue';
 import MainMenu from './components/screens/MainMenu.vue';
 // import LearningScreen from './components/screens/LearningScreen.vue';
-import VideoLesson from './model/MiniLesson';
+import MiniLesson from './model/MiniLesson';
 import WebcamPromptCard from './components/elements/WebcamPromptCard.vue';
 
 import PoseDrawerTest from './components/screens/PoseDrawerTest.vue';
@@ -153,7 +153,7 @@ export default defineComponent({
     PoseDrawerTest,
     CreateLessonScreen,
     CreateWorkflowScreen,
-    VideoLessonPlayer,
+    MiniLessonPlayer,
   },
   setup() {
     const state = ref(State.MainMenu);
@@ -161,7 +161,7 @@ export default defineComponent({
     const hasCompletedOnboarding = ref(false);
 
     const currentVideo = ref(null as DatabaseEntry | null);
-    const currentLesson = ref(null as VideoLesson | null);
+    const currentLesson = ref(null as MiniLesson | null);
 
     const showCameraSurface = computed(() => [
       State.PromptStartWebcam,
@@ -171,7 +171,7 @@ export default defineComponent({
       // State.LessonActive,
     ].indexOf(state.value) !== -1);
 
-    function lessonSelected(videoEntry: DatabaseEntry, lesson: VideoLesson) {
+    function lessonSelected(videoEntry: DatabaseEntry, lesson: MiniLesson) {
       currentVideo.value = videoEntry;
       currentLesson.value = lesson;
 

@@ -46,7 +46,7 @@
                 </p>
                 <p class="icon is-large" v-else>
                   <i class="fas fa-2x fa-align-center" v-if="stepInfo.step.type === 'InstructionOnly'"></i>
-                  <i class="fas fa-2x fa-images" v-if="stepInfo.step.type === 'VideoLessonEmbedded' || stepInfo.step.type === 'VideoLessonReference'"></i>
+                  <i class="fas fa-2x fa-images" v-if="stepInfo.step.type === 'MiniLessonEmbedded' || stepInfo.step.type === 'MiniLessonnReference'"></i>
                   <i class="fas fa-2x fa-camera" v-if="stepInfo.step.type === 'UploadTask'"></i>
                 </p>
               </div>
@@ -85,10 +85,10 @@
         <div class="modal-background"></div>
         <div class="container" style="max-width: 100vw; max-height: 100vh;">
           <div class="box" style="height:min(90vw, 90vh);width:min(90vh, 90vw);margin-top:calc((100vh - min(90vh, 90vw)) / 2)" >
-            <VideoLessonPlayer
+            <MiniLessonPlayer
               v-if="lessonActive"
               :videoEntry="currentVideoEntry"
-              :videoLesson="currentLesson"
+              :miniLesson="currentLesson"
               @lesson-completed="lessonCompleted"
               :maxVideoHeight="'calc(100vh - 152px - 3.75rem)'"
               :enableCompleteLesson="true"/>
@@ -123,13 +123,13 @@
 import {
   computed, defineComponent, ref, toRefs, watch, watchEffect,
 } from 'vue';
-import VideoLessonPlayer from '@/components/elements/VideoLessonPlayer.vue';
+import MiniLessonPlayer from '@/components/elements/MiniLessonPlayer.vue';
 import db, { DatabaseEntry } from '@/services/MotionDatabase';
-import VideoLesson from '@/model/MiniLesson';
+import MiniLesson from '@/model/MiniLesson';
 import workflowManager, { TrackingWorkflowStage, TrackingWorkflowStep } from '@/services/WorkflowManager';
 import FeedbackUploadScreen from '@/components/screens/FeedbackUploadScreen.vue';
 import optionsManager from '@/services/OptionsManager';
-import { GetVideoEntryForWorkflowStep, IsVideoLessonStep } from '@/model/Workflow';
+import { GetVideoEntryForWorkflowStep, IsMiniLessonStep } from '@/model/Workflow';
 
 export default defineComponent({
   name: 'WorkflowMenu',
@@ -147,7 +147,7 @@ export default defineComponent({
     'back-selected',
   ],
   components: {
-    VideoLessonPlayer,
+    MiniLessonPlayer,
     FeedbackUploadScreen,
   },
   computed: {
@@ -163,20 +163,20 @@ export default defineComponent({
       return null;
     },
     currentVideoEntry(): DatabaseEntry | null {
-      if (this.currentStep?.type === 'VideoLessonReference' && this.currentStep?.videoLessonReference) {
-        return db.motionsMap.get(this.currentStep.videoLessonReference.clipName) ?? null;
+      if (this.currentStep?.type === 'MiniLessonReference' && this.currentStep?.miniLessonReference) {
+        return db.motionsMap.get(this.currentStep.miniLessonReference.clipName) ?? null;
       }
-      if (this.currentStep?.type === 'VideoLessonEmbedded' && this.currentStep?.videoLessonEmbedded?.header.clipName) {
-        return db.motionsMap.get(this.currentStep.videoLessonEmbedded.header.clipName) ?? null;
+      if (this.currentStep?.type === 'MiniLessonEmbedded' && this.currentStep?.miniLessonEmbedded?.header.clipName) {
+        return db.motionsMap.get(this.currentStep.miniLessonEmbedded.header.clipName) ?? null;
       }
       return null;
     },
-    currentLesson(): VideoLesson | null {
-      if (this.currentStep?.type === 'VideoLessonReference' && this.currentStep?.videoLessonReference) {
-        return db.lessonsById.get(this.currentStep.videoLessonReference.lessonId) ?? null;
+    currentLesson(): MiniLesson | null {
+      if (this.currentStep?.type === 'MiniLessonReference' && this.currentStep?.miniLessonReference) {
+        return db.lessonsById.get(this.currentStep.miniLessonReference.lessonId) ?? null;
       }
-      if (this.currentStep?.type === 'VideoLessonEmbedded' && this.currentStep?.videoLessonEmbedded) {
-        return this.currentStep.videoLessonEmbedded;
+      if (this.currentStep?.type === 'MiniLessonEmbedded' && this.currentStep?.miniLessonEmbedded) {
+        return this.currentStep.miniLessonEmbedded;
       }
       return null;
     },
@@ -238,7 +238,7 @@ export default defineComponent({
       if (item.type === 'InstructionOnly') {
         // Instructions only - there's nothing else to do. Move to next activity!
         item.status = 'completed';
-      } else if (item.type === 'VideoLessonReference' || item.type === 'VideoLessonEmbedded') {
+      } else if (item.type === 'MiniLessonReference' || item.type === 'MiniLessonEmbedded') {
         this.lessonActive = true;
       } else if (item.type === 'UploadTask') {
         this.uploadActive = true;

@@ -6,11 +6,11 @@
   </div>
 </div> -->
   <div class="layout-test">
-    <VideoLessonPlayer
+    <MiniLessonPlayer
       :videoEntry="{
         videoSrc: 'videos/derulo.mp4',
       }"
-      :videoLesson="miniLesson"
+      :miniLesson="miniLesson"
       :drawPoseLandmarks="true"
     />
   </div>
@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import VideoLessonPlayer from '@/components/elements/VideoLessonPlayer.vue';
+import MiniLessonPlayer from '@/components/elements/MiniLessonPlayer.vue';
 import MiniLesson from '@/model/MiniLesson';
 
 const miniLesson: MiniLesson = {
@@ -76,7 +76,7 @@ const miniLesson: MiniLesson = {
 
 export default defineComponent({
   components: {
-    VideoLessonPlayer,
+    MiniLessonPlayer,
   },
   data() {
     return {

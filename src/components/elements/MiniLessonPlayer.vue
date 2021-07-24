@@ -1,5 +1,5 @@
 <template>
-  <div class="video-lesson-player">
+  <div class="mini-lesson-player">
     <div class="video-container">
       <ActivityVideoPlayer
         ref="activityVideoPlayer"
@@ -15,7 +15,7 @@
         :segments="progressSegments"
         :progress="activityProgress"
       />
-      <nav class="pagination is-centered" v-if="videoLesson">
+      <nav class="pagination is-centered" v-if="miniLesson">
         <div class="pagination-list" style="flex-wrap:nowrap;max-width:calc(100vw - 2.5rem);">
           <li  v-for="(i, index) in nearbyActivityIndices" :key="index">
             <span class="pagination-ellipses">
@@ -96,14 +96,14 @@ import webcamProvider from '@/services/WebcamProvider';
 import Utils from '@/services/Utils';
 
 export default defineComponent({
-  name: 'VideoLessonPlayer',
+  name: 'MiniLessonPlayer',
   components: {
     SegmentedProgressBar,
     ActivityVideoPlayer,
   },
   props: {
     videoEntry: { type: Object },
-    videoLesson: { type: Object },
+    miniLesson: { type: Object },
     // maxVideoHeight: { type: String, default: 'none' },
     enableCompleteLesson: { type: Boolean, default: false },
   },
@@ -128,14 +128,14 @@ export default defineComponent({
       return indices;
     },
     lesson() {
-      const lesson = (this.$props.videoLesson ?? null) as null | MiniLesson;
+      const lesson = (this.$props.miniLesson ?? null) as null | MiniLesson;
       return lesson;
     },
     activities(): MiniLessonActivity[] {
       return (this.lesson as any)?.activities ?? [];
     },
     activeActivity() {
-      const lesson = (this.$props.videoLesson ?? null) as null | MiniLesson;
+      const lesson = (this.$props.miniLesson ?? null) as null | MiniLesson;
       const activityIndex = this.activeActivityIndex as number;
       const activity = lesson?.activities[activityIndex] ?? null as null | MiniLessonActivity;
       return activity;
@@ -195,7 +195,7 @@ export default defineComponent({
 
 <style lang="scss">
 
-.video-lesson-player {
+.mini-lesson-player {
   display: flex;
   flex-flow: column;
   height: 100%;

@@ -48,7 +48,7 @@ export class MotionDatabase {
     //     ...lesson,
     //   } as MiniLesson);
     // });
-    console.log(`Motion database: loaded ${defaultLessons.length} built-in lessons`);
+    // console.log(`Motion database: loaded ${defaultLessons.length} built-in lessons`);
 
     const customLessonCount = this.loadCustomLessons();
     console.log(`Motion database: loaded ${customLessonCount} custom lessons`);
@@ -61,13 +61,24 @@ export class MotionDatabase {
   }
 
   upsertLesson(lesson: MiniLesson) {
+    const updatedLesson = MotionDatabase.updateLessonFormat(lesson);
     const lessonList = this.lessonsByVideo.get(lesson.header.clipName) ?? [];
     const existingIndex = lessonList.findIndex((les) => les._id === lesson._id);
-    if (existingIndex !== -1) lessonList[existingIndex] = lesson;
-    else lessonList.push(lesson);
+    if (existingIndex !== -1) lessonList[existingIndex] = updatedLesson;
+    else lessonList.push(updatedLesson);
     this.lessonsByVideo.set(lesson.header.clipName, lessonList);
 
     this.lessonsById.set(lesson._id, lesson);
+  }
+
+  static updateLessonFormat(lesson: MiniLesson): MiniLesson {
+    const updatedLesson = lesson;
+    updatedLesson.activities = lesson.activities.map((activity) => ({
+      // Backwards compat - convert to new format if necessary
+      //   > currently there's nothing to change
+      ...activity,
+    }));
+    return updatedLesson;
   }
 
   removeLesson(lesson: MiniLesson) {

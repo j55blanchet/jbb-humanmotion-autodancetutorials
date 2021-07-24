@@ -40,18 +40,18 @@ export class WorkflowManager {
   private loadWorkflows() {
     for (let i = 0; i < defaultWorkflows.length; i += 1) {
       const workflow = defaultWorkflows[i] as Workflow;
-      this.workflows.set(workflow.id, workflow);
+      this.addSessionWorkflow(workflow);
       this.bakedInWorkflows.add(workflow.id);
     }
     for (let i = 0; i < customWorkflows.length; i += 1) {
       const workflow = customWorkflows[i];
-      this.workflows.set(workflow.id, workflow);
+      this.addSessionWorkflow(workflow);
       this.bakedInWorkflows.add(workflow.id);
     }
 
     const customWorkflowIds = WorkflowManager.getCustomWorkflowIdsList();
     for (let i = 0; i < customWorkflowIds.length; i += 1) {
-      this.tryLoadCustomLesson(customWorkflowIds[i]);
+      this.tryLoadCustomWorkflow(customWorkflowIds[i]);
     }
   }
 
@@ -73,7 +73,7 @@ export class WorkflowManager {
     if (!WorkflowManager.hasSavedCustomLesson(id)) {
       this.workflows.delete(id);
     } else {
-      this.tryLoadCustomLesson(id);
+      this.tryLoadCustomWorkflow(id);
     }
   }
 
@@ -85,16 +85,50 @@ export class WorkflowManager {
     window.localStorage.setItem('custom-workflows', JSON.stringify(customLessonIds));
   }
 
+  private static updateToLatestWorkflowFormat(workflow: Workflow) {
+    const updatedWorkflow = workflow;
+    updatedWorkflow.stages = updatedWorkflow.stages.map((stage) => ({
+      ...stage,
+      steps: stage.steps.map((step) => {
+        const stepAny = step as any;
+        const newStep = step;
+        const newStepAny = newStep as any;
+
+        // Renaming videoLesson -> miniLesson
+        if (stepAny.videoLessonReference) {
+          newStep.miniLessonReference = stepAny.videoLessonReference;
+          delete newStepAny.videoLessonReference;
+        }
+        if (stepAny.videoLessonEmbedded) {
+          newStep.miniLessonEmbedded = stepAny.videoLessonEmbedded;
+          delete newStepAny.videoLessonEmbedded;
+        }
+        if (newStepAny.type === 'VideoLessonReference') newStep.type = 'MiniLessonReference';
+        if (newStepAny.type === 'VideoLessonEmbedded') newStep.type = 'MiniLessonEmbedded';
+
+        // Refactoring any embedded mini-lessons
+        if (newStep.miniLessonEmbedded) {
+          newStep.miniLessonEmbedded = MotionDatabase.updateLessonFormat(newStep.miniLessonEmbedded);
+        }
+
+        return newStep;
+      }),
+    }));
+
+    return updatedWorkflow;
+  }
+
   public static hasSavedCustomLesson(id: string) {
     const custWorkflowIds = WorkflowManager.getCustomWorkflowIdsList();
     return custWorkflowIds.indexOf(id) !== -1;
   }
 
   public addSessionWorkflow(workflow: Workflow) {
-    this.workflows.set(workflow.id, workflow);
+    const updatedWorkflow = WorkflowManager.updateToLatestWorkflowFormat(workflow);
+    this.workflows.set(updatedWorkflow.id, updatedWorkflow);
   }
 
-  public tryLoadCustomLesson(id: string) {
+  public tryLoadCustomWorkflow(id: string) {
     try {
       const workflowRaw = window.localStorage.getItem(`workflow-${id}`);
       if (!workflowRaw) throw new Error(`No workflow found with id: ${id}`);
@@ -205,16 +239,16 @@ export class WorkflowManager {
       if (!step.instructions.text) throw new Error('Step instruction must have a text');
       if (!step.instructions.heading) throw new Error('Step instruction must have a heading');
 
-    } else if (step.type === 'VideoLessonReference') {
-      if (!step.videoLessonReference) throw new Error('Step must have a referenced lesson');
-      if (!motionDB.lessonsById.has(step.videoLessonReference.lessonId)) throw new Error(`Step's referenced lesson id ${step.videoLessonReference.lessonId} does not exist`);
-      if (!motionDB.lessonsByVideo.has(step.videoLessonReference.clipName)) throw new Error(`Step's referenced lesson clipName ${step.videoLessonReference.clipName} does not exist`);
+    } else if (step.type === 'MiniLessonReference') {
+      if (!step.miniLessonReference) throw new Error('Step must have a referenced lesson');
+      if (!motionDB.lessonsById.has(step.miniLessonReference.lessonId)) throw new Error(`Step's referenced lesson id ${step.miniLessonReference.lessonId} does not exist`);
+      if (!motionDB.lessonsByVideo.has(step.miniLessonReference.clipName)) throw new Error(`Step's referenced lesson clipName ${step.miniLessonReference.clipName} does not exist`);
 
-    } else if (step.type === 'VideoLessonEmbedded') {
-      if (!step.videoLessonEmbedded) throw new Error('Step must have a embedded lesson');
+    } else if (step.type === 'MiniLessonEmbedded') {
+      if (!step.miniLessonEmbedded) throw new Error('Step must have a embedded lesson');
 
       try {
-        motionDB.validateLesson(step.videoLessonEmbedded);
+        motionDB.validateLesson(step.miniLessonEmbedded);
       } catch (e) {
         throw new Error(`Step ${step.title} has an invalid embedded lesson. Error: ${e}`);
       }

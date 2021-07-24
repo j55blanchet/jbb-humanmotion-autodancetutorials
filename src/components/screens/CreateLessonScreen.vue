@@ -515,12 +515,12 @@
 
               <div class="image is-square">
                 <!-- <div style="height:400px;width:100%;"> -->
-                  <VideoLessonPlayer
+                  <MiniLessonPlayer
                    class="is-overlay"
-                    ref="videoLessonPlayer"
+                    ref="miniLessonPlayer"
                     @activity-changed="selectActivity"
                     :videoEntry="motion"
-                    :videoLesson="lessonUnderConstruction"
+                    :miniLesson="lessonUnderConstruction"
                     :enableCompleteLesson="false"
                   />
                 <!-- </div> -->
@@ -565,8 +565,7 @@ import {
 } from 'vue';
 
 import Constants from '@/services/Constants';
-import VideoLessonPlayer from '@/components/elements/VideoLessonPlayer.vue';
-import ActivityVideoPlayer from '@/components/elements/ActivityVideoPlayer.vue';
+import MiniLessonPlayer from '@/components/elements/MiniLessonPlayer.vue';
 import db, { createBlankActivity, createBlankLesson, DatabaseEntry } from '@/services/MotionDatabase';
 import MiniLesson, { MiniLessonActivity, PauseInfo, TimedInstruction } from '@/model/MiniLesson';
 import Utils from '@/services/Utils';
@@ -586,11 +585,8 @@ interface SegmentInfo {
 export default defineComponent({
   name: 'CreateLessonScreen',
   components: {
-    VideoLessonPlayer,
+    MiniLessonPlayer,
     SegmentedProgressBar,
-    // VideoPlayer,
-    // ActivityVideoPlayer,
-    // VideoPlayer,
   },
   props: {
     motion: {
@@ -750,7 +746,7 @@ export default defineComponent({
   watch: {
     activeActivityIndex: {
       handler(newVal: number) {
-        (this.$refs.videoLessonPlayer as any).activeActivityIndex = newVal;
+        (this.$refs.miniLessonPlayer as any).activeActivityIndex = newVal;
       },
     },
     lessonUnderConstruction: {

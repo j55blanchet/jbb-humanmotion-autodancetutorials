@@ -13,14 +13,14 @@ export interface Instructions {
 }
 
 export interface WorkflowStep {
-  type: 'InstructionOnly' | 'VideoLessonReference' | 'VideoLessonEmbedded' | 'UploadTask';
+  type: 'InstructionOnly' | 'MiniLessonReference' | 'MiniLessonEmbedded' | 'UploadTask';
   title: string;
   instructions?: Instructions;
-  videoLessonReference?: {
+  miniLessonReference?: {
     clipName: string;
     lessonId: string;
   };
-  videoLessonEmbedded?: MiniLesson;
+  miniLessonEmbedded?: MiniLesson;
   upload?: {
     identifier: string;
     prompt: string;
@@ -51,17 +51,17 @@ export function CreateBlankWorkflow() {
   } as Workflow;
 }
 
-export function IsVideoLessonStep(step: WorkflowStep) {
-  return step.type === 'VideoLessonReference' || step.type === 'VideoLessonEmbedded';
+export function IsMiniLessonStep(step: WorkflowStep) {
+  return step.type === 'MiniLessonReference' || step.type === 'MiniLessonEmbedded';
 }
 export function GetWorkflowStepVideoClipName(step: WorkflowStep) {
-  return IsVideoLessonStep(step)
-    ? (step.type === 'VideoLessonReference'
-      ? step.videoLessonReference?.clipName ?? null
-      : step.videoLessonEmbedded?.header.clipName) ?? null
+  return IsMiniLessonStep(step)
+    ? (step.type === 'MiniLessonReference'
+      ? step.miniLessonReference?.clipName ?? null
+      : step.miniLessonEmbedded?.header.clipName) ?? null
     : null;
 }
 export function GetVideoEntryForWorkflowStep(db: any, step: WorkflowStep): DatabaseEntry | null{
-  if (!IsVideoLessonStep(step)) return null;
+  if (!IsMiniLessonStep(step)) return null;
   return db.motionsMap.get(GetWorkflowStepVideoClipName(step));
 }

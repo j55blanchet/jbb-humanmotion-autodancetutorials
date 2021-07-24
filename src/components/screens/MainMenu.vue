@@ -134,7 +134,7 @@ import { computed, defineComponent, ref } from 'vue';
 import LessonCard from '@/components/elements/LessonCard.vue';
 import UploadCard from '@/components/elements/UploadCard.vue';
 import db, { DatabaseEntry } from '@/services/MotionDatabase';
-import VideoLesson from '@/model/MiniLesson';
+import MiniLesson from '@/model/MiniLesson';
 import workflowManager, { WorkflowManager } from '@/services/WorkflowManager';
 
 const Tabs = Object.freeze({
@@ -166,7 +166,7 @@ export default defineComponent({
 
     function onLessonSelected(
       videoEntry: DatabaseEntry,
-      lesson: VideoLesson,
+      lesson: MiniLesson,
     ) {
       ctx.emit('lesson-selected', videoEntry, lesson);
       selectedDance.value = null;

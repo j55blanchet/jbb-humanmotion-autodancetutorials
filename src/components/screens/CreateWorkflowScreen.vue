@@ -238,8 +238,8 @@
                   <div class="select">
                     <select v-model="activeStep.type">
                       <option :value="'InstructionOnly'">Instruction</option>
-                      <option :value="'VideoLessonReference'">Mini Lesson (Reference)</option>
-                      <option :value="'VideoLessonEmbedded'">Mini Lesson (Embedded)</option>
+                      <option :value="'MiniLessonReference'">Mini Lesson (Reference)</option>
+                      <option :value="'MiniLessonEmbedded'">Mini Lesson (Embedded)</option>
                       <option :value="'UploadTask'">Video Upload</option>
                     </select>
                   </div>
@@ -305,9 +305,9 @@
           </div>
 
           <div v-if="isLessonEmbeddedStep" class="block">
-            <div v-if="activeStep.videoLessonEmbedded" class="card">
+            <div v-if="activeStep.miniLessonEmbedded" class="card">
               <header class="card-header">
-                <p class="card-header-title">{{activeStep.videoLessonEmbedded.header.lessonTitle}}</p>
+                <p class="card-header-title">{{activeStep.miniLessonEmbedded.header.lessonTitle}}</p>
               </header>
               <div class="card-content">
                 <div class="content" v-if="activeStepLesson.activities">
@@ -357,8 +357,8 @@
               <div class="field-body">
                 <div class="field">
                   <div class="control">
-                    <div class="select" v-if="activeStep.videoLessonReference">
-                      <select v-model="activeStep.videoLessonReference.clipName">
+                    <div class="select" v-if="activeStep.miniLessonReference">
+                      <select v-model="activeStep.miniLessonReference.clipName">
                         <option disabled value="">Select a clip</option>
                         <option v-for="clipName in availableClips" :key="clipName">{{clipName}}</option>
                       </select>
@@ -376,7 +376,7 @@
                 <div class="field">
                   <div class="control">
                     <div class="select">
-                      <select v-model="activeStep.videoLessonReference.lessonId">
+                      <select v-model="activeStep.miniLessonReference.lessonId">
                         <option value="">&plus; Create New</option>
                         <option disabled>──────────</option>
                         <option v-for="lesson in availableReferenceLessons" :key="lesson._id" :value="lesson._id">{{lesson.header.lessonTitle}}</option>
@@ -476,7 +476,7 @@ import {
   computed, defineComponent, nextTick, ref, watchEffect,
 } from 'vue';
 import motionDb from '@/services/MotionDatabase';
-import VideoLesson from '@/model/MiniLesson';
+import MiniLesson from '@/model/MiniLesson';
 import CreateLessonScreen from '@/components/screens/CreateLessonScreen.vue';
 
 export default defineComponent({
@@ -502,18 +502,18 @@ export default defineComponent({
     const selectedStepIndex = ref(0);
     const activeStep = computed(() => activeStage.value?.steps[selectedStepIndex.value] ?? null);
     const isVideoUploadStep = computed(() => activeStep.value?.type === 'UploadTask');
-    const isLessonReferenceStep = computed(() => activeStep.value?.type === 'VideoLessonReference');
-    const isLessonEmbeddedStep = computed(() => activeStep.value?.type === 'VideoLessonEmbedded');
+    const isLessonReferenceStep = computed(() => activeStep.value?.type === 'MiniLessonReference');
+    const isLessonEmbeddedStep = computed(() => activeStep.value?.type === 'MiniLessonEmbedded');
     const isInstructionStep = computed(() => activeStep.value?.type === 'InstructionOnly');
     const availableReferenceLessons = computed(() => {
-      if (!activeStep.value) return [] as VideoLesson[];
-      if (!activeStep.value.videoLessonReference?.clipName) return [] as VideoLesson[];
-      return motionDb.lessonsByVideo.get(activeStep.value.videoLessonReference.clipName) ?? [];
+      if (!activeStep.value) return [] as MiniLesson[];
+      if (!activeStep.value.miniLessonReference?.clipName) return [] as MiniLesson[];
+      return motionDb.lessonsByVideo.get(activeStep.value.miniLessonReference.clipName) ?? [];
     });
     const activeStepLesson = computed(() => {
       if (!activeStep.value) return null;
-      if (isLessonReferenceStep.value && activeStep.value.videoLessonReference?.lessonId) return motionDb.lessonsById.get(activeStep.value.videoLessonReference.lessonId) ?? null;
-      if (isLessonEmbeddedStep.value) return activeStep.value.videoLessonEmbedded ?? null;
+      if (isLessonReferenceStep.value && activeStep.value.miniLessonReference?.lessonId) return motionDb.lessonsById.get(activeStep.value.miniLessonReference.lessonId) ?? null;
+      if (isLessonEmbeddedStep.value) return activeStep.value.miniLessonEmbedded ?? null;
       return null;
     });
     const canEditActiveStepLessonReference = computed(() => activeStepLesson.value?.source === 'custom');
@@ -523,7 +523,7 @@ export default defineComponent({
     const editLessonActive = ref(false);
     const embeddedLessonMotion = computed(() => {
       if (!activeStep.value) return null;
-      if (isLessonEmbeddedStep.value && activeStep.value.videoLessonEmbedded) return GetVideoEntryForWorkflowStep(motionDb, activeStep.value);
+      if (isLessonEmbeddedStep.value && activeStep.value.miniLessonEmbedded) return GetVideoEntryForWorkflowStep(motionDb, activeStep.value);
       if (isLessonEmbeddedStep.value) return newEmbeddedLessonMotion.value;
       if (isLessonReferenceStep.value) return GetVideoEntryForWorkflowStep(motionDb, activeStep.value);
       return null;
@@ -545,12 +545,12 @@ export default defineComponent({
           text: '',
         } as Instructions;
       } else if (isLessonReferenceStep.value) {
-        activeStep.value.videoLessonReference = activeStep.value.videoLessonReference ?? {} as any;
+        activeStep.value.miniLessonReference = activeStep.value.miniLessonReference ?? {} as any;
         //  ?? {
 
         // };
       } else if (isLessonEmbeddedStep.value) {
-        // activeStep.value.videoLessonEmbedded = activeStep.value.videoLessonEmbedded;
+        // activeStep.value.miniLessonEmbedded = activeStep.value.miniLessonEmbedded;
         //  ?? {
 
         // };
@@ -811,27 +811,27 @@ export default defineComponent({
       stage.steps = steps;
       this.selectedStepIndex = Math.min(this.selectedStepIndex, steps.length - 1);
     },
-    updateWorkflowStepLesson(lesson: VideoLesson) {
+    updateWorkflowStepLesson(lesson: MiniLesson) {
       if (!this.activeStep) return;
       if (this.isLessonEmbeddedStep) {
-        this.activeStep.videoLessonEmbedded = lesson;
+        this.activeStep.miniLessonEmbedded = lesson;
         console.log('Updated embedded lesson', lesson.header.lessonTitle);
       }
-      if (this.isLessonReferenceStep && this.activeStep.videoLessonReference) {
-        this.activeStep.videoLessonReference.lessonId = lesson._id;
+      if (this.isLessonReferenceStep && this.activeStep.miniLessonReference) {
+        this.activeStep.miniLessonReference.lessonId = lesson._id;
         console.log('Updated reference lesson', lesson);
       }
     },
     startCreateEmbeddedLesson() {
       if (!this.activeStep) return;
       if (!this.newEmbeddedLessonMotion) return;
-      // this.activeStep.videoLessonEmbedded = createBlankLesson(this.newEmbeddedLessonMotion);
-      // this.activeStep.videoLessonEmbedded.header.lessonTitle = this.activeStep.title;
+      // this.activeStep.miniLessonEmbedded = createBlankLesson(this.newEmbeddedLessonMotion);
+      // this.activeStep.miniLessonEmbedded.header.lessonTitle = this.activeStep.title;
       this.editLessonActive = true;
     },
     createReferencedLesson() {
       if (!this.isLessonReferenceStep) return;
-      if (this.activeStep?.videoLessonReference?.lessonId === '') {
+      if (this.activeStep?.miniLessonReference?.lessonId === '') {
         this.editLessonActive = true;
       }
     },
@@ -840,27 +840,27 @@ export default defineComponent({
       this.editLessonActive = true;
     },
     removeEmbeddedLesson() {
-      if (!this.activeStep?.videoLessonEmbedded) return;
+      if (!this.activeStep?.miniLessonEmbedded) return;
       // eslint-disable-next-line no-alert
-      if (window.confirm(`Are you sure you want to delete the embedded lesson ${this.activeStep.videoLessonEmbedded.header.lessonTitle}?`)) {
-        this.activeStep.videoLessonEmbedded = undefined;
+      if (window.confirm(`Are you sure you want to delete the embedded lesson ${this.activeStep.miniLessonEmbedded.header.lessonTitle}?`)) {
+        this.activeStep.miniLessonEmbedded = undefined;
       }
     },
     convertEmbeddedLessonToReference() {
-      if (!this.activeStep?.videoLessonEmbedded) return;
+      if (!this.activeStep?.miniLessonEmbedded) return;
       // eslint-disable-next-line no-alert
       if (!window.confirm('Are you sure you want to save this lesson into a new file and convert this to a reference?'
                          + '\n\nNote: be sure to save the lesson.json!')
       ) return;
 
-      motionDb.saveCustomLesson(this.activeStep.videoLessonEmbedded);
-      this.activeStep.videoLessonReference = {
-        clipName: this.activeStep.videoLessonEmbedded.header.clipName,
-        lessonId: this.activeStep.videoLessonEmbedded._id,
+      motionDb.saveCustomLesson(this.activeStep.miniLessonEmbedded);
+      this.activeStep.miniLessonReference = {
+        clipName: this.activeStep.miniLessonEmbedded.header.clipName,
+        lessonId: this.activeStep.miniLessonEmbedded._id,
       };
-      const exportLessonData = this.activeStep.videoLessonEmbedded;
-      this.activeStep.type = 'VideoLessonReference';
-      this.activeStep.videoLessonEmbedded = undefined;
+      const exportLessonData = this.activeStep.miniLessonEmbedded;
+      this.activeStep.type = 'MiniLessonReference';
+      this.activeStep.miniLessonEmbedded = undefined;
       Utils.PromptDownloadFile(`${exportLessonData.header.lessonTitle}.lesson.json`, JSON.stringify(exportLessonData));
     },
   },
