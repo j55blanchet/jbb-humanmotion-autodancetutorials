@@ -10,6 +10,7 @@
         @create-lesson-selected="createLessonSelected"
         @workflow-selected="startWorkflow"
         @create-workflow-selected="state = State.CreateWorkflow"
+        @keyframeselectortool-selected="startKeyframeSelection"
       />
 
   <CreateLessonScreen
@@ -32,6 +33,11 @@
   <PoseDrawerTest
         v-if="state === State.PoseDrawingTester"
         @back-selected="goHome" />
+
+  <KeyframeSelectorTool
+        v-if="state === State.KeyframeSelectorTool"
+        @back-selected="goHome"
+        :videoEntry="currentVideo"/>
 
   <div v-bind:class="{ 'is-active': state == State.LessonActive }" class="modal">
     <div class="modal-background"></div>
@@ -114,6 +120,7 @@ import WorkflowMenu from '@/components/screens/WorkflowMenu.vue';
 import CreateWorkflowScreen from '@/components/screens/CreateWorkflowScreen.vue';
 import MiniLessonPlayer from '@/components/elements/MiniLessonPlayer.vue';
 import LayoutTest from '@/components/elements/LayoutTest.vue';
+import KeyframeSelectorTool from '@/components/tools/KeyframeSelectorTool.vue';
 import CameraSurface from './components/CameraSurface.vue';
 import OnboardingUI from './components/OnboardingUI.vue';
 import MainMenu from './components/screens/MainMenu.vue';
@@ -138,6 +145,7 @@ const State = {
   PoseDrawingTester: 'PoseDrawingTester',
   CreateLesson: 'CreateLesson',
   CreateWorkflow: 'CreateWorkflow',
+  KeyframeSelectorTool: 'KeyframeSelectorTool',
 };
 
 export default defineComponent({
@@ -149,6 +157,7 @@ export default defineComponent({
     LayoutTest,
     WorkflowMenu,
     // LearningScreen,
+    KeyframeSelectorTool,
     WebcamPromptCard,
     PoseDrawerTest,
     CreateLessonScreen,
@@ -178,6 +187,11 @@ export default defineComponent({
       state.value = State.LessonActive;
       // if (webcamProvider.webcamStatus.value === 'running') state.value = State.LessonActive;
       // else state.value = State.PromptStartWebcam;
+    }
+
+    function startKeyframeSelection(videoEntry: DatabaseEntry) {
+      currentVideo.value = videoEntry;
+      state.value = State.KeyframeSelectorTool;
     }
 
     function goHome() {
@@ -235,6 +249,7 @@ export default defineComponent({
       goHome,
       startWebcam,
       onTrackingAttained,
+      startKeyframeSelection,
       state,
       cameraSurface,
       State,
@@ -286,14 +301,6 @@ body, html {
 
   background-size: 100vw 100vh;
   background-attachment: fixed;
-}
-
-.vcenter-parent {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
 }
 
 .loader-progress {

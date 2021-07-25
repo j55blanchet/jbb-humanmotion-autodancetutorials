@@ -28,6 +28,9 @@
               <li v-if="canCreateLesson">
                 <a @click="$emit('create-lesson-selected', motion)">Create Lesson</a>
               </li>
+              <li>
+                <a @click="$emit('keyframeselectortool-selected', motion)">Select Keyframes</a>
+              </li>
             </ul>
           </div>
         </div>

@@ -176,7 +176,7 @@
     "thumbnailSrc": "ASL/Cluster1/UMBRELLA.jpg"
   },
   {
-    "title": "fence",
+    "title": "ASL: Fence",
     "clipName": "fence",
     "clipPath": "ASL/Cluster2/fence.mp4",
     "frameCount": 58,
@@ -196,7 +196,7 @@
     "thumbnailSrc": "ASL/Cluster2/fence.jpg"
   },
   {
-    "title": "truck_2",
+    "title": "ASL: Truck",
     "clipName": "truck_2",
     "clipPath": "ASL/Cluster2/truck_2.mp4",
     "frameCount": 62,
@@ -216,7 +216,7 @@
     "thumbnailSrc": "ASL/Cluster2/truck_2.jpg"
   },
   {
-    "title": "shelf",
+    "title": "ASL: Shelf",
     "clipName": "shelf",
     "clipPath": "ASL/Cluster3/shelf.mp4",
     "frameCount": 67,
@@ -236,7 +236,7 @@
     "thumbnailSrc": "ASL/Cluster3/shelf.jpg"
   },
   {
-    "title": "bus",
+    "title": "ASL: Bus",
     "clipName": "bus",
     "clipPath": "ASL/Cluster4/bus.mp4",
     "frameCount": 47,
@@ -256,7 +256,7 @@
     "thumbnailSrc": "ASL/Cluster4/bus.jpg"
   },
   {
-    "title": "hen",
+    "title": "ASL: Hen",
     "clipName": "hen",
     "clipPath": "ASL/Cluster4/hen.mp4",
     "frameCount": 51,
@@ -276,7 +276,7 @@
     "thumbnailSrc": "ASL/Cluster4/hen.jpg"
   },
   {
-    "title": "CORN_2",
+    "title": "ASL: Corn",
     "clipName": "CORN_2",
     "clipPath": "ASL/Cluster2/CORN_2.m4v",
     "frameCount": 62,
@@ -296,7 +296,7 @@
     "thumbnailSrc": "ASL/Cluster2/CORN_2.jpg"
   },
   {
-    "title": "GOAT",
+    "title": "ASL: Goat",
     "clipName": "GOAT",
     "clipPath": "ASL/Cluster2/GOAT.m4v",
     "frameCount": 38,
@@ -316,7 +316,7 @@
     "thumbnailSrc": "ASL/Cluster2/GOAT.jpg"
   },
   {
-    "title": "MILK",
+    "title": "ASL: Milk",
     "clipName": "MILK",
     "clipPath": "ASL/Cluster2/MILK.m4v",
     "frameCount": 31,
@@ -336,7 +336,7 @@
     "thumbnailSrc": "ASL/Cluster2/MILK.jpg"
   },
   {
-    "title": "STRAWBERRY",
+    "title": "ASL: Strawberry",
     "clipName": "STRAWBERRY",
     "clipPath": "ASL/Cluster2/STRAWBERRY.m4v",
     "frameCount": 69,
@@ -356,7 +356,7 @@
     "thumbnailSrc": "ASL/Cluster2/STRAWBERRY.jpg"
   },
   {
-    "title": "airplane",
+    "title": "ASL: Airplane",
     "clipName": "airplane",
     "clipPath": "ASL/Cluster3/airplane.m4v",
     "frameCount": 68,
@@ -376,7 +376,7 @@
     "thumbnailSrc": "ASL/Cluster3/airplane.jpg"
   },
   {
-    "title": "BOX",
+    "title": "ASL: Box",
     "clipName": "BOX",
     "clipPath": "ASL/Cluster3/BOX.m4v",
     "frameCount": 62,
@@ -396,7 +396,7 @@
     "thumbnailSrc": "ASL/Cluster3/BOX.jpg"
   },
   {
-    "title": "PEACH",
+    "title": "ASL: Peach",
     "clipName": "PEACH",
     "clipPath": "ASL/Cluster3/PEACH.m4v",
     "frameCount": 45,
@@ -416,7 +416,7 @@
     "thumbnailSrc": "ASL/Cluster3/PEACH.jpg"
   },
   {
-    "title": "CHERRY",
+    "title": "ASL: Cherry",
     "clipName": "CHERRY",
     "clipPath": "ASL/Cluster4/CHERRY.m4v",
     "frameCount": 63,
@@ -436,7 +436,7 @@
     "thumbnailSrc": "ASL/Cluster4/CHERRY.jpg"
   },
   {
-    "title": "MONEY",
+    "title": "ASL: Money",
     "clipName": "MONEY",
     "clipPath": "ASL/Cluster4/MONEY.m4v",
     "frameCount": 45,
@@ -456,7 +456,7 @@
     "thumbnailSrc": "ASL/Cluster4/MONEY.jpg"
   },
   {
-    "title": "PIE",
+    "title": "ASL: Pie",
     "clipName": "PIE",
     "clipPath": "ASL/Cluster4/PIE.m4v",
     "frameCount": 90,
@@ -476,7 +476,7 @@
     "thumbnailSrc": "ASL/Cluster4/PIE.jpg"
   },
   {
-    "title": "CARROT",
+    "title": "ASL: Carrot",
     "clipName": "CARROT",
     "clipPath": "ASL/Cluster3/CARROT.mov",
     "frameCount": 44,
@@ -496,7 +496,7 @@
     "thumbnailSrc": "ASL/Cluster3/CARROT.jpg"
   },
   {
-    "title": "MOUSE",
+    "title": "ASL: Mouse",
     "clipName": "MOUSE",
     "clipPath": "ASL/Cluster3/MOUSE.mov",
     "frameCount": 39,
@@ -516,7 +516,7 @@
     "thumbnailSrc": "ASL/Cluster3/MOUSE.jpg"
   },
   {
-    "title": "FLOWER",
+    "title": "ASL: Flower",
     "clipName": "FLOWER",
     "clipPath": "ASL/Cluster4/FLOWER.mov",
     "frameCount": 36,
@@ -536,7 +536,7 @@
     "thumbnailSrc": "ASL/Cluster4/FLOWER.jpg"
   },
   {
-    "title": "sayso",
+    "title": "Say So",
     "clipName": "sayso",
     "clipPath": "tiktok/sayso.mp4",
     "frameCount": 1733,
@@ -553,7 +553,7 @@
     "thumbnailSrc": "tiktok/sayso.jpg"
   },
   {
-    "title": "ahichallenge",
+    "title": "Ahi Challenge",
     "clipName": "ahichallenge",
     "clipPath": "tiktok/ahichallenge.mp4",
     "frameCount": 415,
@@ -570,7 +570,7 @@
     "thumbnailSrc": "tiktok/ahichallenge.jpg"
   },
   {
-    "title": "getup",
+    "title": "Getup",
     "clipName": "getup",
     "clipPath": "tiktok/getup.mp4",
     "frameCount": 527,
@@ -587,7 +587,7 @@
     "thumbnailSrc": "tiktok/getup.jpg"
   },
   {
-    "title": "blindinglights",
+    "title": "Blinding Lights",
     "clipName": "blindinglights",
     "clipPath": "tiktok/blindinglights.mp4",
     "frameCount": 458,
@@ -604,7 +604,7 @@
     "thumbnailSrc": "tiktok/blindinglights.jpg"
   },
   {
-    "title": "supalonely",
+    "title": "Sup-a-lonely",
     "clipName": "supalonely",
     "clipPath": "tiktok/supalonely.mp4",
     "frameCount": 637,
@@ -621,7 +621,7 @@
     "thumbnailSrc": "tiktok/supalonely.jpg"
   },
   {
-    "title": "debbieallenchallenge",
+    "title": "Debbie-Allen Challenge",
     "clipName": "debbieallenchallenge",
     "clipPath": "tiktok/debbieallenchallenge.mp4",
     "frameCount": 922,
@@ -638,7 +638,7 @@
     "thumbnailSrc": "tiktok/debbieallenchallenge.jpg"
   },
   {
-    "title": "thegitup",
+    "title": "The Git Up",
     "clipName": "thegitup",
     "clipPath": "tiktok/thegitup.mp4",
     "frameCount": 543,

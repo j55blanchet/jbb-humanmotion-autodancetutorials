@@ -80,6 +80,30 @@ $family-sans-serif: "Nunito", sans-serif;
     height: 100% !important;
 }
 
+.is-overlay {
+    &.is-overlay-bottom {
+        top: auto;
+    }
+    &.is-overlay-left {
+        right: auto;
+    }
+    &.is-overlay-right {
+        left: auto;
+    }
+    &.is-overlay-top {
+        bottom: auto;
+    }
+}
+
+.vcenter-parent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+
 @import '~bulma';
 @import '~bulma-slider';
 

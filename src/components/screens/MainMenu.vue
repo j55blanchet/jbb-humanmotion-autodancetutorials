@@ -95,6 +95,7 @@
           @closed="selectedDance = null"
           @lesson-selected="onLessonSelected"
           @create-lesson-selected="createLessonSelected"
+          @keyframeselectortool-selected="onKeyframeSelectorToolSelected"
         />
       </div>
     </div>
@@ -153,6 +154,7 @@ export default defineComponent({
     'create-lesson-selected',
     'workflow-selected',
     'create-workflow-selected',
+    'keyframeselectortool-selected',
   ],
   components: {
     LessonCard,
@@ -200,6 +202,9 @@ export default defineComponent({
         return;
       }
       this.currentTab = tab;
+    },
+    onKeyframeSelectorToolSelected(videoEntry: DatabaseEntry) {
+      this.$emit('keyframeselectortool-selected', videoEntry);
     },
     async uploadLessons(files: FileList) {
       console.log('Uploading lessons', files);
