@@ -37,6 +37,7 @@
   <KeyframeSelectorTool
         v-if="state === State.KeyframeSelectorTool"
         @back-selected="goHome"
+        v-bind="keyframes"
         :videoEntry="currentVideo"/>
 
   <div v-bind:class="{ 'is-active': state == State.LessonActive }" class="modal">
@@ -171,6 +172,7 @@ export default defineComponent({
 
     const currentVideo = ref(null as DatabaseEntry | null);
     const currentLesson = ref(null as MiniLesson | null);
+    const keyframes = ref([] as number[]);
 
     const showCameraSurface = computed(() => [
       State.PromptStartWebcam,
@@ -189,7 +191,9 @@ export default defineComponent({
       // else state.value = State.PromptStartWebcam;
     }
 
-    function startKeyframeSelection(videoEntry: DatabaseEntry) {
+    function startKeyframeSelection(videoEntry: DatabaseEntry, kfs: number[]) {
+      console.log('startKeyframeSelection', videoEntry, kfs);
+      keyframes.value = [1, 2];
       currentVideo.value = videoEntry;
       state.value = State.KeyframeSelectorTool;
     }
@@ -250,6 +254,7 @@ export default defineComponent({
       startWebcam,
       onTrackingAttained,
       startKeyframeSelection,
+      keyframes,
       state,
       cameraSurface,
       State,

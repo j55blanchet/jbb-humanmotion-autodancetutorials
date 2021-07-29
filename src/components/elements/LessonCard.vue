@@ -28,8 +28,11 @@
               <li v-if="canCreateLesson">
                 <a @click="$emit('create-lesson-selected', motion)">Create Lesson</a>
               </li>
+              <li v-for="(kfopt, i) in keyframeOptions" :key="i">
+                <a @click="$emit('keyframeselectortool-selected', motion, kfopt.keyframes)">Keyframes - {{kfopt.title}}</a>
+              </li>
               <li>
-                <a @click="$emit('keyframeselectortool-selected', motion)">Select Keyframes</a>
+                <a @click="$emit('keyframeselectortool-selected', motion, [])">Select Keyframes</a>
               </li>
             </ul>
           </div>
@@ -42,6 +45,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import db, { DatabaseEntry } from '@/services/MotionDatabase';
+import keyframeOptions from '@/model/keyframeOptions.json';
 
 export default defineComponent({
   name: 'LessonCard',
@@ -61,8 +65,13 @@ export default defineComponent({
       const lessons = db.getLessons(motion);
       return lessons ?? [];
     },
+    keyframeOptions() {
+      if (!this.motion) return [];
+      const motion = this.motion as DatabaseEntry;
+      return keyframeOptions.filter((option) => option.clipName === motion.clipName);
+    },
   },
-  emits: ['lesson-selected', 'create-lesson-selected', 'closed'],
+  emits: ['lesson-selected', 'create-lesson-selected', 'closed', 'keyframeselectortool-selected'],
 });
 </script>
 

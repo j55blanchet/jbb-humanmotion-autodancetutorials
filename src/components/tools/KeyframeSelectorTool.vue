@@ -56,25 +56,29 @@
 
 <script lang="ts">
 import {
-  defineComponent, onBeforeUnmount, onMounted, ref, watchEffect,
+  defineComponent, onBeforeUnmount, onMounted, ref, toRefs, watchEffect,
 } from 'vue';
 import motionDb, { DatabaseEntry } from '@/services/MotionDatabase';
 
 // [2.28,2.73,2.93,3.18,3.26,3.47,3.54,3.69,4.02,4.2,4.35,4.53,4.71,4.98,5.13,5.44,5.53]
 export default defineComponent({
   name: 'KeyframeSelectorTool',
-  emits: ['back-selected'],
+  emits: ['back-selected', 'update:modelValue'],
   props: {
     videoEntry: {
       type: Object,
       required: true,
     },
+    modelValue: {
+      type: Array,
+      default: Array,
+    },
   },
-  setup() {
+  setup(props) {
+    const { modelValue } = toRefs(props);
     const paused = ref(false);
     const currentTime = ref(0);
     const videoElement = ref(null as HTMLVideoElement | null);
-    const keyframes = ref([] as number[]);
 
     const updateCurrentTime = () => { currentTime.value = videoElement.value?.currentTime ?? 0; };
     let updateIntervalId = -1;
@@ -100,7 +104,7 @@ export default defineComponent({
       videoElement,
       paused,
       currentTime,
-      keyframes,
+      keyframes: ref([]),
       updateCurrentTime,
     };
   },
@@ -142,21 +146,27 @@ export default defineComponent({
   },
   methods: {
     addKeyframe() {
+      const modelCopy = new Array(...this.keyframes);
       const nearestKf = Number.parseFloat(this.currentTime.toFixed(2));
-      if (this.keyframes.indexOf(nearestKf) === -1) {
-        this.keyframes.push(nearestKf);
-        this.keyframes.sort();
+      if (modelCopy.indexOf(nearestKf) === -1) {
+        modelCopy.push(nearestKf);
+        modelCopy.sort();
       } else {
         console.warn('Not adding keyframe - it already exists');
       }
+      this.$emit('update:modelValue', modelCopy);
     },
     deleteKeyframe(timestamp: number) {
-      const index = this.keyframes.indexOf(timestamp);
+      const modelCopy = new Array(...this.keyframes);
+      const index = modelCopy.indexOf(timestamp);
+      // eslint-disable-next-line no-alert
       if (index !== -1 && window.confirm(`Delete keyframe at ${timestamp.toFixed(2)}?`)) {
-        const kfs = this.keyframes;
-        kfs.splice(index, 1);
-        this.keyframes = kfs;
+        // const kfs = modelCopy;
+        modelCopy.splice(index, 1);
+        // this.keyframes = kfs;
       }
+
+      this.$emit('update:modelValue', modelCopy);
     },
   },
 });

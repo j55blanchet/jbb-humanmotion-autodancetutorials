@@ -203,8 +203,8 @@ export default defineComponent({
       }
       this.currentTab = tab;
     },
-    onKeyframeSelectorToolSelected(videoEntry: DatabaseEntry) {
-      this.$emit('keyframeselectortool-selected', videoEntry);
+    onKeyframeSelectorToolSelected(videoEntry: DatabaseEntry, keyframes: number[]) {
+      this.$emit('keyframeselectortool-selected', videoEntry, keyframes);
     },
     async uploadLessons(files: FileList) {
       console.log('Uploading lessons', files);
