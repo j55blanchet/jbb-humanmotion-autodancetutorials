@@ -16,7 +16,7 @@
         :progress="activityProgress"
       />
       <nav class="pagination is-centered" v-if="miniLesson">
-        <div class="pagination-list" style="flex-wrap:nowrap;max-width:calc(100vw - 2.5rem);">
+        <div class="pagination-list" style="max-width:calc(100vw - 2.5rem);">
           <li  v-for="(i, index) in nearbyActivityIndices" :key="index">
             <span class="pagination-ellipses">
               <button
@@ -54,7 +54,7 @@
                 Start Webcam
               </button>
               <button
-                class="button"
+                class="button is-warning"
                 v-if="activityVideoPlayer?.activityFinished"
                 @click="repeat()"
               >
@@ -74,8 +74,10 @@
             </span>
           </li>
           <li>
-            <span class="pagination-ellipses" v-if="activityVideoPlayer?.activityFinished && !hasNextActivity && enableCompleteLesson">
-              <button class="button is-primary" @click="completeLesson">
+            <span class="pagination-ellipses" v-if="enableCompleteLesson">
+              <button class="button"
+                :class="{ 'is-primary': activityVideoPlayer?.activityFinished && !hasNextActivity}"
+                @click="completeLesson">
                 <span class="icon"><i class="fas fa-check"></i></span>
                 <span>Done</span>
               </button>
