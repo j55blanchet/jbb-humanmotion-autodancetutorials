@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.297f06bf15ab28cc7bf8c1c356341233.js"
+  "/precache-manifest.8fdbf8f6c92c9def2f6c49e00f111474.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "jbb-humanmotion-autodancetutorials"});
