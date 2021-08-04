@@ -19,7 +19,7 @@ export class PoseProvider {
     }
 
     const cached = this.poseFiles.get(poseFilename);
-    // if (cached !== undefined) return cached;
+    if (cached !== undefined) return cached;
 
     const stored = localStorage.getItem(poseFilename);
     if (stored !== null) {
@@ -30,10 +30,14 @@ export class PoseProvider {
 
     const poseFile = await PoseProvider.getPoseFile(poseFilename);
     const poses = PoseProvider.convertToPoseList(poseFile);
+
     this.poseFiles.set(poseFilename, poses);
 
-    localStorage.setItem(poseFilename, JSON.stringify(poses));
-
+    // try {
+    //   localStorage.setItem(poseFilename, JSON.stringify(poses));
+    // } catch (e) {
+    //   console.warn('Failed to cache pose file', e);
+    // }
     return poses;
   }
 

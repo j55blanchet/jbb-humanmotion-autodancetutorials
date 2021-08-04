@@ -17,6 +17,8 @@ export interface MiniLessonActivity {
   endTime: number;
   demoVisual: 'video' | 'skeleton' | 'none';
   userVisual: 'video' | 'skeleton' | 'none'; // If the user's webcam should be on
+  keyframeVisual?: 'video' | 'skeleton' | 'none'; // If the keyframe should be on
+  keyframes?: number[];
   emphasizedJoints?: number[];
   focusedSegments?: number[];
   pauses?: Array<PauseInfo>;

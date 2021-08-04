@@ -249,11 +249,11 @@ export default defineComponent({
         return;
       }
 
-      try {
-        poses.value = await poseProvider.GetPose(videoBaseUrl?.value ?? '');
-      } catch (e) {
-        console.error("Couldn't get poses: ", e);
-      }
+      // try {
+      poses.value = await poseProvider.GetPose(videoBaseUrl?.value ?? '');
+      // } catch (e) {
+      // console.error("Couldn't get poses: ", e);
+      // }
     };
 
     watch([videoBaseUrl, drawPoseLandmarks], retieveClearPoseFile);

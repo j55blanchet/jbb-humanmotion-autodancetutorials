@@ -25,30 +25,18 @@
       />
     </div>
 
-    <div class="is-overlay is-overlay-left vcenter-parent" v-show="false && prevKeyframe" style="width:33%">
-      <!-- <div class="box"> -->
-        <video :src="motion?.videoSrc" ref="prevKeyframeVideo" class="keyframe-video"/>
-        <!-- {{prevKeyframe}} -->
-      <!-- </div> -->
-    </div>
-    <div class="is-overlay is-overlay-right keyframe-container" v-show="nextKeyframe" style="width:33%">
-      <!-- <div class="box"> -->
-        <!-- <div> -->
-          <video :src="motion?.videoSrc" ref="nextKeyframeVideo" class="keyframe-video"/>
-          <video :src="motion?.videoSrc" v-show="nextnextKeyframe" ref="nextnextKeyframeVideo" class="keyframe-video"/>
-        <!-- </div> -->
-        <!-- {{nextKeyframe}} -->
-      <!-- </div> -->
-    </div>
-    <div class="is-overlay">
-      <KeyframeTimeline />
-    </div>
-
     <div class="is-overlay instructions-overlay mb-4">
       <InstructionCarousel v-show="!activityFinished && timedInstructions.length > 0" :sizeClass="'is-medium'" :instructions="timedInstructions" class="m-2"/>
       <InstructionCarousel v-show="pauseInstructs.length > 0" :sizeClass="'is-medium'" :instructions="pauseInstructs" class="m-2"/>
       <InstructionCarousel v-show="instructions.length > 0" :sizeClass="'is-medium'" :instructions="instructions" class="m-2"/>
       <InstructionCarousel v-show="activity?.staticInstruction" :sizeClass="'is-medium'"  :instructions="[{id:0, text:activity?.staticInstruction}]" class="m-2"/>
+      <KeyframeTimeline
+        :dbEntry="motion"
+        :keyframes="activity?.keyframes ?? []"
+        :currentTime="videoTime"
+        :activeTimelineSecs="2.5"
+        v-if="keyframeVisual !== 'none'"
+        />
     </div>
   </div>
 </template>
@@ -141,30 +129,13 @@ export default defineComponent({
     };
   },
   computed: {
+    keyframeVisual(): 'none' | 'skeleton' | 'video' {
+      return (this as any)?.activity?.keyframeVisual ?? 'none';
+    },
     showingWebcam() {
       return (this as any)?.activity?.userVisual !== 'none';
     },
     emphasizedJoints(): number[] { return this.activity?.emphasizedJoints ?? []; },
-    nextKeyframe(): number | null {
-      const keyframes: number[] = this.activity?.keyframes ?? [];
-      const currentTime = this.videoTime;
-      const nextKeyframe = keyframes.find((keyframe) => keyframe > currentTime);
-      return nextKeyframe ?? null;
-    },
-    nextnextKeyframe(): number | null {
-      const keyframes: number[] = this.activity?.keyframes ?? [];
-      const { nextKeyframe } = this;
-      if (!nextKeyframe) return null;
-      const nextnextKeyframe = keyframes.find((keyframe) => keyframe > nextKeyframe);
-      return nextnextKeyframe ?? null;
-    },
-    prevKeyframe(): number | null {
-      const keyframes: number[] = this.activity?.keyframes ?? [];
-      const revKeyframes = keyframes.slice().reverse();
-      const currentTime = this.videoTime;
-      const prevKeyframe = revKeyframes.find((keyframe) => keyframe < currentTime);
-      return prevKeyframe ?? null;
-    },
     instructions(): Instruction[] {
       const mActivity = this.activity;
       if (!mActivity) return [];
@@ -210,23 +181,6 @@ export default defineComponent({
       // console.log(`TimedI updated for time ${time}, count=${activeTimedInstructions.length}`, mActivity.timedInstructions);
 
       return activeTimedInstructions;
-    },
-  },
-  watch: {
-    prevKeyframe(newVal) {
-      const timeToSet = newVal ?? this.activity?.startTime ?? 0;
-      const videoElement = this.$refs.prevKeyframeVideo as HTMLVideoElement;
-      if (videoElement) videoElement.currentTime = timeToSet;
-    },
-    nextKeyframe(newVal) {
-      const timeToSet = newVal ?? this.activity?.endTime ?? 0;
-      const videoElement = this.$refs.nextKeyframeVideo as HTMLVideoElement;
-      if (videoElement) videoElement.currentTime = timeToSet;
-    },
-    nextnextKeyframe(newVal) {
-      const timeToSet = newVal ?? this.activity?.endTime ?? 0;
-      const videoElement = this.$refs.nextnextKeyframeVideo as HTMLVideoElement;
-      if (videoElement) videoElement.currentTime = timeToSet;
     },
   },
   methods: {
