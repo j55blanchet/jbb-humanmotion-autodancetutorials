@@ -10,6 +10,7 @@
       ref="videoElement"
       @loadedmetadata="scheduleCanvasResizing"
       @ended="endReported = true"
+      playsinline
     ></video>
     <canvas class="is-overlay" ref="canvasElement" v-show="drawPoseLandmarks"></canvas>
   </div>
