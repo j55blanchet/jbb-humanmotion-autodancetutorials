@@ -40,6 +40,9 @@
         <!-- {{nextKeyframe}} -->
       <!-- </div> -->
     </div>
+    <div class="is-overlay">
+      <KeyframeTimeline />
+    </div>
 
     <div class="is-overlay instructions-overlay mb-4">
       <InstructionCarousel v-show="!activityFinished && timedInstructions.length > 0" :sizeClass="'is-medium'" :instructions="timedInstructions" class="m-2"/>
@@ -57,6 +60,7 @@ import {
 } from 'vue';
 import InstructionCarousel, { Instruction } from '@/components/elements/InstructionCarousel.vue';
 import PausingVideoPlayer from '@/components/elements/PausingVideoPlayer.vue';
+import KeyframeTimeline from '@/components/elements/KeyframeTimeline.vue';
 import WebcamBox from '@/components/elements/WebcamBox.vue';
 import { MiniLessonActivity, PauseInfo } from '@/model/MiniLesson';
 import Constants from '@/services/Constants';
@@ -81,6 +85,7 @@ export default defineComponent({
     PausingVideoPlayer,
     InstructionCarousel,
     WebcamBox,
+    KeyframeTimeline,
   },
   setup(props) {
     const { activity } = toRefs(props);
