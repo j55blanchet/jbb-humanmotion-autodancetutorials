@@ -3,10 +3,13 @@
     <div class="timeline">
       <!-- {{dbEntry.title}} -->
 
-      <span class="placeholder">
-        <VideoPlayer :videoBaseUrl="dbEntry?.videoSrc"
-        :videoOpacity="0"/>
-      </span>
+      <!-- <span class="item">
+        <VideoPlayer :videoBaseUrl="dbEntry?.videoSrc + '#t=' + currentKeyframe"
+          :videoOpacity="displayMode === 'video' ? 1.0 : 0"
+          :setDrawStyle="setKFSkeletonDrawStyle"
+          :fps="dbEntry.fps"
+          :drawPoseLandmarks="displayMode === 'skeleton'"/>
+      </span> -->
       <span
         class="item"
         v-for="(kfitem) in nearFutureKeyframes"
@@ -17,8 +20,8 @@
         <VideoPlayer
           :videoBaseUrl="dbEntry?.videoSrc + '#t=' + kfitem.kf"
           :fps="dbEntry.fps"
-          :drawPoseLandmarks="true"
-          :videoOpacity="displayMode === 'video' ? 1.0 : 0.2"
+          :drawPoseLandmarks="displayMode === 'skeleton'"
+          :videoOpacity="displayMode === 'video' ? 1.0 : 0"
           :setDrawStyle="setKFSkeletonDrawStyle"
         />
         </span>
@@ -82,6 +85,8 @@ export default defineComponent({
 
     const keyframesTyped = keyframes as Ref<number[]>;
 
+    const currentKeyframe = computed(() => keyframesTyped.value.find((kf, index) => kf < currentTime.value && (keyframesTyped.value[index + 1] === undefined || keyframesTyped.value[index + 1] >= currentTime.value)) ?? keyframesTyped.value[0] ?? null);
+
     const futureKeyframes = computed(() => keyframesTyped.value
       .map((kf) => ({
         timeRemaining: kf - currentTime.value,
@@ -90,13 +95,21 @@ export default defineComponent({
       .filter((item) => item.timeRemaining > 0));
 
     const nearFutureKeyframes = computed(
-      () => futureKeyframes.value
-        .filter(({ timeRemaining }) => timeRemaining < activeTimelineSecs.value)
-        .map((item) => ({ ...item, percentAcross: item.timeRemaining / activeTimelineSecs.value })),
+      () => {
+        const current = [{
+          kf: currentKeyframe.value,
+          timeRemaining: 0,
+        }];
+        const upcoming = futureKeyframes.value
+          .filter(({ timeRemaining }) => timeRemaining < activeTimelineSecs.value)
+          .map((item) => ({ ...item, percentAcross: item.timeRemaining / activeTimelineSecs.value }));
+        return current.concat(upcoming);
+      },
     );
     const farFutureKeyframes = computed(() => futureKeyframes.value.filter(({ timeRemaining }) => timeRemaining >= activeTimelineSecs.value).slice(0, maxStackItems.value + 1));
 
     return {
+      currentKeyframe,
       futureKeyframes,
       nearFutureKeyframes,
       farFutureKeyframes,
@@ -132,7 +145,7 @@ export default defineComponent({
       height: 100%;
       min-width: 1rem;
       border-radius: 0.25rem;
-      // border: 1px solid gray;
+      border: 1px sold lightgray;
     }
 
     .placeholder {
