@@ -305,7 +305,7 @@
                         <select v-model="activeActivity.demoVisual">
                           <option value="none">None</option>
                           <option value="skeleton">Skeleton</option>
-                          <option value="viideo">Video</option>
+                          <option value="video">Video</option>
                         </select>
                       </div>
                     </div>
