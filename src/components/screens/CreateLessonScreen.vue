@@ -1,8 +1,4 @@
 <template>
-    <teleport to="#topbarLeft">
-
-    </teleport>
-
     <section class="section create-lesson-screen">
       <div class="hero is-primary block">
         <div class="hero-body">
@@ -281,18 +277,76 @@
 
               <div class="field is-horizontal">
                 <div class="field-label">
-                  <label class="label">Mode</label>
+                  <label class="label">User Visual</label>
                 </div>
                 <div class="field-body">
                   <div class="field">
                     <div class="control">
                       <div class="select">
-                        <select v-model="displayMode">
-                          <option value="other" disabled>Other</option>
-                          <option value="video-demo">Video Demo</option>
-                          <option value="skeleton-overlay">Skeleton Overlay</option>
+                        <select v-model="activeActivity.userVisual">
+                          <option value="none">None</option>
+                          <option value="skeleton">Skeleton</option>
+                          <option value="viideo">Webcam</option>
                         </select>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">Demo Visual</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <div class="select">
+                        <select v-model="activeActivity.demoVisual">
+                          <option value="none">None</option>
+                          <option value="skeleton">Skeleton</option>
+                          <option value="viideo">Video</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">Keyframe Visual</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <div class="select">
+                        <select v-model="activeActivity.keyframeVisual">
+                          <option value="none">None</option>
+                          <option value="skeleton">Skeleton</option>
+                          <option value="video">Video</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <label class="label">Keyframes</label>
+                </div>
+                <div class="field-body">
+                  <div class="field has-addons">
+                    <div class="control">
+                      <button class="button is-static">
+                        {{activeActivityKeyframes.length}} Keyframes
+                      </button>
+                    </div>
+                    <div class="control">
+                      <button class="button" @click="keyframeSelectorToolActive = !keyframeSelectorToolActive">
+                        Edit
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -551,10 +605,20 @@
         </div>
       </div>
 
+      <div v-bind:class="{ 'is-active': keyframeSelectorToolActive }" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-content" style="width: 96%; height: 100vh;">
+        <KeyframeSelectorTool
+          v-if="keyframeSelectorToolActive"
+          v-model="activeActivityKeyframes"
+          :videoEntry="motion"
+          @back-selected="keyframeSelectorToolActive=false"
+          :startTime="activeActivity.startTime"
+          :endTime="activeActivity.endTime"
+        />
+      </div>
+    </div>
     </section>
-
-    <teleport to='#belowSurface'>
-    </teleport>
 </template>
 
 <script lang="ts">
@@ -570,6 +634,7 @@ import db, { createBlankActivity, createBlankLesson, DatabaseEntry } from '@/ser
 import MiniLesson, { MiniLessonActivity, PauseInfo, TimedInstruction } from '@/model/MiniLesson';
 import Utils from '@/services/Utils';
 import SegmentedProgressBar, { ProgressSegmentData, calculateProgressSegments } from '@/components/elements/SegmentedProgressBar.vue';
+import KeyframeSelectorTool from '@/components/tools/KeyframeSelectorTool.vue';
 
 const LessonCreationState = Object.freeze({
   SelectOpenLesson: 'SelectOpenLesson',
@@ -587,6 +652,7 @@ export default defineComponent({
   components: {
     MiniLessonPlayer,
     SegmentedProgressBar,
+    KeyframeSelectorTool,
   },
   props: {
     motion: {
@@ -630,10 +696,19 @@ export default defineComponent({
       activeLessonSelectionIndex: -1,
       activePauseIndex: 0,
       activeTimedInstructionIndex: 0,
+      keyframeSelectorToolActive: false,
       // activityProgress: 0,
     };
   },
   computed: {
+    activeActivityKeyframes: {
+      get(): number[] {
+        return (this as any).activeActivity?.keyframes ?? [];
+      },
+      set(newVal: number[]) {
+        this.activeActivity.keyframes = newVal;
+      },
+    },
     displayMode: {
       get() {
         const demoVisual = this.activeActivity.demoVisual ?? 'video';

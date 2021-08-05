@@ -4,7 +4,7 @@
       <h1 class="title">Keyframe Selection Tool</h1>
 
       <div class="buttons">
-        <button class="button" @click="$emit('back-selected')">&lt; Back</button>
+        <button class="button" @click="$emit('back-selected')">Done</button>
       </div>
 
       <div class="block has-text-centered">
@@ -41,12 +41,21 @@
           :keyframes="modelValue"
           :currentTime="currentTime"
           :dbEntry="videoEntry"
+          :showTimestamps="true"
         />
       </div>
 
       <div class="block">
         <h3 class="subtitle">Keyframes</h3>
         <div class="is-flex is-flex-wrap-wrap">
+          <div class="keyframe">
+            <div class="vcenter-parent">
+              <div class="p-1 has-text-centered">
+                StartTime<br />
+                <span class="tag">{{effectiveStartTime.toFixed(2)}}s</span>
+              </div>
+            </div>
+          </div>
           <div
               class="keyframe is-relative  over-expand is-clickable"
               v-for="kf in modelValue"
@@ -59,6 +68,14 @@
             </video>
             <div class="has-text-centered mb-2"><span class="tag">{{kf.toFixed(2)}}</span></div>
           </div>
+          <div class="keyframe">
+            <div class="vcenter-parent">
+              <div class="p-1 has-text-centered">
+                EndTime<br />
+                <span class="tag">{{effectiveEndTime.toFixed(2)}}s</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -67,6 +84,7 @@
 
 <script lang="ts">
 import {
+  computed,
   defineComponent, onBeforeUnmount, onMounted, ref, toRefs, watchEffect,
 } from 'vue';
 import KeyframeTimeline from '@/components/elements/KeyframeTimeline.vue';
@@ -89,12 +107,38 @@ export default defineComponent({
       default: Array,
       required: true,
     },
+    startTime: {
+      type: Number,
+      default: -1,
+    },
+    endTime: {
+      type: Number,
+      default: -1,
+    },
   },
   setup(props) {
-    const { modelValue } = toRefs(props);
+    const {
+      modelValue, startTime, endTime, videoEntry,
+    } = toRefs(props);
     const paused = ref(false);
     const currentTime = ref(0);
     const videoElement = ref(null as HTMLVideoElement | null);
+
+    const effectiveStartTime = computed(() => {
+      if (startTime.value > 0) return startTime.value;
+      if (videoEntry.value?.startTime) return videoEntry.value.startTime;
+      return 0;
+    });
+    const effectiveEndTime = computed(() => {
+      if (endTime.value > 0) return endTime.value;
+      if (videoEntry.value?.endTime) return videoEntry.value.endTime;
+      if (videoEntry.value?.duration) return videoEntry.value.duration;
+      return -1;
+    });
+
+    onMounted(() => {
+      if (videoElement.value) videoElement.value.currentTime = effectiveStartTime.value;
+    });
 
     const updateCurrentTime = () => { currentTime.value = videoElement.value?.currentTime ?? 0; };
     let updateIntervalId = -1;
@@ -121,6 +165,9 @@ export default defineComponent({
       paused,
       currentTime,
       updateCurrentTime,
+
+      effectiveStartTime,
+      effectiveEndTime,
     };
   },
   data() {

@@ -34,8 +34,8 @@
                 }"
                 :disabled="!isDirty"
                 @click="saveWorkflow">
-          <span v-if="workflowInDatabase">Update</span>
-          <span v-else>Save</span>
+          <!-- <span v-if="workflowInDatabase">Update</span> -->
+          <span>Save</span>
         </button>
       </div>
     </div>
@@ -598,7 +598,8 @@ export default defineComponent({
   watch: {
     activeWorkflow: {
       handler(newVal) {
-        this.isDirty = !!newVal;
+        console.log('Workflow now dirty');
+        this.isDirty = ((newVal ?? null) !== null);
       },
       deep: true,
     },
@@ -640,8 +641,14 @@ export default defineComponent({
     },
     saveWorkflow() {
       if (!this.activeWorkflow) return;
+      console.log('Saving workflow');
       workflowManager.upsertCustomWorkflow(this.activeWorkflow);
-      this.isDirty = false;
+      nextTick(() => {
+        this.isDirty = false;
+        console.log('Workflow saved; not dirty now');
+      });
+      // window.setTimeout(() => {
+      // }, 200);
     },
     startCreation(asTemplate: boolean) {
       const existingWorkflow = this.availableWorkflows[this.selectingWorkflowIndex];

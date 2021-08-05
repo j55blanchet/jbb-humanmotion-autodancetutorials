@@ -24,6 +24,9 @@
           :videoOpacity="displayMode === 'video' ? 1.0 : 0"
           :setDrawStyle="setKFSkeletonDrawStyle"
         />
+        <p v-if="showTimestamps" class="has-text-centered">
+          <span class="tag">{{kfitem.kf.toFixed(2)}}s</span>
+        </p>
         </span>
       <!-- <span
         class="item"
@@ -77,6 +80,10 @@ export default defineComponent({
       type: Number,
       default: 3,
     },
+    showTimestamps: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props) {
     const {
@@ -85,7 +92,7 @@ export default defineComponent({
 
     const keyframesTyped = keyframes as Ref<number[]>;
 
-    const currentKeyframe = computed(() => keyframesTyped.value.find((kf, index) => kf < currentTime.value && (keyframesTyped.value[index + 1] === undefined || keyframesTyped.value[index + 1] >= currentTime.value)) ?? keyframesTyped.value[0] ?? null);
+    const currentKeyframe = computed(() => (keyframesTyped.value.find((kf, index) => kf < currentTime.value && (keyframesTyped.value[index + 1] === undefined || keyframesTyped.value[index + 1] >= currentTime.value)) ?? keyframesTyped.value[0]) ?? null);
 
     const futureKeyframes = computed(() => keyframesTyped.value
       .map((kf) => ({
@@ -96,14 +103,20 @@ export default defineComponent({
 
     const nearFutureKeyframes = computed(
       () => {
-        const current = [{
-          kf: currentKeyframe.value,
-          timeRemaining: 0,
-        }];
+        const current = [];
+        if (currentKeyframe.value !== null) {
+          current.push({
+            kf: currentKeyframe.value,
+            timeRemaining: 0,
+          });
+        }
         const upcoming = futureKeyframes.value
           .filter(({ timeRemaining }) => timeRemaining < activeTimelineSecs.value)
           .map((item) => ({ ...item, percentAcross: item.timeRemaining / activeTimelineSecs.value }));
-        return current.concat(upcoming);
+        upcoming.reverse();
+
+        const allNearFuture = [...current, ...upcoming];
+        return allNearFuture;
       },
     );
     const farFutureKeyframes = computed(() => futureKeyframes.value.filter(({ timeRemaining }) => timeRemaining >= activeTimelineSecs.value).slice(0, maxStackItems.value + 1));
