@@ -243,6 +243,7 @@ export default defineComponent({
         emphasizedJoints: emphasizedJoints.value as number[],
         emphasisStroke: emphasizedJointStyle.value,
         sourceAspectRatio: sourceAR,
+        outlineColor: 'black',
       });
     }
 

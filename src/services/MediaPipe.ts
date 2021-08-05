@@ -5,6 +5,7 @@
 import { Landmark, MpHolisticResults, PoseLandmarks } from './MediaPipeTypes';
 import eventHub, { EventNames } from './EventHub';
 import Utils from './Utils';
+import { Pose } from '@mediapipe/pose';
 
 export const usingHolistic = false;
 
@@ -42,8 +43,9 @@ const CONNECTIONS_TO_DRAW = [
   { v0: PoseLandmarks.leftElbow,    v1: PoseLandmarks.leftShoulder,   size: 1.3 },
   { v0: PoseLandmarks.rightElbow,   v1: PoseLandmarks.rightShoulder,  size: 1.3 },
   { v0: PoseLandmarks.leftShoulder, v1: PoseLandmarks.rightShoulder,  size: 2.0 },
-  { v0: PoseLandmarks.leftHip,      v1: PoseLandmarks.leftShoulder,   size: 1.7 },
-  { v0: PoseLandmarks.rightHip,     v1: PoseLandmarks.rightShoulder,  size: 1.7 },
+  // { v0: PoseLandmarks.leftHip,      v1: PoseLandmarks.leftShoulder,   size: 1.7 },
+  // { v0: PoseLandmarks.rightHip,     v1: PoseLandmarks.rightShoulder,  size: 1.7 },
+  { v0: PoseLandmarks.midShouder,   v1: PoseLandmarks.midHip,           size: 3.0 },
   { v0: PoseLandmarks.leftHip,      v1: PoseLandmarks.rightHip,       size: 1.7 },
   { v0: PoseLandmarks.leftHip,      v1: PoseLandmarks.leftKnee,       size: 1.5 },
   { v0: PoseLandmarks.rightHip,     v1: PoseLandmarks.rightKnee,      size: 1.5 },
@@ -55,8 +57,16 @@ const CONNECTIONS_TO_DRAW = [
   { v0: PoseLandmarks.rightHeel,    v1: PoseLandmarks.rightFootIndex, size: 1.0 },
   { v0: PoseLandmarks.leftAnkle,    v1: PoseLandmarks.leftFootIndex,  size: 1.0 },
   { v0: PoseLandmarks.rightAnkle,   v1: PoseLandmarks.rightFootIndex, size: 1.0 },
-  { v0: PoseLandmarks.nose,         v1: PoseLandmarks.rightEye,       size: 1.0 },
-  { v0: PoseLandmarks.nose,         v1: PoseLandmarks.leftEye,        size: 1.0 },
+
+  // { v0: PoseLandmarks.leftEye,      v1: PoseLandmarks.rightEye,       size: 2.0 },
+  // { v0: PoseLandmarks.nose,         v1: PoseLandmarks.leftEye,        size: 1.0 },
+
+  { v0: PoseLandmarks.leftEar,       v1: PoseLandmarks.leftEyeOuter,  size: 1.0 },
+  { v0: PoseLandmarks.leftEyeOuter,  v1: PoseLandmarks.rightEyeOuter, size: 1.0 },
+  { v0: PoseLandmarks.rightEyeOuter, v1: PoseLandmarks.rightEar,      size: 1.0 },
+  { v0: PoseLandmarks.rightEar,      v1: PoseLandmarks.mouthRight,    size: 1.0 },
+  { v0: PoseLandmarks.mouthRight,    v1: PoseLandmarks.mouthLeft,     size: 1.0 },
+  { v0: PoseLandmarks.mouthLeft,     v1: PoseLandmarks.leftEar,       size: 1.0 },
 ];
 
 let trackingStarted = false;
@@ -84,6 +94,73 @@ export function DrawConnections(
   canvasCtx.restore();
 }
 
+function MidLandmark(lm1: Landmark, lm2: Landmark): Landmark {
+  return {
+    x: (lm1.x + lm2.x) / 2,
+    y: (lm1.y + lm2.y) / 2,
+    visibility: ((lm1.visibility ?? 1) + (lm2.visibility ?? 1)) / 2,
+  };
+}
+
+function GetLandmark(lm: number, lms: Array<Landmark>) {
+  if (lm >= 0) return lms[lm];
+
+  if (lm === PoseLandmarks.midHip) {
+    return MidLandmark(lms[PoseLandmarks.leftHip], lms[PoseLandmarks.rightHip]);
+  }
+
+  if (lm === PoseLandmarks.midShouder) {
+    return MidLandmark(lms[PoseLandmarks.leftShoulder], lms[PoseLandmarks.rightShoulder]);
+  }
+
+  if (lm === PoseLandmarks.midEye) {
+    return MidLandmark(lms[PoseLandmarks.leftEye], lms[PoseLandmarks.rightEye]);
+  }
+
+  return undefined;
+}
+
+function DrawSkeleton(
+  canvasCtx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  poseLandmarks: Landmark[],
+  enableSizeVariation: boolean,
+  emphasizedJoints: number[],
+  emphasisStroke?: string,
+) {
+  const w = width;
+  const h = height;
+
+  CONNECTIONS_TO_DRAW.forEach((connection) => {
+    const  p1 = GetLandmark(connection.v0, poseLandmarks);
+    const  p2 = GetLandmark(connection.v1, poseLandmarks);
+
+    if (!p1 || !p2) return;
+    if ((p1.visibility ?? 1) < 0.25 || (p2.visibility ?? 1) < 0.25) {
+      // console.log('skipping b/c of insufficient visibility');
+      return;
+    }
+
+    const emphasized = emphasizedJoints
+    && emphasizedJoints.indexOf(connection.v0) !== -1
+    && emphasizedJoints.indexOf(connection.v1) !== -1;
+
+    canvasCtx.save();
+    if (emphasized && emphasisStroke) {
+      canvasCtx.strokeStyle = emphasisStroke;
+    }
+    if (enableSizeVariation) {
+      canvasCtx.lineWidth *= connection.size;
+    }
+    canvasCtx.beginPath();
+    canvasCtx.moveTo(p1.x * w, p1.y * h);
+    canvasCtx.lineTo(p2.x * w, p2.y * h);
+    canvasCtx.stroke();
+    canvasCtx.restore();
+  });
+}
+
 export function DrawPose(
   canvasCtx: CanvasRenderingContext2D,
   poseLandmarks: Landmark[],
@@ -91,6 +168,8 @@ export function DrawPose(
     sourceAspectRatio?: number;
     emphasizedJoints?: number[];
     emphasisStroke? : string;
+    enableSizeVariation?: boolean;
+    outlineColor?: string;
   },
 ) {
 
@@ -98,7 +177,8 @@ export function DrawPose(
     return;
   }
 
-  const jointsWithEmphasis = options?.emphasizedJoints;
+  const jointsWithEmphasis = options?.emphasizedJoints ?? [];
+  const enableSizeVariation = options?.enableSizeVariation ?? false;
 
   canvasCtx.save();
   let w = canvasCtx.canvas.width;
@@ -124,41 +204,25 @@ export function DrawPose(
     }
   }
 
-  CONNECTIONS_TO_DRAW.forEach((connection) => {
-    const p1 = poseLandmarks[connection.v0];
-    const p2 = poseLandmarks[connection.v1];
-
-    if (!p1 || !p2) return;
-    if ((p1.visibility ?? 1) < 0.5 || (p2.visibility ?? 1) < 0.5) {
-      // console.log('skipping b/c of insufficient visibility');
-      return;
-    }
-
-    const emphasized = jointsWithEmphasis
-    && jointsWithEmphasis.indexOf(connection.v0) !== -1
-    && jointsWithEmphasis.indexOf(connection.v1) !== -1;
-
+  if (options?.outlineColor) {
     canvasCtx.save();
-    if (emphasized && options?.emphasisStroke) {
-      canvasCtx.strokeStyle = options.emphasisStroke;
-    }
-    canvasCtx.lineWidth *= connection.size;
-    canvasCtx.beginPath();
-    canvasCtx.moveTo(p1.x * w, p1.y * h);
-    canvasCtx.lineTo(p2.x * w, p2.y * h);
-    canvasCtx.stroke();
+    canvasCtx.strokeStyle = options.outlineColor;
+    const outlineWidth = Math.max(1, canvasCtx.lineWidth / 10.0);
+    canvasCtx.lineWidth += outlineWidth * 2;
+    DrawSkeleton(canvasCtx, w, h, poseLandmarks, enableSizeVariation, jointsWithEmphasis);
     canvasCtx.restore();
-  });
-
-  const p1a = poseLandmarks[PoseLandmarks.leftShoulder];
-  const p1b = poseLandmarks[PoseLandmarks.rightShoulder];
-  const p2 = poseLandmarks[PoseLandmarks.nose];
-  if (!p1a || !p1b || !p2) {
-    canvasCtx.beginPath();
-    canvasCtx.moveTo(w * 0.5 * (p1a.x + p1b.x), h * 0.5 * (p1a.y + p1b.y));
-    canvasCtx.lineTo(w * p2.x, h * p2.y);
-    canvasCtx.stroke();
   }
+  DrawSkeleton(canvasCtx, w, h, poseLandmarks, enableSizeVariation, jointsWithEmphasis, options?.emphasisStroke);
+
+  // const p1a = poseLandmarks[PoseLandmarks.leftShoulder];
+  // const p1b = poseLandmarks[PoseLandmarks.rightShoulder];
+  // const p2 = poseLandmarks[PoseLandmarks.nose];
+  // if (!p1a || !p1b || !p2) {
+  //   canvasCtx.beginPath();
+  //   canvasCtx.moveTo(w * 0.5 * (p1a.x + p1b.x), h * 0.5 * (p1a.y + p1b.y));
+  //   canvasCtx.lineTo(w * p2.x, h * p2.y);
+  //   canvasCtx.stroke();
+  // }
 
   canvasCtx.restore();
 }

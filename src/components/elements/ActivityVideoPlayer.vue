@@ -32,10 +32,9 @@
       <InstructionCarousel v-show="activity?.staticInstruction" :sizeClass="'is-medium'"  :instructions="[{id:0, text:activity?.staticInstruction}]" class="m-2"/>
       <KeyframeTimeline
         :dbEntry="motion"
-        :displayMode="keyframeVisual"
+        :drawMode="keyframeVisual"
         :keyframes="activity?.keyframes ?? []"
         :currentTime="videoTime"
-        :activeTimelineSecs="2.5"
         v-if="keyframeVisual !== 'none'"
         />
     </div>

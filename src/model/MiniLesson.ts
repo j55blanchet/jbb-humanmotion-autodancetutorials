@@ -11,6 +11,11 @@ export interface PauseInfo {
     manualResume?: boolean;
 }
 
+export interface Keyframe {
+    time: number;
+    time2?: number;
+}
+
 export interface MiniLessonActivity {
   title: string;
   startTime: number;
