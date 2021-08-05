@@ -7,17 +7,18 @@
         <button class="button" @click="$emit('back-selected')">&lt; Back</button>
       </div>
 
-      <div class="block">
+      <div class="block has-text-centered">
         <video
           ref="videoElement"
           @playing="paused = false"
           @pause="paused = true"
           @seeked="updateCurrentTime"
           :src="videoEntry.videoSrc"
-          style="max-height: 50vh; max-width: 768px;"></video>
+          controls
+          style="max-height: 50vh; max-width: 768px;margin:auto;"></video>
       </div>
 
-      <div class="buttons is-grouped">
+      <div class="buttons is-grouped is-centered">
         <button class="button" @click="videoElement.currentTime -= 0.1">&lt;&lt;</button>
         <button class="button" @click="videoElement.currentTime -= 0.03">&lt;</button>
         <span class="button is-text" disabled>
@@ -27,26 +28,36 @@
         <button class="button" @click="videoElement.currentTime += 0.03">&gt;</button>
         <button class="button" @click="videoElement.currentTime += 0.1">&gt;&gt;</button>
       </div>
+      <div>
+        <input class="slider is-fullwidth" type="range" :value="currentTime" :min="videoEntry.startTime" :max="videoEntry.endTime" step="0.03" @input="this.$refs.videoElement.currentTime = $event.target.value">
+      </div>
+<!--
+      <div class="block">
+        <pre>{{JSON.stringify(modelValue)}}</pre>
+      </div> -->
 
       <div class="block">
-        <pre>{{JSON.stringify(keyframes)}}</pre>
+        <KeyframeTimeline
+          :keyframes="modelValue"
+          :currentTime="currentTime"
+          :dbEntry="videoEntry"
+        />
       </div>
 
       <div class="block">
         <h3 class="subtitle">Keyframes</h3>
         <div class="is-flex is-flex-wrap-wrap">
           <div
-              :class="{'is-active': frameInfo.isCurrent}"
               class="keyframe is-relative  over-expand is-clickable"
-              v-for="(frameInfo, i) in keyframesWithVideo"
-              :key="i"
-              @click="deleteKeyframe(frameInfo.kf)">
+              v-for="kf in modelValue"
+              :key="kf"
+              @click="deleteKeyframe(kf)">
 
             <!-- <div class="has-text-right is-overlay"><button class="button is-small is-danger is-light">&times;</button></div> -->
             <video class="keyframe-thumb"
-            :src="videoEntry.videoSrc + '#t=' + frameInfo.kf">
+            :src="videoEntry.videoSrc + '#t=' + kf">
             </video>
-            <div class="has-text-centered mb-2"><span class="tag">{{frameInfo.kf.toFixed(2)}}</span></div>
+            <div class="has-text-centered mb-2"><span class="tag">{{kf.toFixed(2)}}</span></div>
           </div>
         </div>
       </div>
@@ -58,12 +69,16 @@
 import {
   defineComponent, onBeforeUnmount, onMounted, ref, toRefs, watchEffect,
 } from 'vue';
+import KeyframeTimeline from '@/components/elements/KeyframeTimeline.vue';
 import motionDb, { DatabaseEntry } from '@/services/MotionDatabase';
 
 // [2.28,2.73,2.93,3.18,3.26,3.47,3.54,3.69,4.02,4.2,4.35,4.53,4.71,4.98,5.13,5.44,5.53]
 export default defineComponent({
   name: 'KeyframeSelectorTool',
   emits: ['back-selected', 'update:modelValue'],
+  components: {
+    KeyframeTimeline,
+  },
   props: {
     videoEntry: {
       type: Object,
@@ -72,6 +87,7 @@ export default defineComponent({
     modelValue: {
       type: Array,
       default: Array,
+      required: true,
     },
   },
   setup(props) {
@@ -104,7 +120,6 @@ export default defineComponent({
       videoElement,
       paused,
       currentTime,
-      keyframes: ref([]),
       updateCurrentTime,
     };
   },
@@ -114,9 +129,9 @@ export default defineComponent({
   },
   computed: {
     prevKeyframe() {
-      const keyframes = (this as any).keyframes as number[];
+      const keyframes = (this as any).modelValue as number[];
       let i = 0;
-      for (;i < this.keyframes.length; i += 1) {
+      for (;i < this.modelValue.length; i += 1) {
         const kf = keyframes[i];
         if (kf > this.currentTime) {
           return keyframes[i - 1] ?? null;
@@ -125,8 +140,8 @@ export default defineComponent({
       return keyframes[i - 1] ?? null;
     },
     nextKeyframe() {
-      const keyframes = (this as any).keyframes as number[];
-      for (let i = 0; i < this.keyframes.length; i += 1) {
+      const keyframes = (this as any).modelValue as number[];
+      for (let i = 0; i < this.modelValue.length; i += 1) {
         const kf = keyframes[i];
         if (kf > this.currentTime) {
           return keyframes[i];
@@ -134,19 +149,10 @@ export default defineComponent({
       }
       return null;
     },
-    keyframesWithVideo() {
-      const keyframes = ((this as any).keyframes as number[]).map((kf: number) => ({ kf, isCurrent: false }));
-      keyframes.push({
-        kf: this.currentTime,
-        isCurrent: true,
-      });
-      keyframes.sort((a, b) => a.kf - b.kf);
-      return keyframes;
-    },
   },
   methods: {
     addKeyframe() {
-      const modelCopy = new Array(...this.keyframes);
+      const modelCopy = [...this.modelValue];
       const nearestKf = Number.parseFloat(this.currentTime.toFixed(2));
       if (modelCopy.indexOf(nearestKf) === -1) {
         modelCopy.push(nearestKf);
@@ -155,9 +161,10 @@ export default defineComponent({
         console.warn('Not adding keyframe - it already exists');
       }
       this.$emit('update:modelValue', modelCopy);
+      console.log('update:modelValue (added kf)', modelCopy);
     },
     deleteKeyframe(timestamp: number) {
-      const modelCopy = new Array(...this.keyframes);
+      const modelCopy = [...this.modelValue];
       const index = modelCopy.indexOf(timestamp);
       // eslint-disable-next-line no-alert
       if (index !== -1 && window.confirm(`Delete keyframe at ${timestamp.toFixed(2)}?`)) {
@@ -167,6 +174,7 @@ export default defineComponent({
       }
 
       this.$emit('update:modelValue', modelCopy);
+      console.log('update:modelValue (deleted kf)', modelCopy);
     },
   },
 });

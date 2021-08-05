@@ -37,7 +37,7 @@
   <KeyframeSelectorTool
         v-if="state === State.KeyframeSelectorTool"
         @back-selected="goHome"
-        v-bind="keyframes"
+        v-model:modelValue="keyframes"
         :videoEntry="currentVideo"/>
 
   <div v-bind:class="{ 'is-active': state == State.LessonActive }" class="modal">
@@ -193,7 +193,7 @@ export default defineComponent({
 
     function startKeyframeSelection(videoEntry: DatabaseEntry, kfs: number[]) {
       console.log('startKeyframeSelection', videoEntry, kfs);
-      keyframes.value = [1, 2];
+      keyframes.value = kfs;
       currentVideo.value = videoEntry;
       state.value = State.KeyframeSelectorTool;
     }

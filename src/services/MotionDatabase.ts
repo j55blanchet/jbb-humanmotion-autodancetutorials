@@ -17,6 +17,8 @@ export interface DatabaseEntry {
   height: number;
   videoSrc: string;
   thumbnailSrc: string;
+  startTime: number;
+  endTime: number;
 }
 
 export class MotionDatabase {

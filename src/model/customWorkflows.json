@@ -28,8 +28,8 @@
                     "startTime": 4.8,
                     "endTime": 15.0,
                     "userVisual": "none",
-                    "demoVisual": "video",
-                    "keyframeVisual": "video",
+                    "demoVisual": "none",
+                    "keyframeVisual": "skeleton",
                     "keyframes": [
                       5.411990105222237,
                       6.645101774766544,

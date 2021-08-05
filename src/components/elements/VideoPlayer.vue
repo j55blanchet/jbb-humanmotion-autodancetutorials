@@ -9,6 +9,8 @@
       }"
       ref="videoElement"
       @loadedmetadata="scheduleCanvasResizing"
+      @seeked="onTimeUpdated(true)"
+      @timeupdate="onTimeUpdated(true)"
       @ended="endReported = true"
       playsinline
     ></video>
@@ -48,6 +50,7 @@ function onResize(canvasE: HTMLCanvasElement, videoE: HTMLVideoElement, modified
       // eslint-disable-next-line no-param-reassign
       modified.value = true;
     }
+    modified.value = true;
   });
 }
 
@@ -181,7 +184,7 @@ export default defineComponent({
 
     let prevTime = -1;
     let timerId = -1;
-    function onTimeUpdated() {
+    function onTimeUpdated(ignoreEnd?: boolean) {
       const vidElement = videoElement.value;
       if (!vidElement) return;
 
@@ -191,7 +194,7 @@ export default defineComponent({
 
       currentTime.value = time;
 
-      if (time + 1 / 60 >= endTime.value || endReported.value) {
+      if (!ignoreEnd && (time + 1 / 60 >= endTime.value || endReported.value)) {
         vidElement.pause();
         vidElement.currentTime = endTime.value; // pin to end time
         ctx.emit('progress', endTime.value);
@@ -290,6 +293,7 @@ export default defineComponent({
       currentPose,
       currentFrame,
       endReported,
+      onTimeUpdated,
 
       getVideoDimensions: () => ({
         height: videoElement.value?.height ?? 0,

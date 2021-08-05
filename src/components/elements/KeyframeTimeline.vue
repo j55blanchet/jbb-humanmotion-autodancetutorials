@@ -9,7 +9,7 @@
       </span>
       <span
         class="item"
-        v-for="(kfitem, i) in nearFutureKeyframes"
+        v-for="(kfitem) in nearFutureKeyframes"
         :key="kfitem.kf"
         :style="{
           'left': 100 * kfitem.percentAcross + '%',
@@ -18,7 +18,8 @@
           :videoBaseUrl="dbEntry?.videoSrc + '#t=' + kfitem.kf"
           :fps="dbEntry.fps"
           :drawPoseLandmarks="true"
-          :videoOpacity="0.5"
+          :videoOpacity="displayMode === 'video' ? 1.0 : 0.2"
+          :setDrawStyle="setKFSkeletonDrawStyle"
         />
         </span>
       <!-- <span
@@ -49,6 +50,10 @@ export default defineComponent({
     VideoPlayer,
   },
   props: {
+    displayMode: {
+      type: String,
+      default: 'video',
+    },
     dbEntry: {
       type: Object,
       required: true,
@@ -95,6 +100,12 @@ export default defineComponent({
       futureKeyframes,
       nearFutureKeyframes,
       farFutureKeyframes,
+
+      setKFSkeletonDrawStyle: (canvasCtx: CanvasRenderingContext2D) => {
+        canvasCtx.strokeStyle = 'rgba(100, 150, 150, 0.9)';
+        canvasCtx.lineWidth = 3.5;
+        canvasCtx.lineCap = 'round';
+      },
     };
   },
 });
