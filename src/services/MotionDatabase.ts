@@ -1,7 +1,7 @@
 import MiniLesson, { MiniLessonActivity } from '@/model/MiniLesson';
 
 import videoDatabase from '@/model/videoDatabase.json';
-import defaultLessons from '@/model/bakedInLessons.json';
+// import defaultLessons from '@/model/bakedInLessons.json';
 
 import { computed, reactive } from 'vue';
 import Utils from './Utils';

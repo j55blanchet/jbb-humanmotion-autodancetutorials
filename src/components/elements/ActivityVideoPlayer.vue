@@ -45,7 +45,7 @@
 <script lang="ts">
 
 import {
-  computed, ComputedRef, defineComponent, nextTick, onBeforeUnmount, onMounted, Ref, ref, toRefs, watch, watchEffect,
+  computed, defineComponent, ref, toRefs, watchEffect,
 } from 'vue';
 import InstructionCarousel, { Instruction } from '@/components/elements/InstructionCarousel.vue';
 import PausingVideoPlayer from '@/components/elements/PausingVideoPlayer.vue';
