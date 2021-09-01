@@ -11,6 +11,9 @@
     "startTime": 4.8,
     "endTime": 15.0,
     "poseUpperBodyOnly": true,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
@@ -28,6 +31,9 @@
     "startTime": 1.0,
     "endTime": 10.0,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
@@ -45,6 +51,9 @@
     "startTime": 0,
     "endTime": 12.233333333333333,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
@@ -62,6 +71,9 @@
     "startTime": 0,
     "endTime": 19.266666666666666,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
@@ -79,6 +91,9 @@
     "startTime": 0,
     "endTime": 1.4014014014014013,
     "poseUpperBodyOnly": true,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "rightHand",
       "leftHand"
@@ -97,6 +112,9 @@
     "startTime": 0,
     "endTime": 1.9352666666666667,
     "poseUpperBodyOnly": true,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "rightHand",
       "leftHand"
@@ -115,6 +133,9 @@
     "startTime": 0,
     "endTime": 2.0353666666666665,
     "poseUpperBodyOnly": true,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "rightHand",
       "leftHand"
@@ -133,6 +154,9 @@
     "startTime": 0,
     "endTime": 2.1021,
     "poseUpperBodyOnly": true,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "rightHand",
       "leftHand"
@@ -151,6 +175,9 @@
     "startTime": 0,
     "endTime": 1.2012012012012012,
     "poseUpperBodyOnly": true,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "rightHand",
       "leftHand"
@@ -169,6 +196,9 @@
     "startTime": 0,
     "endTime": 1.8018018018018018,
     "poseUpperBodyOnly": true,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "rightHand",
       "leftHand"
@@ -187,6 +217,9 @@
     "startTime": 0,
     "endTime": 1.9352666666666667,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -207,6 +240,9 @@
     "startTime": 0,
     "endTime": 2.0687333333333333,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -227,6 +263,9 @@
     "startTime": 0,
     "endTime": 2.2355666666666667,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -247,6 +286,9 @@
     "startTime": 0,
     "endTime": 1.5682333333333334,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -267,6 +309,9 @@
     "startTime": 0,
     "endTime": 1.7017,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -287,6 +332,9 @@
     "startTime": 0,
     "endTime": 2.0687333333333333,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -307,6 +355,9 @@
     "startTime": 0,
     "endTime": 1.2679346012679347,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -327,6 +378,9 @@
     "startTime": 0,
     "endTime": 1.0343677010343677,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -347,6 +401,9 @@
     "startTime": 0,
     "endTime": 2.301968635301969,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -367,6 +424,9 @@
     "startTime": 0,
     "endTime": 2.2689333333333335,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -387,6 +447,9 @@
     "startTime": 0,
     "endTime": 2.0687333333333333,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -407,6 +470,9 @@
     "startTime": 0,
     "endTime": 1.5011678345011679,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -427,6 +493,9 @@
     "startTime": 0,
     "endTime": 2.1021,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -447,6 +516,9 @@
     "startTime": 0,
     "endTime": 1.5015,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -467,6 +539,9 @@
     "startTime": 0,
     "endTime": 3.0026693360026693,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -487,6 +562,9 @@
     "startTime": 0,
     "endTime": 1.4681348014681348,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -507,6 +585,9 @@
     "startTime": 0,
     "endTime": 1.3013013013013013,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -527,6 +608,9 @@
     "startTime": 0,
     "endTime": 1.2012012012012012,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -547,6 +631,9 @@
     "startTime": 0,
     "endTime": 58.29156666666667,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
@@ -564,6 +651,9 @@
     "startTime": 0,
     "endTime": 14.3,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
@@ -581,6 +671,9 @@
     "startTime": 0,
     "endTime": 18.03333333333333,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
@@ -598,6 +691,9 @@
     "startTime": 0,
     "endTime": 15.266666666666667,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
@@ -615,6 +711,9 @@
     "startTime": 0,
     "endTime": 21.254566666666665,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
@@ -632,6 +731,9 @@
     "startTime": 0,
     "endTime": 30.733333333333334,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
@@ -649,9 +751,35 @@
     "startTime": 0,
     "endTime": 18.118100000000002,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
     "thumbnailSrc": "tiktok/thegitup.jpg"
+  },
+  {
+    "title": "ohnana",
+    "clipName": "ohnana",
+    "clipPath": "tiktok/ohnana.MP4",
+    "frameCount": 406,
+    "fps": 29.926289926289925,
+    "duration": 13.566666666666666,
+    "width": 576,
+    "height": 1024,
+    "startTime": 0,
+    "endTime": 13.566666666666666,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ],
+    "thumbnailSrc": "tiktok/ohnana.jpg"
   }
 ]

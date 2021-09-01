@@ -82,10 +82,6 @@ export default defineComponent({
       type: Number,
       default: 2.5,
     },
-    maxVisibleStackItems: {
-      type: Number,
-      default: 1,
-    },
     showTimestamps: {
       type: Boolean,
       default: false,
@@ -94,7 +90,7 @@ export default defineComponent({
   setup(props) {
     const minStackItems = 3;
     const {
-      keyframes, currentTime, maxActiveTimelineSecs, maxVisibleStackItems, timelineActiveItemsLimit,
+      keyframes, currentTime, maxActiveTimelineSecs, timelineActiveItemsLimit,
     } = toRefs(props);
 
     const keyframesTyped = keyframes as Ref<number[]>;
@@ -117,7 +113,7 @@ export default defineComponent({
       );
       separationIndex = separationIndex === -1 ? futureKeyframes.value.length : separationIndex;
       const active = futureKeyframes.value.slice(0, separationIndex);
-      const future = futureKeyframes.value.slice(separationIndex, separationIndex + Math.max(minStackItems, maxVisibleStackItems.value));
+      const future = futureKeyframes.value.slice(separationIndex, separationIndex + minStackItems);
 
       let timelineTime = maxActiveTimelineSecs.value;
       if (timelineActiveItemsLimit.value === 1 && active.length > 0) {
@@ -126,6 +122,7 @@ export default defineComponent({
         const timeTONextKf = nextKfTime - lastKfTime;
         timelineTime = Math.min(timelineTime, timeTONextKf);
       }
+      const lastScrollingKf = active[active.length - 1]?.kf;
 
       return {
         separationIndex,
@@ -137,7 +134,11 @@ export default defineComponent({
         stackTimeline: future.map((kfitem, i) => ({
           ...kfitem,
           left: 1.0,
-          opacity: Math.max(0, (maxVisibleStackItems.value - i) / maxVisibleStackItems.value),
+          // eslint-disable-next-line no-nested-ternary
+          opacity: i > 0 ? 0
+            : (lastScrollingKf
+              ? (kfitem.kf - lastScrollingKf) / 1.5
+              : 1),
         })),
       };
     });
