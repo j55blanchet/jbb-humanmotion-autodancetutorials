@@ -26,12 +26,15 @@
       <div class="box m-4 hover-expand is-clickable"
         v-for="workflow in workflows"
         :key="workflow.id"
-        @click="$emit('workflow-selected', workflow.id)">{{workflow.title}}
+        @click="$emit('workflow-selected', workflow.id)">
+        <p class="">{{workflow.title}}</p>
+        <p class="is-size-7 has-text-grey">{{workflow.creationMethod}}</p>
       </div>
     </div>
 
-    <div v-if="currentTab === Tabs.Videos && availableTags.size > 0" class="has-text-centered">
+    <div v-if="currentTab === Tabs.Videos && availableTags.size > 0" class="has-text-centered container">
       <!-- <h3 class="subtitle">Tags</h3> -->
+      <strong>Filter by tag: </strong>
       <span
         v-for="tag in availableTags"
         :key="tag"
@@ -39,6 +42,7 @@
         :class="{'is-primary': activeTags.has(tag)}"
         @click="toggleTag(tag)"
       >{{tag}}</span>
+
     </div>
 
     <div class="grid-menu container block"

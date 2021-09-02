@@ -7,6 +7,10 @@
           <p class="title">
             {{workflow?.title}}
           </p>
+          <div class="p-2" v-if="optionsManager.isTest">
+            <p>Workflow Id: <span class="tag">{{workflow?.id}}</span></p>
+            <p>Timing <span class="tag">{{isTiming}}</span></p>
+          </div>
         </div>
       </div>
     </div>
@@ -121,7 +125,7 @@
 
 <script lang="ts">
 import {
-  computed, defineComponent, ref, toRefs, watch, watchEffect,
+  computed, defineComponent, onMounted, ref, toRefs, watch, watchEffect,
 } from 'vue';
 import MiniLessonPlayer from '@/components/elements/MiniLessonPlayer.vue';
 import db, { DatabaseEntry } from '@/services/MotionDatabase';
@@ -189,6 +193,13 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
+    // const experimentStartTime = ref(0);
+    const stageStartTime = ref(0);
+
+    onMounted(() => {
+      stageStartTime.value = Date.now();
+    });
+
     const currentStep = ref(null as null | TrackingWorkflowStep);
     const instructionsActive = ref(false);
     const lessonActive = ref(false);
@@ -204,6 +215,8 @@ export default defineComponent({
       lessonActive,
       uploadActive,
       workflow: workflowManager.activeFlow,
+      optionsManager,
+      isTiming: ref(false),
     };
   },
   methods: {

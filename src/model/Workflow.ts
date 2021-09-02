@@ -25,6 +25,7 @@ export interface WorkflowStep {
     identifier: string;
     prompt: string;
   };
+  experimentOnly?: boolean;
 }
 
 export interface WorkflowStage {
@@ -34,11 +35,13 @@ export interface WorkflowStage {
     startIndex: number;
     endIndex: number;
   };
+  maxStageTimeSecs?: number;
 }
 
 export interface Workflow {
   title: string;
   // instructions?: Instructions;
+  creationMethod: string;
   id: string;
   stages: WorkflowStage[];
 }
@@ -47,6 +50,7 @@ export function CreateBlankWorkflow() {
   return {
     title: 'New Workflow',
     id: Utils.uuidv4(),
+    creationMethod: 'User Created',
     stages: [],
   } as Workflow;
 }
