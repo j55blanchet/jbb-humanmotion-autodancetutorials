@@ -28,24 +28,48 @@
       <button class="button" @click="$emit('back-selected')">&lt; Back</button>
     </div>
 
-    <div class="block" v-for="(stage, i) in workflow?.stages ?? []" :key="i">
+    <div class="block" v-for="(stage, i) in filteredStages" :key="i">
 
       <p class="subtitle has-text-centered">
         <span class="icon-text">
           <span v-text="stage.title"></span>
           <span class="icon" v-if="isStageCompleted(stage)"><i class="fa fa-check"></i></span>
-
-          <span
-            v-if="activeStageIndex === i && stageSecondsRemaining !== Infinity"
-            class="is-size-6"
-            >
-            &nbsp;
-            {{stageSecondsRemainingString}} Remaining
-          </span>
         </span>
       </p>
 
       <div class="grid-menu container block">
+        <div
+          class="box m-4 is-clickable hover-expand has-border-info vcenter-parent"
+          v-if="activeStageIndex === i-1 && isStageCompleted(filteredStages[i-1])"
+          @click="startStage(i)"
+        >
+          <div>
+            <span class="icon-text">
+              <span>Click to Begin </span>
+              <span class="icon">
+                <i class="far fa-arrow-alt-circle-right"></i>
+              </span>
+            </span>
+          </div>
+          <div class="is-size-7" v-if="stage.timeLimitString">
+            <span >Time limit: {{stage.timeLimitString}}</span>
+            <!-- <span v-else>No time limit</span> -->
+          </div>
+        </div>
+        <div
+          class="m-4 p-4"
+          v-if="(activeStageIndex === i && stageSecondsRemaining !== Infinity) ||
+                (!(activeStageIndex === i-1 && isStageCompleted(filteredStages[i-1])) && stage.timeLimitString)">
+            <span v-if="activeStageIndex === i">
+              <span v-if="stageSecondsRemaining !== Infinity">{{stageSecondsRemainingString}}<br />remaining</span>
+              <!-- <span v-else>No time limit</span> -->
+            </span>
+            <span v-else>
+              <span v-if="stage.timeLimitString">Time limit:<br />{{stage.timeLimitString}}</span>
+              <!-- <span v-else>No time limit</span> -->
+            </span>
+        </div>
+
         <div class="box m-4"
             :class="{
                   'is-clickable': stepInfo.isClickable,
@@ -58,7 +82,7 @@
                   'has-border-grey': stepInfo.isClickable && stepInfo.step !== nextStepInStage && stepInfo.step.status !== 'completed'
                 }"
             @click="stepInfo.isClickable && startWorkflowStep(stepInfo.step)"
-            v-for="(stepInfo, j) in getStepInfo(stage)" :key="j">
+            v-for="(stepInfo, j) in stage.filteredSteps" :key="j">
           <article
             class="level"
           >
@@ -96,88 +120,88 @@
           </article>
         </div>
       </div>
-
-      <div v-bind:class="{ 'is-active': instructionsActive }" class="modal">
-        <div class="modal-background"></div>
-        <div class="modal-content">
-          <div class="box content">
-            <h3>{{currentStep?.instructions?.heading}}</h3>
-            <p style="white-space: pre-wrap;">{{currentStep?.instructions?.text}}</p>
-            <div class="buttons is-right">
-              <button class="button is-primary" @click="instructionsFinished">OK</button>
-            </div>
-          </div>
-        </div>
-        <button class="modal-close" @click="instructionsActive = false" aria-label="close"></button>
-      </div>
-
-      <div v-bind:class="{ 'is-active': lessonActive }" class="modal">
-        <div class="modal-background"></div>
-        <div class="container" style="max-width: 100vw; max-height: 100vh;">
-          <div class="box" style="height:min(90vw, 90vh);width:min(90vh, 90vw);margin-top:calc((100vh - min(90vh, 90vw)) / 2)" >
-            <MiniLessonPlayer
-              v-if="lessonActive"
-              :videoEntry="currentVideoEntry"
-              :miniLesson="currentLesson"
-              @lesson-completed="lessonCompleted"
-              :maxVideoHeight="'calc(100vh - 152px - 3.75rem)'"
-              :enableCompleteLesson="true"/>
-          </div>
-        </div>
-        <button class="modal-close is-large" aria-label="close" @click="lessonActive=false"></button>
-      </div>
-
-      <div :class="{'is-active': uploadActive}" class="modal">
-        <div class="modal-background"></div>
-        <div class="modal-content">
-          <div class="container">
-            <div class="box">
-              <FeedbackUploadScreen
-                :prompt="currentStep?.upload?.prompt"
-                :title="workflow?.title"
-                :subtitle="currentStep?.title"
-                :uploadFilename="uploadFilename"
-                @upload-canceled="uploadActive = false"
-                @upload-completed="uploadComplete"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div :class="{'is-active': timingNotStarted}" class="modal">
-        <div class="modal-background"></div>
-        <div class="modal-content">
-          <div class="container">
-            <div class="box">
-              <div class="content">
-                <h3>Start Timing</h3>
-                <button class="button" @click="startTiming">Start</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
 
+    <div v-bind:class="{ 'is-active': instructionsActive }" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="box content">
+          <h3>{{currentStep?.instructions?.heading}}</h3>
+          <p style="white-space: pre-wrap;">{{currentStep?.instructions?.text}}</p>
+          <div class="buttons is-right">
+            <button class="button is-primary" @click="instructionsFinished">OK</button>
+          </div>
+        </div>
+      </div>
+      <button class="modal-close" @click="instructionsActive = false" aria-label="close"></button>
+    </div>
+
+    <div v-bind:class="{ 'is-active': lessonActive }" class="modal">
+      <div class="modal-background"></div>
+      <div class="container" style="max-width: 100vw; max-height: 100vh;">
+        <div class="box" style="height:min(90vw, 90vh);width:min(90vh, 90vw);margin-top:calc((100vh - min(90vh, 90vw)) / 2)" >
+          <MiniLessonPlayer
+            v-if="lessonActive"
+            :videoEntry="currentVideoEntry"
+            :miniLesson="currentLesson"
+            @lesson-completed="lessonCompleted"
+            :maxVideoHeight="'calc(100vh - 152px - 3.75rem)'"
+            :enableCompleteLesson="true"/>
+        </div>
+      </div>
+      <button class="modal-close is-large" aria-label="close" @click="lessonActive=false"></button>
+    </div>
+
+    <div :class="{'is-active': uploadActive}" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="container">
+          <div class="box">
+            <FeedbackUploadScreen
+              :prompt="currentStep?.upload?.prompt"
+              :title="workflow?.title"
+              :subtitle="currentStep?.title"
+              :uploadFilename="uploadFilename"
+              @upload-canceled="uploadActive = false"
+              @upload-completed="uploadComplete"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div :class="{'is-active': timingNotStarted}" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="container">
+          <div class="box">
+            <div class="content">
+              <h3>Start Timing</h3>
+              <button class="button" @click="startTiming">Start</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 </template>
 
 <script lang="ts">
 import {
-  computed, defineComponent, onBeforeUnmount, onMounted, ref, toRefs, watch, watchEffect,
+  computed, defineComponent, nextTick, onBeforeUnmount, onMounted, ref, toRefs, watch, watchEffect,
 } from 'vue';
 import MiniLessonPlayer from '@/components/elements/MiniLessonPlayer.vue';
 import db, { DatabaseEntry } from '@/services/MotionDatabase';
 import MiniLesson from '@/model/MiniLesson';
-import workflowManager, { TrackingWorkflowStage, TrackingWorkflowStep } from '@/services/WorkflowManager';
+import workflowManager, { TrackingWorkflow, TrackingWorkflowStage, TrackingWorkflowStep } from '@/services/WorkflowManager';
 import FeedbackUploadScreen from '@/components/screens/FeedbackUploadScreen.vue';
 import optionsManager from '@/services/OptionsManager';
-import { GetVideoEntryForWorkflowStep, IsMiniLessonStep } from '@/model/Workflow';
+import {
+  GetVideoEntryForWorkflowStep, IsMiniLessonStep, Workflow, WorkflowStage,
+} from '@/model/Workflow';
 
 function getDurationString(seconds: number) {
-  if (seconds === Infinity) return 'Unlimited';
+  if (seconds === Infinity) return 'Untimed';
   if (Number.isNaN(seconds)) return 'Unknown';
 
   const secsRemainingConstrained = Math.max(0, seconds);
@@ -221,6 +245,8 @@ export default defineComponent({
     nextStepInStage() {
       // for (let i = 0; i < this.stages.length; i += 1) {
       const stage = (this as any).stages[(this as any).activeStageIndex];
+      if (!stage) return null;
+
       for (let j = 0; j < stage.steps.length; j += 1) {
         const step = stage.steps[j];
         if (step.status !== 'completed') return step as TrackingWorkflowStep;
@@ -253,6 +279,44 @@ export default defineComponent({
 
       return `${workflowId}-${participantId}-${uploadId}`;
     },
+    filteredStages() {
+      const workflow = (this as any).workflow as TrackingWorkflow;
+      const stages = workflow?.stages ?? [];
+      const isExperimentMode = (this as any).enableExperimentMode as boolean;
+      const activeStage = (this as any).activeStage as WorkflowStage;
+      const stageSecondsRemaining = (this as any).stageSecondsRemaining as number;
+
+      return stages.map((stage, stageIndex) => {
+        const filteredSteps = stage.steps
+          .filter((step) => isExperimentMode || !(step.experiment?.showInExperimentOnly ?? false))
+          .map((step, stepIndex) => {
+
+            const isTestMode = !isExperimentMode;
+            const isInActiveStage = activeStage === stage;
+            const isTimeExpiredTask = step.experiment?.isTimeExpiredTask ?? false;
+            const stageTimeExpired = stageSecondsRemaining <= 0;
+            const waitingForTimeExpiration = isInActiveStage && isTimeExpiredTask && !stageTimeExpired;
+
+            return {
+              step,
+              isComplete: step.status === 'completed',
+              isNextStep: step === (this as any).nextStepInStage,
+              dbEntry: GetVideoEntryForWorkflowStep(db, step),
+              isClickable: (isTestMode || isInActiveStage)
+                          && (!isTimeExpiredTask || !stageTimeExpired)
+                          && !waitingForTimeExpiration,
+              waitingForTimeExpiration,
+              stageIndex,
+              stepIndex,
+            };
+          });
+        return {
+          ...stage,
+          filteredSteps,
+          timeLimitString: stage.maxStageTimeSecs ? getDurationString(stage.maxStageTimeSecs) : null,
+        };
+      });
+    },
   },
   setup(props, ctx) {
 
@@ -268,7 +332,7 @@ export default defineComponent({
     const isTiming = ref(!optionsManager.isTest.value);
     const timingNotStarted = computed(() => isTiming.value && !workflowStartTime.value);
 
-    const activeStageIndex = ref(1);
+    const activeStageIndex = ref(-1);
     const activeStage = computed(() => workflow.value?.stages[activeStageIndex.value] ?? null);
     onMounted(() => {
       workflowStartTime.value = new Date();
@@ -317,6 +381,7 @@ export default defineComponent({
       workflowStartTime,
       timingNotStarted,
       isTiming,
+      workflowStageStartTime,
       enableExperimentMode,
       workflowSecsElapsed,
       workflowSecondsRemaining,
@@ -330,30 +395,32 @@ export default defineComponent({
     startTiming() {
       this.workflowStartTime = new Date();
     },
-    getStepInfo(stage: TrackingWorkflowStage) {
+    // getStepInfo(stage: TrackingWorkflowStage, stageIndex: number) {
 
-      return stage.steps
-        .filter((step) => this.enableExperimentMode || !(step.experiment?.showInExperimentOnly ?? false))
-        .map((step) => {
+    //   return stage.steps
+    //     .filter((step) => this.enableExperimentMode || !(step.experiment?.showInExperimentOnly ?? false))
+    //     .map((step, stepIndex) => {
 
-          const isTestMode = !this.enableExperimentMode;
-          const isInActiveStage = this.activeStage === stage;
-          const isTimeExpiredTask = step.experiment?.isTimeExpiredTask ?? false;
-          const stageTimeExpired = this.stageSecondsRemaining <= 0;
-          const waitingForTimeExpiration = isTimeExpiredTask && !stageTimeExpired;
+    //       const isTestMode = !this.enableExperimentMode;
+    //       const isInActiveStage = this.activeStage === stage;
+    //       const isTimeExpiredTask = step.experiment?.isTimeExpiredTask ?? false;
+    //       const stageTimeExpired = this.stageSecondsRemaining <= 0;
+    //       const waitingForTimeExpiration = isTimeExpiredTask && !stageTimeExpired;
 
-          return {
-            step,
-            isComplete: step.status === 'completed',
-            isNextStep: step === this.nextStepInStage,
-            dbEntry: GetVideoEntryForWorkflowStep(db, step),
-            isClickable: (isTestMode || isInActiveStage)
-                        && (!isTimeExpiredTask || !stageTimeExpired)
-                        && !waitingForTimeExpiration,
-            waitingForTimeExpiration,
-          };
-        });
-    },
+    //       return {
+    //         step,
+    //         isComplete: step.status === 'completed',
+    //         isNextStep: step === this.nextStepInStage,
+    //         dbEntry: GetVideoEntryForWorkflowStep(db, step),
+    //         isClickable: (isTestMode || isInActiveStage)
+    //                     && (!isTimeExpiredTask || !stageTimeExpired)
+    //                     && !waitingForTimeExpiration,
+    //         waitingForTimeExpiration,
+    //         stageIndex,
+    //         stepIndex,
+    //       };
+    //     });
+    // },
     instructionsFinished() {
       this.instructionsActive = false;
       const step = this.currentStep;
@@ -373,7 +440,7 @@ export default defineComponent({
     continueWorkflowStep(item: TrackingWorkflowStep) {
       if (item.type === 'InstructionOnly') {
         // Instructions only - there's nothing else to do. Move to next activity!
-        item.status = 'completed';
+        this.completeStep(item);
       } else if (item.type === 'MiniLessonReference' || item.type === 'MiniLessonEmbedded') {
         this.lessonActive = true;
       } else if (item.type === 'UploadTask') {
@@ -384,14 +451,25 @@ export default defineComponent({
     },
     lessonCompleted() {
       this.lessonActive = false;
-      if (this.currentStep) this.currentStep.status = 'completed';
+      this.completeStep(this.currentStep);
     },
     uploadComplete() {
       this.uploadActive = false;
-      if (this.currentStep) this.currentStep.status = 'completed';
+      this.completeStep(this.currentStep);
+    },
+    completeStep(step: TrackingWorkflowStep | null) {
+      if (!step) return;
+      step.status = 'completed';
     },
     isStageCompleted(stage: TrackingWorkflowStage) {
+      if (!stage) return true;
       return stage.steps.reduce((wasTrue: boolean, thisStep: TrackingWorkflowStep) => wasTrue && thisStep.status === 'completed', true);
+    },
+    startStage(stageIndex: number) {
+      this.workflowStageStartTime = new Date();
+      nextTick(() => {
+        this.activeStageIndex = stageIndex;
+      });
     },
   },
 });
