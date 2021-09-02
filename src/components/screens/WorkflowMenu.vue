@@ -79,7 +79,7 @@
                   <p v-if="stepInfo.waitingForTimeExpiration" class="is-size-7">&nbsp;in {{stageSecondsRemainingString}}</p>
                   <p v-if="stepInfo.isClickable" class="is-size-7">
                     <span v-if="stepInfo.isComplete">Click to repeat</span>
-                    <span v-if="stepInfo.isNextStep">Next Up</span>
+                    <span v-if="stepInfo.isNextStep">Up Next</span>
                   </p>
                 </div>
               </div>
