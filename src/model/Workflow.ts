@@ -25,7 +25,11 @@ export interface WorkflowStep {
     identifier: string;
     prompt: string;
   };
-  experimentOnly?: boolean;
+  experiment?: {
+    showInExperimentOnly?: boolean;
+    // disableRepitition?: boolean;
+    isTimeExpiredTask?: boolean;
+  };
 }
 
 export interface WorkflowStage {
@@ -40,10 +44,10 @@ export interface WorkflowStage {
 
 export interface Workflow {
   title: string;
-  // instructions?: Instructions;
   creationMethod: string;
   id: string;
   stages: WorkflowStage[];
+  experimentMaxTimeSecs?: number;
 }
 
 export function CreateBlankWorkflow() {

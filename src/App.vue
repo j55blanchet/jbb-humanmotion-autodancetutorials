@@ -1,9 +1,9 @@
 <template>
 <div class="app">
 
-  <p v-if="isTest" class="m-2">
-    ParticipantId: <span class="tag">{{participantId ?? 'null'}}</span>
-  </p>
+  <div id="testData" v-show="isTest" class="tags p-2 mb-0 has-background-dark has-text-grey-lighter">
+    <span class="tag">ParticipantId: {{participantId ?? 'null'}}</span>
+  </div>
 
   <LayoutTest v-if="state === State.LayoutTest" />
 

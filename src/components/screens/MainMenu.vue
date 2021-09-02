@@ -292,10 +292,14 @@ export default defineComponent({
 // background: rgba(0, 0, 0, 0.2);
 // }
 
+.video-card.card {
+  max-width: 300px;
+}
+
 .video-card {
   width: 210px;
   flex-grow: 1;
-  max-width: 300px;
+
   margin: 1em;
 
   img {

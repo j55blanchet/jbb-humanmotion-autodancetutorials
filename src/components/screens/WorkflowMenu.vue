@@ -1,4 +1,17 @@
 <template>
+
+  <teleport to="#testData" v-if="optionsManager.isTest">
+    <span class="tag">Workflow Id: {{workflow?.id ?? 'null'}}</span>
+    <span class="tag">Experiment Mode: <input type="checkbox" v-model="enableExperimentMode"></span>
+
+    <span class="tag">
+      Workflow: {{Math.round(workflowSecsElapsed)}}s elapsed, {{workflowSecondsRemainingString}} remaining
+    </span>
+    <span class="tag">
+      Stage: {{Math.round(stageSecsElapsed)}}s, {{stageSecondsRemainingString}} remaining
+    </span>
+  </teleport>
+
   <section class="section workflow-menu">
 
     <div class="hero is-primary block" v-if="showHeader">
@@ -7,10 +20,6 @@
           <p class="title">
             {{workflow?.title}}
           </p>
-          <div class="p-2" v-if="optionsManager.isTest">
-            <p>Workflow Id: <span class="tag">{{workflow?.id}}</span></p>
-            <p>Timing <span class="tag">{{isTiming}}</span></p>
-          </div>
         </div>
       </div>
     </div>
@@ -25,20 +34,30 @@
         <span class="icon-text">
           <span v-text="stage.title"></span>
           <span class="icon" v-if="isStageCompleted(stage)"><i class="fa fa-check"></i></span>
+
+          <span
+            v-if="activeStageIndex === i && stageSecondsRemaining !== Infinity"
+            class="is-size-6"
+            >
+            &nbsp;
+            {{stageSecondsRemainingString}} Remaining
+          </span>
         </span>
       </p>
 
       <div class="grid-menu container block">
         <div class="box m-4"
             :class="{
-                  'is-clickable': true,
-                  'hover-expand': isClickable(stepInfo.step),
-                  'has-text-grey': !isClickable(stepInfo.step),
-                  'has-background-grey-lighter': !isClickable(stepInfo.step),
+                  'is-clickable': stepInfo.isClickable,
+                  'hover-expand': stepInfo.isClickable,
+                  'has-text-grey': !stepInfo.isClickable,
+                  'has-background-grey-lighter': !stepInfo.isClickable,
+                  'has-background-white-ter': stepInfo.isClickable && !stepInfo.isNextStep,
                   'has-border-success': stepInfo.step.status === 'completed',
-                  'has-border-grey': stepInfo.step === nextStep
+                  'has-border-info': stepInfo.step === nextStepInStage,
+                  'has-border-grey': stepInfo.isClickable && stepInfo.step !== nextStepInStage && stepInfo.step.status !== 'completed'
                 }"
-            @click="startWorkflowStep(stepInfo.step)"
+            @click="stepInfo.isClickable && startWorkflowStep(stepInfo.step)"
             v-for="(stepInfo, j) in getStepInfo(stage)" :key="j">
           <article
             class="level"
@@ -55,15 +74,22 @@
                 </p>
               </div>
               <div class="level-item">
-                <span v-text="stepInfo.step.title"></span>
+                <div>
+                  <p v-text="stepInfo.step.title"></p>
+                  <p v-if="stepInfo.waitingForTimeExpiration" class="is-size-7">&nbsp;in {{stageSecondsRemainingString}}</p>
+                  <p v-if="stepInfo.isClickable" class="is-size-7">
+                    <span v-if="stepInfo.isComplete">Click to repeat</span>
+                    <span v-if="stepInfo.isNextStep">Next Up</span>
+                  </p>
+                </div>
               </div>
             </div>
             <div class="level-right">
               <div class="level-item">
                 <span class="icon is-large">
                   <i class="far fa-check-circle has-text-success" v-if="stepInfo.step.status==='completed'"></i>
-                  <i class="far fa-play-circle" v-if="stepInfo.step===nextStep"></i>
-                  <i class="far fa-circle" v-if="stepInfo.step !== nextStep && stepInfo.step.status==='notstarted'"></i>
+                  <i class="far fa-play-circle" v-if="stepInfo.step===nextStepInStage"></i>
+                  <i class="far fa-circle" v-if="stepInfo.step !== nextStepInStage && stepInfo.step.status==='notstarted'"></i>
                 </span>
               </div>
             </div>
@@ -118,6 +144,21 @@
           </div>
         </div>
       </div>
+
+      <div :class="{'is-active': timingNotStarted}" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+          <div class="container">
+            <div class="box">
+              <div class="content">
+                <h3>Start Timing</h3>
+                <button class="button" @click="startTiming">Start</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </section>
@@ -125,7 +166,7 @@
 
 <script lang="ts">
 import {
-  computed, defineComponent, onMounted, ref, toRefs, watch, watchEffect,
+  computed, defineComponent, onBeforeUnmount, onMounted, ref, toRefs, watch, watchEffect,
 } from 'vue';
 import MiniLessonPlayer from '@/components/elements/MiniLessonPlayer.vue';
 import db, { DatabaseEntry } from '@/services/MotionDatabase';
@@ -134,6 +175,18 @@ import workflowManager, { TrackingWorkflowStage, TrackingWorkflowStep } from '@/
 import FeedbackUploadScreen from '@/components/screens/FeedbackUploadScreen.vue';
 import optionsManager from '@/services/OptionsManager';
 import { GetVideoEntryForWorkflowStep, IsMiniLessonStep } from '@/model/Workflow';
+
+function getDurationString(seconds: number) {
+  if (seconds === Infinity) return 'Unlimited';
+  if (Number.isNaN(seconds)) return 'Unknown';
+
+  const secsRemainingConstrained = Math.max(0, seconds);
+
+  if (secsRemainingConstrained < 3600) {
+    return new Date(secsRemainingConstrained * 1000).toISOString().substr(14, 5);
+  }
+  return new Date(secsRemainingConstrained * 1000).toISOString().substr(11, 8);
+}
 
 export default defineComponent({
   name: 'WorkflowMenu',
@@ -146,6 +199,15 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
+    enableTiming: {
+      type: Boolean,
+      default: false,
+    },
+    experiment: {
+      type: Object,
+      required: false,
+      default: null,
+    },
   },
   emits: [
     'back-selected',
@@ -156,14 +218,14 @@ export default defineComponent({
   },
   computed: {
     stages() { return ((this as any).workflow?.stages ?? []) as TrackingWorkflowStage[]; },
-    nextStep() {
-      for (let i = 0; i < this.stages.length; i += 1) {
-        const stage = (this as any).stages[i];
-        for (let j = 0; j < stage.steps.length; j += 1) {
-          const step = stage.steps[j];
-          if (step.status !== 'completed') return step as TrackingWorkflowStep;
-        }
+    nextStepInStage() {
+      // for (let i = 0; i < this.stages.length; i += 1) {
+      const stage = (this as any).stages[(this as any).activeStageIndex];
+      for (let j = 0; j < stage.steps.length; j += 1) {
+        const step = stage.steps[j];
+        if (step.status !== 'completed') return step as TrackingWorkflowStep;
       }
+      // }
       return null;
     },
     currentVideoEntry(): DatabaseEntry | null {
@@ -193,39 +255,104 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    // const experimentStartTime = ref(0);
-    const stageStartTime = ref(0);
-
-    onMounted(() => {
-      stageStartTime.value = Date.now();
-    });
 
     const currentStep = ref(null as null | TrackingWorkflowStep);
     const instructionsActive = ref(false);
     const lessonActive = ref(false);
     const uploadActive = ref(false);
+    const workflow = workflowManager.activeFlow;
 
-    watch(workflowManager.activeFlow, () => {
+    const workflowStartTime = ref(new Date());
+    const workflowStageStartTime = ref(new Date());
+    const enableExperimentMode = ref(!optionsManager.isTest.value);
+    const isTiming = ref(!optionsManager.isTest.value);
+    const timingNotStarted = computed(() => isTiming.value && !workflowStartTime.value);
+
+    const activeStageIndex = ref(1);
+    const activeStage = computed(() => workflow.value?.stages[activeStageIndex.value] ?? null);
+    onMounted(() => {
+      workflowStartTime.value = new Date();
+      workflowStageStartTime.value = new Date();
+    });
+    let stageTimer = -1;
+    const workflowSecsElapsed = ref(Infinity);
+    const workflowSecondsRemaining = computed(() => {
+      if (!workflow.value?.experimentMaxTimeSecs) return Infinity;
+      return workflow.value.experimentMaxTimeSecs - workflowSecsElapsed.value;
+    });
+    const workflowSecondsRemainingString = computed(() => getDurationString(workflowSecondsRemaining.value));
+    const stageSecsElapsed = ref(Infinity);
+    const stageSecondsRemaining = computed(() => {
+      if (!activeStage.value?.maxStageTimeSecs) return Infinity;
+      return activeStage.value.maxStageTimeSecs - stageSecsElapsed.value;
+    });
+    const stageSecondsRemainingString = computed(() => getDurationString(stageSecondsRemaining.value));
+    onMounted(() => {
+      stageTimer = window.setInterval(() => {
+
+        const now = Date.now();
+        workflowSecsElapsed.value = (now - workflowStartTime.value.getTime()) / 1000;
+        stageSecsElapsed.value = (now - workflowStageStartTime.value.getTime()) / 1000;
+
+      }, 1000);
+    });
+    onBeforeUnmount(() => {
+      clearInterval(stageTimer);
+    });
+
+    watch(workflow, () => {
       currentStep.value = null;
     });
 
     return {
+      activeStage,
+      activeStageIndex,
       currentStep,
       instructionsActive,
       lessonActive,
       uploadActive,
-      workflow: workflowManager.activeFlow,
+      workflow,
       optionsManager,
-      isTiming: ref(false),
+
+      workflowStartTime,
+      timingNotStarted,
+      isTiming,
+      enableExperimentMode,
+      workflowSecsElapsed,
+      workflowSecondsRemaining,
+      workflowSecondsRemainingString,
+      stageSecsElapsed,
+      stageSecondsRemaining,
+      stageSecondsRemainingString,
     };
   },
   methods: {
+    startTiming() {
+      this.workflowStartTime = new Date();
+    },
     getStepInfo(stage: TrackingWorkflowStage) {
 
-      return stage.steps.map((step) => ({
-        step,
-        dbEntry: GetVideoEntryForWorkflowStep(db, step),
-      }));
+      return stage.steps
+        .filter((step) => this.enableExperimentMode || !(step.experiment?.showInExperimentOnly ?? false))
+        .map((step) => {
+
+          const isTestMode = !this.enableExperimentMode;
+          const isInActiveStage = this.activeStage === stage;
+          const isTimeExpiredTask = step.experiment?.isTimeExpiredTask ?? false;
+          const stageTimeExpired = this.stageSecondsRemaining <= 0;
+          const waitingForTimeExpiration = isTimeExpiredTask && !stageTimeExpired;
+
+          return {
+            step,
+            isComplete: step.status === 'completed',
+            isNextStep: step === this.nextStepInStage,
+            dbEntry: GetVideoEntryForWorkflowStep(db, step),
+            isClickable: (isTestMode || isInActiveStage)
+                        && (!isTimeExpiredTask || !stageTimeExpired)
+                        && !waitingForTimeExpiration,
+            waitingForTimeExpiration,
+          };
+        });
     },
     instructionsFinished() {
       this.instructionsActive = false;
@@ -233,10 +360,6 @@ export default defineComponent({
       if (!step) return;
       step.status = 'inprogress';
       this.continueWorkflowStep(step);
-    },
-    isClickable(step: TrackingWorkflowStep) {
-      return this.nextStep === step
-      || (step.type === 'InstructionOnly' && step.status === 'completed');
     },
     startWorkflowStep(item: TrackingWorkflowStep) {
       // if (!this.isClickable(item)) return;
