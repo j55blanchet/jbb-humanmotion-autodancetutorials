@@ -463,7 +463,8 @@ export default defineComponent({
     },
     isStageCompleted(stage: TrackingWorkflowStage) {
       if (!stage) return true;
-      return stage.steps.reduce((wasTrue: boolean, thisStep: TrackingWorkflowStep) => wasTrue && thisStep.status === 'completed', true);
+      const steps = (stage as any).filteredSteps?.map((stepinfo: any) => stepinfo.step) ?? stage.steps;
+      return steps.reduce((wasTrue: boolean, thisStep: TrackingWorkflowStep) => wasTrue && thisStep.status === 'completed', true);
     },
     startStage(stageIndex: number) {
       this.workflowStageStartTime = new Date();
