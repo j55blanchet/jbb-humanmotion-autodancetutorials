@@ -76,7 +76,7 @@
                   'hover-expand': stepInfo.isClickable,
                   'has-text-grey': !stepInfo.isClickable,
                   'has-background-grey-lighter': !stepInfo.isClickable,
-                  'has-background-white-ter': stepInfo.isClickable && !stepInfo.isNextStep,
+                  'has-background-white-ter': stepInfo.isClickable && stepInfo.step !== nextStepInStage,
                   'has-border-success': stepInfo.step.status === 'completed',
                   'has-border-info': stepInfo.step === nextStepInStage,
                   'has-border-grey': stepInfo.isClickable && stepInfo.step !== nextStepInStage && stepInfo.step.status !== 'completed'
@@ -103,7 +103,7 @@
                   <p v-if="stepInfo.waitingForTimeExpiration" class="is-size-7">&nbsp;in {{stageSecondsRemainingString}}</p>
                   <p v-if="stepInfo.isClickable" class="is-size-7">
                     <span v-if="stepInfo.isComplete">Click to repeat</span>
-                    <span v-if="stepInfo.isNextStep">Up Next</span>
+                    <span v-if="stepInfo.step === nextStepInStage">Up Next</span>
                   </p>
                 </div>
               </div>
@@ -242,18 +242,6 @@ export default defineComponent({
   },
   computed: {
     stages() { return ((this as any).workflow?.stages ?? []) as TrackingWorkflowStage[]; },
-    nextStepInStage() {
-      // for (let i = 0; i < this.stages.length; i += 1) {
-      const stage = (this as any).stages[(this as any).activeStageIndex];
-      if (!stage) return null;
-
-      for (let j = 0; j < stage.steps.length; j += 1) {
-        const step = stage.steps[j];
-        if (step.status !== 'completed') return step as TrackingWorkflowStep;
-      }
-      // }
-      return null;
-    },
     currentVideoEntry(): DatabaseEntry | null {
       if (this.currentStep?.type === 'MiniLessonReference' && this.currentStep?.miniLessonReference) {
         return db.motionsMap.get(this.currentStep.miniLessonReference.clipName) ?? null;
@@ -295,17 +283,18 @@ export default defineComponent({
             const isInActiveStage = activeStage === stage;
             const isTimeExpiredTask = step.experiment?.isTimeExpiredTask ?? false;
             const stageTimeExpired = stageSecondsRemaining <= 0;
-            const waitingForTimeExpiration = isInActiveStage && isTimeExpiredTask && !stageTimeExpired;
+            const isValidAfterExpiredTask = isInActiveStage && isTimeExpiredTask && stageTimeExpired;
+            const isValidUnexpired = !isInActiveStage || (!isTimeExpiredTask && !stageTimeExpired);
 
             return {
               step,
               isComplete: step.status === 'completed',
-              isNextStep: step === (this as any).nextStepInStage,
               dbEntry: GetVideoEntryForWorkflowStep(db, step),
+              isExpired: !isTimeExpiredTask && stageTimeExpired,
               isClickable: (isTestMode || isInActiveStage)
-                          && (!isTimeExpiredTask || !stageTimeExpired)
-                          && !waitingForTimeExpiration,
-              waitingForTimeExpiration,
+                          && (isValidUnexpired || isValidAfterExpiredTask),
+              isValidAfterExpiredTask,
+              waitingForTimeExpiration: isTimeExpiredTask && !stageTimeExpired,
               stageIndex,
               stepIndex,
             };
@@ -316,6 +305,20 @@ export default defineComponent({
           timeLimitString: stage.maxStageTimeSecs ? getDurationString(stage.maxStageTimeSecs) : null,
         };
       });
+    },
+    nextStepInStage() {
+      // for (let i = 0; i < this.stages.length; i += 1) {
+      if (!this.filteredStages) return null;
+
+      const stage = (this as any).filteredStages[(this as any).activeStageIndex];
+      if (!stage) return null;
+
+      for (let j = 0; j < stage.filteredSteps.length; j += 1) {
+        const filteredStep = stage.filteredSteps[j];
+        if (filteredStep.step.status !== 'completed' && filteredStep.isClickable) return filteredStep.step as TrackingWorkflowStep;
+      }
+      // }
+      return null;
     },
   },
   setup(props, ctx) {
@@ -366,6 +369,12 @@ export default defineComponent({
 
     watch(workflow, () => {
       currentStep.value = null;
+    });
+    watchEffect(() => {
+      const isInCurrentStage = (activeStage.value?.steps ?? []).indexOf(currentStep.value as any) !== -1;
+      if (isInCurrentStage && stageSecondsRemaining.value <= 0 && !currentStep.value?.experiment?.isTimeExpiredTask) {
+        lessonActive.value = false;
+      }
     });
 
     return {
@@ -463,8 +472,9 @@ export default defineComponent({
     },
     isStageCompleted(stage: TrackingWorkflowStage) {
       if (!stage) return true;
-      const steps = (stage as any).filteredSteps?.map((stepinfo: any) => stepinfo.step) ?? stage.steps;
-      return steps.reduce((wasTrue: boolean, thisStep: TrackingWorkflowStep) => wasTrue && thisStep.status === 'completed', true);
+
+      const steps = (stage as any).filteredSteps ?? [];
+      return steps.reduce((wasTrue: boolean, thisStep: any) => wasTrue && (thisStep.isComplete || thisStep.isExpired), true);
     },
     startStage(stageIndex: number) {
       this.workflowStageStartTime = new Date();
