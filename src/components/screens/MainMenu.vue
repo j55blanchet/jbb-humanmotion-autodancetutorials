@@ -29,6 +29,7 @@
         @click="$emit('workflow-selected', workflow.id)">
         <p class="">{{workflow.title}}</p>
         <p class="is-size-7 has-text-grey">{{workflow.creationMethod}}</p>
+        <p class="is-size-7 has-text-grey">Created {{workflow.created.toLocaleDateString()}} at {{workflow.created.toLocaleTimeString()}}</p>
       </div>
     </div>
 

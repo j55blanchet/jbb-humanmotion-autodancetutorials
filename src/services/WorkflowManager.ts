@@ -40,11 +40,13 @@ export class WorkflowManager {
   private loadWorkflows() {
     for (let i = 0; i < defaultWorkflows.length; i += 1) {
       const workflow = defaultWorkflows[i] as Workflow;
+      workflow.created = new Date(workflow.created);
       this.addSessionWorkflow(workflow);
       this.bakedInWorkflows.add(workflow.id);
     }
     for (let i = 0; i < customWorkflows.length; i += 1) {
       const workflow = customWorkflows[i];
+      workflow.created = new Date(workflow.created)
       this.addSessionWorkflow(workflow);
       this.bakedInWorkflows.add(workflow.id);
     }
@@ -133,6 +135,7 @@ export class WorkflowManager {
       const workflowRaw = window.localStorage.getItem(`workflow-${id}`);
       if (!workflowRaw) throw new Error(`No workflow found with id: ${id}`);
       const workflow = JSON.parse(workflowRaw);
+      workflow.created = new Date(workflow.created);
       this.addSessionWorkflow(workflow);
     } catch (e) {
       console.warn('Error loading custom lesson', id, e);
