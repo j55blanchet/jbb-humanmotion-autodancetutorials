@@ -25,6 +25,15 @@
       />
     </div>
 
+    <div class="is-overlay" v-if="activity?.sheetMotionVisual !== 'none'">
+      <SheetMotion
+        :dbEntry="motion"
+        :drawMode="activity?.sheetMotionVisual"
+        :currentTime="videoTime"
+        :data="activity?.sheetMotion"
+      />
+    </div>
+
     <div class="is-overlay instructions-overlay mb-4">
       <InstructionCarousel v-show="!activityFinished && timedInstructions.length > 0" :sizeClass="'is-medium'" :instructions="timedInstructions" class="m-2"/>
       <InstructionCarousel v-show="pauseInstructs.length > 0" :sizeClass="'is-medium'" :instructions="pauseInstructs" class="m-2"/>
@@ -50,6 +59,7 @@ import InstructionCarousel, { Instruction } from '@/components/elements/Instruct
 import PausingVideoPlayer from '@/components/elements/PausingVideoPlayer.vue';
 import KeyframeTimeline from '@/components/elements/KeyframeTimeline.vue';
 import WebcamBox from '@/components/elements/WebcamBox.vue';
+import SheetMotion from '@/components/elements/SheetMotion.vue';
 import { MiniLessonActivity, PauseInfo } from '@/model/MiniLesson';
 import Constants from '@/services/Constants';
 
@@ -74,6 +84,7 @@ export default defineComponent({
     InstructionCarousel,
     WebcamBox,
     KeyframeTimeline,
+    SheetMotion,
   },
   setup(props) {
     const { activity } = toRefs(props);

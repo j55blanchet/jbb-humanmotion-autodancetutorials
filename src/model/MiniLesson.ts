@@ -11,9 +11,13 @@ export interface PauseInfo {
     manualResume?: boolean;
 }
 
-export interface Keyframe {
-    time: number;
-    time2?: number;
+// export interface Keyframe {
+//     time: number;
+//     time2?: number;
+// }
+
+export interface SheetMotion {
+  kfsByStage: number[][];
 }
 
 export interface MiniLessonActivity {
@@ -24,6 +28,8 @@ export interface MiniLessonActivity {
   userVisual: 'video' | 'skeleton' | 'none'; // If the user's webcam should be on
   keyframeVisual?: 'video' | 'skeleton' | 'none'; // If the keyframe should be on
   keyframes?: number[];
+  sheetMotionVisual?: 'video' | 'skeleton' | 'none';
+  sheetMotion?: SheetMotion;
   emphasizedJoints?: number[];
   focusedSegments?: number[];
   pauses?: Array<PauseInfo>;
