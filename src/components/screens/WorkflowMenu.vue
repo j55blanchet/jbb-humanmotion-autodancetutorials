@@ -227,11 +227,6 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    experiment: {
-      type: Object,
-      required: false,
-      default: null,
-    },
   },
   emits: [
     'back-selected',
@@ -294,7 +289,7 @@ export default defineComponent({
               isClickable: (isTestMode || isInActiveStage)
                           && (isValidUnexpired || isValidAfterExpiredTask),
               isValidAfterExpiredTask,
-              waitingForTimeExpiration: isTimeExpiredTask && !stageTimeExpired,
+              waitingForTimeExpiration: isInActiveStage && isTimeExpiredTask && !stageTimeExpired,
               stageIndex,
               stepIndex,
             };

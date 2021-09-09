@@ -1,8 +1,8 @@
 [
   {
     "title": "derulo",
-    "creationMethod": "Simple (julien_v1_spd_minima)",
-    "id": "af300c24-e37e-4401-9614-2068438bff69",
+    "creationMethod": "Simple (julien_v2_TemporalSdmMinima_KeyframeExtension)",
+    "id": "198c6101-e44c-404e-93c9-12d76957a14c",
     "stages": [
       {
         "title": "Preview",
@@ -11,7 +11,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "146dd7b1-4095-40be-8ebf-5dd5077b841d",
+              "_id": "d75e2b21-d3ea-45b8-b02c-acf777b31571",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Preview"
@@ -20,7 +20,7 @@
               "lessonTitle": "Preview",
               "segmentBreaks": [
                 4.8,
-                5.274977697495092,
+                5.309230799426878,
                 8.494769279083004,
                 12.913419428283438,
                 15.0
@@ -39,11 +39,11 @@
                   "timedInstructions": [
                     {
                       "startTime": 4.8,
-                      "endTime": 5.274977697495092,
+                      "endTime": 5.309230799426878,
                       "text": "Part 1"
                     },
                     {
-                      "startTime": 5.274977697495092,
+                      "startTime": 5.309230799426878,
                       "endTime": 8.494769279083004,
                       "text": "Part 2"
                     },
@@ -72,7 +72,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "40adf28c-f9fc-4481-b0ca-06143cd1f31a",
+              "_id": "07070aa3-82a6-4dd6-8948-3c8bb997aa91",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Segment 1"
@@ -81,7 +81,7 @@
               "lessonTitle": "Segment 1",
               "segmentBreaks": [
                 4.8,
-                5.274977697495092,
+                5.309230799426878,
                 8.494769279083004,
                 12.913419428283438,
                 15.0
@@ -90,7 +90,7 @@
                 {
                   "title": "Learn",
                   "startTime": 4.8,
-                  "endTime": 5.274977697495092,
+                  "endTime": 5.309230799426878,
                   "userVisual": "none",
                   "demoVisual": "video",
                   "keyframeVisual": "none",
@@ -104,7 +104,7 @@
                 {
                   "title": "Memorize",
                   "startTime": 4.8,
-                  "endTime": 5.274977697495092,
+                  "endTime": 5.309230799426878,
                   "userVisual": "video",
                   "demoVisual": "skeleton",
                   "keyframeVisual": "none",
@@ -118,7 +118,7 @@
                 {
                   "title": "Practice",
                   "startTime": 4.8,
-                  "endTime": 5.274977697495092,
+                  "endTime": 5.309230799426878,
                   "userVisual": "video",
                   "demoVisual": "none",
                   "keyframeVisual": "none",
@@ -137,7 +137,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "2c801fa7-92db-4a2d-b4ed-3935afd461b2",
+              "_id": "77b91202-037f-49c4-81e9-425f37510b31",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Segment 2"
@@ -146,7 +146,7 @@
               "lessonTitle": "Segment 2",
               "segmentBreaks": [
                 4.8,
-                5.274977697495092,
+                5.309230799426878,
                 8.494769279083004,
                 12.913419428283438,
                 15.0
@@ -161,7 +161,7 @@
                   "keyframeVisual": "none",
                   "pauses": [
                     {
-                      "time": 5.411990105222237,
+                      "time": 6.02854593999439,
                       "instruction": "Keyframe 1"
                     },
                     {
@@ -169,7 +169,7 @@
                       "instruction": "Keyframe 2"
                     },
                     {
-                      "time": 7.124645201811552,
+                      "time": 7.090392099879765,
                       "instruction": "Keyframe 3"
                     },
                     {
@@ -219,7 +219,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "71c36239-004a-431f-9685-fa2188ddf294",
+              "_id": "c6cd651a-78fe-46ab-82db-bef117a5d60f",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Segment 3"
@@ -228,7 +228,7 @@
               "lessonTitle": "Segment 3",
               "segmentBreaks": [
                 4.8,
-                5.274977697495092,
+                5.309230799426878,
                 8.494769279083004,
                 12.913419428283438,
                 15.0
@@ -247,23 +247,23 @@
                       "instruction": "Keyframe 4"
                     },
                     {
-                      "time": 8.80304719646908,
+                      "time": 8.940059604196225,
                       "instruction": "Keyframe 5"
                     },
                     {
-                      "time": 9.899146458286243,
+                      "time": 9.214084419650517,
                       "instruction": "Keyframe 6"
                     },
                     {
-                      "time": 10.275930579535892,
+                      "time": 9.83064025442267,
                       "instruction": "Keyframe 7"
                     },
                     {
-                      "time": 10.48144919112661,
+                      "time": 10.173171273740532,
                       "instruction": "Keyframe 8"
                     },
                     {
-                      "time": 10.995245720103405,
+                      "time": 10.48144919112661,
                       "instruction": "Keyframe 9"
                     },
                     {
@@ -271,7 +271,7 @@
                       "instruction": "Keyframe 10"
                     },
                     {
-                      "time": 12.125598083852353,
+                      "time": 12.605141510897361,
                       "instruction": "Keyframe 11"
                     }
                   ],
@@ -330,7 +330,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "6e309188-7371-4ca9-bfa8-a61bb91e4b2b",
+              "_id": "f202bb2b-6868-45a5-ad00-070a854acc08",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Segment 4"
@@ -339,7 +339,7 @@
               "lessonTitle": "Segment 4",
               "segmentBreaks": [
                 4.8,
-                5.274977697495092,
+                5.309230799426878,
                 8.494769279083004,
                 12.913419428283438,
                 15.0
@@ -354,7 +354,7 @@
                   "keyframeVisual": "none",
                   "pauses": [
                     {
-                      "time": 12.125598083852353,
+                      "time": 12.605141510897361,
                       "instruction": "Keyframe 11"
                     },
                     {
@@ -362,7 +362,7 @@
                       "instruction": "Keyframe 12"
                     },
                     {
-                      "time": 13.735493874646309,
+                      "time": 13.769746976578096,
                       "instruction": "Keyframe 13"
                     },
                     {
@@ -420,8 +420,21 @@
               ],
               "source": "builtin"
             }
+          },
+          {
+            "type": "UploadTask",
+            "title": "Initial Performance",
+            "upload": {
+              "identifier": "derulo-198c6101-e44c-404e-93c9-12d76957a14c-performance",
+              "prompt": "Show us what you've learned so far!"
+            },
+            "experiment": {
+              "showInExperimentOnly": true,
+              "isTimeExpiredTask": true
+            }
           }
-        ]
+        ],
+        "maxStageTimeSecs": 900
       },
       {
         "title": "Mastery",
@@ -430,7 +443,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "78e3ca68-2572-45e1-b8f2-7a3690db6085",
+              "_id": "962ec03c-426c-4166-b017-974f73470dfe",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Full Dance @ 50%"
@@ -439,7 +452,7 @@
               "lessonTitle": "Full Dance @ 50%",
               "segmentBreaks": [
                 4.8,
-                5.274977697495092,
+                5.309230799426878,
                 8.494769279083004,
                 12.913419428283438,
                 15.0
@@ -492,7 +505,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "b0bd8fc1-783a-4cda-986b-5e89255e9c74",
+              "_id": "46ea3e8e-7028-4998-b60d-0cc5244f3477",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Full Dance @ 75%"
@@ -501,7 +514,7 @@
               "lessonTitle": "Full Dance @ 75%",
               "segmentBreaks": [
                 4.8,
-                5.274977697495092,
+                5.309230799426878,
                 8.494769279083004,
                 12.913419428283438,
                 15.0
@@ -554,7 +567,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "bd3aff14-d8e1-4cdf-b370-b17758d7d44c",
+              "_id": "605de20a-9dc9-4d2a-8a92-a05c7d54ce92",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Full Dance @ 100%"
@@ -563,7 +576,7 @@
               "lessonTitle": "Full Dance @ 100%",
               "segmentBreaks": [
                 4.8,
-                5.274977697495092,
+                5.309230799426878,
                 8.494769279083004,
                 12.913419428283438,
                 15.0
@@ -616,19 +629,24 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "derulo-af300c24-e37e-4401-9614-2068438bff69-performance",
+              "identifier": "derulo-198c6101-e44c-404e-93c9-12d76957a14c-performance",
               "prompt": "Now perform this dance!"
+            },
+            "experiment": {
+              "showInExperimentOnly": true,
+              "isTimeExpiredTask": true
             }
           }
-        ]
+        ],
+        "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-08T19:33:34.954881"
+    "created": "2021-09-09T02:38:01.745184"
   },
   {
     "title": "itsafit",
-    "creationMethod": "Simple (julien_v1_spd_minima)",
-    "id": "bc80d80c-a38b-4599-8020-36a0d528254a",
+    "creationMethod": "Simple (julien_v2_TemporalSdmMinima_KeyframeExtension)",
+    "id": "629fcc04-9dd1-4749-9b9b-363eb3046120",
     "stages": [
       {
         "title": "Preview",
@@ -637,7 +655,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "d26363a9-95a5-4cb7-ae7f-31999369d6b8",
+              "_id": "78b9256a-2f50-4db7-8b48-24610b81f5c3",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Preview"
@@ -698,7 +716,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "8a0be32a-549e-4eb6-aff8-52a14fa3db4f",
+              "_id": "672d1fd4-bab1-4b38-adca-17e2d2d3fc6f",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Segment 1"
@@ -768,7 +786,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "dc2c82f7-05d3-4807-8cdd-6200f15e22e7",
+              "_id": "4b35ff3d-1352-4923-a4d9-df50f30a2828",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Segment 2"
@@ -796,15 +814,15 @@
                       "instruction": "Keyframe 1"
                     },
                     {
-                      "time": 1.8018018018018018,
+                      "time": 2.1021021021021022,
                       "instruction": "Keyframe 2"
                     },
                     {
-                      "time": 2.5358692025358693,
+                      "time": 2.9362696029362696,
                       "instruction": "Keyframe 3"
                     },
                     {
-                      "time": 2.9362696029362696,
+                      "time": 3.1698365031698366,
                       "instruction": "Keyframe 4"
                     },
                     {
@@ -812,15 +830,15 @@
                       "instruction": "Keyframe 5"
                     },
                     {
-                      "time": 4.137470804137471,
+                      "time": 4.004004004004004,
                       "instruction": "Keyframe 6"
                     },
                     {
-                      "time": 4.637971304637971,
+                      "time": 4.371037704371038,
                       "instruction": "Keyframe 7"
                     },
                     {
-                      "time": 5.372038705372039,
+                      "time": 5.205205205205205,
                       "instruction": "Keyframe 8"
                     }
                   ],
@@ -866,7 +884,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "62647800-0c6d-48be-9e89-6e37b2bcbcbb",
+              "_id": "32cfa4cc-9e0c-4eed-b035-e6de6eee3f24",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Segment 3"
@@ -890,52 +908,44 @@
                   "keyframeVisual": "none",
                   "pauses": [
                     {
-                      "time": 4.637971304637971,
-                      "instruction": "Keyframe 7"
-                    },
-                    {
-                      "time": 5.372038705372039,
+                      "time": 5.205205205205205,
                       "instruction": "Keyframe 8"
                     },
                     {
-                      "time": 5.672339005672339,
+                      "time": 5.939272605939273,
                       "instruction": "Keyframe 9"
                     },
                     {
-                      "time": 6.3730397063730395,
+                      "time": 6.439773106439773,
                       "instruction": "Keyframe 10"
                     },
                     {
-                      "time": 6.606606606606607,
+                      "time": 6.706706706706707,
                       "instruction": "Keyframe 11"
                     },
                     {
-                      "time": 6.9402736069402735,
+                      "time": 7.007007007007007,
                       "instruction": "Keyframe 12"
                     },
                     {
-                      "time": 7.340674007340675,
+                      "time": 7.307307307307307,
                       "instruction": "Keyframe 13"
                     },
                     {
-                      "time": 7.741074407741075,
+                      "time": 8.141474808141474,
                       "instruction": "Keyframe 14"
                     },
                     {
-                      "time": 8.475141808475142,
+                      "time": 9.042375709042377,
                       "instruction": "Keyframe 15"
                     },
                     {
-                      "time": 9.042375709042377,
+                      "time": 9.30930930930931,
                       "instruction": "Keyframe 16"
                     },
                     {
-                      "time": 9.376042709376042,
+                      "time": 9.642976309642977,
                       "instruction": "Keyframe 17"
-                    },
-                    {
-                      "time": 9.70970970970971,
-                      "instruction": "Keyframe 18"
                     }
                   ],
                   "practiceSpeed": 0.33,
@@ -993,7 +1003,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "23eedd48-103d-4c38-869c-3c6487c6faa2",
+              "_id": "43004d34-2465-4819-85d7-b11ba286a6a7",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Segment 4"
@@ -1018,15 +1028,15 @@
                   "pauses": [
                     {
                       "time": 9.042375709042377,
+                      "instruction": "Keyframe 15"
+                    },
+                    {
+                      "time": 9.30930930930931,
                       "instruction": "Keyframe 16"
                     },
                     {
-                      "time": 9.376042709376042,
+                      "time": 9.642976309642977,
                       "instruction": "Keyframe 17"
-                    },
-                    {
-                      "time": 9.70970970970971,
-                      "instruction": "Keyframe 18"
                     }
                   ],
                   "practiceSpeed": 0.33,
@@ -1079,8 +1089,21 @@
               ],
               "source": "builtin"
             }
+          },
+          {
+            "type": "UploadTask",
+            "title": "Initial Performance",
+            "upload": {
+              "identifier": "itsafit-629fcc04-9dd1-4749-9b9b-363eb3046120-performance",
+              "prompt": "Show us what you've learned so far!"
+            },
+            "experiment": {
+              "showInExperimentOnly": true,
+              "isTimeExpiredTask": true
+            }
           }
-        ]
+        ],
+        "maxStageTimeSecs": 900
       },
       {
         "title": "Mastery",
@@ -1089,7 +1112,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "c4f646d0-8341-4119-b1c9-1769173f8ff2",
+              "_id": "dbaf8dbf-46cb-43d4-8b77-b2a985262efc",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Full Dance @ 50%"
@@ -1151,7 +1174,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "770b7cf0-4059-428f-98a0-beaec0c76042",
+              "_id": "c0f5a88f-51a0-4cbe-963e-42b5d52344f9",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Full Dance @ 75%"
@@ -1213,7 +1236,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "712c16f2-0977-42fe-a917-de20cf6f2ba0",
+              "_id": "7ba7850e-7ece-4511-8f6f-2584ffad02e6",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Full Dance @ 100%"
@@ -1275,19 +1298,24 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "itsafit-bc80d80c-a38b-4599-8020-36a0d528254a-performance",
+              "identifier": "itsafit-629fcc04-9dd1-4749-9b9b-363eb3046120-performance",
               "prompt": "Now perform this dance!"
+            },
+            "experiment": {
+              "showInExperimentOnly": true,
+              "isTimeExpiredTask": true
             }
           }
-        ]
+        ],
+        "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-08T19:33:45.165175"
+    "created": "2021-09-09T02:38:01.815472"
   },
   {
     "title": "renegade",
-    "creationMethod": "Simple (julien_v1_spd_minima)",
-    "id": "1f688028-74c2-40d7-bdee-8cd484350e88",
+    "creationMethod": "Simple (julien_v2_TemporalSdmMinima_KeyframeExtension)",
+    "id": "c6f2debf-3b5f-4b28-bdbd-bae65a56aa56",
     "stages": [
       {
         "title": "Preview",
@@ -1296,7 +1324,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "4d7f991f-f8b1-4e77-9692-cf795fef670c",
+              "_id": "da7d647d-fc2b-49df-bde0-ab37a32ed353",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Preview"
@@ -1305,8 +1333,9 @@
               "lessonTitle": "Preview",
               "segmentBreaks": [
                 0,
-                4.2,
+                3.2333333333333334,
                 9.033333333333333,
+                11.133333333333333,
                 12.233333333333333
               ],
               "activities": [
@@ -1323,18 +1352,23 @@
                   "timedInstructions": [
                     {
                       "startTime": 0,
-                      "endTime": 4.2,
+                      "endTime": 3.2333333333333334,
                       "text": "Part 1"
                     },
                     {
-                      "startTime": 4.2,
+                      "startTime": 3.2333333333333334,
                       "endTime": 9.033333333333333,
                       "text": "Part 2"
                     },
                     {
                       "startTime": 9.033333333333333,
-                      "endTime": 12.233333333333333,
+                      "endTime": 11.133333333333333,
                       "text": "Part 3"
+                    },
+                    {
+                      "startTime": 11.133333333333333,
+                      "endTime": 12.233333333333333,
+                      "text": "Part 4"
                     }
                   ]
                 }
@@ -1351,7 +1385,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "11c71c40-da5e-47ed-94ed-ceeb68454a09",
+              "_id": "b1c08c63-8d6a-4683-916e-f64f739961ca",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Segment 1"
@@ -1360,46 +1394,31 @@
               "lessonTitle": "Segment 1",
               "segmentBreaks": [
                 0,
-                4.2,
+                3.2333333333333334,
                 9.033333333333333,
+                11.133333333333333,
                 12.233333333333333
               ],
               "activities": [
                 {
                   "title": "Learn",
                   "startTime": 0,
-                  "endTime": 4.2,
+                  "endTime": 3.2333333333333334,
                   "userVisual": "none",
                   "demoVisual": "video",
                   "keyframeVisual": "none",
                   "pauses": [
                     {
-                      "time": 0.4,
+                      "time": 0.4666666666666667,
                       "instruction": "Keyframe 1"
                     },
                     {
-                      "time": 0.8666666666666667,
+                      "time": 0.9333333333333333,
                       "instruction": "Keyframe 2"
                     },
                     {
-                      "time": 1.2,
+                      "time": 2.066666666666667,
                       "instruction": "Keyframe 3"
-                    },
-                    {
-                      "time": 1.5666666666666667,
-                      "instruction": "Keyframe 4"
-                    },
-                    {
-                      "time": 2.6,
-                      "instruction": "Keyframe 5"
-                    },
-                    {
-                      "time": 3.033333333333333,
-                      "instruction": "Keyframe 6"
-                    },
-                    {
-                      "time": 3.7333333333333334,
-                      "instruction": "Keyframe 7"
                     }
                   ],
                   "practiceSpeed": 0.33,
@@ -1411,7 +1430,7 @@
                 {
                   "title": "Memorize",
                   "startTime": 0,
-                  "endTime": 4.2,
+                  "endTime": 3.2333333333333334,
                   "userVisual": "video",
                   "demoVisual": "skeleton",
                   "keyframeVisual": "none",
@@ -1425,7 +1444,7 @@
                 {
                   "title": "Practice",
                   "startTime": 0,
-                  "endTime": 4.2,
+                  "endTime": 3.2333333333333334,
                   "userVisual": "video",
                   "demoVisual": "none",
                   "keyframeVisual": "none",
@@ -1444,7 +1463,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "8b5779cb-0963-48b7-8a96-d8beebad6799",
+              "_id": "f3bd7281-48ef-4d60-b195-78ed74cbfcb7",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Segment 2"
@@ -1453,58 +1472,67 @@
               "lessonTitle": "Segment 2",
               "segmentBreaks": [
                 0,
-                4.2,
+                3.2333333333333334,
                 9.033333333333333,
+                11.133333333333333,
                 12.233333333333333
               ],
               "activities": [
                 {
                   "title": "Learn",
-                  "startTime": 3.2,
+                  "startTime": 2.2333333333333334,
                   "endTime": 9.033333333333333,
                   "userVisual": "none",
                   "demoVisual": "video",
                   "keyframeVisual": "none",
                   "pauses": [
                     {
-                      "time": 3.7333333333333334,
+                      "time": 3.2666666666666666,
+                      "instruction": "Keyframe 4"
+                    },
+                    {
+                      "time": 3.6666666666666665,
+                      "instruction": "Keyframe 5"
+                    },
+                    {
+                      "time": 4.033333333333333,
+                      "instruction": "Keyframe 6"
+                    },
+                    {
+                      "time": 5.0,
                       "instruction": "Keyframe 7"
                     },
                     {
-                      "time": 4.533333333333333,
+                      "time": 5.4,
                       "instruction": "Keyframe 8"
                     },
                     {
-                      "time": 5.633333333333334,
+                      "time": 5.833333333333333,
                       "instruction": "Keyframe 9"
                     },
                     {
-                      "time": 5.9,
+                      "time": 6.233333333333333,
                       "instruction": "Keyframe 10"
                     },
                     {
-                      "time": 6.5,
+                      "time": 6.7,
                       "instruction": "Keyframe 11"
                     },
                     {
-                      "time": 7.266666666666667,
+                      "time": 7.133333333333334,
                       "instruction": "Keyframe 12"
                     },
                     {
-                      "time": 7.633333333333334,
+                      "time": 8.0,
                       "instruction": "Keyframe 13"
                     },
                     {
-                      "time": 8.066666666666666,
+                      "time": 8.566666666666666,
                       "instruction": "Keyframe 14"
                     },
                     {
-                      "time": 8.466666666666667,
+                      "time": 8.933333333333334,
                       "instruction": "Keyframe 15"
-                    },
-                    {
-                      "time": 8.833333333333334,
-                      "instruction": "Keyframe 16"
                     }
                   ],
                   "practiceSpeed": 0.33,
@@ -1515,7 +1543,7 @@
                 },
                 {
                   "title": "Memorize",
-                  "startTime": 3.2,
+                  "startTime": 2.2333333333333334,
                   "endTime": 9.033333333333333,
                   "userVisual": "video",
                   "demoVisual": "skeleton",
@@ -1529,7 +1557,7 @@
                 },
                 {
                   "title": "Practice",
-                  "startTime": 3.2,
+                  "startTime": 2.2333333333333334,
                   "endTime": 9.033333333333333,
                   "userVisual": "video",
                   "demoVisual": "none",
@@ -1562,7 +1590,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "9bd92343-57c3-478e-a2ce-6971b3499329",
+              "_id": "96f419bf-89e5-47ad-9e22-2251c9f23edc",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Segment 3"
@@ -1571,62 +1599,35 @@
               "lessonTitle": "Segment 3",
               "segmentBreaks": [
                 0,
-                4.2,
+                3.2333333333333334,
                 9.033333333333333,
+                11.133333333333333,
                 12.233333333333333
               ],
               "activities": [
                 {
                   "title": "Learn",
                   "startTime": 8.033333333333333,
-                  "endTime": 12.233333333333333,
+                  "endTime": 11.133333333333333,
                   "userVisual": "none",
                   "demoVisual": "video",
                   "keyframeVisual": "none",
                   "pauses": [
                     {
-                      "time": 8.066666666666666,
+                      "time": 8.566666666666666,
                       "instruction": "Keyframe 14"
                     },
                     {
-                      "time": 8.466666666666667,
+                      "time": 8.933333333333334,
                       "instruction": "Keyframe 15"
                     },
                     {
-                      "time": 8.833333333333334,
+                      "time": 9.233333333333333,
                       "instruction": "Keyframe 16"
                     },
                     {
-                      "time": 9.166666666666666,
-                      "instruction": "Keyframe 17"
-                    },
-                    {
-                      "time": 9.533333333333333,
-                      "instruction": "Keyframe 18"
-                    },
-                    {
-                      "time": 9.8,
-                      "instruction": "Keyframe 19"
-                    },
-                    {
-                      "time": 10.166666666666666,
-                      "instruction": "Keyframe 20"
-                    },
-                    {
                       "time": 10.533333333333333,
-                      "instruction": "Keyframe 21"
-                    },
-                    {
-                      "time": 10.833333333333334,
-                      "instruction": "Keyframe 22"
-                    },
-                    {
-                      "time": 11.3,
-                      "instruction": "Keyframe 23"
-                    },
-                    {
-                      "time": 11.9,
-                      "instruction": "Keyframe 24"
+                      "instruction": "Keyframe 17"
                     }
                   ],
                   "practiceSpeed": 0.33,
@@ -1638,7 +1639,7 @@
                 {
                   "title": "Memorize",
                   "startTime": 8.033333333333333,
-                  "endTime": 12.233333333333333,
+                  "endTime": 11.133333333333333,
                   "userVisual": "video",
                   "demoVisual": "skeleton",
                   "keyframeVisual": "none",
@@ -1652,6 +1653,93 @@
                 {
                   "title": "Practice",
                   "startTime": 8.033333333333333,
+                  "endTime": 11.133333333333333,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "(you can go back to the previous activity if you need to)",
+                  "startInstruction": "Do you have it? Let's try without the skeleton!",
+                  "endInstruction": "Next up: combining this what you learned earlier",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Full Practice",
+                  "startTime": 0,
+                  "endTime": 11.133333333333333,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "startInstruction": "Now try everything we learned so far",
+                  "endInstruction": "Nice job!",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Segment 4",
+            "miniLessonEmbedded": {
+              "_id": "646e0000-2d0e-432f-84f8-87a67e49ed1e",
+              "header": {
+                "clipName": "renegade",
+                "lessonTitle": "Segment 4"
+              },
+              "clipName": "renegade",
+              "lessonTitle": "Segment 4",
+              "segmentBreaks": [
+                0,
+                3.2333333333333334,
+                9.033333333333333,
+                11.133333333333333,
+                12.233333333333333
+              ],
+              "activities": [
+                {
+                  "title": "Learn",
+                  "startTime": 10.133333333333333,
+                  "endTime": 12.233333333333333,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "pauses": [
+                    {
+                      "time": 10.533333333333333,
+                      "instruction": "Keyframe 17"
+                    },
+                    {
+                      "time": 11.433333333333334,
+                      "instruction": "Keyframe 18"
+                    }
+                  ],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's learn part 4",
+                  "endInstruction": "Repeat if you need to -- next up we'll try with just a skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Memorize",
+                  "startTime": 10.133333333333333,
+                  "endTime": 12.233333333333333,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's practice part 4",
+                  "endInstruction": "Memorize this! Next, we'll try this without the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Practice",
+                  "startTime": 10.133333333333333,
                   "endTime": 12.233333333333333,
                   "userVisual": "video",
                   "demoVisual": "none",
@@ -1679,8 +1767,21 @@
               ],
               "source": "builtin"
             }
+          },
+          {
+            "type": "UploadTask",
+            "title": "Initial Performance",
+            "upload": {
+              "identifier": "renegade-c6f2debf-3b5f-4b28-bdbd-bae65a56aa56-performance",
+              "prompt": "Show us what you've learned so far!"
+            },
+            "experiment": {
+              "showInExperimentOnly": true,
+              "isTimeExpiredTask": true
+            }
           }
-        ]
+        ],
+        "maxStageTimeSecs": 900
       },
       {
         "title": "Mastery",
@@ -1689,7 +1790,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "ffe92eac-e0ab-44e9-87e2-2d413ca9d75b",
+              "_id": "f1449127-254d-4983-aedf-e376c62a99a3",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Full Dance @ 50%"
@@ -1698,8 +1799,9 @@
               "lessonTitle": "Full Dance @ 50%",
               "segmentBreaks": [
                 0,
-                4.2,
+                3.2333333333333334,
                 9.033333333333333,
+                11.133333333333333,
                 12.233333333333333
               ],
               "activities": [
@@ -1750,7 +1852,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "d39c611f-0c27-4e11-b8fe-ac1f05ef7512",
+              "_id": "bc1bde4a-1dc7-4579-9cfe-746c42d0b9d9",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Full Dance @ 75%"
@@ -1759,8 +1861,9 @@
               "lessonTitle": "Full Dance @ 75%",
               "segmentBreaks": [
                 0,
-                4.2,
+                3.2333333333333334,
                 9.033333333333333,
+                11.133333333333333,
                 12.233333333333333
               ],
               "activities": [
@@ -1811,7 +1914,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "06a2e2cc-6663-4208-bae7-e41e581f9d53",
+              "_id": "ddc295a4-591f-4631-8268-3ad7f245d61c",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Full Dance @ 100%"
@@ -1820,8 +1923,9 @@
               "lessonTitle": "Full Dance @ 100%",
               "segmentBreaks": [
                 0,
-                4.2,
+                3.2333333333333334,
                 9.033333333333333,
+                11.133333333333333,
                 12.233333333333333
               ],
               "activities": [
@@ -1872,19 +1976,24 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "renegade-1f688028-74c2-40d7-bdee-8cd484350e88-performance",
+              "identifier": "renegade-c6f2debf-3b5f-4b28-bdbd-bae65a56aa56-performance",
               "prompt": "Now perform this dance!"
+            },
+            "experiment": {
+              "showInExperimentOnly": true,
+              "isTimeExpiredTask": true
             }
           }
-        ]
+        ],
+        "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-08T19:33:45.236146"
+    "created": "2021-09-09T02:38:01.871320"
   },
   {
     "title": "unhhunh",
-    "creationMethod": "Simple (julien_v1_spd_minima)",
-    "id": "fd556e2f-2246-4c8b-ac37-9d6c02ce2984",
+    "creationMethod": "Simple (julien_v2_TemporalSdmMinima_KeyframeExtension)",
+    "id": "86cc9290-6cca-4c4a-a089-75fbf9e62999",
     "stages": [
       {
         "title": "Preview",
@@ -1893,7 +2002,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "fdb883c4-ee1d-4957-9efc-08c2f30ee77c",
+              "_id": "122699f8-11c9-41bb-aa51-107f7fc811ca",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Preview"
@@ -1902,10 +2011,10 @@
               "lessonTitle": "Preview",
               "segmentBreaks": [
                 0,
-                1.5666666666666667,
                 7.333333333333333,
+                12.533333333333333,
                 15.466666666666667,
-                19.033333333333335,
+                19.066666666666666,
                 19.266666666666666
               ],
               "activities": [
@@ -1922,26 +2031,26 @@
                   "timedInstructions": [
                     {
                       "startTime": 0,
-                      "endTime": 1.5666666666666667,
+                      "endTime": 7.333333333333333,
                       "text": "Part 1"
                     },
                     {
-                      "startTime": 1.5666666666666667,
-                      "endTime": 7.333333333333333,
+                      "startTime": 7.333333333333333,
+                      "endTime": 12.533333333333333,
                       "text": "Part 2"
                     },
                     {
-                      "startTime": 7.333333333333333,
+                      "startTime": 12.533333333333333,
                       "endTime": 15.466666666666667,
                       "text": "Part 3"
                     },
                     {
                       "startTime": 15.466666666666667,
-                      "endTime": 19.033333333333335,
+                      "endTime": 19.066666666666666,
                       "text": "Part 4"
                     },
                     {
-                      "startTime": 19.033333333333335,
+                      "startTime": 19.066666666666666,
                       "endTime": 19.266666666666666,
                       "text": "Part 5"
                     }
@@ -1960,7 +2069,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "d916cc9d-1b66-4ebc-90b9-470997122b0e",
+              "_id": "d47b0dce-4ee6-4f15-b1c6-92224a09b0b7",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 1"
@@ -1969,17 +2078,17 @@
               "lessonTitle": "Segment 1",
               "segmentBreaks": [
                 0,
-                1.5666666666666667,
                 7.333333333333333,
+                12.533333333333333,
                 15.466666666666667,
-                19.033333333333335,
+                19.066666666666666,
                 19.266666666666666
               ],
               "activities": [
                 {
                   "title": "Learn",
                   "startTime": 0,
-                  "endTime": 1.5666666666666667,
+                  "endTime": 7.333333333333333,
                   "userVisual": "none",
                   "demoVisual": "video",
                   "keyframeVisual": "none",
@@ -1989,8 +2098,52 @@
                       "instruction": "Keyframe 1"
                     },
                     {
-                      "time": 1.2666666666666666,
+                      "time": 2.1333333333333333,
                       "instruction": "Keyframe 2"
+                    },
+                    {
+                      "time": 2.3666666666666667,
+                      "instruction": "Keyframe 3"
+                    },
+                    {
+                      "time": 2.7333333333333334,
+                      "instruction": "Keyframe 4"
+                    },
+                    {
+                      "time": 3.466666666666667,
+                      "instruction": "Keyframe 5"
+                    },
+                    {
+                      "time": 4.466666666666667,
+                      "instruction": "Keyframe 6"
+                    },
+                    {
+                      "time": 4.7,
+                      "instruction": "Keyframe 7"
+                    },
+                    {
+                      "time": 5.066666666666666,
+                      "instruction": "Keyframe 8"
+                    },
+                    {
+                      "time": 5.4,
+                      "instruction": "Keyframe 9"
+                    },
+                    {
+                      "time": 5.766666666666667,
+                      "instruction": "Keyframe 10"
+                    },
+                    {
+                      "time": 6.033333333333333,
+                      "instruction": "Keyframe 11"
+                    },
+                    {
+                      "time": 6.4,
+                      "instruction": "Keyframe 12"
+                    },
+                    {
+                      "time": 6.9,
+                      "instruction": "Keyframe 13"
                     }
                   ],
                   "practiceSpeed": 0.33,
@@ -2002,7 +2155,7 @@
                 {
                   "title": "Memorize",
                   "startTime": 0,
-                  "endTime": 1.5666666666666667,
+                  "endTime": 7.333333333333333,
                   "userVisual": "video",
                   "demoVisual": "skeleton",
                   "keyframeVisual": "none",
@@ -2016,7 +2169,7 @@
                 {
                   "title": "Practice",
                   "startTime": 0,
-                  "endTime": 1.5666666666666667,
+                  "endTime": 7.333333333333333,
                   "userVisual": "video",
                   "demoVisual": "none",
                   "keyframeVisual": "none",
@@ -2035,7 +2188,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "08b5bb1a-37cf-4ba7-bc69-5904ed837f55",
+              "_id": "ad95b625-a2c9-4129-b18f-3bc7c80d7c3e",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 2"
@@ -2044,80 +2197,68 @@
               "lessonTitle": "Segment 2",
               "segmentBreaks": [
                 0,
-                1.5666666666666667,
                 7.333333333333333,
+                12.533333333333333,
                 15.466666666666667,
-                19.033333333333335,
+                19.066666666666666,
                 19.266666666666666
               ],
               "activities": [
                 {
                   "title": "Learn",
-                  "startTime": 0,
-                  "endTime": 7.333333333333333,
+                  "startTime": 6.333333333333333,
+                  "endTime": 12.533333333333333,
                   "userVisual": "none",
                   "demoVisual": "video",
                   "keyframeVisual": "none",
                   "pauses": [
                     {
-                      "time": 1.0666666666666667,
-                      "instruction": "Keyframe 1"
-                    },
-                    {
-                      "time": 1.2666666666666666,
-                      "instruction": "Keyframe 2"
-                    },
-                    {
-                      "time": 2.0,
-                      "instruction": "Keyframe 3"
-                    },
-                    {
-                      "time": 2.3666666666666667,
-                      "instruction": "Keyframe 4"
-                    },
-                    {
-                      "time": 2.6,
-                      "instruction": "Keyframe 5"
-                    },
-                    {
-                      "time": 3.1333333333333333,
-                      "instruction": "Keyframe 6"
-                    },
-                    {
-                      "time": 4.233333333333333,
-                      "instruction": "Keyframe 7"
-                    },
-                    {
-                      "time": 4.6,
-                      "instruction": "Keyframe 8"
-                    },
-                    {
-                      "time": 4.9,
-                      "instruction": "Keyframe 9"
-                    },
-                    {
-                      "time": 5.133333333333334,
-                      "instruction": "Keyframe 10"
-                    },
-                    {
-                      "time": 5.433333333333334,
-                      "instruction": "Keyframe 11"
-                    },
-                    {
-                      "time": 5.766666666666667,
+                      "time": 6.4,
                       "instruction": "Keyframe 12"
                     },
                     {
-                      "time": 6.066666666666666,
+                      "time": 6.9,
                       "instruction": "Keyframe 13"
                     },
                     {
-                      "time": 6.433333333333334,
+                      "time": 7.333333333333333,
                       "instruction": "Keyframe 14"
                     },
                     {
-                      "time": 6.9,
+                      "time": 7.666666666666667,
                       "instruction": "Keyframe 15"
+                    },
+                    {
+                      "time": 8.3,
+                      "instruction": "Keyframe 16"
+                    },
+                    {
+                      "time": 8.766666666666667,
+                      "instruction": "Keyframe 17"
+                    },
+                    {
+                      "time": 9.333333333333334,
+                      "instruction": "Keyframe 18"
+                    },
+                    {
+                      "time": 9.933333333333334,
+                      "instruction": "Keyframe 19"
+                    },
+                    {
+                      "time": 10.233333333333333,
+                      "instruction": "Keyframe 20"
+                    },
+                    {
+                      "time": 10.566666666666666,
+                      "instruction": "Keyframe 21"
+                    },
+                    {
+                      "time": 10.833333333333334,
+                      "instruction": "Keyframe 22"
+                    },
+                    {
+                      "time": 12.033333333333333,
+                      "instruction": "Keyframe 23"
                     }
                   ],
                   "practiceSpeed": 0.33,
@@ -2128,8 +2269,8 @@
                 },
                 {
                   "title": "Memorize",
-                  "startTime": 0,
-                  "endTime": 7.333333333333333,
+                  "startTime": 6.333333333333333,
+                  "endTime": 12.533333333333333,
                   "userVisual": "video",
                   "demoVisual": "skeleton",
                   "keyframeVisual": "none",
@@ -2142,8 +2283,8 @@
                 },
                 {
                   "title": "Practice",
-                  "startTime": 0,
-                  "endTime": 7.333333333333333,
+                  "startTime": 6.333333333333333,
+                  "endTime": 12.533333333333333,
                   "userVisual": "video",
                   "demoVisual": "none",
                   "keyframeVisual": "none",
@@ -2152,6 +2293,19 @@
                   "playingInstruction": "(you can go back to the previous activity if you need to)",
                   "startInstruction": "Do you have it? Let's try without the skeleton!",
                   "endInstruction": "Next up: combining this what you learned earlier",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Full Practice",
+                  "startTime": 0,
+                  "endTime": 12.533333333333333,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "startInstruction": "Now try everything we learned so far",
+                  "endInstruction": "Nice job!",
                   "timedInstructions": []
                 }
               ],
@@ -2162,7 +2316,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "72651548-a4b3-425a-a720-8a0a03fa34c8",
+              "_id": "87ed24db-f338-4df9-9ad8-a5fb12573364",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 3"
@@ -2171,92 +2325,48 @@
               "lessonTitle": "Segment 3",
               "segmentBreaks": [
                 0,
-                1.5666666666666667,
                 7.333333333333333,
+                12.533333333333333,
                 15.466666666666667,
-                19.033333333333335,
+                19.066666666666666,
                 19.266666666666666
               ],
               "activities": [
                 {
                   "title": "Learn",
-                  "startTime": 6.333333333333333,
+                  "startTime": 11.533333333333333,
                   "endTime": 15.466666666666667,
                   "userVisual": "none",
                   "demoVisual": "video",
                   "keyframeVisual": "none",
                   "pauses": [
                     {
-                      "time": 6.433333333333334,
-                      "instruction": "Keyframe 14"
-                    },
-                    {
-                      "time": 6.9,
-                      "instruction": "Keyframe 15"
-                    },
-                    {
-                      "time": 7.633333333333334,
-                      "instruction": "Keyframe 16"
-                    },
-                    {
-                      "time": 8.0,
-                      "instruction": "Keyframe 17"
-                    },
-                    {
-                      "time": 8.6,
-                      "instruction": "Keyframe 18"
-                    },
-                    {
-                      "time": 9.066666666666666,
-                      "instruction": "Keyframe 19"
-                    },
-                    {
-                      "time": 9.466666666666667,
-                      "instruction": "Keyframe 20"
-                    },
-                    {
-                      "time": 10.033333333333333,
-                      "instruction": "Keyframe 21"
-                    },
-                    {
-                      "time": 10.766666666666667,
-                      "instruction": "Keyframe 22"
-                    },
-                    {
-                      "time": 11.533333333333333,
+                      "time": 12.033333333333333,
                       "instruction": "Keyframe 23"
                     },
                     {
-                      "time": 11.733333333333333,
+                      "time": 12.566666666666666,
                       "instruction": "Keyframe 24"
                     },
                     {
-                      "time": 12.5,
+                      "time": 13.966666666666667,
                       "instruction": "Keyframe 25"
                     },
                     {
-                      "time": 13.133333333333333,
+                      "time": 14.4,
                       "instruction": "Keyframe 26"
                     },
                     {
-                      "time": 13.466666666666667,
+                      "time": 14.633333333333333,
                       "instruction": "Keyframe 27"
                     },
                     {
-                      "time": 13.666666666666666,
+                      "time": 15.1,
                       "instruction": "Keyframe 28"
                     },
                     {
-                      "time": 14.366666666666667,
+                      "time": 15.366666666666667,
                       "instruction": "Keyframe 29"
-                    },
-                    {
-                      "time": 14.866666666666667,
-                      "instruction": "Keyframe 30"
-                    },
-                    {
-                      "time": 15.266666666666667,
-                      "instruction": "Keyframe 31"
                     }
                   ],
                   "practiceSpeed": 0.33,
@@ -2267,7 +2377,7 @@
                 },
                 {
                   "title": "Memorize",
-                  "startTime": 6.333333333333333,
+                  "startTime": 11.533333333333333,
                   "endTime": 15.466666666666667,
                   "userVisual": "video",
                   "demoVisual": "skeleton",
@@ -2281,7 +2391,7 @@
                 },
                 {
                   "title": "Practice",
-                  "startTime": 6.333333333333333,
+                  "startTime": 11.533333333333333,
                   "endTime": 15.466666666666667,
                   "userVisual": "video",
                   "demoVisual": "none",
@@ -2314,7 +2424,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "65db157c-68b5-4bab-8b0a-9571a9495def",
+              "_id": "e839779e-7915-4b15-bd26-4e6ffed14c2c",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 4"
@@ -2323,52 +2433,44 @@
               "lessonTitle": "Segment 4",
               "segmentBreaks": [
                 0,
-                1.5666666666666667,
                 7.333333333333333,
+                12.533333333333333,
                 15.466666666666667,
-                19.033333333333335,
+                19.066666666666666,
                 19.266666666666666
               ],
               "activities": [
                 {
                   "title": "Learn",
                   "startTime": 14.466666666666667,
-                  "endTime": 19.033333333333335,
+                  "endTime": 19.066666666666666,
                   "userVisual": "none",
                   "demoVisual": "video",
                   "keyframeVisual": "none",
                   "pauses": [
                     {
-                      "time": 14.866666666666667,
+                      "time": 14.633333333333333,
+                      "instruction": "Keyframe 27"
+                    },
+                    {
+                      "time": 15.1,
+                      "instruction": "Keyframe 28"
+                    },
+                    {
+                      "time": 15.366666666666667,
+                      "instruction": "Keyframe 29"
+                    },
+                    {
+                      "time": 16.6,
                       "instruction": "Keyframe 30"
                     },
                     {
-                      "time": 15.266666666666667,
+                      "time": 17.433333333333334,
                       "instruction": "Keyframe 31"
                     },
                     {
-                      "time": 16.0,
+                      "time": 18.733333333333334,
                       "instruction": "Keyframe 32"
-                    },
-                    {
-                      "time": 16.366666666666667,
-                      "instruction": "Keyframe 33"
-                    },
-                    {
-                      "time": 17.066666666666666,
-                      "instruction": "Keyframe 34"
-                    },
-                    {
-                      "time": 17.533333333333335,
-                      "instruction": "Keyframe 35"
-                    },
-                    {
-                      "time": 18.0,
-                      "instruction": "Keyframe 36"
-                    },
-                    {
-                      "time": 18.8,
-                      "instruction": "Keyframe 37"
                     }
                   ],
                   "practiceSpeed": 0.33,
@@ -2380,7 +2482,7 @@
                 {
                   "title": "Memorize",
                   "startTime": 14.466666666666667,
-                  "endTime": 19.033333333333335,
+                  "endTime": 19.066666666666666,
                   "userVisual": "video",
                   "demoVisual": "skeleton",
                   "keyframeVisual": "none",
@@ -2394,7 +2496,7 @@
                 {
                   "title": "Practice",
                   "startTime": 14.466666666666667,
-                  "endTime": 19.033333333333335,
+                  "endTime": 19.066666666666666,
                   "userVisual": "video",
                   "demoVisual": "none",
                   "keyframeVisual": "none",
@@ -2408,7 +2510,7 @@
                 {
                   "title": "Full Practice",
                   "startTime": 0,
-                  "endTime": 19.033333333333335,
+                  "endTime": 19.066666666666666,
                   "userVisual": "video",
                   "demoVisual": "skeleton",
                   "keyframeVisual": "none",
@@ -2426,7 +2528,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "6de0f106-2b45-4199-9efa-6003b9d7edab",
+              "_id": "d40ac199-4a28-40e3-8727-7252b91c5794",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 5"
@@ -2435,24 +2537,24 @@
               "lessonTitle": "Segment 5",
               "segmentBreaks": [
                 0,
-                1.5666666666666667,
                 7.333333333333333,
+                12.533333333333333,
                 15.466666666666667,
-                19.033333333333335,
+                19.066666666666666,
                 19.266666666666666
               ],
               "activities": [
                 {
                   "title": "Learn",
-                  "startTime": 18.033333333333335,
+                  "startTime": 18.066666666666666,
                   "endTime": 19.266666666666666,
                   "userVisual": "none",
                   "demoVisual": "video",
                   "keyframeVisual": "none",
                   "pauses": [
                     {
-                      "time": 18.8,
-                      "instruction": "Keyframe 37"
+                      "time": 18.733333333333334,
+                      "instruction": "Keyframe 32"
                     }
                   ],
                   "practiceSpeed": 0.33,
@@ -2463,7 +2565,7 @@
                 },
                 {
                   "title": "Memorize",
-                  "startTime": 18.033333333333335,
+                  "startTime": 18.066666666666666,
                   "endTime": 19.266666666666666,
                   "userVisual": "video",
                   "demoVisual": "skeleton",
@@ -2477,7 +2579,7 @@
                 },
                 {
                   "title": "Practice",
-                  "startTime": 18.033333333333335,
+                  "startTime": 18.066666666666666,
                   "endTime": 19.266666666666666,
                   "userVisual": "video",
                   "demoVisual": "none",
@@ -2505,8 +2607,21 @@
               ],
               "source": "builtin"
             }
+          },
+          {
+            "type": "UploadTask",
+            "title": "Initial Performance",
+            "upload": {
+              "identifier": "unhhunh-86cc9290-6cca-4c4a-a089-75fbf9e62999-performance",
+              "prompt": "Show us what you've learned so far!"
+            },
+            "experiment": {
+              "showInExperimentOnly": true,
+              "isTimeExpiredTask": true
+            }
           }
-        ]
+        ],
+        "maxStageTimeSecs": 900
       },
       {
         "title": "Mastery",
@@ -2515,7 +2630,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "c47ff504-69a0-4387-96fa-44b173d1cfd7",
+              "_id": "8c512c02-9530-4bd9-92bc-b51b9c869c40",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Full Dance @ 50%"
@@ -2524,10 +2639,10 @@
               "lessonTitle": "Full Dance @ 50%",
               "segmentBreaks": [
                 0,
-                1.5666666666666667,
                 7.333333333333333,
+                12.533333333333333,
                 15.466666666666667,
-                19.033333333333335,
+                19.066666666666666,
                 19.266666666666666
               ],
               "activities": [
@@ -2578,7 +2693,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "1b79e920-3cdc-46ec-8bf1-45a92d70c0c0",
+              "_id": "65416552-17e8-4b5e-aec7-b5025b7beab2",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Full Dance @ 75%"
@@ -2587,10 +2702,10 @@
               "lessonTitle": "Full Dance @ 75%",
               "segmentBreaks": [
                 0,
-                1.5666666666666667,
                 7.333333333333333,
+                12.533333333333333,
                 15.466666666666667,
-                19.033333333333335,
+                19.066666666666666,
                 19.266666666666666
               ],
               "activities": [
@@ -2641,7 +2756,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "46750c9e-ef61-46b9-b7ec-72f7ab0e37d3",
+              "_id": "cd4e2f02-7d22-428a-9070-15721e84bb55",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Full Dance @ 100%"
@@ -2650,10 +2765,10 @@
               "lessonTitle": "Full Dance @ 100%",
               "segmentBreaks": [
                 0,
-                1.5666666666666667,
                 7.333333333333333,
+                12.533333333333333,
                 15.466666666666667,
-                19.033333333333335,
+                19.066666666666666,
                 19.266666666666666
               ],
               "activities": [
@@ -2704,13 +2819,18 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "unhhunh-fd556e2f-2246-4c8b-ac37-9d6c02ce2984-performance",
+              "identifier": "unhhunh-86cc9290-6cca-4c4a-a089-75fbf9e62999-performance",
               "prompt": "Now perform this dance!"
+            },
+            "experiment": {
+              "showInExperimentOnly": true,
+              "isTimeExpiredTask": true
             }
           }
-        ]
+        ],
+        "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-08T19:33:45.299147"
+    "created": "2021-09-09T02:38:01.940578"
   }
 ]
