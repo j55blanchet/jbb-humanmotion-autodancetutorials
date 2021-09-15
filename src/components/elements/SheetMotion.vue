@@ -3,26 +3,28 @@
     <div
       class="motion-line has-text-centered"
       :style="{
-        'flex-grow': getStageFlexGrow(i),
+        'flex-grow': getPhraseFlexGrow(i),
       }"
-      v-for="(stage, i) in data.kfsByStage"
+      v-for="(phrase, i) in data.phrases"
       :key="i">
+      <!-- <div>{{phrase}}</div> -->
 
-      <div class="motion-note" v-for="(kf, j) in stage" :key="kf"
+      <div class="motion-note" v-for="(kf, j) in phrase.frames" :key="kf"
       :style="{
-        'background': getKFBackground(i, j),
-        'flex-grow': getNoteFlexGrow(i, j),
+        'background': getFrameBackground(i, j),
+        'flex-grow': getFrameFlexGrow(i, j),
       }">
 
         <VideoPlayer
-          :videoBaseUrl="dbEntry?.videoSrc + '#t=' + kf"
+          :videoBaseUrl="dbEntry?.videoSrc + '#t=' + kf.timestamp"
           :fps="dbEntry?.fps ?? 30"
           :drawPoseLandmarks="drawMode === 'skeleton'"
-          :videoOpacity="drawMode === 'video' ? 1.0 : 0.0"
-          style="margin: 0; display:inline-block;"/>
+          :videoOpacity="drawMode === 'video' && kf.type === 'move' ? 1.0 : 0.0"
+          style="margin: 0; display:inline-block;background:lightgray;"/>
+          <!-- {{kf}} -->
 
         <div class="motion-hold"></div>
-          <!-- <p class="tag is-selectable">{{getKFBackground(i, j)}}</p> -->
+          <!-- <p class="tag is-selectable">{{getFrameBackground(i, j)}}</p> -->
       </div>
     </div>
   </div>
@@ -77,58 +79,63 @@ export default defineComponent({
     isActive(kf: number, nextkf: number) {
       return this.currentTime >= kf && this.currentTime < nextkf;
     },
-    getStageFlexGrow(stageIndex: number) {
-      const stage = this.data.kfsByStage[stageIndex];
-      if (!stage) return 0;
-      const nStage = this.data.kfsByStage[stageIndex + 1];
-      if (!nStage) return 0;
+    getPhraseFlexGrow(phraseIndex: number) {
+      if (!this.data.variableLength) return 0;
 
-      const stageStartTime = stage[0] ?? Infinity;
-      const nStageStartTime = nStage[0] ?? Infinity;
-      if (stageStartTime === Infinity || nStageStartTime === Infinity) return 0;
+      const phrase = this.data.phrases[phraseIndex];
+      if (!phrase) return 0;
+      const nPhrase = this.data.phrases[phraseIndex + 1];
+      if (!nPhrase) return 0;
 
-      return nStageStartTime - stageStartTime;
+      const phraseStartTime = phrase.frames[0]?.timestamp ?? Infinity;
+      const nPhraseStartTime = nPhrase.frames[0]?.timestamp ?? Infinity;
+      if (phraseStartTime === Infinity || nPhraseStartTime === Infinity) return 0;
+
+      return nPhraseStartTime - phraseStartTime;
     },
-    getNoteFlexGrow(stageIndex: number, kfIndex: number) {
-      const stage = this.data.kfsByStage[stageIndex];
-      if (!stage) {
-        console.warn(`NoteFlexGrow ${stageIndex}-${kfIndex}: current stage is undefined`);
-        return 0;
-      }
-      const nStage = this.data.kfsByStage[stageIndex + 1];
+    getFrameFlexGrow(phraseIndex: number, kfIndex: number) {
+      if (!this.data.variableLength) return 0;
 
-      const kf = stage[kfIndex];
-      if (!kf) {
-        console.warn(`NoteFlexGrow ${stageIndex}-${kfIndex}: current kf is undefined`);
+      const phrase = this.data.phrases[phraseIndex];
+      if (!phrase) {
+        console.warn(`NoteFlexGrow ${phraseIndex}-${kfIndex}: current phrase is undefined`);
         return 0;
       }
-      let nextKf = stage[kfIndex + 1] ?? Infinity;
-      if (nextKf === Infinity && nStage) {
-        nextKf = nStage[0] ?? Infinity;
+      const nPhrase = this.data.phrases[phraseIndex + 1];
+
+      const curFrame = phrase.frames[kfIndex];
+      if (!curFrame) {
+        console.warn(`NoteFlexGrow ${phraseIndex}-${kfIndex}: current kf is undefined`);
+        return 0;
+      }
+      const kf = curFrame.timestamp;
+      let nextKf = phrase.frames[kfIndex + 1]?.timestamp ?? Infinity;
+      if (nextKf === Infinity && nPhrase) {
+        nextKf = nPhrase.frames[0]?.timestamp ?? Infinity;
       }
       if (nextKf === Infinity) {
-        console.log(`NoteFlexGrow ${stageIndex}-${kfIndex}: next kf is undefined`);
+        // console.log(`NoteFlexGrow ${phraseIndex}-${kfIndex}: next kf is undefined`);
         return 0;
       }
 
       const res = nextKf - kf;
       if (res < 0) {
-        console.log(`NoteFlexGrow ${stageIndex}-${kfIndex}: next kf is before this one`);
+        console.log(`NoteFlexGrow ${phraseIndex}-${kfIndex}: next kf is before this one`);
         return 0;
       }
       return res * 100;
     },
-    getKFBackground(stageIndex: number, kfIndex: number) {
-      const stage = this.data.kfsByStage[stageIndex];
-      if (!stage) return 1.0;
+    getFrameBackground(phraseIndex: number, kfIndex: number) {
+      const phrase = this.data.phrases[phraseIndex];
+      if (!phrase) return 1.0;
 
-      // const prev = stage[index - 1] ?? -Infinity;
-      const curr = stage[kfIndex];
-      let next = stage[kfIndex + 1] ?? Infinity;
+      // const prev = phrase.frames[index - 1] ?? -Infinity;
+      const curr = phrase.frames[kfIndex]?.timestamp ?? -Infinity;
+      let next = phrase.frames[kfIndex + 1]?.timestamp ?? Infinity;
       if (next === Infinity) {
-        const nStage = this.data.kfsByStage[stageIndex + 1];
-        if (nStage) {
-          next = nStage[0] ?? Infinity;
+        const nPhrase = this.data.phrases[phraseIndex + 1];
+        if (nPhrase) {
+          next = nPhrase.frames[0]?.timestamp ?? Infinity;
         }
       }
 

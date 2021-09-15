@@ -16,8 +16,16 @@ export interface PauseInfo {
 //     time2?: number;
 // }
 
+export interface SheetMotionFrame {
+  timestamp: number;
+  type: 'move' | 'pause';
+}
+export interface SheetMotionPhrase {
+  frames: SheetMotionFrame[];
+}
 export interface SheetMotion {
-  kfsByStage: number[][];
+  phrases: SheetMotionPhrase[];
+  variableLength: boolean;
 }
 
 export interface MiniLessonActivity {
