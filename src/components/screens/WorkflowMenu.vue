@@ -139,7 +139,7 @@
     <div v-bind:class="{ 'is-active': lessonActive }" class="modal">
       <div class="modal-background"></div>
       <div class="container" style="max-width: 100vw; max-height: 100vh;">
-        <div class="box" style="height:min(90vw, 90vh);width:min(90vh, 90vw);margin-top:calc((100vh - min(90vh, 90vw)) / 2)" >
+        <div class="box" style="height:min(90vh);max-width:calc(100vw-2rem);margin-top:calc((10vh) / 2)" >
           <MiniLessonPlayer
             v-if="lessonActive"
             :videoEntry="currentVideoEntry"

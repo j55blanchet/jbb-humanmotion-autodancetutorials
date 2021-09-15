@@ -8,7 +8,7 @@
       v-show="showingWebcam"/>
 
     <div :class="{
-          'is-overlay': showingWebcam
+          'is-overlay': showingWebcam || showSheetMusic,
         }" class="is-flex-grow-1 is-flex-shrink-1" :style="{
           height: showingWebcam ? '100%' : 0,
         }">
@@ -25,7 +25,7 @@
       />
     </div>
 
-    <div class="is-overlay" v-if="activity?.sheetMotionVisual !== 'none'">
+    <div v-if="showSheetMusic" style="max-height:100%">
       <SheetMotion
         :dbEntry="motion"
         :drawMode="activity?.sheetMotionVisual"
@@ -144,7 +144,10 @@ export default defineComponent({
       return (this as any)?.activity?.keyframeVisual ?? 'none';
     },
     showingWebcam() {
-      return (this as any)?.activity?.userVisual !== 'none';
+      return ((this as any)?.activity?.userVisual ?? 'none') !== 'none';
+    },
+    showSheetMusic() {
+      return ((this as any)?.activity?.sheetMotionVisual ?? 'none') !== 'none';
     },
     emphasizedJoints(): number[] { return this.activity?.emphasizedJoints ?? []; },
     instructions(): Instruction[] {
@@ -252,6 +255,7 @@ export default defineComponent({
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
+  pointer-events: none;
 }
 
 .keyframe-container {
