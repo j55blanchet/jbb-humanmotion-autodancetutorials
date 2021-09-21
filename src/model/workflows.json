@@ -2,7 +2,7 @@
   {
     "title": "ahichallenge",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "82e601dd-c7f7-453d-852e-9b4efe5c3c42",
+    "id": "65a450b4-adc6-4cf5-836a-b6e93bad05f2",
     "stages": [
       {
         "title": "Preview",
@@ -11,7 +11,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "52eefdba-2165-4cd5-89b8-0b60ec53b9fe",
+              "_id": "9ddbad57-34e0-4046-a18b-918de206a687",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Preview"
@@ -247,7 +247,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "50bd0c2d-3640-4d05-be92-8e1a4b705d9b",
+              "_id": "b8d044b8-c10a-432c-9b30-299009d6f5cc",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Segment 1"
@@ -317,7 +317,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "74c1af41-8913-40c9-b026-2eec84b6e34c",
+              "_id": "184bf76a-c1f8-4271-9402-ee73f095c00f",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Segment 2"
@@ -401,7 +401,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "27f2f204-5739-492c-9a7b-aa14f259a87d",
+              "_id": "aa7390d3-b9c4-469b-873e-edda8d0a9fe1",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Segment 3"
@@ -485,7 +485,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "1dc3094a-6fca-4c82-a997-44c04705920c",
+              "_id": "9b9a99ae-8491-4f77-bd4f-f5b5392acc9d",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Segment 4"
@@ -569,7 +569,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "785477a0-f4fb-44a8-a744-ca02d5a6624d",
+              "_id": "da8eb8cf-45a8-479e-8210-99f3d4e47387",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Segment 5"
@@ -653,7 +653,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 6",
             "miniLessonEmbedded": {
-              "_id": "0d2ddae8-9d81-4d4f-a9df-bfd91c44e534",
+              "_id": "ba3d2c0b-3cd2-4a77-8ce7-06513b8ed5a5",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Segment 6"
@@ -737,7 +737,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "ahichallenge-82e601dd-c7f7-453d-852e-9b4efe5c3c42-performance",
+              "identifier": "ahichallenge-65a450b4-adc6-4cf5-836a-b6e93bad05f2-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -755,7 +755,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "be1a0cb9-d60b-4293-8612-ec3b526bf3a8",
+              "_id": "8771c9f1-f900-4999-82f1-c762402d728d",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Full Dance @ 50%"
@@ -822,7 +822,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "45a56022-27a7-4015-a652-5157da055a09",
+              "_id": "3751fa94-1e8b-4881-9d9d-20f96f66f22d",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Full Dance @ 75%"
@@ -889,7 +889,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "44de5834-12b5-48bb-a497-109493dac374",
+              "_id": "e779bc57-d2de-490e-9444-7cf30099cfe2",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Full Dance @ 100%"
@@ -956,7 +956,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "ahichallenge-82e601dd-c7f7-453d-852e-9b4efe5c3c42-performance",
+              "identifier": "ahichallenge-65a450b4-adc6-4cf5-836a-b6e93bad05f2-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -968,13 +968,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-21T21:12:56.837308",
+    "created": "2021-09-21T21:56:43.951041",
     "thumbnailSrc": "tiktok/ahichallenge.jpg"
   },
   {
     "title": "blindinglights",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "cf51c46a-d301-4b97-80d3-e0d824cedd63",
+    "id": "efbcfd02-a511-4539-847b-72687cdb3039",
     "stages": [
       {
         "title": "Preview",
@@ -983,7 +983,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "41acbd29-a58c-4cc8-b13f-ed7e945f8fdb",
+              "_id": "65b4c646-92a1-4a56-ab2b-1521aff756b6",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Preview"
@@ -1214,7 +1214,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "73d39603-c636-4546-a9c9-e34a5e8fc6e2",
+              "_id": "d7ce55e1-a077-4f3a-8cb1-83d4344fe1dd",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Segment 1"
@@ -1284,7 +1284,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "7f9cd7bc-17dd-4125-892a-037bd6c38aaf",
+              "_id": "6603b72c-11e7-4dda-bd1d-8fdadf8ded94",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Segment 2"
@@ -1368,7 +1368,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "6ed17a19-3aa5-4eba-80bc-c300f922afcf",
+              "_id": "5e67cbee-d76d-4a38-8eb6-1f965f383e78",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Segment 3"
@@ -1452,7 +1452,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "f48ef6f0-cbea-4372-826e-0c8b24b3a4ba",
+              "_id": "f1636476-6785-4894-b44c-d8ab8e78eb90",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Segment 4"
@@ -1536,7 +1536,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "d1cb311a-1997-4709-97cc-dc35ec7945f2",
+              "_id": "082b19d8-e630-4b5f-9e01-2aa9dfaf4d2c",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Segment 5"
@@ -1620,7 +1620,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 6",
             "miniLessonEmbedded": {
-              "_id": "590e57fd-0b40-4206-94c0-2daddf571b97",
+              "_id": "fc2e623c-42bb-41e2-b8fd-26f685d8d25e",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Segment 6"
@@ -1704,7 +1704,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "blindinglights-cf51c46a-d301-4b97-80d3-e0d824cedd63-performance",
+              "identifier": "blindinglights-efbcfd02-a511-4539-847b-72687cdb3039-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -1722,7 +1722,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "fc76f4b9-d2db-40b9-a8c2-045fe88870ee",
+              "_id": "c6e68791-52c3-439f-a5c6-ddcc827211c2",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Full Dance @ 50%"
@@ -1789,7 +1789,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "98d4f1ac-2744-4d9c-b1e6-3d7a07d086ed",
+              "_id": "24f754c3-9a1f-4d35-b734-f90b0afdeeba",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Full Dance @ 75%"
@@ -1856,7 +1856,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "88c444af-70ba-4d5b-a978-ca8162fc747a",
+              "_id": "0200de54-117a-4aae-b565-c8a8c7d4f7a0",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Full Dance @ 100%"
@@ -1923,7 +1923,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "blindinglights-cf51c46a-d301-4b97-80d3-e0d824cedd63-performance",
+              "identifier": "blindinglights-efbcfd02-a511-4539-847b-72687cdb3039-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -1935,13 +1935,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-21T21:12:56.922039",
+    "created": "2021-09-21T21:56:44.037855",
     "thumbnailSrc": "tiktok/blindinglights.jpg"
   },
   {
     "title": "debbieallenchallenge",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "c8bbf885-82f5-4d8d-9e2a-a5ea1a43e428",
+    "id": "3f21099d-d6f6-47a2-955b-d0d0d970611c",
     "stages": [
       {
         "title": "Preview",
@@ -1950,7 +1950,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "0fbf94eb-b448-4c08-bb37-e4f8f9e6f8e0",
+              "_id": "ed0551f5-d3c3-466e-924a-8bc2891a0696",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Preview"
@@ -2246,7 +2246,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "67ebfab8-5d7a-4000-8399-12359fbad19a",
+              "_id": "76d1d08c-50a8-4052-9db2-2e5cd90c8b33",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 1"
@@ -2318,7 +2318,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "6b99cc96-4955-478e-a612-aa8d42c3de46",
+              "_id": "df9b268d-14e1-4762-a345-e224dd6fb2ce",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 2"
@@ -2404,7 +2404,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "e7cd3e92-74ea-4898-978c-24fc9ee8761a",
+              "_id": "3c2a1ea5-2883-4d08-94b3-bacef65134e4",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 3"
@@ -2490,7 +2490,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "236be2d4-03ce-474c-b02c-8aa77a47beb8",
+              "_id": "17c75bba-bcbf-4012-8c55-f3dd83a79b5e",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 4"
@@ -2576,7 +2576,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "dd748b37-df4b-4511-af5b-22bd934fa695",
+              "_id": "b94cfc4b-b4f6-43ff-a481-8e71107be87d",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 5"
@@ -2662,7 +2662,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 6",
             "miniLessonEmbedded": {
-              "_id": "1642d8c3-302e-4830-b9c3-9b9d4b71537a",
+              "_id": "6ef61edc-6b6c-4e5e-b5ad-28acf6e28c0f",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 6"
@@ -2748,7 +2748,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 7",
             "miniLessonEmbedded": {
-              "_id": "37566956-b0bf-4978-8105-8a8d53c801ea",
+              "_id": "c0f00587-adf5-4195-b3b6-9d115feabc25",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 7"
@@ -2834,7 +2834,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 8",
             "miniLessonEmbedded": {
-              "_id": "ad79f837-fc61-41ea-92d6-ad8448a1d2f7",
+              "_id": "f05140d2-8afc-46f0-8299-9dc7b6114943",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 8"
@@ -2920,7 +2920,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "debbieallenchallenge-c8bbf885-82f5-4d8d-9e2a-a5ea1a43e428-performance",
+              "identifier": "debbieallenchallenge-3f21099d-d6f6-47a2-955b-d0d0d970611c-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -2938,7 +2938,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "b15e4571-1643-40a6-bb15-8ed6a781d2b2",
+              "_id": "c2fef808-299e-4040-b63f-95e637517901",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Full Dance @ 50%"
@@ -3007,7 +3007,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "a70a3d5c-1f47-4156-9809-802c3f0e1c17",
+              "_id": "260a2af4-7218-498e-a648-fdc8302a60e5",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Full Dance @ 75%"
@@ -3076,7 +3076,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "11bf8029-0e09-469f-a002-fb9943ea2e39",
+              "_id": "ab500fc1-0afd-45b4-a88d-f34e00575354",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Full Dance @ 100%"
@@ -3145,7 +3145,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "debbieallenchallenge-c8bbf885-82f5-4d8d-9e2a-a5ea1a43e428-performance",
+              "identifier": "debbieallenchallenge-3f21099d-d6f6-47a2-955b-d0d0d970611c-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -3157,13 +3157,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-21T21:12:57.021511",
+    "created": "2021-09-21T21:56:44.111608",
     "thumbnailSrc": "tiktok/debbieallenchallenge.jpg"
   },
   {
     "title": "derulo",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "5ce43133-4b8a-411f-a0f7-a773e8ef1dbc",
+    "id": "a9089fd8-7eac-4ce6-8915-dcc9a3e91153",
     "stages": [
       {
         "title": "Preview",
@@ -3172,7 +3172,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "d28ac891-169b-43b8-8fcd-31a01d00e078",
+              "_id": "4208ddb4-e689-45ad-bbcf-1377c720797a",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Preview"
@@ -3329,7 +3329,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "8419a899-f980-496a-9111-e3974e827f33",
+              "_id": "93d6765e-591a-4ff0-9792-118a1cacb844",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Segment 1"
@@ -3397,7 +3397,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "5f57fc7b-9c62-4712-9f39-c3fa1a9f6ec2",
+              "_id": "ed5685a3-3421-4deb-b1cc-48ed98aac70f",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Segment 2"
@@ -3479,7 +3479,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "6ac4799e-2a50-41cf-ba36-541ecb68e75d",
+              "_id": "0547c88e-b436-4260-a1da-d4bce855bc23",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Segment 3"
@@ -3561,7 +3561,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "806520bc-e549-44bd-81cf-24f3fd7191ab",
+              "_id": "a60b6cb2-f35c-425c-ae30-ed5aae08ed41",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Segment 4"
@@ -3643,7 +3643,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "derulo-5ce43133-4b8a-411f-a0f7-a773e8ef1dbc-performance",
+              "identifier": "derulo-a9089fd8-7eac-4ce6-8915-dcc9a3e91153-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -3661,7 +3661,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "a9b1e0cc-753e-418d-9cf4-baf3c49037bd",
+              "_id": "70913353-ac5d-4588-942f-06301aab2b75",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Full Dance @ 50%"
@@ -3726,7 +3726,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "bfdf202d-e51f-4b1c-9278-db6ca1a9d93b",
+              "_id": "d7f65d44-1506-4ea4-bd8c-9b85d30b5700",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Full Dance @ 75%"
@@ -3791,7 +3791,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "385cc084-c2af-4cfd-bd2c-485b7724f230",
+              "_id": "c41896f9-f7c2-41ef-a29f-e1f733261477",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Full Dance @ 100%"
@@ -3856,7 +3856,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "derulo-5ce43133-4b8a-411f-a0f7-a773e8ef1dbc-performance",
+              "identifier": "derulo-a9089fd8-7eac-4ce6-8915-dcc9a3e91153-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -3868,13 +3868,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-21T21:12:57.199542",
+    "created": "2021-09-21T21:56:44.197379",
     "thumbnailSrc": "tiktok/derulo.jpg"
   },
   {
-    "title": "getup",
+    "title": "dont-start-now",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "186234e4-2b31-44f5-a027-0e73b26a9687",
+    "id": "65c44b5b-3ef4-4ef9-9592-01ac48a7195c",
     "stages": [
       {
         "title": "Preview",
@@ -3883,7 +3883,728 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "f9c29ae9-2928-46f5-a02b-0ede72e20d0e",
+              "_id": "442db3eb-3fdf-4825-973f-85e31ad6f1e2",
+              "header": {
+                "clipName": "dont-start-now",
+                "lessonTitle": "Preview"
+              },
+              "clipName": "dont-start-now",
+              "lessonTitle": "Preview",
+              "segmentBreaks": [
+                0.0,
+                3.819683074951172,
+                7.639366149902344,
+                11.459049224853516,
+                13.166666666666666
+              ],
+              "activities": [
+                {
+                  "title": "Preview",
+                  "startTime": 0.0,
+                  "endTime": 13.166666666666666,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "skeleton",
+                  "keyframes": [
+                    0.0,
+                    0.954920768737793,
+                    1.909841537475586,
+                    2.864762306213379,
+                    3.819683074951172,
+                    4.774603843688965,
+                    5.729524612426758,
+                    6.684445381164551,
+                    7.639366149902344,
+                    8.594286918640137,
+                    9.54920768737793,
+                    10.504128456115723,
+                    11.459049224853516,
+                    12.413969993591309
+                  ],
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 1,
+                  "startInstruction": "Here's the dance you'll be learning...",
+                  "timedInstructions": [
+                    {
+                      "startTime": 0.0,
+                      "endTime": 3.819683074951172,
+                      "text": "Part 1"
+                    },
+                    {
+                      "startTime": 3.819683074951172,
+                      "endTime": 7.639366149902344,
+                      "text": "Part 2"
+                    },
+                    {
+                      "startTime": 7.639366149902344,
+                      "endTime": 11.459049224853516,
+                      "text": "Part 3"
+                    },
+                    {
+                      "startTime": 11.459049224853516,
+                      "endTime": 13.166666666666666,
+                      "text": "Part 4"
+                    }
+                  ]
+                },
+                {
+                  "title": "Preview Sheet Music",
+                  "startTime": 0.0,
+                  "endTime": 13.166666666666666,
+                  "userVisual": "none",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotion": {
+                    "phrases": [
+                      {
+                        "frames": [
+                          {
+                            "timestamp": 0.03333333333333333,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 0.9666666666666667,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 1.9,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 2.8666666666666667,
+                            "type": "move"
+                          }
+                        ]
+                      },
+                      {
+                        "frames": [
+                          {
+                            "timestamp": 3.8333333333333335,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 4.766666666666667,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 5.733333333333333,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 6.7,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 7.633333333333334,
+                            "type": "move"
+                          }
+                        ]
+                      },
+                      {
+                        "frames": [
+                          {
+                            "timestamp": 8.6,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 9.533333333333333,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 10.5,
+                            "type": "move"
+                          }
+                        ]
+                      },
+                      {
+                        "frames": [
+                          {
+                            "timestamp": 11.466666666666667,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 12.4,
+                            "type": "move"
+                          }
+                        ]
+                      }
+                    ],
+                    "variableLength": false
+                  },
+                  "sheetMotionVisual": "video",
+                  "pauses": [],
+                  "practiceSpeed": 1,
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Learning (33% speed)",
+        "steps": [
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Segment 1",
+            "miniLessonEmbedded": {
+              "_id": "c6530717-37bc-4a53-8d01-21aca858adde",
+              "header": {
+                "clipName": "dont-start-now",
+                "lessonTitle": "Segment 1"
+              },
+              "clipName": "dont-start-now",
+              "lessonTitle": "Segment 1",
+              "segmentBreaks": [
+                0.0,
+                3.819683074951172,
+                7.639366149902344,
+                11.459049224853516,
+                13.166666666666666
+              ],
+              "activities": [
+                {
+                  "title": "Learn",
+                  "startTime": 0.0,
+                  "endTime": 3.819683074951172,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's learn part 1",
+                  "endInstruction": "Repeat if you need to -- next up we'll try with just a skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Memorize",
+                  "startTime": 0.0,
+                  "endTime": 3.819683074951172,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's practice part 1",
+                  "endInstruction": "Memorize this! Next, we'll try this without the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Practice",
+                  "startTime": 0.0,
+                  "endTime": 3.819683074951172,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "(you can go back to the previous activity if you need to)",
+                  "startInstruction": "Do you have it? Let's try without the skeleton!",
+                  "endInstruction": "Next up: combining this what you learned earlier",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Segment 2",
+            "miniLessonEmbedded": {
+              "_id": "1d3b6474-5cb7-4a68-9078-342aad334c98",
+              "header": {
+                "clipName": "dont-start-now",
+                "lessonTitle": "Segment 2"
+              },
+              "clipName": "dont-start-now",
+              "lessonTitle": "Segment 2",
+              "segmentBreaks": [
+                0.0,
+                3.819683074951172,
+                7.639366149902344,
+                11.459049224853516,
+                13.166666666666666
+              ],
+              "activities": [
+                {
+                  "title": "Learn",
+                  "startTime": 2.819683074951172,
+                  "endTime": 7.639366149902344,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's learn part 2",
+                  "endInstruction": "Repeat if you need to -- next up we'll try with just a skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Memorize",
+                  "startTime": 2.819683074951172,
+                  "endTime": 7.639366149902344,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's practice part 2",
+                  "endInstruction": "Memorize this! Next, we'll try this without the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Practice",
+                  "startTime": 2.819683074951172,
+                  "endTime": 7.639366149902344,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "(you can go back to the previous activity if you need to)",
+                  "startInstruction": "Do you have it? Let's try without the skeleton!",
+                  "endInstruction": "Next up: combining this what you learned earlier",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Full Practice",
+                  "startTime": 0.0,
+                  "endTime": 7.639366149902344,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "startInstruction": "Now try everything we learned so far",
+                  "endInstruction": "Nice job!",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Segment 3",
+            "miniLessonEmbedded": {
+              "_id": "3ea32bcc-f443-4582-893b-a8226724bd50",
+              "header": {
+                "clipName": "dont-start-now",
+                "lessonTitle": "Segment 3"
+              },
+              "clipName": "dont-start-now",
+              "lessonTitle": "Segment 3",
+              "segmentBreaks": [
+                0.0,
+                3.819683074951172,
+                7.639366149902344,
+                11.459049224853516,
+                13.166666666666666
+              ],
+              "activities": [
+                {
+                  "title": "Learn",
+                  "startTime": 6.639366149902344,
+                  "endTime": 11.459049224853516,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's learn part 3",
+                  "endInstruction": "Repeat if you need to -- next up we'll try with just a skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Memorize",
+                  "startTime": 6.639366149902344,
+                  "endTime": 11.459049224853516,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's practice part 3",
+                  "endInstruction": "Memorize this! Next, we'll try this without the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Practice",
+                  "startTime": 6.639366149902344,
+                  "endTime": 11.459049224853516,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "(you can go back to the previous activity if you need to)",
+                  "startInstruction": "Do you have it? Let's try without the skeleton!",
+                  "endInstruction": "Next up: combining this what you learned earlier",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Full Practice",
+                  "startTime": 0.0,
+                  "endTime": 11.459049224853516,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "startInstruction": "Now try everything we learned so far",
+                  "endInstruction": "Nice job!",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Segment 4",
+            "miniLessonEmbedded": {
+              "_id": "410e635b-70d5-4c02-ac2d-5984bd47589a",
+              "header": {
+                "clipName": "dont-start-now",
+                "lessonTitle": "Segment 4"
+              },
+              "clipName": "dont-start-now",
+              "lessonTitle": "Segment 4",
+              "segmentBreaks": [
+                0.0,
+                3.819683074951172,
+                7.639366149902344,
+                11.459049224853516,
+                13.166666666666666
+              ],
+              "activities": [
+                {
+                  "title": "Learn",
+                  "startTime": 10.459049224853516,
+                  "endTime": 13.166666666666666,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's learn part 4",
+                  "endInstruction": "Repeat if you need to -- next up we'll try with just a skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Memorize",
+                  "startTime": 10.459049224853516,
+                  "endTime": 13.166666666666666,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's practice part 4",
+                  "endInstruction": "Memorize this! Next, we'll try this without the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Practice",
+                  "startTime": 10.459049224853516,
+                  "endTime": 13.166666666666666,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "(you can go back to the previous activity if you need to)",
+                  "startInstruction": "Do you have it? Let's try without the skeleton!",
+                  "endInstruction": "Next up: combining this what you learned earlier",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Full Practice",
+                  "startTime": 0.0,
+                  "endTime": 13.166666666666666,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "startInstruction": "Now try everything we learned so far",
+                  "endInstruction": "Nice job!",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "UploadTask",
+            "title": "Initial Performance",
+            "upload": {
+              "identifier": "dont-start-now-65c44b5b-3ef4-4ef9-9592-01ac48a7195c-performance",
+              "prompt": "Show us what you've learned so far!"
+            },
+            "experiment": {
+              "showInExperimentOnly": true,
+              "isTimeExpiredTask": true
+            }
+          }
+        ],
+        "maxStageTimeSecs": 900
+      },
+      {
+        "title": "Mastery",
+        "steps": [
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Full Dance @ 50%",
+            "miniLessonEmbedded": {
+              "_id": "68f75359-9616-4810-8ec9-4fa0f47afd94",
+              "header": {
+                "clipName": "dont-start-now",
+                "lessonTitle": "Full Dance @ 50%"
+              },
+              "clipName": "dont-start-now",
+              "lessonTitle": "Full Dance @ 50%",
+              "segmentBreaks": [
+                0.0,
+                3.819683074951172,
+                7.639366149902344,
+                11.459049224853516,
+                13.166666666666666
+              ],
+              "activities": [
+                {
+                  "title": "With Video",
+                  "startTime": 0.0,
+                  "endTime": 13.166666666666666,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.5,
+                  "startInstruction": "Let's perform the whole thing now!",
+                  "endInstruction": "Next up: just using the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Skeleton Only",
+                  "startTime": 0.0,
+                  "endTime": 13.166666666666666,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.5,
+                  "startInstruction": "Now try it with just the skeleton",
+                  "endInstruction": "Next up: doing it from memory. You got this!",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "No Skeleton",
+                  "startTime": 0.0,
+                  "endTime": 13.166666666666666,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.5,
+                  "startInstruction": "Now try doing it from memory",
+                  "endInstruction": "Nice job!",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Full Dance @ 75%",
+            "miniLessonEmbedded": {
+              "_id": "1f7dca64-7a17-4d65-bf49-840ec5f419d5",
+              "header": {
+                "clipName": "dont-start-now",
+                "lessonTitle": "Full Dance @ 75%"
+              },
+              "clipName": "dont-start-now",
+              "lessonTitle": "Full Dance @ 75%",
+              "segmentBreaks": [
+                0.0,
+                3.819683074951172,
+                7.639366149902344,
+                11.459049224853516,
+                13.166666666666666
+              ],
+              "activities": [
+                {
+                  "title": "With Video",
+                  "startTime": 0.0,
+                  "endTime": 13.166666666666666,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.75,
+                  "startInstruction": "Let's perform the whole thing now!",
+                  "endInstruction": "Next up: just using the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Skeleton Only",
+                  "startTime": 0.0,
+                  "endTime": 13.166666666666666,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.75,
+                  "startInstruction": "Now try it with just the skeleton",
+                  "endInstruction": "Next up: doing it from memory. You got this!",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "No Skeleton",
+                  "startTime": 0.0,
+                  "endTime": 13.166666666666666,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.75,
+                  "startInstruction": "Now try doing it from memory",
+                  "endInstruction": "Nice job!",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Full Dance @ 100%",
+            "miniLessonEmbedded": {
+              "_id": "ee900bf1-d3a1-4838-8869-c0cee42d106a",
+              "header": {
+                "clipName": "dont-start-now",
+                "lessonTitle": "Full Dance @ 100%"
+              },
+              "clipName": "dont-start-now",
+              "lessonTitle": "Full Dance @ 100%",
+              "segmentBreaks": [
+                0.0,
+                3.819683074951172,
+                7.639366149902344,
+                11.459049224853516,
+                13.166666666666666
+              ],
+              "activities": [
+                {
+                  "title": "With Video",
+                  "startTime": 0.0,
+                  "endTime": 13.166666666666666,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 1,
+                  "startInstruction": "Let's perform the whole thing now!",
+                  "endInstruction": "Next up: just using the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Skeleton Only",
+                  "startTime": 0.0,
+                  "endTime": 13.166666666666666,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 1,
+                  "startInstruction": "Now try it with just the skeleton",
+                  "endInstruction": "Next up: doing it from memory. You got this!",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "No Skeleton",
+                  "startTime": 0.0,
+                  "endTime": 13.166666666666666,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 1,
+                  "startInstruction": "Now try doing it from memory",
+                  "endInstruction": "Nice job!",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "UploadTask",
+            "title": "Performance",
+            "upload": {
+              "identifier": "dont-start-now-65c44b5b-3ef4-4ef9-9592-01ac48a7195c-performance",
+              "prompt": "Now perform this dance!"
+            },
+            "experiment": {
+              "showInExperimentOnly": true,
+              "isTimeExpiredTask": true
+            }
+          }
+        ],
+        "maxStageTimeSecs": 900
+      }
+    ],
+    "created": "2021-09-21T21:56:44.251734",
+    "thumbnailSrc": "tiktok/dont-start-now.jpg"
+  },
+  {
+    "title": "getup",
+    "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
+    "id": "5ce270d4-6ecf-421f-a3fd-39777335dfd2",
+    "stages": [
+      {
+        "title": "Preview",
+        "steps": [
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Preview",
+            "miniLessonEmbedded": {
+              "_id": "7b9ffd2e-4faa-4d93-806d-18d254471b9d",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Preview"
@@ -4090,7 +4811,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "f39ecc47-671e-4406-80e2-52544b510882",
+              "_id": "767295e9-89fb-408e-b204-1ad7bb064bf6",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Segment 1"
@@ -4159,7 +4880,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "33dc2779-9a9f-4d71-990f-593df1a1d505",
+              "_id": "f418e8a5-5b80-4098-8945-2f98585e429c",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Segment 2"
@@ -4242,7 +4963,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "397a7eb1-2e7c-41cc-b27c-c5b6444f9857",
+              "_id": "985eefb6-09af-416f-8ecc-0a80a48b1f42",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Segment 3"
@@ -4325,7 +5046,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "aa693803-f706-4ff9-a976-8c2a28ba27ec",
+              "_id": "0ddaabaf-1e51-4a1b-8ad6-613a27e5eaf3",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Segment 4"
@@ -4408,7 +5129,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "b11d4976-5105-48c1-b4d0-b67b9ecfd976",
+              "_id": "f1aec0ae-6464-4dfa-b903-6bfcf00a01b7",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Segment 5"
@@ -4491,7 +5212,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "getup-186234e4-2b31-44f5-a027-0e73b26a9687-performance",
+              "identifier": "getup-5ce270d4-6ecf-421f-a3fd-39777335dfd2-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -4509,7 +5230,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "5f51a2a7-6cc7-48e0-a35b-19bb3d06b4e0",
+              "_id": "09d32609-fec1-4e16-942a-7aae54d0add5",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Full Dance @ 50%"
@@ -4575,7 +5296,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "420fb6be-b4a7-4079-9d34-81eb5e8dff96",
+              "_id": "3b5ec560-f680-4650-a7c2-58e524932c9a",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Full Dance @ 75%"
@@ -4641,7 +5362,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "8a0bac73-fda2-4a7d-bcd0-4dff19c85dcc",
+              "_id": "df35405e-ae7d-4002-87b5-a1fbcdb2654a",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Full Dance @ 100%"
@@ -4707,7 +5428,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "getup-186234e4-2b31-44f5-a027-0e73b26a9687-performance",
+              "identifier": "getup-5ce270d4-6ecf-421f-a3fd-39777335dfd2-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -4719,13 +5440,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-21T21:12:57.296072",
+    "created": "2021-09-21T21:56:44.306877",
     "thumbnailSrc": "tiktok/getup.jpg"
   },
   {
     "title": "itsafit",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "14786064-4642-4d78-89db-8776aa11f78c",
+    "id": "3eee7bfd-9cb6-4704-808f-83ced199855f",
     "stages": [
       {
         "title": "Preview",
@@ -4734,7 +5455,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "92227ca9-52a9-4c54-b007-44a31457bbab",
+              "_id": "0a8b6466-e907-4622-9c1b-9fa1415c13c9",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Preview"
@@ -4851,7 +5572,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "a0a680c5-47ad-45ac-91d0-3e8c2ea594d6",
+              "_id": "51048bd0-3a2b-45a0-9d61-1196ecf37acf",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Segment 1"
@@ -4917,7 +5638,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "46c5dfc7-ee79-4528-9d2c-b117486c6578",
+              "_id": "03200b03-c161-4dda-9da5-8711d3c083e8",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Segment 2"
@@ -4997,7 +5718,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "itsafit-14786064-4642-4d78-89db-8776aa11f78c-performance",
+              "identifier": "itsafit-3eee7bfd-9cb6-4704-808f-83ced199855f-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -5015,7 +5736,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "5e731429-1244-4b4f-b41a-96522531cd22",
+              "_id": "55cfb7b9-2d6f-48d8-ac8f-4135792e87fc",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Full Dance @ 50%"
@@ -5078,7 +5799,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "4d7aa144-4cce-4059-9d3c-c3ec330167ba",
+              "_id": "d81dc5c0-12ce-468b-b8ee-f2698349580e",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Full Dance @ 75%"
@@ -5141,7 +5862,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "2dc9c30f-4432-4b2d-b124-323019e05502",
+              "_id": "4d09b01e-45fe-42b8-ba77-cece16eee26c",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Full Dance @ 100%"
@@ -5204,7 +5925,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "itsafit-14786064-4642-4d78-89db-8776aa11f78c-performance",
+              "identifier": "itsafit-3eee7bfd-9cb6-4704-808f-83ced199855f-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -5216,13 +5937,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-21T21:12:57.407559",
+    "created": "2021-09-21T21:56:44.371731",
     "thumbnailSrc": "tiktok/itsafit.jpg"
   },
   {
-    "title": "renegade",
+    "title": "ohnana",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "1b5211ce-46ae-4b76-a700-d81e66c45f1e",
+    "id": "ca8cedbc-43fa-4c12-b95f-273c2a479c12",
     "stages": [
       {
         "title": "Preview",
@@ -5231,7 +5952,1346 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "0a84ae8f-9773-431a-afb7-d4938878de86",
+              "_id": "3926d5f7-d3b6-4470-a758-88dd9e99be7d",
+              "header": {
+                "clipName": "ohnana",
+                "lessonTitle": "Preview"
+              },
+              "clipName": "ohnana",
+              "lessonTitle": "Preview",
+              "segmentBreaks": [
+                0.0,
+                3.6296587781425003,
+                7.2593175562850005,
+                10.8889763344275,
+                13.566666666666666
+              ],
+              "activities": [
+                {
+                  "title": "Preview",
+                  "startTime": 0.0,
+                  "endTime": 13.566666666666666,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "skeleton",
+                  "keyframes": [
+                    0.0,
+                    0.9074146945356251,
+                    1.8148293890712501,
+                    2.722244083606875,
+                    3.6296587781425003,
+                    4.537073472678125,
+                    5.44448816721375,
+                    6.351902861749376,
+                    7.2593175562850005,
+                    8.166732250820626,
+                    9.07414694535625,
+                    9.981561639891876,
+                    10.8889763344275,
+                    11.796391028963125,
+                    12.703805723498752
+                  ],
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 1,
+                  "startInstruction": "Here's the dance you'll be learning...",
+                  "timedInstructions": [
+                    {
+                      "startTime": 0.0,
+                      "endTime": 3.6296587781425003,
+                      "text": "Part 1"
+                    },
+                    {
+                      "startTime": 3.6296587781425003,
+                      "endTime": 7.2593175562850005,
+                      "text": "Part 2"
+                    },
+                    {
+                      "startTime": 7.2593175562850005,
+                      "endTime": 10.8889763344275,
+                      "text": "Part 3"
+                    },
+                    {
+                      "startTime": 10.8889763344275,
+                      "endTime": 13.566666666666666,
+                      "text": "Part 4"
+                    }
+                  ]
+                },
+                {
+                  "title": "Preview Sheet Music",
+                  "startTime": 0.0,
+                  "endTime": 13.566666666666666,
+                  "userVisual": "none",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotion": {
+                    "phrases": [
+                      {
+                        "frames": [
+                          {
+                            "timestamp": 0.03341543513957307,
+                            "type": "pause"
+                          },
+                          {
+                            "timestamp": 0.9022167487684729,
+                            "type": "pause"
+                          },
+                          {
+                            "timestamp": 1.8044334975369458,
+                            "type": "pause"
+                          },
+                          {
+                            "timestamp": 2.706650246305419,
+                            "type": "pause"
+                          }
+                        ]
+                      },
+                      {
+                        "frames": [
+                          {
+                            "timestamp": 3.6422824302134647,
+                            "type": "pause"
+                          },
+                          {
+                            "timestamp": 4.544499178981938,
+                            "type": "pause"
+                          },
+                          {
+                            "timestamp": 5.446715927750411,
+                            "type": "pause"
+                          },
+                          {
+                            "timestamp": 6.348932676518884,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 7.251149425287356,
+                            "type": "move"
+                          }
+                        ]
+                      },
+                      {
+                        "frames": [
+                          {
+                            "timestamp": 8.15336617405583,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 9.088998357963876,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 9.991215106732348,
+                            "type": "move"
+                          }
+                        ]
+                      },
+                      {
+                        "frames": [
+                          {
+                            "timestamp": 10.893431855500822,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 11.795648604269294,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 12.697865353037768,
+                            "type": "move"
+                          }
+                        ]
+                      }
+                    ],
+                    "variableLength": false
+                  },
+                  "sheetMotionVisual": "video",
+                  "pauses": [],
+                  "practiceSpeed": 1,
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Learning (33% speed)",
+        "steps": [
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Segment 1",
+            "miniLessonEmbedded": {
+              "_id": "d31aa376-21f9-4dd3-9de4-b96bb5c2d06e",
+              "header": {
+                "clipName": "ohnana",
+                "lessonTitle": "Segment 1"
+              },
+              "clipName": "ohnana",
+              "lessonTitle": "Segment 1",
+              "segmentBreaks": [
+                0.0,
+                3.6296587781425003,
+                7.2593175562850005,
+                10.8889763344275,
+                13.566666666666666
+              ],
+              "activities": [
+                {
+                  "title": "Learn",
+                  "startTime": 0.0,
+                  "endTime": 3.6296587781425003,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's learn part 1",
+                  "endInstruction": "Repeat if you need to -- next up we'll try with just a skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Memorize",
+                  "startTime": 0.0,
+                  "endTime": 3.6296587781425003,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's practice part 1",
+                  "endInstruction": "Memorize this! Next, we'll try this without the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Practice",
+                  "startTime": 0.0,
+                  "endTime": 3.6296587781425003,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "(you can go back to the previous activity if you need to)",
+                  "startInstruction": "Do you have it? Let's try without the skeleton!",
+                  "endInstruction": "Next up: combining this what you learned earlier",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Segment 2",
+            "miniLessonEmbedded": {
+              "_id": "b0a09b23-a932-4e6c-b6a3-a97d94f285a8",
+              "header": {
+                "clipName": "ohnana",
+                "lessonTitle": "Segment 2"
+              },
+              "clipName": "ohnana",
+              "lessonTitle": "Segment 2",
+              "segmentBreaks": [
+                0.0,
+                3.6296587781425003,
+                7.2593175562850005,
+                10.8889763344275,
+                13.566666666666666
+              ],
+              "activities": [
+                {
+                  "title": "Learn",
+                  "startTime": 2.6296587781425003,
+                  "endTime": 7.2593175562850005,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's learn part 2",
+                  "endInstruction": "Repeat if you need to -- next up we'll try with just a skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Memorize",
+                  "startTime": 2.6296587781425003,
+                  "endTime": 7.2593175562850005,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's practice part 2",
+                  "endInstruction": "Memorize this! Next, we'll try this without the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Practice",
+                  "startTime": 2.6296587781425003,
+                  "endTime": 7.2593175562850005,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "(you can go back to the previous activity if you need to)",
+                  "startInstruction": "Do you have it? Let's try without the skeleton!",
+                  "endInstruction": "Next up: combining this what you learned earlier",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Full Practice",
+                  "startTime": 0.0,
+                  "endTime": 7.2593175562850005,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "startInstruction": "Now try everything we learned so far",
+                  "endInstruction": "Nice job!",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Segment 3",
+            "miniLessonEmbedded": {
+              "_id": "940842a6-7b61-48e5-8b99-3131f786ae54",
+              "header": {
+                "clipName": "ohnana",
+                "lessonTitle": "Segment 3"
+              },
+              "clipName": "ohnana",
+              "lessonTitle": "Segment 3",
+              "segmentBreaks": [
+                0.0,
+                3.6296587781425003,
+                7.2593175562850005,
+                10.8889763344275,
+                13.566666666666666
+              ],
+              "activities": [
+                {
+                  "title": "Learn",
+                  "startTime": 6.2593175562850005,
+                  "endTime": 10.8889763344275,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's learn part 3",
+                  "endInstruction": "Repeat if you need to -- next up we'll try with just a skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Memorize",
+                  "startTime": 6.2593175562850005,
+                  "endTime": 10.8889763344275,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's practice part 3",
+                  "endInstruction": "Memorize this! Next, we'll try this without the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Practice",
+                  "startTime": 6.2593175562850005,
+                  "endTime": 10.8889763344275,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "(you can go back to the previous activity if you need to)",
+                  "startInstruction": "Do you have it? Let's try without the skeleton!",
+                  "endInstruction": "Next up: combining this what you learned earlier",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Full Practice",
+                  "startTime": 0.0,
+                  "endTime": 10.8889763344275,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "startInstruction": "Now try everything we learned so far",
+                  "endInstruction": "Nice job!",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Segment 4",
+            "miniLessonEmbedded": {
+              "_id": "acee94eb-34d8-42de-9dbc-ce87ecc09545",
+              "header": {
+                "clipName": "ohnana",
+                "lessonTitle": "Segment 4"
+              },
+              "clipName": "ohnana",
+              "lessonTitle": "Segment 4",
+              "segmentBreaks": [
+                0.0,
+                3.6296587781425003,
+                7.2593175562850005,
+                10.8889763344275,
+                13.566666666666666
+              ],
+              "activities": [
+                {
+                  "title": "Learn",
+                  "startTime": 9.8889763344275,
+                  "endTime": 13.566666666666666,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's learn part 4",
+                  "endInstruction": "Repeat if you need to -- next up we'll try with just a skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Memorize",
+                  "startTime": 9.8889763344275,
+                  "endTime": 13.566666666666666,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's practice part 4",
+                  "endInstruction": "Memorize this! Next, we'll try this without the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Practice",
+                  "startTime": 9.8889763344275,
+                  "endTime": 13.566666666666666,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "(you can go back to the previous activity if you need to)",
+                  "startInstruction": "Do you have it? Let's try without the skeleton!",
+                  "endInstruction": "Next up: combining this what you learned earlier",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Full Practice",
+                  "startTime": 0.0,
+                  "endTime": 13.566666666666666,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "startInstruction": "Now try everything we learned so far",
+                  "endInstruction": "Nice job!",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "UploadTask",
+            "title": "Initial Performance",
+            "upload": {
+              "identifier": "ohnana-ca8cedbc-43fa-4c12-b95f-273c2a479c12-performance",
+              "prompt": "Show us what you've learned so far!"
+            },
+            "experiment": {
+              "showInExperimentOnly": true,
+              "isTimeExpiredTask": true
+            }
+          }
+        ],
+        "maxStageTimeSecs": 900
+      },
+      {
+        "title": "Mastery",
+        "steps": [
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Full Dance @ 50%",
+            "miniLessonEmbedded": {
+              "_id": "8313d5e6-3282-4d9d-9f18-c9689ae43686",
+              "header": {
+                "clipName": "ohnana",
+                "lessonTitle": "Full Dance @ 50%"
+              },
+              "clipName": "ohnana",
+              "lessonTitle": "Full Dance @ 50%",
+              "segmentBreaks": [
+                0.0,
+                3.6296587781425003,
+                7.2593175562850005,
+                10.8889763344275,
+                13.566666666666666
+              ],
+              "activities": [
+                {
+                  "title": "With Video",
+                  "startTime": 0.0,
+                  "endTime": 13.566666666666666,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.5,
+                  "startInstruction": "Let's perform the whole thing now!",
+                  "endInstruction": "Next up: just using the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Skeleton Only",
+                  "startTime": 0.0,
+                  "endTime": 13.566666666666666,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.5,
+                  "startInstruction": "Now try it with just the skeleton",
+                  "endInstruction": "Next up: doing it from memory. You got this!",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "No Skeleton",
+                  "startTime": 0.0,
+                  "endTime": 13.566666666666666,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.5,
+                  "startInstruction": "Now try doing it from memory",
+                  "endInstruction": "Nice job!",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Full Dance @ 75%",
+            "miniLessonEmbedded": {
+              "_id": "288b524b-6378-4f5e-a5c3-df1fd1b7a47f",
+              "header": {
+                "clipName": "ohnana",
+                "lessonTitle": "Full Dance @ 75%"
+              },
+              "clipName": "ohnana",
+              "lessonTitle": "Full Dance @ 75%",
+              "segmentBreaks": [
+                0.0,
+                3.6296587781425003,
+                7.2593175562850005,
+                10.8889763344275,
+                13.566666666666666
+              ],
+              "activities": [
+                {
+                  "title": "With Video",
+                  "startTime": 0.0,
+                  "endTime": 13.566666666666666,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.75,
+                  "startInstruction": "Let's perform the whole thing now!",
+                  "endInstruction": "Next up: just using the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Skeleton Only",
+                  "startTime": 0.0,
+                  "endTime": 13.566666666666666,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.75,
+                  "startInstruction": "Now try it with just the skeleton",
+                  "endInstruction": "Next up: doing it from memory. You got this!",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "No Skeleton",
+                  "startTime": 0.0,
+                  "endTime": 13.566666666666666,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.75,
+                  "startInstruction": "Now try doing it from memory",
+                  "endInstruction": "Nice job!",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Full Dance @ 100%",
+            "miniLessonEmbedded": {
+              "_id": "058fb651-2a32-4b4e-b7c5-069e544a10e1",
+              "header": {
+                "clipName": "ohnana",
+                "lessonTitle": "Full Dance @ 100%"
+              },
+              "clipName": "ohnana",
+              "lessonTitle": "Full Dance @ 100%",
+              "segmentBreaks": [
+                0.0,
+                3.6296587781425003,
+                7.2593175562850005,
+                10.8889763344275,
+                13.566666666666666
+              ],
+              "activities": [
+                {
+                  "title": "With Video",
+                  "startTime": 0.0,
+                  "endTime": 13.566666666666666,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 1,
+                  "startInstruction": "Let's perform the whole thing now!",
+                  "endInstruction": "Next up: just using the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Skeleton Only",
+                  "startTime": 0.0,
+                  "endTime": 13.566666666666666,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 1,
+                  "startInstruction": "Now try it with just the skeleton",
+                  "endInstruction": "Next up: doing it from memory. You got this!",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "No Skeleton",
+                  "startTime": 0.0,
+                  "endTime": 13.566666666666666,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 1,
+                  "startInstruction": "Now try doing it from memory",
+                  "endInstruction": "Nice job!",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "UploadTask",
+            "title": "Performance",
+            "upload": {
+              "identifier": "ohnana-ca8cedbc-43fa-4c12-b95f-273c2a479c12-performance",
+              "prompt": "Now perform this dance!"
+            },
+            "experiment": {
+              "showInExperimentOnly": true,
+              "isTimeExpiredTask": true
+            }
+          }
+        ],
+        "maxStageTimeSecs": 900
+      }
+    ],
+    "created": "2021-09-21T21:56:44.413773",
+    "thumbnailSrc": "tiktok/ohnana.jpg"
+  },
+  {
+    "title": "red-velvet",
+    "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
+    "id": "c5d17b93-3dac-4c13-a7ed-15b2141c0681",
+    "stages": [
+      {
+        "title": "Preview",
+        "steps": [
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Preview",
+            "miniLessonEmbedded": {
+              "_id": "7291a388-1b9e-4022-8c93-72481a50b79e",
+              "header": {
+                "clipName": "red-velvet",
+                "lessonTitle": "Preview"
+              },
+              "clipName": "red-velvet",
+              "lessonTitle": "Preview",
+              "segmentBreaks": [
+                0.0,
+                3.752923965453132,
+                7.505847930906264,
+                10.6
+              ],
+              "activities": [
+                {
+                  "title": "Preview",
+                  "startTime": 0.0,
+                  "endTime": 10.6,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "skeleton",
+                  "keyframes": [
+                    0.0,
+                    0.938230991363283,
+                    1.876461982726566,
+                    2.814692974089849,
+                    3.752923965453132,
+                    4.6911549568164155,
+                    5.629385948179698,
+                    6.567616939542981,
+                    7.505847930906264,
+                    8.444078922269547,
+                    9.382309913632831,
+                    10.320540904996113
+                  ],
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 1,
+                  "startInstruction": "Here's the dance you'll be learning...",
+                  "timedInstructions": [
+                    {
+                      "startTime": 0.0,
+                      "endTime": 3.752923965453132,
+                      "text": "Part 1"
+                    },
+                    {
+                      "startTime": 3.752923965453132,
+                      "endTime": 7.505847930906264,
+                      "text": "Part 2"
+                    },
+                    {
+                      "startTime": 7.505847930906264,
+                      "endTime": 10.6,
+                      "text": "Part 3"
+                    }
+                  ]
+                },
+                {
+                  "title": "Preview Sheet Music",
+                  "startTime": 0.0,
+                  "endTime": 10.6,
+                  "userVisual": "none",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotion": {
+                    "phrases": [
+                      {
+                        "frames": [
+                          {
+                            "timestamp": 0.03333333333333333,
+                            "type": "pause"
+                          },
+                          {
+                            "timestamp": 0.9333333333333333,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 1.8666666666666667,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 2.8,
+                            "type": "move"
+                          }
+                        ]
+                      },
+                      {
+                        "frames": [
+                          {
+                            "timestamp": 3.7666666666666666,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 4.7,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 5.633333333333334,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 6.566666666666666,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 7.5,
+                            "type": "move"
+                          }
+                        ]
+                      },
+                      {
+                        "frames": [
+                          {
+                            "timestamp": 8.433333333333334,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 9.366666666666667,
+                            "type": "move"
+                          },
+                          {
+                            "timestamp": 10.333333333333334,
+                            "type": "pause"
+                          }
+                        ]
+                      }
+                    ],
+                    "variableLength": false
+                  },
+                  "sheetMotionVisual": "video",
+                  "pauses": [],
+                  "practiceSpeed": 1,
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Learning (33% speed)",
+        "steps": [
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Segment 1",
+            "miniLessonEmbedded": {
+              "_id": "d4296f9c-89ed-4c7e-a9db-45ff92ab9240",
+              "header": {
+                "clipName": "red-velvet",
+                "lessonTitle": "Segment 1"
+              },
+              "clipName": "red-velvet",
+              "lessonTitle": "Segment 1",
+              "segmentBreaks": [
+                0.0,
+                3.752923965453132,
+                7.505847930906264,
+                10.6
+              ],
+              "activities": [
+                {
+                  "title": "Learn",
+                  "startTime": 0.0,
+                  "endTime": 3.752923965453132,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's learn part 1",
+                  "endInstruction": "Repeat if you need to -- next up we'll try with just a skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Memorize",
+                  "startTime": 0.0,
+                  "endTime": 3.752923965453132,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's practice part 1",
+                  "endInstruction": "Memorize this! Next, we'll try this without the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Practice",
+                  "startTime": 0.0,
+                  "endTime": 3.752923965453132,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "(you can go back to the previous activity if you need to)",
+                  "startInstruction": "Do you have it? Let's try without the skeleton!",
+                  "endInstruction": "Next up: combining this what you learned earlier",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Segment 2",
+            "miniLessonEmbedded": {
+              "_id": "71cadd39-46fa-49a6-9c9d-5c893ead2528",
+              "header": {
+                "clipName": "red-velvet",
+                "lessonTitle": "Segment 2"
+              },
+              "clipName": "red-velvet",
+              "lessonTitle": "Segment 2",
+              "segmentBreaks": [
+                0.0,
+                3.752923965453132,
+                7.505847930906264,
+                10.6
+              ],
+              "activities": [
+                {
+                  "title": "Learn",
+                  "startTime": 2.752923965453132,
+                  "endTime": 7.505847930906264,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's learn part 2",
+                  "endInstruction": "Repeat if you need to -- next up we'll try with just a skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Memorize",
+                  "startTime": 2.752923965453132,
+                  "endTime": 7.505847930906264,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's practice part 2",
+                  "endInstruction": "Memorize this! Next, we'll try this without the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Practice",
+                  "startTime": 2.752923965453132,
+                  "endTime": 7.505847930906264,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "(you can go back to the previous activity if you need to)",
+                  "startInstruction": "Do you have it? Let's try without the skeleton!",
+                  "endInstruction": "Next up: combining this what you learned earlier",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Full Practice",
+                  "startTime": 0.0,
+                  "endTime": 7.505847930906264,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "startInstruction": "Now try everything we learned so far",
+                  "endInstruction": "Nice job!",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Segment 3",
+            "miniLessonEmbedded": {
+              "_id": "4fa67f9a-41ef-4cbd-8b55-b343db9917cb",
+              "header": {
+                "clipName": "red-velvet",
+                "lessonTitle": "Segment 3"
+              },
+              "clipName": "red-velvet",
+              "lessonTitle": "Segment 3",
+              "segmentBreaks": [
+                0.0,
+                3.752923965453132,
+                7.505847930906264,
+                10.6
+              ],
+              "activities": [
+                {
+                  "title": "Learn",
+                  "startTime": 6.505847930906264,
+                  "endTime": 10.6,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's learn part 3",
+                  "endInstruction": "Repeat if you need to -- next up we'll try with just a skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Memorize",
+                  "startTime": 6.505847930906264,
+                  "endTime": 10.6,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "Follow along!",
+                  "startInstruction": "Let's practice part 3",
+                  "endInstruction": "Memorize this! Next, we'll try this without the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Practice",
+                  "startTime": 6.505847930906264,
+                  "endTime": 10.6,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "playingInstruction": "(you can go back to the previous activity if you need to)",
+                  "startInstruction": "Do you have it? Let's try without the skeleton!",
+                  "endInstruction": "Next up: combining this what you learned earlier",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Full Practice",
+                  "startTime": 0.0,
+                  "endTime": 10.6,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.33,
+                  "startInstruction": "Now try everything we learned so far",
+                  "endInstruction": "Nice job!",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "UploadTask",
+            "title": "Initial Performance",
+            "upload": {
+              "identifier": "red-velvet-c5d17b93-3dac-4c13-a7ed-15b2141c0681-performance",
+              "prompt": "Show us what you've learned so far!"
+            },
+            "experiment": {
+              "showInExperimentOnly": true,
+              "isTimeExpiredTask": true
+            }
+          }
+        ],
+        "maxStageTimeSecs": 900
+      },
+      {
+        "title": "Mastery",
+        "steps": [
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Full Dance @ 50%",
+            "miniLessonEmbedded": {
+              "_id": "3a9df1ca-e6b1-46cd-8b81-6361400a5af4",
+              "header": {
+                "clipName": "red-velvet",
+                "lessonTitle": "Full Dance @ 50%"
+              },
+              "clipName": "red-velvet",
+              "lessonTitle": "Full Dance @ 50%",
+              "segmentBreaks": [
+                0.0,
+                3.752923965453132,
+                7.505847930906264,
+                10.6
+              ],
+              "activities": [
+                {
+                  "title": "With Video",
+                  "startTime": 0.0,
+                  "endTime": 10.6,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.5,
+                  "startInstruction": "Let's perform the whole thing now!",
+                  "endInstruction": "Next up: just using the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Skeleton Only",
+                  "startTime": 0.0,
+                  "endTime": 10.6,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.5,
+                  "startInstruction": "Now try it with just the skeleton",
+                  "endInstruction": "Next up: doing it from memory. You got this!",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "No Skeleton",
+                  "startTime": 0.0,
+                  "endTime": 10.6,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.5,
+                  "startInstruction": "Now try doing it from memory",
+                  "endInstruction": "Nice job!",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Full Dance @ 75%",
+            "miniLessonEmbedded": {
+              "_id": "884aa0cc-dffd-43e8-aac6-4d80ddddb167",
+              "header": {
+                "clipName": "red-velvet",
+                "lessonTitle": "Full Dance @ 75%"
+              },
+              "clipName": "red-velvet",
+              "lessonTitle": "Full Dance @ 75%",
+              "segmentBreaks": [
+                0.0,
+                3.752923965453132,
+                7.505847930906264,
+                10.6
+              ],
+              "activities": [
+                {
+                  "title": "With Video",
+                  "startTime": 0.0,
+                  "endTime": 10.6,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.75,
+                  "startInstruction": "Let's perform the whole thing now!",
+                  "endInstruction": "Next up: just using the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Skeleton Only",
+                  "startTime": 0.0,
+                  "endTime": 10.6,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.75,
+                  "startInstruction": "Now try it with just the skeleton",
+                  "endInstruction": "Next up: doing it from memory. You got this!",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "No Skeleton",
+                  "startTime": 0.0,
+                  "endTime": 10.6,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 0.75,
+                  "startInstruction": "Now try doing it from memory",
+                  "endInstruction": "Nice job!",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Full Dance @ 100%",
+            "miniLessonEmbedded": {
+              "_id": "43fb8cfb-cf0d-47b1-9e93-a2ce14a6ee14",
+              "header": {
+                "clipName": "red-velvet",
+                "lessonTitle": "Full Dance @ 100%"
+              },
+              "clipName": "red-velvet",
+              "lessonTitle": "Full Dance @ 100%",
+              "segmentBreaks": [
+                0.0,
+                3.752923965453132,
+                7.505847930906264,
+                10.6
+              ],
+              "activities": [
+                {
+                  "title": "With Video",
+                  "startTime": 0.0,
+                  "endTime": 10.6,
+                  "userVisual": "none",
+                  "demoVisual": "video",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 1,
+                  "startInstruction": "Let's perform the whole thing now!",
+                  "endInstruction": "Next up: just using the skeleton",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "Skeleton Only",
+                  "startTime": 0.0,
+                  "endTime": 10.6,
+                  "userVisual": "video",
+                  "demoVisual": "skeleton",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 1,
+                  "startInstruction": "Now try it with just the skeleton",
+                  "endInstruction": "Next up: doing it from memory. You got this!",
+                  "timedInstructions": []
+                },
+                {
+                  "title": "No Skeleton",
+                  "startTime": 0.0,
+                  "endTime": 10.6,
+                  "userVisual": "video",
+                  "demoVisual": "none",
+                  "keyframeVisual": "none",
+                  "sheetMotionVisual": "none",
+                  "pauses": [],
+                  "practiceSpeed": 1,
+                  "startInstruction": "Now try doing it from memory",
+                  "endInstruction": "Nice job!",
+                  "timedInstructions": []
+                }
+              ],
+              "source": "builtin"
+            }
+          },
+          {
+            "type": "UploadTask",
+            "title": "Performance",
+            "upload": {
+              "identifier": "red-velvet-c5d17b93-3dac-4c13-a7ed-15b2141c0681-performance",
+              "prompt": "Now perform this dance!"
+            },
+            "experiment": {
+              "showInExperimentOnly": true,
+              "isTimeExpiredTask": true
+            }
+          }
+        ],
+        "maxStageTimeSecs": 900
+      }
+    ],
+    "created": "2021-09-21T21:56:44.471801",
+    "thumbnailSrc": "tiktok/red-velvet.jpg"
+  },
+  {
+    "title": "renegade",
+    "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
+    "id": "d9f8479d-f386-44cf-9d47-1fb875f0a496",
+    "stages": [
+      {
+        "title": "Preview",
+        "steps": [
+          {
+            "type": "MiniLessonEmbedded",
+            "title": "Preview",
+            "miniLessonEmbedded": {
+              "_id": "58bff6fc-88f7-42d3-99af-a54593dde547",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Preview"
@@ -5408,7 +7468,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "71edc946-0da7-4276-98ca-c8b7a7853ca8",
+              "_id": "f7650818-cfbf-4a06-96ae-0fdd518ac270",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Segment 1"
@@ -5476,7 +7536,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "550be317-448f-4291-9de0-8abaaeb06e02",
+              "_id": "ea3e46da-ce2d-408e-8a06-e408f024aef7",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Segment 2"
@@ -5558,7 +7618,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "edc8836e-9767-4a98-b814-4482eb0b587d",
+              "_id": "537ae483-9edc-46b6-a555-f7ef5c58fc70",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Segment 3"
@@ -5640,7 +7700,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "a287aad3-0dde-420c-bd30-dd8a53df1f1d",
+              "_id": "26b0ca8c-5429-41f5-be1e-9e8e8746064c",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Segment 4"
@@ -5722,7 +7782,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "renegade-1b5211ce-46ae-4b76-a700-d81e66c45f1e-performance",
+              "identifier": "renegade-d9f8479d-f386-44cf-9d47-1fb875f0a496-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -5740,7 +7800,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "e99fcefb-a2c1-47d1-9cec-e897291f756c",
+              "_id": "c07b1b31-eb6c-4aa9-bf18-3a564c23ec24",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Full Dance @ 50%"
@@ -5805,7 +7865,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "55ea82bc-1ff2-4d6e-903d-2af5e1dfab4c",
+              "_id": "37462f5b-d363-46fd-9e3a-ce1f1252e2a5",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Full Dance @ 75%"
@@ -5870,7 +7930,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "76ac219f-0418-4dd5-b245-d1cf542ec2fb",
+              "_id": "42ecd36f-4944-4863-a5c1-9762229225d7",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Full Dance @ 100%"
@@ -5935,7 +7995,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "renegade-1b5211ce-46ae-4b76-a700-d81e66c45f1e-performance",
+              "identifier": "renegade-d9f8479d-f386-44cf-9d47-1fb875f0a496-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -5947,13 +8007,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-21T21:12:57.479940",
+    "created": "2021-09-21T21:56:44.518802",
     "thumbnailSrc": "tiktok/renegade.jpg"
   },
   {
     "title": "sayso",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "fea3da7f-592c-4821-9c58-9c2f355d7e6f",
+    "id": "ae767cb6-49ce-4b61-9ebd-afbbe4a345fa",
     "stages": [
       {
         "title": "Preview",
@@ -5962,7 +8022,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "be19a25a-3187-4dde-ad1e-707f6397b590",
+              "_id": "8edba358-c98a-4c67-a0be-2c1564050d14",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Preview"
@@ -6434,7 +8494,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "b26ad47c-aa45-4cbe-9cd3-252312667373",
+              "_id": "05702d02-fe49-4e61-8f0a-74ff890df996",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 1"
@@ -6512,7 +8572,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "7ced2440-c383-46e1-9f9a-6a87b24c5a69",
+              "_id": "73eb6c95-2fe6-4ed9-b6aa-688809d46a0f",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 2"
@@ -6604,7 +8664,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "0ee5c20f-03c1-4130-92cf-224ad5e939b1",
+              "_id": "6724e03f-e509-4042-923a-4aa12c7a271f",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 3"
@@ -6696,7 +8756,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "611f5ba1-7d38-4ccd-92c6-d86305227145",
+              "_id": "a077bd12-36db-4da6-b20e-d6d5e369e462",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 4"
@@ -6788,7 +8848,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "d09240c3-c213-4883-aa83-e87762700cd9",
+              "_id": "2cb33577-1f33-4482-87bd-c46d24a6edd4",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 5"
@@ -6880,7 +8940,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 6",
             "miniLessonEmbedded": {
-              "_id": "0415b188-d18e-4559-90ff-8817cb3d834c",
+              "_id": "9a3a1e1b-f485-4fbb-874f-3b09e0031dbb",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 6"
@@ -6972,7 +9032,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 7",
             "miniLessonEmbedded": {
-              "_id": "307497d6-36fc-4660-85c6-b33b9bdd0699",
+              "_id": "a3ca9b9e-bdbb-46f7-93ef-682ecc18f8fb",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 7"
@@ -7064,7 +9124,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 8",
             "miniLessonEmbedded": {
-              "_id": "714a5e02-ce0e-42b0-84fd-1134cdc3e053",
+              "_id": "dbc572f1-43c1-405d-a25d-36ed537acf20",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 8"
@@ -7156,7 +9216,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 9",
             "miniLessonEmbedded": {
-              "_id": "6135f02b-8793-4d41-8b31-118a4397a3fd",
+              "_id": "dc3ec79f-5a3c-43a7-8967-2e768ae38b7f",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 9"
@@ -7248,7 +9308,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 10",
             "miniLessonEmbedded": {
-              "_id": "fdc7c9e7-2364-4c11-84bf-702fc0c998bf",
+              "_id": "272490cf-a05f-44f6-82ba-1a6fd72c6eb5",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 10"
@@ -7340,7 +9400,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 11",
             "miniLessonEmbedded": {
-              "_id": "81caad88-de42-45ed-ba76-ce2d15bb6c10",
+              "_id": "d9495c2d-f58e-453a-b70b-81851ddbcdb8",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 11"
@@ -7432,7 +9492,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 12",
             "miniLessonEmbedded": {
-              "_id": "e9f617bf-ea53-4829-8722-898d68702a96",
+              "_id": "e4df6392-9500-4f30-9772-2b188f983327",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 12"
@@ -7524,7 +9584,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 13",
             "miniLessonEmbedded": {
-              "_id": "296afffb-a292-478d-989e-ff840f4b8355",
+              "_id": "e7a83752-4c29-456d-a83e-89ce06decf1c",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 13"
@@ -7616,7 +9676,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 14",
             "miniLessonEmbedded": {
-              "_id": "58f7f7e6-4110-46fc-b762-d7aef0a2c938",
+              "_id": "8de6e190-459c-454c-a74f-8ddf6d693326",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 14"
@@ -7708,7 +9768,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "sayso-fea3da7f-592c-4821-9c58-9c2f355d7e6f-performance",
+              "identifier": "sayso-ae767cb6-49ce-4b61-9ebd-afbbe4a345fa-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -7726,7 +9786,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "e9152f4e-81e7-4e4c-876f-46d31bc694e9",
+              "_id": "7961f8c3-f591-4d67-a0a5-2d84d702242a",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Full Dance @ 50%"
@@ -7801,7 +9861,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "1005594b-f839-44d1-bfdc-7bff704b9c4c",
+              "_id": "8320de71-6208-434c-85e4-3ee50b41ae48",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Full Dance @ 75%"
@@ -7876,7 +9936,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "7c3f6336-40ef-4cb8-b769-7b62ac6bc7aa",
+              "_id": "7eb20f3e-a5d5-487f-8241-a3a0e1bbc5ff",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Full Dance @ 100%"
@@ -7951,7 +10011,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "sayso-fea3da7f-592c-4821-9c58-9c2f355d7e6f-performance",
+              "identifier": "sayso-ae767cb6-49ce-4b61-9ebd-afbbe4a345fa-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -7963,13 +10023,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-21T21:12:57.596984",
+    "created": "2021-09-21T21:56:44.581006",
     "thumbnailSrc": "tiktok/sayso.jpg"
   },
   {
     "title": "supalonely",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "7dbeb09c-0cb6-46db-90bd-6f52f1f69dff",
+    "id": "3b22e53e-5bd6-4120-88eb-34c33a1bc6ba",
     "stages": [
       {
         "title": "Preview",
@@ -7978,7 +10038,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "5a6cb5fd-6c2c-426d-b1ca-5c324a474eea",
+              "_id": "174b19fd-cb96-4ec9-99ce-7a1c5bc98ba6",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Preview"
@@ -8215,7 +10275,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "0a5afcb5-5986-49de-8482-4b580884bf8d",
+              "_id": "915316db-5774-41dc-bf2e-ba1b4dfdf5c7",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Segment 1"
@@ -8285,7 +10345,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "4710c900-e3c9-4db4-9319-1af524d9195a",
+              "_id": "7f16dd9b-fa17-49ba-83fd-29647d6297a1",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Segment 2"
@@ -8369,7 +10429,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "78d0772d-f07b-441f-82f3-87f6fb5fcda5",
+              "_id": "69787384-ee4d-4f81-b3c7-2820bd28544e",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Segment 3"
@@ -8453,7 +10513,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "e3c72537-a5e9-4c8b-a6db-eaa837be46b3",
+              "_id": "c7ab8d58-eb32-400f-8127-8e757f3970a5",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Segment 4"
@@ -8537,7 +10597,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "23e26931-88d1-4a8f-b0b5-5099d4fad54d",
+              "_id": "669831dd-a98a-4c5f-ad6f-c4d95c896854",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Segment 5"
@@ -8621,7 +10681,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 6",
             "miniLessonEmbedded": {
-              "_id": "b4118d10-3ee6-4f83-ab27-5ef98943879f",
+              "_id": "5d76c822-6321-41a4-a3ad-3735c9687e79",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Segment 6"
@@ -8705,7 +10765,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "supalonely-7dbeb09c-0cb6-46db-90bd-6f52f1f69dff-performance",
+              "identifier": "supalonely-3b22e53e-5bd6-4120-88eb-34c33a1bc6ba-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -8723,7 +10783,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "fc13da1d-a69f-47e3-8bbe-285cd5c1dc77",
+              "_id": "068300db-5f0e-43b5-b44e-e345f7887793",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Full Dance @ 50%"
@@ -8790,7 +10850,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "3a1de16f-cd33-4ae1-be19-64d7bcf66b41",
+              "_id": "c805389c-46f6-450c-8424-4982b5224ef4",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Full Dance @ 75%"
@@ -8857,7 +10917,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "42b5d4c3-8aac-46ea-9500-b313adad8584",
+              "_id": "ef75290a-d354-4aa8-83d7-70e7055a8f78",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Full Dance @ 100%"
@@ -8924,7 +10984,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "supalonely-7dbeb09c-0cb6-46db-90bd-6f52f1f69dff-performance",
+              "identifier": "supalonely-3b22e53e-5bd6-4120-88eb-34c33a1bc6ba-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -8936,13 +10996,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-21T21:12:57.815377",
+    "created": "2021-09-21T21:56:44.719706",
     "thumbnailSrc": "tiktok/supalonely.jpg"
   },
   {
     "title": "thegitup",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "8e5d1c3e-ae41-4462-8bb8-10402af9ae12",
+    "id": "c52960ef-6ecf-4451-99ac-6c7bc857ff31",
     "stages": [
       {
         "title": "Preview",
@@ -8951,7 +11011,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "84f2dbbb-e95a-4e34-94fb-2bc05d3c87d9",
+              "_id": "14cfb82f-1cd1-46d8-a889-2872b0acf55a",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Preview"
@@ -9163,7 +11223,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "67ba3f9f-e262-4cee-80d7-ec8f57ac21eb",
+              "_id": "ce79efc4-a073-49ea-b4a9-2266a2d554fb",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Segment 1"
@@ -9232,7 +11292,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "92f02d2e-23a0-4240-9d76-0aaa41bea26a",
+              "_id": "e5079eed-d00f-4aa2-9f6f-58e19f56cda5",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Segment 2"
@@ -9315,7 +11375,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "fa56fd1f-d482-4b72-83ae-6fc14eaf3c9a",
+              "_id": "19ea7ff9-977b-46f5-9d51-a071a2e1e59b",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Segment 3"
@@ -9398,7 +11458,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "1f9e368b-bb51-4a79-9e95-57e707f1472c",
+              "_id": "46174b64-c07d-4d8c-a950-27a2e897d44e",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Segment 4"
@@ -9481,7 +11541,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "2abcea2d-91bc-46dc-9801-a898fd7e14f2",
+              "_id": "d9d75e67-5e3d-4b11-9a7b-a53528e273fb",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Segment 5"
@@ -9564,7 +11624,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "thegitup-8e5d1c3e-ae41-4462-8bb8-10402af9ae12-performance",
+              "identifier": "thegitup-c52960ef-6ecf-4451-99ac-6c7bc857ff31-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -9582,7 +11642,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "1f297515-9435-4fa5-a7e7-39431d0513c1",
+              "_id": "52c79ccd-fbd9-4314-a2e4-02020993ac9f",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Full Dance @ 50%"
@@ -9648,7 +11708,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "21384417-f069-49cb-8e6f-30e7008c3ef0",
+              "_id": "286d8822-b6e0-4e08-8955-df41c8886f86",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Full Dance @ 75%"
@@ -9714,7 +11774,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "51016775-32e2-4486-809f-8521754b3536",
+              "_id": "a88d5631-da2a-4adc-949f-279355131df6",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Full Dance @ 100%"
@@ -9780,7 +11840,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "thegitup-8e5d1c3e-ae41-4462-8bb8-10402af9ae12-performance",
+              "identifier": "thegitup-c52960ef-6ecf-4451-99ac-6c7bc857ff31-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -9792,13 +11852,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-21T21:12:57.899680",
+    "created": "2021-09-21T21:56:44.795709",
     "thumbnailSrc": "tiktok/thegitup.jpg"
   },
   {
     "title": "unhhunh",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "95195731-51cc-4452-8472-5b7da667f6d4",
+    "id": "1ce040ca-f98e-4a9c-81d9-1a35a19ae6bb",
     "stages": [
       {
         "title": "Preview",
@@ -9807,7 +11867,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "339435f1-e285-4c12-80b5-b49d76efc083",
+              "_id": "a5acd502-1fd6-4c61-9c96-9c8b176ca31c",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Preview"
@@ -10064,7 +12124,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "e942374c-79bb-4303-8c4e-c3f49bd54533",
+              "_id": "bdd6be2b-3c4e-479c-b8d3-a05657ddce44",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 1"
@@ -10135,7 +12195,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "3c60021e-ee47-4487-8a80-7842e6cc1d02",
+              "_id": "979d3940-8562-4c7a-97db-4acc3a59b5c1",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 2"
@@ -10220,7 +12280,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "b1840b24-92e4-48d3-a481-4548d33baef4",
+              "_id": "5ab949a2-08df-40f4-9419-a20b6ec7a05c",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 3"
@@ -10305,7 +12365,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "2c9bf490-2765-4148-9384-8a8ffd0769eb",
+              "_id": "74716e5b-6fab-4654-8b1d-a09e045d5cdc",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 4"
@@ -10390,7 +12450,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "95d423a4-97fb-45a6-bcfa-c9e8b25231e8",
+              "_id": "eb089181-91bf-48f5-918b-c5a66818e36b",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 5"
@@ -10475,7 +12535,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 6",
             "miniLessonEmbedded": {
-              "_id": "dbec02bf-6490-4613-8b0f-bc1956d343cc",
+              "_id": "c3b0e112-37b8-4e1d-a5cc-286f929fc85f",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 6"
@@ -10560,7 +12620,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 7",
             "miniLessonEmbedded": {
-              "_id": "8447134d-4cdd-4122-ae83-cf5e10c741d5",
+              "_id": "be0c4399-f8da-49cf-b9e0-a37e3ec69f7b",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 7"
@@ -10645,7 +12705,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "unhhunh-95195731-51cc-4452-8472-5b7da667f6d4-performance",
+              "identifier": "unhhunh-1ce040ca-f98e-4a9c-81d9-1a35a19ae6bb-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -10663,7 +12723,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "97f096c2-431f-4548-a8ff-439cec1df9c2",
+              "_id": "084d31d6-6385-46f7-82a6-4e6d2ce666ca",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Full Dance @ 50%"
@@ -10731,7 +12791,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "4efa1287-caf9-474e-a20d-948a0f6f39d1",
+              "_id": "9f225eab-c587-42ff-b378-16bd54010a4a",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Full Dance @ 75%"
@@ -10799,7 +12859,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "f42b6ca0-531e-4b77-b53a-3cab9ae59ca9",
+              "_id": "5d9a6b20-bf0f-4247-8403-aa5fef30e9a1",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Full Dance @ 100%"
@@ -10867,7 +12927,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "unhhunh-95195731-51cc-4452-8472-5b7da667f6d4-performance",
+              "identifier": "unhhunh-1ce040ca-f98e-4a9c-81d9-1a35a19ae6bb-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -10879,7 +12939,7 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-21T21:12:57.973588",
+    "created": "2021-09-21T21:56:44.859958",
     "thumbnailSrc": "tiktok/unhhunh.jpg"
   }
 ]
