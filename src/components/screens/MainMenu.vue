@@ -27,9 +27,18 @@
         v-for="workflow in workflows"
         :key="workflow.id"
         @click="$emit('workflow-selected', workflow.id)">
-        <p class="">{{workflow.title}}</p>
-        <p class="is-size-7 has-text-grey">{{workflow.creationMethod}}</p>
-        <p class="is-size-7 has-text-grey">Created {{workflow.created.toLocaleDateString()}} at {{workflow.created.toLocaleTimeString()}}</p>
+        <div class="level">
+          <div class="level-item mr-4" v-if="workflow.thumbnailSrc">
+            <img :src="workflow.thumbnailSrc" class="image is-96x96 is-cover">
+          </div>
+          <div class="level-item has-text-left">
+            <div>
+              <p class="is-uppercase">{{workflow.title}}</p>
+              <p class="is-size-7 has-text-grey mt-1 mb-1" style="max-width:40ch;">{{workflow.creationMethod}}</p>
+              <p class="is-size-7 has-text-grey">Created {{workflow.created.toLocaleDateString()}} at {{workflow.created.toLocaleTimeString()}}</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

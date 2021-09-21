@@ -49,6 +49,7 @@ export interface Workflow {
   stages: WorkflowStage[];
   experimentMaxTimeSecs?: number;
   created: Date | string;
+  thumbnailSrc?: string;
 }
 
 export function CreateBlankWorkflow() {

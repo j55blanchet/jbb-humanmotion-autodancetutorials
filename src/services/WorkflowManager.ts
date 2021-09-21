@@ -8,6 +8,8 @@ import customWorkflowsJson from '@/model/customWorkflows.json';
 import eventHub, { EventNames } from './EventHub';
 import Utils from './Utils';
 
+const thumbnailRootDir = 'thumbs/';
+
 const defaultWorkflows = workflowsJson as Workflow[];
 const customWorkflows = customWorkflowsJson as Workflow[];
 
@@ -41,12 +43,14 @@ export class WorkflowManager {
     for (let i = 0; i < defaultWorkflows.length; i += 1) {
       const workflow = defaultWorkflows[i] as Workflow;
       workflow.created = new Date(workflow.created);
+      if (workflow.thumbnailSrc) workflow.thumbnailSrc = thumbnailRootDir + workflow.thumbnailSrc;
       this.addSessionWorkflow(workflow);
       this.bakedInWorkflows.add(workflow.id);
     }
     for (let i = 0; i < customWorkflows.length; i += 1) {
       const workflow = customWorkflows[i];
-      workflow.created = new Date(workflow.created)
+      workflow.created = new Date(workflow.created);
+      if (workflow.thumbnailSrc) workflow.thumbnailSrc = thumbnailRootDir + workflow.thumbnailSrc;
       this.addSessionWorkflow(workflow);
       this.bakedInWorkflows.add(workflow.id);
     }
