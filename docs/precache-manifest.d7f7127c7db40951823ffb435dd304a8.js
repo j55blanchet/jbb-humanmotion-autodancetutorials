@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "565e46abe045e19e069e",
+    "revision": "fa8abf71085be36375b7",
     "url": "/css/app.2115cbd8.css"
   },
   {
@@ -20,12 +20,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/img/tiktokdances.589b3b61.jpg"
   },
   {
-    "revision": "031c0b25eac18dc1de1c5b3e3655e424",
+    "revision": "1f3256cdbe786de0ca024cc16f330f32",
     "url": "/index.html"
   },
   {
-    "revision": "565e46abe045e19e069e",
-    "url": "/js/app.86361015.js"
+    "revision": "fa8abf71085be36375b7",
+    "url": "/js/app.cbce2d0a.js"
   },
   {
     "revision": "f64197709254f61dcd73",
@@ -436,12 +436,24 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/poses/tiktok/derulo.pose.csv"
   },
   {
+    "revision": "c64719886b70be63555e0943a1b62dba",
+    "url": "/poses/tiktok/dont-start-now.pose.csv"
+  },
+  {
     "revision": "c3ff4a45b67f8ef425176026c10c2d5e",
     "url": "/poses/tiktok/getup.pose.csv"
   },
   {
     "revision": "2bb2dbd2f6dd7080b4533de0117c0643",
     "url": "/poses/tiktok/itsafit.pose.csv"
+  },
+  {
+    "revision": "4dbe18ff9e671fbd86a21ab5108069d4",
+    "url": "/poses/tiktok/ohnana.pose.csv"
+  },
+  {
+    "revision": "5baee03b15bb2c7a93d218deacf28a02",
+    "url": "/poses/tiktok/red-velvet.pose.csv"
   },
   {
     "revision": "2f68d876efe6d68f5780bd4a19a25f12",
@@ -580,6 +592,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/thumbs/tiktok/derulo.jpg"
   },
   {
+    "revision": "27b09d04e724b37ceea9bd37bce35ac6",
+    "url": "/thumbs/tiktok/dont-start-now.jpg"
+  },
+  {
     "revision": "e6a27c3dd8ca15181f69cdd9ab8dfce3",
     "url": "/thumbs/tiktok/getup.jpg"
   },
@@ -590,6 +606,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "25435f7fcd91c39198f773f06bf12b47",
     "url": "/thumbs/tiktok/ohnana.jpg"
+  },
+  {
+    "revision": "ccda3606c270f8356acbaf960bbd9af6",
+    "url": "/thumbs/tiktok/red-velvet.jpg"
   },
   {
     "revision": "d5247560277d95d937e5db9cbcb062e7",
@@ -724,6 +744,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/videos/tiktok/derulo.mp4"
   },
   {
+    "revision": "5014183e35cc6965788a6cbf5488fa7a",
+    "url": "/videos/tiktok/dont-start-now.mp4"
+  },
+  {
     "revision": "0843c885ef2917a913b5f83b153a59f6",
     "url": "/videos/tiktok/getup.mp4"
   },
@@ -734,6 +758,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "293c290407fb48bfbf2b74be1f727624",
     "url": "/videos/tiktok/ohnana.MP4"
+  },
+  {
+    "revision": "8e83355004d6becf8fba2472f91aa5dc",
+    "url": "/videos/tiktok/red-velvet.mp4"
   },
   {
     "revision": "5aaed349da5afcd33a47ea8292fcfd2d",
