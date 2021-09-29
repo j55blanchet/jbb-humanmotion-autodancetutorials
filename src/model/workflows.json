@@ -2,7 +2,7 @@
   {
     "title": "ahichallenge with sheet motion",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "4afab84a-9bc9-4b29-bd41-a540ba123890",
+    "id": "3bdf89c5-4d46-4557-bbb8-c25ec908e87c",
     "stages": [
       {
         "title": "Preview",
@@ -11,7 +11,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "1db63db1-8160-4877-b963-7bceaa477935",
+              "_id": "09a25f2c-77c1-4fc4-aedf-9215d968d31b",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Preview"
@@ -111,7 +111,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "7cae802a-8098-49b7-9923-1704334e9635",
+              "_id": "4fba2231-a128-4978-b57e-7e4618d3b1f6",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Segment 1"
@@ -160,15 +160,15 @@
                           },
                           {
                             "timestamp": 0.6202409638554217,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 1.2404819277108434,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 1.860722891566265,
-                            "type": "pause"
+                            "type": "move"
                           }
                         ]
                       }
@@ -203,7 +203,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "0643aab9-07c0-48c5-8cd5-9aecac69c1ca",
+              "_id": "1bb6d4ee-4f73-410f-9863-9c623a928300",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Segment 2"
@@ -248,11 +248,11 @@
                         "frames": [
                           {
                             "timestamp": 1.860722891566265,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 2.480963855421687,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 3.0667469879518072,
@@ -317,7 +317,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "6a2e7d6e-7288-4d77-86f1-b246d23c4401",
+              "_id": "37262315-a117-4c49-9782-b141fbd75379",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Segment 3"
@@ -427,7 +427,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "7e8d17db-64a5-4d07-9524-b2e3f55aaae9",
+              "_id": "259c714d-e389-40ef-b39c-ee54e7a14ff0",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Segment 4"
@@ -541,7 +541,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "b16b2317-c546-46eb-9a8b-8f6fdb9d8273",
+              "_id": "666bb7a6-b3de-45e3-8c09-f6fd6a97dc21",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Segment 5"
@@ -602,23 +602,23 @@
                           },
                           {
                             "timestamp": 11.71566265060241,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 11.71566265060241,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 11.71566265060241,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 11.71566265060241,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 11.71566265060241,
-                            "type": "pause"
+                            "type": "move"
                           }
                         ]
                       }
@@ -667,7 +667,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 6",
             "miniLessonEmbedded": {
-              "_id": "d2359395-7164-45ce-b187-08883d8c07d2",
+              "_id": "f49bd3cd-5414-4918-9c3e-41ea5264582d",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Segment 6"
@@ -712,23 +712,23 @@
                         "frames": [
                           {
                             "timestamp": 11.71566265060241,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 11.71566265060241,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 11.71566265060241,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 11.71566265060241,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 11.71566265060241,
-                            "type": "pause"
+                            "type": "move"
                           }
                         ]
                       }
@@ -777,7 +777,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "ahichallenge-4afab84a-9bc9-4b29-bd41-a540ba123890-performance",
+              "identifier": "ahichallenge-3bdf89c5-4d46-4557-bbb8-c25ec908e87c-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -795,7 +795,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "15be8227-0eea-406f-a043-af6cd103bd60",
+              "_id": "10c2a093-c33b-48be-a594-fc8d5549aa5f",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Full Dance @ 50%"
@@ -862,7 +862,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "a28cf99c-0fbc-4bbd-a8b1-0267a25ebca0",
+              "_id": "8fd8810f-fe5e-405e-af68-779e36b908ca",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Full Dance @ 75%"
@@ -929,7 +929,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "35a16b34-1ff7-4d19-87ba-5c5ab0a86bf5",
+              "_id": "58fca8c7-d6a7-4a42-b3f1-5ab623b0236d",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Full Dance @ 100%"
@@ -996,7 +996,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "ahichallenge-4afab84a-9bc9-4b29-bd41-a540ba123890-performance",
+              "identifier": "ahichallenge-3bdf89c5-4d46-4557-bbb8-c25ec908e87c-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -1008,13 +1008,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.252702",
+    "created": "2021-09-29T13:58:05.361350",
     "thumbnailSrc": "tiktok/ahichallenge.jpg"
   },
   {
     "title": "ahichallenge",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "cdeb5ca4-3983-4feb-b386-bdd8b393ebff",
+    "id": "50877e9e-3cc8-4031-acc5-5dddd2b33ae6",
     "stages": [
       {
         "title": "Preview",
@@ -1023,7 +1023,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "143bfdad-6fd8-4389-95f4-d7951f242ca0",
+              "_id": "83d545d6-9be9-44f8-86c7-398c0f86382d",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Preview"
@@ -1123,7 +1123,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "39c8d107-6371-4f44-bce5-97a3fb9d50df",
+              "_id": "d9da477f-fe30-43c4-87ee-dccaa1644258",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Segment 1"
@@ -1193,7 +1193,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "e07fb159-b66e-4d45-9c5d-0e122220bdf6",
+              "_id": "b8eba1d1-942b-4c39-9b18-c6cae0af93f9",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Segment 2"
@@ -1277,7 +1277,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "e7239dbd-93b3-49d3-95f6-40dd438d4ec3",
+              "_id": "f10b3fc2-01c2-4649-a157-7e76c890a110",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Segment 3"
@@ -1361,7 +1361,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "1691f715-413e-48f1-9351-a7e6877a0414",
+              "_id": "c70339d4-b01f-4720-ad4b-52f26f1ccf94",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Segment 4"
@@ -1445,7 +1445,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "360c66b9-715a-42c9-82f5-85d56efd529a",
+              "_id": "1bd4c860-bff8-448a-b4cd-2ba994cf0aae",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Segment 5"
@@ -1529,7 +1529,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 6",
             "miniLessonEmbedded": {
-              "_id": "8aaf3b36-f14b-43e8-98d0-4e2b0e67ecd0",
+              "_id": "2d40a3c8-9730-46f3-a4be-bfabf68f075e",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Segment 6"
@@ -1613,7 +1613,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "ahichallenge-cdeb5ca4-3983-4feb-b386-bdd8b393ebff-performance",
+              "identifier": "ahichallenge-50877e9e-3cc8-4031-acc5-5dddd2b33ae6-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -1631,7 +1631,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "290678cb-52ab-4863-bcb9-066263cdb956",
+              "_id": "6af6b9db-dfdd-4c26-b052-eac45bb91100",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Full Dance @ 50%"
@@ -1698,7 +1698,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "1a4e0ae2-ea2c-4972-807c-4ff8eaf762e7",
+              "_id": "04f88db7-b8f5-48c4-8ad9-ebf842feb87a",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Full Dance @ 75%"
@@ -1765,7 +1765,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "3f86fb43-fb8d-4e1f-aa1e-d793db536746",
+              "_id": "92d1051e-9401-4533-b539-112196705d2d",
               "header": {
                 "clipName": "ahichallenge",
                 "lessonTitle": "Full Dance @ 100%"
@@ -1832,7 +1832,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "ahichallenge-cdeb5ca4-3983-4feb-b386-bdd8b393ebff-performance",
+              "identifier": "ahichallenge-50877e9e-3cc8-4031-acc5-5dddd2b33ae6-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -1844,13 +1844,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.253700",
+    "created": "2021-09-29T13:58:05.362351",
     "thumbnailSrc": "tiktok/ahichallenge.jpg"
   },
   {
     "title": "blindinglights with sheet motion",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "da482810-0ea3-4a0b-8473-bba0972746e0",
+    "id": "d284d46a-37c4-4fbf-a770-5234e9386626",
     "stages": [
       {
         "title": "Preview",
@@ -1859,7 +1859,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "4a1a1223-f503-40d4-b90b-b955fcaa798e",
+              "_id": "27075768-1ec4-47c5-b2a2-1f370f40d000",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Preview"
@@ -1958,7 +1958,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "cf0c5114-3082-4e8d-b78c-13e1c32cc40f",
+              "_id": "ea66b11f-a084-42a5-857e-7b1a52fc7f6e",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Segment 1"
@@ -2054,7 +2054,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "eb09e6a9-4d74-41ee-9e72-45757046ed16",
+              "_id": "0142e410-ecb5-4c3d-a493-2fbaa84c2cb2",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Segment 2"
@@ -2164,7 +2164,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "20771289-0072-4753-9a41-6a270b3337f9",
+              "_id": "eb0af160-cddb-4e24-b8c0-dcef0bea6c06",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Segment 3"
@@ -2274,7 +2274,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "32e49307-df82-4ece-85da-8f41755e05a3",
+              "_id": "28abe71e-260e-4d26-a138-75bc7c4d8101",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Segment 4"
@@ -2388,7 +2388,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "d2ed4fa6-5de1-4250-be50-e9de5d471d0e",
+              "_id": "9253b67c-5031-40f5-8592-4a2eb06a5384",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Segment 5"
@@ -2445,23 +2445,23 @@
                           },
                           {
                             "timestamp": 12.266666666666667,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 12.266666666666667,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 12.266666666666667,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 12.266666666666667,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 12.266666666666667,
-                            "type": "pause"
+                            "type": "move"
                           }
                         ]
                       }
@@ -2510,7 +2510,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 6",
             "miniLessonEmbedded": {
-              "_id": "0246510f-51ac-423d-97b0-cff685076ff6",
+              "_id": "d276830b-8562-4920-a560-290ac0806ff6",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Segment 6"
@@ -2594,7 +2594,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "blindinglights-da482810-0ea3-4a0b-8473-bba0972746e0-performance",
+              "identifier": "blindinglights-d284d46a-37c4-4fbf-a770-5234e9386626-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -2612,7 +2612,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "fbefec25-26c0-49c8-92af-3f1477d2d5dc",
+              "_id": "af686582-31c0-46b1-88e5-d7478e45c30b",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Full Dance @ 50%"
@@ -2679,7 +2679,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "bb34cb75-4244-4b3a-8b4f-fad86b81cbb7",
+              "_id": "74aeb9cd-c652-427a-8dbd-c5df22a08f14",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Full Dance @ 75%"
@@ -2746,7 +2746,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "75cf7bab-fb90-4430-ac2e-74357dfcfceb",
+              "_id": "236957b2-66b1-4713-879c-3e906dc44bc7",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Full Dance @ 100%"
@@ -2813,7 +2813,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "blindinglights-da482810-0ea3-4a0b-8473-bba0972746e0-performance",
+              "identifier": "blindinglights-d284d46a-37c4-4fbf-a770-5234e9386626-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -2825,13 +2825,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.258700",
+    "created": "2021-09-29T13:58:05.368381",
     "thumbnailSrc": "tiktok/blindinglights.jpg"
   },
   {
     "title": "blindinglights",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "574dc804-6775-4a68-a3f3-8d291543861e",
+    "id": "2dd00059-abd1-4ef3-8255-b495a6d67083",
     "stages": [
       {
         "title": "Preview",
@@ -2840,7 +2840,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "7ea90eac-5247-481e-bd7b-e699c34bfdb9",
+              "_id": "1a5e7427-fb94-40ac-9f81-877e61bd365b",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Preview"
@@ -2939,7 +2939,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "9e03f42f-b547-47de-9525-6122e1860bb6",
+              "_id": "1d3c3191-2043-462f-9e79-072b2bf0f46f",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Segment 1"
@@ -3009,7 +3009,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "c2868d8d-c002-49d0-8077-bf4d879f28f0",
+              "_id": "4964e6f1-c308-4ae8-aeb4-392c3d01d083",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Segment 2"
@@ -3093,7 +3093,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "f57782b3-6626-4c1a-b13e-33f30f97a645",
+              "_id": "48302d01-b365-43aa-bd24-a85a3e62249a",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Segment 3"
@@ -3177,7 +3177,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "5ee3f2d4-6964-4676-a04d-676c910262ca",
+              "_id": "b56582a8-c4de-416e-b8f2-cd2b7f5b189a",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Segment 4"
@@ -3261,7 +3261,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "f2ed00ff-d72f-4b94-9318-658bf046c900",
+              "_id": "bd80a86e-5758-4890-92e9-ea83ee5c87cb",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Segment 5"
@@ -3345,7 +3345,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 6",
             "miniLessonEmbedded": {
-              "_id": "dd052a4b-8d95-4348-bd51-47236245ee46",
+              "_id": "52fa755b-05d7-44ff-8431-84d5aa3546b0",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Segment 6"
@@ -3429,7 +3429,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "blindinglights-574dc804-6775-4a68-a3f3-8d291543861e-performance",
+              "identifier": "blindinglights-2dd00059-abd1-4ef3-8255-b495a6d67083-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -3447,7 +3447,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "f269ac72-3592-4938-964f-7273f96c6354",
+              "_id": "14f1e532-1f52-4b87-8aa2-20ae09fc86b8",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Full Dance @ 50%"
@@ -3514,7 +3514,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "0b6ef510-fa3f-4107-94d6-551101f6f1ab",
+              "_id": "2ad538f3-c5cc-4237-b588-9394cd86bda8",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Full Dance @ 75%"
@@ -3581,7 +3581,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "ac908d81-71f2-4d0f-b1a7-c977c02c940f",
+              "_id": "5d4fbce5-0a4d-4141-9578-a26b069e9d93",
               "header": {
                 "clipName": "blindinglights",
                 "lessonTitle": "Full Dance @ 100%"
@@ -3648,7 +3648,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "blindinglights-574dc804-6775-4a68-a3f3-8d291543861e-performance",
+              "identifier": "blindinglights-2dd00059-abd1-4ef3-8255-b495a6d67083-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -3660,13 +3660,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.259700",
+    "created": "2021-09-29T13:58:05.369381",
     "thumbnailSrc": "tiktok/blindinglights.jpg"
   },
   {
     "title": "debbieallenchallenge with sheet motion",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "d8b59471-a9b4-41c5-8629-22152df9f4ef",
+    "id": "4366f43c-f830-44be-8975-0d4becb74696",
     "stages": [
       {
         "title": "Preview",
@@ -3675,7 +3675,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "2c60ba70-9c31-44d7-81d0-27fd498a6e65",
+              "_id": "ca057ecd-6c5b-4b7e-a16f-a9de7fc0463e",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Preview"
@@ -3795,7 +3795,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "c2aa8ca5-07a1-45fe-ac56-e7681815ea06",
+              "_id": "2e8bc495-57bc-4c78-a896-702407f7c11a",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 1"
@@ -3893,7 +3893,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "563b9d23-2c49-4cda-9c22-51dbed8a3554",
+              "_id": "4e2d8564-08b9-4631-81a5-a005f994b8ff",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 2"
@@ -4005,7 +4005,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "a338e7dc-f0cc-4640-89e5-3b403f3b3fc6",
+              "_id": "627aa108-a4ee-4d5b-969a-a312c774575a",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 3"
@@ -4121,7 +4121,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "106dfee9-a318-4163-bb2b-12afc3b94e81",
+              "_id": "08a80f0c-2340-4ee1-8223-5513d49b3b40",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 4"
@@ -4233,7 +4233,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "fb1d5eb8-8093-4091-a513-0737d0485e14",
+              "_id": "73f6abcc-4fd3-4275-9a2d-0dff51ac4087",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 5"
@@ -4349,7 +4349,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 6",
             "miniLessonEmbedded": {
-              "_id": "828e116f-10e1-46a9-a73f-b5b652e3071a",
+              "_id": "1a17180a-f897-418a-9310-6a431f691304",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 6"
@@ -4461,7 +4461,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 7",
             "miniLessonEmbedded": {
-              "_id": "d04c55d2-3740-4b69-90a7-84356fa5da78",
+              "_id": "0eb12ddb-0a39-4505-8156-766886220e39",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 7"
@@ -4524,23 +4524,23 @@
                           },
                           {
                             "timestamp": 26.2,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 26.2,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 26.2,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 26.2,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 26.2,
-                            "type": "pause"
+                            "type": "move"
                           }
                         ]
                       }
@@ -4589,7 +4589,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 8",
             "miniLessonEmbedded": {
-              "_id": "d5d36259-4e8b-40c8-af10-34b932920c6b",
+              "_id": "e6fcde13-ba15-4e88-932f-7661f65e2fa9",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 8"
@@ -4636,23 +4636,23 @@
                         "frames": [
                           {
                             "timestamp": 26.2,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 26.2,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 26.2,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 26.2,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 26.2,
-                            "type": "pause"
+                            "type": "move"
                           }
                         ]
                       }
@@ -4701,7 +4701,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "debbieallenchallenge-d8b59471-a9b4-41c5-8629-22152df9f4ef-performance",
+              "identifier": "debbieallenchallenge-4366f43c-f830-44be-8975-0d4becb74696-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -4719,7 +4719,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "08b83ebe-60fa-4a1d-b4fb-1f6e396aca20",
+              "_id": "7776a2dc-1e3b-43af-b5ab-4c34b06f2ac0",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Full Dance @ 50%"
@@ -4788,7 +4788,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "b818777f-b973-4dad-9f87-e1a27f9db83d",
+              "_id": "7136aff1-36cc-40bb-a9be-41a308597d58",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Full Dance @ 75%"
@@ -4857,7 +4857,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "20fc607a-0225-41c4-9c6d-de4f07988df1",
+              "_id": "8b47c0d8-0932-4b69-99e3-3e2cc9231ce1",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Full Dance @ 100%"
@@ -4926,7 +4926,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "debbieallenchallenge-d8b59471-a9b4-41c5-8629-22152df9f4ef-performance",
+              "identifier": "debbieallenchallenge-4366f43c-f830-44be-8975-0d4becb74696-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -4938,13 +4938,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.265700",
+    "created": "2021-09-29T13:58:05.375381",
     "thumbnailSrc": "tiktok/debbieallenchallenge.jpg"
   },
   {
     "title": "debbieallenchallenge",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "689a4985-c14e-4271-b808-0bdb56b38788",
+    "id": "cababac7-fa1c-4045-b42b-4489e6971e69",
     "stages": [
       {
         "title": "Preview",
@@ -4953,7 +4953,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "2f391f49-fb02-43c8-bdb6-f5057d8b31ce",
+              "_id": "afb465cb-53e8-4d64-bb1f-933d3aff6ad9",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Preview"
@@ -5073,7 +5073,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "f24666be-e6b2-4e02-baa1-23f581db3a55",
+              "_id": "7186e232-6a9f-46ac-96cd-27b6bc68cd79",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 1"
@@ -5145,7 +5145,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "aa12d725-93e8-491c-96ef-2548c8c0c8b7",
+              "_id": "587261d0-faee-4f39-b0bc-428da8e31f90",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 2"
@@ -5231,7 +5231,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "5fb4951c-c292-42ce-a276-0778770e7452",
+              "_id": "5b0e196d-21fa-46c6-82c0-9c077bdd62c8",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 3"
@@ -5317,7 +5317,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "420fa722-10b3-469b-8b9d-8df1bb910ad8",
+              "_id": "4b8aa9d1-56ab-4adc-8e80-25bd1ea2a7a1",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 4"
@@ -5403,7 +5403,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "93ed8ba6-9de5-4ba1-83e9-7a090bc98241",
+              "_id": "359a76a2-6910-4775-8a17-76d8552688de",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 5"
@@ -5489,7 +5489,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 6",
             "miniLessonEmbedded": {
-              "_id": "fb5c1cba-0963-43a1-929b-9136713d75cb",
+              "_id": "e6c40f37-233c-4253-ab87-a0fafc48cd3b",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 6"
@@ -5575,7 +5575,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 7",
             "miniLessonEmbedded": {
-              "_id": "4d2f79d9-e2db-470c-b0da-844af8b68c86",
+              "_id": "b1f0007f-f2d4-4b35-9d1c-34de29a0435b",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 7"
@@ -5661,7 +5661,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 8",
             "miniLessonEmbedded": {
-              "_id": "ba3bef51-cbdc-4bc4-a268-15fafbac9582",
+              "_id": "fcf831d2-c6b2-4748-91c5-fbfd0665cf7a",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Segment 8"
@@ -5747,7 +5747,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "debbieallenchallenge-689a4985-c14e-4271-b808-0bdb56b38788-performance",
+              "identifier": "debbieallenchallenge-cababac7-fa1c-4045-b42b-4489e6971e69-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -5765,7 +5765,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "9c9c1b35-88b1-4cb9-98e6-7aaa7a45847a",
+              "_id": "365d8e2a-3a77-4525-9bd0-7475b08775f0",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Full Dance @ 50%"
@@ -5834,7 +5834,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "0c00cafd-61e2-435c-afde-552d4b65b754",
+              "_id": "c84c4646-3570-4ee8-9e96-a11e78aba0b3",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Full Dance @ 75%"
@@ -5903,7 +5903,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "4f4061be-22f7-4f2c-bbde-1c9cd4e0668b",
+              "_id": "587a5f59-40db-4364-842b-142114e52c6a",
               "header": {
                 "clipName": "debbieallenchallenge",
                 "lessonTitle": "Full Dance @ 100%"
@@ -5972,7 +5972,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "debbieallenchallenge-689a4985-c14e-4271-b808-0bdb56b38788-performance",
+              "identifier": "debbieallenchallenge-cababac7-fa1c-4045-b42b-4489e6971e69-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -5984,13 +5984,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.265700",
+    "created": "2021-09-29T13:58:05.376352",
     "thumbnailSrc": "tiktok/debbieallenchallenge.jpg"
   },
   {
     "title": "derulo with sheet motion",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "1b0163f9-c2e2-4f95-95f7-de2d4d95ea3c",
+    "id": "3125cfb3-aebd-4d34-a4fb-962dae26ed89",
     "stages": [
       {
         "title": "Preview",
@@ -5999,7 +5999,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "2328382d-b56a-40d4-b5e1-ae3225b000e1",
+              "_id": "afdb73ea-4e90-4be6-b19a-1e19ded665ea",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Preview"
@@ -6076,7 +6076,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "6cdd3f84-6ef5-416f-b0e3-e510367c5113",
+              "_id": "b3687cd9-8c96-4ee4-84d2-fcf9788e5617",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Segment 1"
@@ -6162,7 +6162,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "f4f32e10-3687-4154-b480-b5958bc38477",
+              "_id": "7ed5f87d-634d-4a90-9dda-5036155f91a3",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Segment 2"
@@ -6270,7 +6270,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "1ebceaf8-9b74-40e4-84c1-28d0757bd766",
+              "_id": "5289d01e-ed3b-480b-ad61-0086eda12b9b",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Segment 3"
@@ -6382,7 +6382,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "d0f7ea09-c24e-4303-a9de-c9d5e72722af",
+              "_id": "b32c6000-25d7-4311-949b-5e40b30f37bb",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Segment 4"
@@ -6478,7 +6478,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "derulo-1b0163f9-c2e2-4f95-95f7-de2d4d95ea3c-performance",
+              "identifier": "derulo-3125cfb3-aebd-4d34-a4fb-962dae26ed89-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -6496,7 +6496,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "55431f47-c880-4d5b-a022-aad8070cf42b",
+              "_id": "1b0168ca-f18a-4698-9bf2-35caa30f146c",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Full Dance @ 50%"
@@ -6561,7 +6561,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "02ebdee7-5d47-40c0-989e-189a4a90ee51",
+              "_id": "b32e8bf4-6aeb-4e34-9453-3d54bd6832d4",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Full Dance @ 75%"
@@ -6626,7 +6626,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "14a3b851-1b3d-46d2-a783-ea0658e98769",
+              "_id": "230c3cdc-c252-4dee-a95a-0d0c326754cb",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Full Dance @ 100%"
@@ -6691,7 +6691,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "derulo-1b0163f9-c2e2-4f95-95f7-de2d4d95ea3c-performance",
+              "identifier": "derulo-3125cfb3-aebd-4d34-a4fb-962dae26ed89-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -6703,13 +6703,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.269699",
+    "created": "2021-09-29T13:58:05.379885",
     "thumbnailSrc": "tiktok/derulo.jpg"
   },
   {
     "title": "derulo",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "afcb17d6-9525-40c7-a103-9c191218c606",
+    "id": "926cebd7-53e4-47e4-855e-2ff88ea62292",
     "stages": [
       {
         "title": "Preview",
@@ -6718,7 +6718,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "73bd0f51-e5dd-4cc0-a147-868cecf7cec3",
+              "_id": "e8abae51-c13c-4e22-a3b1-147b2dd7b8f1",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Preview"
@@ -6795,7 +6795,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "6db55562-d18f-471b-a555-01fdcc6c817f",
+              "_id": "e6f98e1c-e393-439a-bd86-318cb5a35bc4",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Segment 1"
@@ -6863,7 +6863,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "f5a61853-1e06-4204-b3be-9741447b05aa",
+              "_id": "5440ddfd-c00d-43ad-8768-e60fbd3b07f7",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Segment 2"
@@ -6945,7 +6945,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "cc2b01ed-9a5f-4490-8207-1c8cb71ed07e",
+              "_id": "1a849eba-19aa-4e96-af0d-8136ba2b140c",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Segment 3"
@@ -7027,7 +7027,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "384e8695-ef65-46bf-9fa7-c07adca7d9ec",
+              "_id": "723b8067-a9ff-4502-87d6-c75c569543df",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Segment 4"
@@ -7109,7 +7109,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "derulo-afcb17d6-9525-40c7-a103-9c191218c606-performance",
+              "identifier": "derulo-926cebd7-53e4-47e4-855e-2ff88ea62292-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -7127,7 +7127,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "7e5a4edf-0682-4358-a764-5bb1f079c75c",
+              "_id": "7fd941e5-b906-462a-9b2d-38c99ddc2d45",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Full Dance @ 50%"
@@ -7192,7 +7192,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "50dd7d05-1eb4-496a-8099-c389154976c6",
+              "_id": "09aeb837-ea2d-41a0-8482-f25af98067eb",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Full Dance @ 75%"
@@ -7257,7 +7257,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "121ecb5d-0091-495a-94d9-caf2b9603106",
+              "_id": "1b020202-d230-4727-808e-14209d4b32f1",
               "header": {
                 "clipName": "derulo",
                 "lessonTitle": "Full Dance @ 100%"
@@ -7322,7 +7322,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "derulo-afcb17d6-9525-40c7-a103-9c191218c606-performance",
+              "identifier": "derulo-926cebd7-53e4-47e4-855e-2ff88ea62292-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -7334,13 +7334,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.269699",
+    "created": "2021-09-29T13:58:05.380887",
     "thumbnailSrc": "tiktok/derulo.jpg"
   },
   {
     "title": "getup with sheet motion",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "d67dd5ef-28b2-45c5-8e78-b369bcabfefc",
+    "id": "2e08da17-91e0-4c56-8f9d-b28de71f7cf5",
     "stages": [
       {
         "title": "Preview",
@@ -7349,7 +7349,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "7eae5180-76bd-47cb-8c6c-37cff4ed0ff4",
+              "_id": "617d58c3-9676-4fa5-b3b3-361d4146e702",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Preview"
@@ -7439,7 +7439,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "67bf5efe-0e4a-4a8e-bd69-935c30b0687d",
+              "_id": "cd2a14f3-9dbf-48db-bda0-eba7ee3c4f4e",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Segment 1"
@@ -7534,7 +7534,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "93c8cab8-886a-42f8-93d6-12bedba7e40f",
+              "_id": "9be4f15a-fd03-4bc1-9d73-6cabe7732205",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Segment 2"
@@ -7643,7 +7643,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "69b95b25-b6a8-4143-a98d-c3df65a85416",
+              "_id": "77076122-15c9-43f5-b839-0d39c6979922",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Segment 3"
@@ -7752,7 +7752,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "c65ff6f9-8191-49c4-8164-d4e5ae221aed",
+              "_id": "dd15ae36-000b-4893-a3d7-25c0b79bfd69",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Segment 4"
@@ -7865,7 +7865,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "b8d036c3-9a29-4bf1-aab3-aaf5d9df5338",
+              "_id": "e286e606-e3af-4bc6-af26-2109de105b56",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Segment 5"
@@ -7917,15 +7917,15 @@
                           },
                           {
                             "timestamp": 15.466919671094244,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 15.466919671094244,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 15.466919671094244,
-                            "type": "pause"
+                            "type": "move"
                           }
                         ]
                       }
@@ -7974,7 +7974,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "getup-d67dd5ef-28b2-45c5-8e78-b369bcabfefc-performance",
+              "identifier": "getup-2e08da17-91e0-4c56-8f9d-b28de71f7cf5-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -7992,7 +7992,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "5b002641-e8da-4150-9aaa-194cd67f4101",
+              "_id": "612c7a1f-e84b-440d-95cf-00af0bed090b",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Full Dance @ 50%"
@@ -8058,7 +8058,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "6d98f310-f7a1-438f-9e8d-c24c8e879277",
+              "_id": "d562aea9-6649-462a-9895-91aa0d8642df",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Full Dance @ 75%"
@@ -8124,7 +8124,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "6ffccec8-f95a-4a06-bd4d-a76fefbf84e7",
+              "_id": "fd861e5a-8aee-49f5-82cc-714bc9d94fc0",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Full Dance @ 100%"
@@ -8190,7 +8190,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "getup-d67dd5ef-28b2-45c5-8e78-b369bcabfefc-performance",
+              "identifier": "getup-2e08da17-91e0-4c56-8f9d-b28de71f7cf5-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -8202,13 +8202,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.274662",
+    "created": "2021-09-29T13:58:05.384887",
     "thumbnailSrc": "tiktok/getup.jpg"
   },
   {
     "title": "getup",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "5bb63159-dd16-4dc3-bec3-a8a8f8d7b451",
+    "id": "5585b6c0-a365-4882-b783-8579ce754cf8",
     "stages": [
       {
         "title": "Preview",
@@ -8217,7 +8217,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "a6e355d6-570b-4c48-aec8-a24b75afaf4a",
+              "_id": "8f15107d-8c41-465d-9e63-c4a96fe55bea",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Preview"
@@ -8307,7 +8307,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "f5260687-091b-470d-887b-a6995f3710ad",
+              "_id": "e1cfe4ad-5f99-4337-9c35-6062b0508be7",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Segment 1"
@@ -8376,7 +8376,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "23ba0cfe-9481-49bb-9703-dc008fa6c60d",
+              "_id": "b1b79312-f32b-4dba-aa62-431872882347",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Segment 2"
@@ -8459,7 +8459,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "6bee51f6-e842-4231-90da-498f013671f4",
+              "_id": "2516c3c0-5bd0-4627-a765-74405d472eac",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Segment 3"
@@ -8542,7 +8542,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "2d8e7771-68c3-4203-a302-698fd63bbe9b",
+              "_id": "5e4abba7-bbed-4400-88ee-1b05bf94605d",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Segment 4"
@@ -8625,7 +8625,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "f0356cb5-db72-440a-9569-50e30ac500ed",
+              "_id": "711832ca-08af-437c-8da6-58afc4c52dfc",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Segment 5"
@@ -8708,7 +8708,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "getup-5bb63159-dd16-4dc3-bec3-a8a8f8d7b451-performance",
+              "identifier": "getup-5585b6c0-a365-4882-b783-8579ce754cf8-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -8726,7 +8726,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "6068668f-4a77-4d6d-9164-51b69d991506",
+              "_id": "476c196d-6531-4afa-bab9-1d7fd1a41be5",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Full Dance @ 50%"
@@ -8792,7 +8792,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "48dd0c51-f275-4f1a-836d-8c7093a7fdd4",
+              "_id": "6bbe4f36-bb48-40ec-a5ce-973a347b7a70",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Full Dance @ 75%"
@@ -8858,7 +8858,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "c7ee65c8-fefb-4259-9a67-0e8dd5f1960e",
+              "_id": "1766e6f2-eaea-424d-a78d-12c53c948f32",
               "header": {
                 "clipName": "getup",
                 "lessonTitle": "Full Dance @ 100%"
@@ -8924,7 +8924,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "getup-5bb63159-dd16-4dc3-bec3-a8a8f8d7b451-performance",
+              "identifier": "getup-5585b6c0-a365-4882-b783-8579ce754cf8-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -8936,13 +8936,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.275663",
+    "created": "2021-09-29T13:58:05.385886",
     "thumbnailSrc": "tiktok/getup.jpg"
   },
   {
     "title": "itsafit with sheet motion",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "3980b0d9-a57f-428b-a4cd-6e990273d52d",
+    "id": "b1bb24a4-faab-4b25-81ec-838445f4ae5d",
     "stages": [
       {
         "title": "Preview",
@@ -8951,7 +8951,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "3a9ba4f9-0e90-4f49-b346-1d1ec68a2ddb",
+              "_id": "9c0b897d-eafc-473c-863e-75571369a791",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Preview"
@@ -9011,7 +9011,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "e4f0d286-6861-4ee9-a8e7-c355a25304c0",
+              "_id": "1c324122-1694-426b-9d4a-1825d1183c84",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Segment 1"
@@ -9099,7 +9099,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "8b30f296-4b9d-4dae-9ef4-4444a9663951",
+              "_id": "c34fb4d1-5b21-4c76-b4bc-42a56c2bf653",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Segment 2"
@@ -9201,7 +9201,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "itsafit-3980b0d9-a57f-428b-a4cd-6e990273d52d-performance",
+              "identifier": "itsafit-b1bb24a4-faab-4b25-81ec-838445f4ae5d-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -9219,7 +9219,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "99804426-86c1-4481-9323-de53da451efe",
+              "_id": "ca66dfd8-aac1-426b-9487-649626a1bce5",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Full Dance @ 50%"
@@ -9282,7 +9282,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "743b8a6e-bff2-4ebc-a810-7a46dca1231a",
+              "_id": "903fcee7-8b20-4691-99bd-9a071442f268",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Full Dance @ 75%"
@@ -9345,7 +9345,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "3ac0d210-a70f-4de1-8af5-121dc835a9ca",
+              "_id": "d2f5c7e6-2ff6-4035-a30f-3df78ef83589",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Full Dance @ 100%"
@@ -9408,7 +9408,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "itsafit-3980b0d9-a57f-428b-a4cd-6e990273d52d-performance",
+              "identifier": "itsafit-b1bb24a4-faab-4b25-81ec-838445f4ae5d-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -9420,13 +9420,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.277576",
+    "created": "2021-09-29T13:58:05.387885",
     "thumbnailSrc": "tiktok/itsafit.jpg"
   },
   {
     "title": "itsafit",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "39cda271-1698-4e85-a47b-419c34b2f78f",
+    "id": "9d36b5d0-e8e1-4a11-90f5-4d7d3ce15770",
     "stages": [
       {
         "title": "Preview",
@@ -9435,7 +9435,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "11eee373-b0ec-4b25-b668-54053f3b5158",
+              "_id": "d31dcad5-6d64-40e9-bd9b-cc8a95eb013d",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Preview"
@@ -9495,7 +9495,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "5a2f2e6f-d20e-4444-b495-c6fe6293b0d8",
+              "_id": "bbec4fd9-7c50-4d73-8ced-f1f0b6d8b462",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Segment 1"
@@ -9561,7 +9561,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "281aee7e-0883-4ff3-95dc-109a271d531a",
+              "_id": "2e6e3271-17b2-49fb-927f-44ac9e38aeaf",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Segment 2"
@@ -9641,7 +9641,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "itsafit-39cda271-1698-4e85-a47b-419c34b2f78f-performance",
+              "identifier": "itsafit-9d36b5d0-e8e1-4a11-90f5-4d7d3ce15770-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -9659,7 +9659,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "80d4a4b3-e343-46ef-a08c-e667e16ea193",
+              "_id": "a5399f7f-2f87-4aa2-87c7-e370490b1c0b",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Full Dance @ 50%"
@@ -9722,7 +9722,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "4642fc2f-312d-43bd-b213-7bf0fcb1b0bd",
+              "_id": "7ed31866-f9e3-4459-811d-7e6731eb9efe",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Full Dance @ 75%"
@@ -9785,7 +9785,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "ae78beab-208e-47d5-8606-0cc363b32873",
+              "_id": "d4429741-1274-43a9-8513-fa0c0d9c9f42",
               "header": {
                 "clipName": "itsafit",
                 "lessonTitle": "Full Dance @ 100%"
@@ -9848,7 +9848,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "itsafit-39cda271-1698-4e85-a47b-419c34b2f78f-performance",
+              "identifier": "itsafit-9d36b5d0-e8e1-4a11-90f5-4d7d3ce15770-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -9860,13 +9860,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.277576",
+    "created": "2021-09-29T13:58:05.388885",
     "thumbnailSrc": "tiktok/itsafit.jpg"
   },
   {
     "title": "renegade with sheet motion",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "25dcef32-67eb-46aa-8647-b48fb916a74f",
+    "id": "724cbf70-be25-486c-9c54-8b884d85838a",
     "stages": [
       {
         "title": "Preview",
@@ -9875,7 +9875,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "ca3be879-ecce-407a-a4c5-9959d2b25f20",
+              "_id": "a5db0168-709c-4425-86af-c0a8d59c5788",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Preview"
@@ -9955,7 +9955,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "725f8c2d-7c95-4729-8f75-629ef30a1052",
+              "_id": "ae9e3e94-788c-4cfc-aa16-455a1b50ff59",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Segment 1"
@@ -10045,7 +10045,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "1175e690-31b7-4af6-b427-1c3f484980a4",
+              "_id": "79752019-ae9d-4396-a321-12b5ae539837",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Segment 2"
@@ -10153,7 +10153,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "8f7cf6af-4b2e-460e-a489-230c8a8ca014",
+              "_id": "6b63872b-83bb-4547-9122-7952261c5a32",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Segment 3"
@@ -10265,7 +10265,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "23b8788c-040c-4f5a-8100-fee7808b6e85",
+              "_id": "fcc0c153-2d48-4347-bc88-b9339b02cea2",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Segment 4"
@@ -10373,7 +10373,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "renegade-25dcef32-67eb-46aa-8647-b48fb916a74f-performance",
+              "identifier": "renegade-724cbf70-be25-486c-9c54-8b884d85838a-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -10391,7 +10391,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "782976cd-7c7e-4f96-9130-04f5cadb2339",
+              "_id": "946a1e26-572c-41b1-8359-f6f1c33a20f1",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Full Dance @ 50%"
@@ -10456,7 +10456,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "33b2491b-1c78-443b-8c90-544b4c987f98",
+              "_id": "dcd17cae-0e9a-410f-9623-d6755d7130c8",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Full Dance @ 75%"
@@ -10521,7 +10521,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "1cad05e7-287d-43dd-9d8e-7a6c317fe480",
+              "_id": "c0b22b9c-42cb-41a1-8005-14e13d14fbb1",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Full Dance @ 100%"
@@ -10586,7 +10586,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "renegade-25dcef32-67eb-46aa-8647-b48fb916a74f-performance",
+              "identifier": "renegade-724cbf70-be25-486c-9c54-8b884d85838a-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -10598,13 +10598,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.281145",
+    "created": "2021-09-29T13:58:05.392886",
     "thumbnailSrc": "tiktok/renegade.jpg"
   },
   {
     "title": "renegade",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "63478ff6-c27d-4276-b697-2cb3659b0d3a",
+    "id": "7c076007-2098-42bc-b686-ef93fda7b24b",
     "stages": [
       {
         "title": "Preview",
@@ -10613,7 +10613,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "706dc711-3bae-40e9-96ea-856dc0e120a8",
+              "_id": "431410cc-e8f8-4465-b744-819f57fa787f",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Preview"
@@ -10693,7 +10693,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "dab6d6a6-99e4-4ea3-b698-5db8214ce6b2",
+              "_id": "6dd9018c-5553-451f-92e6-d2b37b019808",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Segment 1"
@@ -10761,7 +10761,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "50809a0e-e00e-45c2-8316-6d411346e224",
+              "_id": "f69ddf06-e0b3-44a7-97a9-681423e4f783",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Segment 2"
@@ -10843,7 +10843,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "d7c75a6c-b59b-45d5-b6a8-117c4a533302",
+              "_id": "233887d0-abdd-46a8-b8b3-d9124d38a0eb",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Segment 3"
@@ -10925,7 +10925,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "fb572688-d726-46ff-9e63-db5283ea86f8",
+              "_id": "c1d2f1c1-ed12-4152-a546-6f443feddce3",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Segment 4"
@@ -11007,7 +11007,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "renegade-63478ff6-c27d-4276-b697-2cb3659b0d3a-performance",
+              "identifier": "renegade-7c076007-2098-42bc-b686-ef93fda7b24b-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -11025,7 +11025,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "fd854bbc-8d46-44d7-a70a-98bdcef7e81a",
+              "_id": "c65152b5-924d-4962-b809-29f3ca243aa6",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Full Dance @ 50%"
@@ -11090,7 +11090,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "08d52392-0371-4b80-9e77-c6a5685a0048",
+              "_id": "83c2b724-fb10-47de-a547-01d9700e0c4d",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Full Dance @ 75%"
@@ -11155,7 +11155,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "497885fd-1aa2-4c37-9886-4f51cc00bed4",
+              "_id": "0041d86f-ec71-4a45-9ed3-0bacff6c9375",
               "header": {
                 "clipName": "renegade",
                 "lessonTitle": "Full Dance @ 100%"
@@ -11220,7 +11220,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "renegade-63478ff6-c27d-4276-b697-2cb3659b0d3a-performance",
+              "identifier": "renegade-7c076007-2098-42bc-b686-ef93fda7b24b-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -11232,13 +11232,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.282108",
+    "created": "2021-09-29T13:58:05.392886",
     "thumbnailSrc": "tiktok/renegade.jpg"
   },
   {
     "title": "sayso with sheet motion",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "fc6f2749-7763-4a34-8945-e6389c3031c1",
+    "id": "c54eba55-956e-49bc-8e4c-9ed2e8e8f43f",
     "stages": [
       {
         "title": "Preview",
@@ -11247,7 +11247,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "07316867-9df1-4a10-b540-aebc429df4b3",
+              "_id": "8c55b36f-d0e6-4ec4-9c43-88c58f3254bd",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Preview"
@@ -11426,7 +11426,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "620a05a7-92d0-4500-9eca-d072b69c86b0",
+              "_id": "7cd27789-f13e-4201-84f6-d531a2c33879",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 1"
@@ -11526,7 +11526,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "5074655d-865d-4789-ad84-2b6bde1cab13",
+              "_id": "457cd032-ba65-46fe-a51e-1050f754ba79",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 2"
@@ -11640,7 +11640,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "0d51eb8a-836a-4f37-a290-e16d790e6e97",
+              "_id": "38480a78-d3de-489f-a254-be935103f65b",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 3"
@@ -11754,7 +11754,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "ee1d25ca-469f-4f1c-8b13-f13ccbef3b4f",
+              "_id": "77841b02-a541-4136-a278-0f93e9118060",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 4"
@@ -11872,7 +11872,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "4fbdc07e-fb7a-41cd-b036-5b8a70e2c1b0",
+              "_id": "295ef857-3772-4d61-9388-f3765d689d82",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 5"
@@ -11990,7 +11990,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 6",
             "miniLessonEmbedded": {
-              "_id": "db86aaca-7815-4e06-b8a9-1999245aac40",
+              "_id": "f0838997-68b9-4e39-a002-b0dd39b608ab",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 6"
@@ -12108,7 +12108,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 7",
             "miniLessonEmbedded": {
-              "_id": "9d023be4-6d81-43af-9dc3-7ed5a717cb15",
+              "_id": "999e1755-9a0c-4540-ab9b-1be198ab92b2",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 7"
@@ -12222,7 +12222,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 8",
             "miniLessonEmbedded": {
-              "_id": "a7e786f3-4d18-4071-8a83-d209a782c620",
+              "_id": "dd82d432-b15a-4dbe-a911-fcf41bfd7e3c",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 8"
@@ -12336,7 +12336,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 9",
             "miniLessonEmbedded": {
-              "_id": "b697cc04-4c92-482e-bd4b-1c425ac1aadc",
+              "_id": "0b36cca0-ec05-4ff6-84f8-0a2690b1d91c",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 9"
@@ -12450,7 +12450,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 10",
             "miniLessonEmbedded": {
-              "_id": "447b01d5-0b2d-4093-832f-b9cca10f56c7",
+              "_id": "71229cfd-441a-4800-aaf4-e8d9fcc4e3ba",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 10"
@@ -12564,7 +12564,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 11",
             "miniLessonEmbedded": {
-              "_id": "86ab1e85-21bd-4814-a097-b598550d37ef",
+              "_id": "e7df2dfe-4e0e-4355-a98d-a42ea0dfc038",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 11"
@@ -12682,7 +12682,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 12",
             "miniLessonEmbedded": {
-              "_id": "ba3363eb-9ea0-4ca4-947f-170189c177ef",
+              "_id": "3fc09350-8da2-4321-a62c-c45cc237971e",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 12"
@@ -12800,7 +12800,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 13",
             "miniLessonEmbedded": {
-              "_id": "03cf126b-1229-46c8-b668-b1f5a64e2543",
+              "_id": "bb4f1b00-aa08-4aa7-9dde-421635364d63",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 13"
@@ -12918,7 +12918,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 14",
             "miniLessonEmbedded": {
-              "_id": "02135d04-6759-48d4-9245-b16a68cab01b",
+              "_id": "e30fe599-d6bd-4f26-9c22-83eba727211d",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 14"
@@ -13028,7 +13028,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "sayso-fc6f2749-7763-4a34-8945-e6389c3031c1-performance",
+              "identifier": "sayso-c54eba55-956e-49bc-8e4c-9ed2e8e8f43f-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -13046,7 +13046,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "419f2c13-6685-4772-9222-33214a135eeb",
+              "_id": "d5dbe4fd-12d2-4453-b5c6-904a79825b87",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Full Dance @ 50%"
@@ -13121,7 +13121,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "ea40f7a7-88d8-46da-a2e8-2fa9ff4fad7f",
+              "_id": "fbef2d50-b793-44ba-a8ce-e0161c5d1e4f",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Full Dance @ 75%"
@@ -13196,7 +13196,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "fdc3e7ac-07dd-4b3b-9144-715986abc5ea",
+              "_id": "22c1f63a-7e6f-4cf3-85b4-452b59cff518",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Full Dance @ 100%"
@@ -13271,7 +13271,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "sayso-fc6f2749-7763-4a34-8945-e6389c3031c1-performance",
+              "identifier": "sayso-c54eba55-956e-49bc-8e4c-9ed2e8e8f43f-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -13283,13 +13283,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.292137",
+    "created": "2021-09-29T13:58:05.402431",
     "thumbnailSrc": "tiktok/sayso.jpg"
   },
   {
     "title": "sayso",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "cb313b5e-540f-4388-b74f-a38d2b437837",
+    "id": "052ce4f5-b854-4841-8ef8-1030e94f6a23",
     "stages": [
       {
         "title": "Preview",
@@ -13298,7 +13298,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "84d72db4-7b90-4537-8aca-68a0105221ff",
+              "_id": "29db138a-ff5e-47d9-83e6-ad23824fbb71",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Preview"
@@ -13477,7 +13477,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "76117db8-d1d4-4a22-b8b6-778f7654aff6",
+              "_id": "f4b16d6a-de06-45f7-bb89-dc8db39afc9a",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 1"
@@ -13555,7 +13555,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "2be45254-f749-4b8c-a597-073bf4a75aa8",
+              "_id": "a5518729-101f-4d26-b483-f1cacb3691a9",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 2"
@@ -13647,7 +13647,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "3b8f6197-2f5a-4501-b12d-14189d4b772f",
+              "_id": "653f6dde-edb3-4c80-98b6-df51466b559e",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 3"
@@ -13739,7 +13739,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "8f252909-dcd4-4752-842f-add7b5baf982",
+              "_id": "cc06b1c7-41da-4027-943d-efc44f62f1c7",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 4"
@@ -13831,7 +13831,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "cfc3f705-21b5-4026-8ecb-6e3b9545f6cc",
+              "_id": "d61e3d1b-da12-41d4-b514-02096823ac3c",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 5"
@@ -13923,7 +13923,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 6",
             "miniLessonEmbedded": {
-              "_id": "9ef6faad-50cf-496d-a148-8119d2ef7197",
+              "_id": "5c8021c6-7000-4fee-b715-6bbe3bdc6caa",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 6"
@@ -14015,7 +14015,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 7",
             "miniLessonEmbedded": {
-              "_id": "d1d0aaaf-b745-425f-b4c2-1191fdd8033a",
+              "_id": "6eaf16df-8101-4606-b48a-166cfc73ebdf",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 7"
@@ -14107,7 +14107,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 8",
             "miniLessonEmbedded": {
-              "_id": "0f96ea75-019f-4562-8e23-e0fab62070fe",
+              "_id": "d1beb4e3-138b-4170-aa93-9d62a04941ce",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 8"
@@ -14199,7 +14199,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 9",
             "miniLessonEmbedded": {
-              "_id": "8d654c8b-f215-4f6e-a3cf-31600556d326",
+              "_id": "199e1184-4950-4f1c-bd0e-184a373ceaa3",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 9"
@@ -14291,7 +14291,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 10",
             "miniLessonEmbedded": {
-              "_id": "32ee965b-193b-46f9-8b17-1bafba0655ed",
+              "_id": "629665a7-b702-4561-ae72-a90e525c0066",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 10"
@@ -14383,7 +14383,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 11",
             "miniLessonEmbedded": {
-              "_id": "0f9807bc-03f1-4f9b-b8a9-3e75224d1f12",
+              "_id": "27cd5a62-bdbe-4527-a058-dea54362904d",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 11"
@@ -14475,7 +14475,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 12",
             "miniLessonEmbedded": {
-              "_id": "3605ec8e-3bfa-44ea-aa6d-005de2840343",
+              "_id": "502d4dc6-b5e2-4dce-aa66-68335c3209e6",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 12"
@@ -14567,7 +14567,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 13",
             "miniLessonEmbedded": {
-              "_id": "2e68d951-4665-4462-bf5e-72715c0da6e4",
+              "_id": "632b18d2-2270-4495-bcef-b4bdbc336068",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 13"
@@ -14659,7 +14659,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 14",
             "miniLessonEmbedded": {
-              "_id": "2b3ad09a-dcf5-412d-9dc7-7ef9182d8a65",
+              "_id": "ab3058bf-44f4-4715-b166-d243d0999d0f",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Segment 14"
@@ -14751,7 +14751,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "sayso-cb313b5e-540f-4388-b74f-a38d2b437837-performance",
+              "identifier": "sayso-052ce4f5-b854-4841-8ef8-1030e94f6a23-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -14769,7 +14769,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "7260ec33-0cea-466f-b5f7-658848bf88bb",
+              "_id": "95752eaf-8367-4002-b27f-6d4c87fdf87e",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Full Dance @ 50%"
@@ -14844,7 +14844,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "460f408d-7427-49b3-9f6c-15700138ef2a",
+              "_id": "c80b71b6-5d89-491d-884b-956cfbcb8249",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Full Dance @ 75%"
@@ -14919,7 +14919,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "af5d34f8-9592-40e4-84f8-e02b4a2d42ca",
+              "_id": "a14084cc-375f-445a-a9f6-d70b019a5d45",
               "header": {
                 "clipName": "sayso",
                 "lessonTitle": "Full Dance @ 100%"
@@ -14994,7 +14994,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "sayso-cb313b5e-540f-4388-b74f-a38d2b437837-performance",
+              "identifier": "sayso-052ce4f5-b854-4841-8ef8-1030e94f6a23-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -15006,13 +15006,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.293138",
+    "created": "2021-09-29T13:58:05.404430",
     "thumbnailSrc": "tiktok/sayso.jpg"
   },
   {
     "title": "supalonely with sheet motion",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "d0251224-5dc2-44b0-8318-6b2c04f40e70",
+    "id": "0e3bd8b3-28b7-44a9-b291-71fea86234ce",
     "stages": [
       {
         "title": "Preview",
@@ -15021,7 +15021,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "b1654c21-f714-4abe-a81f-cef754fed3c3",
+              "_id": "b508a8c2-717b-46ad-96ae-ce0edc0cc028",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Preview"
@@ -15121,7 +15121,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "4c1415e6-558c-436b-aefa-c7eb33941760",
+              "_id": "1f9046de-c2d4-4800-927f-86ad8a92462a",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Segment 1"
@@ -15213,7 +15213,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "13cba445-e1ee-4a31-be77-5db61a28db99",
+              "_id": "e0474308-182e-4b35-b0e2-c36cf5432b13",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Segment 2"
@@ -15327,7 +15327,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "9e1658ae-4b21-4287-8dfd-47ee3bd5845f",
+              "_id": "a4196ad1-b285-459a-957e-985b7cfbede4",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Segment 3"
@@ -15437,7 +15437,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "4adb9140-afd0-420b-a479-7dc532a07f0e",
+              "_id": "9b33abcd-9291-4d6d-be9d-7ca7a3565e92",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Segment 4"
@@ -15547,7 +15547,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "e31e8016-de85-4c74-b23b-95713b7358cf",
+              "_id": "e2c9eb70-a16d-4bc9-8575-53596473cba3",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Segment 5"
@@ -15661,7 +15661,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 6",
             "miniLessonEmbedded": {
-              "_id": "c9fcc123-c1ff-439a-a6d6-b5d9f5caee66",
+              "_id": "9a317ace-8cb5-464b-a384-d4c5f4129265",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Segment 6"
@@ -15771,7 +15771,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "supalonely-d0251224-5dc2-44b0-8318-6b2c04f40e70-performance",
+              "identifier": "supalonely-0e3bd8b3-28b7-44a9-b291-71fea86234ce-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -15789,7 +15789,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "e002c338-d406-4574-b0a0-5653fce928ab",
+              "_id": "6cc24eda-d70e-4a49-9fbe-904ec0cc47d6",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Full Dance @ 50%"
@@ -15856,7 +15856,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "816731e6-77f2-4430-8305-0d7ec7517d42",
+              "_id": "e09f4189-9cda-4f66-88be-3c738bad3367",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Full Dance @ 75%"
@@ -15923,7 +15923,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "7c857dca-3a76-4f23-9329-7af754eefd75",
+              "_id": "27e7066f-cd04-48dc-8b4a-838e9fb560d1",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Full Dance @ 100%"
@@ -15990,7 +15990,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "supalonely-d0251224-5dc2-44b0-8318-6b2c04f40e70-performance",
+              "identifier": "supalonely-0e3bd8b3-28b7-44a9-b291-71fea86234ce-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -16002,13 +16002,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.299107",
+    "created": "2021-09-29T13:58:05.410463",
     "thumbnailSrc": "tiktok/supalonely.jpg"
   },
   {
     "title": "supalonely",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "aca2430c-e3ca-493d-89a3-15d793a8f07c",
+    "id": "af1ec4a5-d9a2-4ad6-9b85-9ac22154a0d1",
     "stages": [
       {
         "title": "Preview",
@@ -16017,7 +16017,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "81e488c8-c774-4700-9fb3-7ff2327eb26c",
+              "_id": "8ec94abe-9faa-410c-832a-be0e855c2d6d",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Preview"
@@ -16117,7 +16117,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "75fd9861-7dc9-4774-b1a8-d9870b1195bb",
+              "_id": "05bd34d7-1429-4c1d-b64a-4b1ee5d4c56c",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Segment 1"
@@ -16187,7 +16187,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "b33aab6c-c9ce-464c-b649-8a23dcdaaff2",
+              "_id": "ed4bd8c1-91af-4975-9567-19bb6a57b3e1",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Segment 2"
@@ -16271,7 +16271,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "c620006d-0a9b-46c0-bf67-01981b8625ca",
+              "_id": "dbab97ec-8355-4c47-ab1b-a51746f8e642",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Segment 3"
@@ -16355,7 +16355,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "a7ec3325-876b-492d-8dfd-237c77d8701f",
+              "_id": "5498f440-e84b-4d0f-9c55-588338d74336",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Segment 4"
@@ -16439,7 +16439,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "d7588a16-b078-4da4-b674-bce6032f56f4",
+              "_id": "6831cb00-6228-4b92-8d52-edba3d0d8710",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Segment 5"
@@ -16523,7 +16523,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 6",
             "miniLessonEmbedded": {
-              "_id": "5cf6bb3c-5cb0-4693-a3d2-b5c77728fd9b",
+              "_id": "133afae5-c3c7-49a6-a99e-a91773073225",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Segment 6"
@@ -16607,7 +16607,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "supalonely-aca2430c-e3ca-493d-89a3-15d793a8f07c-performance",
+              "identifier": "supalonely-af1ec4a5-d9a2-4ad6-9b85-9ac22154a0d1-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -16625,7 +16625,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "5224755b-3b3b-4541-b2ae-56323664ed3f",
+              "_id": "53db4007-322a-4292-8bb2-4942e4f5517b",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Full Dance @ 50%"
@@ -16692,7 +16692,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "ebecabc1-fcab-483f-b3fc-1767b2c044c2",
+              "_id": "b0a9f4ea-66ad-49ac-a2c1-0b23e9f5b1dc",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Full Dance @ 75%"
@@ -16759,7 +16759,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "a9c2dfec-2d8b-4d1e-90ed-3bfd201bedc9",
+              "_id": "e34fff6a-adb7-40a0-b854-89e03b65d725",
               "header": {
                 "clipName": "supalonely",
                 "lessonTitle": "Full Dance @ 100%"
@@ -16826,7 +16826,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "supalonely-aca2430c-e3ca-493d-89a3-15d793a8f07c-performance",
+              "identifier": "supalonely-af1ec4a5-d9a2-4ad6-9b85-9ac22154a0d1-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -16838,13 +16838,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.301109",
+    "created": "2021-09-29T13:58:05.411443",
     "thumbnailSrc": "tiktok/supalonely.jpg"
   },
   {
     "title": "thegitup with sheet motion",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "766b406f-4059-4def-bc37-7b0abd40cfbf",
+    "id": "6b36e419-4ccf-46ce-9391-a33e6a0c7454",
     "stages": [
       {
         "title": "Preview",
@@ -16853,7 +16853,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "e91ba28d-40a5-4bce-b3bd-aa352f201ed5",
+              "_id": "4906cc45-24a8-46a3-8ee6-f48e77019c50",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Preview"
@@ -16944,7 +16944,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "ea1a2d1a-f0fa-4e9f-b71f-cce288bcc9f7",
+              "_id": "06c4a2fa-5097-4dd6-ad79-71ff6b07421e",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Segment 1"
@@ -17035,7 +17035,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "ff05f567-f471-47b3-a3a7-e270052983d8",
+              "_id": "ae3ef58b-e8e8-465c-b4a4-5adfb7cd100c",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Segment 2"
@@ -17148,7 +17148,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "265c762b-4f1b-45f8-a15b-0b8971be5086",
+              "_id": "f9abd051-e772-4bcd-b627-0c6e4c88173a",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Segment 3"
@@ -17257,7 +17257,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "ea91fb54-c891-4cb1-b0f2-1e3fca4041f4",
+              "_id": "7795bd5e-6103-4f68-afb7-bc45eaf90b39",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Segment 4"
@@ -17370,7 +17370,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "6e571de3-2212-4618-8bb1-5a9eedc60373",
+              "_id": "5504b81a-454e-4050-94c4-217f56a2f3ce",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Segment 5"
@@ -17422,19 +17422,19 @@
                           },
                           {
                             "timestamp": 15.1151,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 15.1151,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 15.1151,
-                            "type": "pause"
+                            "type": "move"
                           },
                           {
                             "timestamp": 15.1151,
-                            "type": "pause"
+                            "type": "move"
                           }
                         ]
                       }
@@ -17483,7 +17483,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "thegitup-766b406f-4059-4def-bc37-7b0abd40cfbf-performance",
+              "identifier": "thegitup-6b36e419-4ccf-46ce-9391-a33e6a0c7454-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -17501,7 +17501,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "be59f641-8aab-4a57-a338-0ae61f1584d1",
+              "_id": "95dabf80-66a5-4451-964f-e0aaad834f36",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Full Dance @ 50%"
@@ -17567,7 +17567,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "cc72b05c-bf52-4c24-8381-3f6971b2abc4",
+              "_id": "a060b34e-fad0-4c31-9608-87a7b1a7c47b",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Full Dance @ 75%"
@@ -17633,7 +17633,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "9d0e576c-d716-4f1b-bb40-412f3d439455",
+              "_id": "37e16730-3d0e-4718-8cf0-da3b2728e1c4",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Full Dance @ 100%"
@@ -17699,7 +17699,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "thegitup-766b406f-4059-4def-bc37-7b0abd40cfbf-performance",
+              "identifier": "thegitup-6b36e419-4ccf-46ce-9391-a33e6a0c7454-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -17711,13 +17711,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.306110",
+    "created": "2021-09-29T13:58:05.416463",
     "thumbnailSrc": "tiktok/thegitup.jpg"
   },
   {
     "title": "thegitup",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "a5705cbc-27f0-4202-9ebb-4cf52e022ad7",
+    "id": "34f89d6e-715c-46f4-a0e6-ccbfdc0568cf",
     "stages": [
       {
         "title": "Preview",
@@ -17726,7 +17726,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "60c3e58b-4e61-4eaa-a532-32a84dce22d2",
+              "_id": "1dbab3b0-cf53-4393-9899-b6e16c768bd6",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Preview"
@@ -17817,7 +17817,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "664210b6-be06-4006-8066-97119443d693",
+              "_id": "7dd1a545-001d-4504-bb25-726c6c3b1f25",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Segment 1"
@@ -17886,7 +17886,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "9b6c8c30-4b79-40eb-9260-587d56edf120",
+              "_id": "d9ebdcf5-4613-42f1-b225-264e229c1b8f",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Segment 2"
@@ -17969,7 +17969,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "d22e257a-1746-4315-91c6-a606abc00108",
+              "_id": "d2c31fc3-8dfb-4b84-9ad7-a862bf490c18",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Segment 3"
@@ -18052,7 +18052,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "5e849e65-eacc-4712-a303-1e54ef03f0ef",
+              "_id": "06a7d348-95e8-4569-a436-574b7af45e19",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Segment 4"
@@ -18135,7 +18135,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "f7c6add3-1d8e-4130-99ee-6735121702cc",
+              "_id": "ed529820-09cb-44b3-aff6-335b74b0c689",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Segment 5"
@@ -18218,7 +18218,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "thegitup-a5705cbc-27f0-4202-9ebb-4cf52e022ad7-performance",
+              "identifier": "thegitup-34f89d6e-715c-46f4-a0e6-ccbfdc0568cf-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -18236,7 +18236,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "0cfd135b-ca01-4fa4-8295-6780e2744ecf",
+              "_id": "49c6d123-39a6-4808-898d-78f5ba65781a",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Full Dance @ 50%"
@@ -18302,7 +18302,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "b2612740-ceec-4da8-83fe-4759e6387419",
+              "_id": "b42a5b58-2885-4703-95dc-91add3a0f482",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Full Dance @ 75%"
@@ -18368,7 +18368,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "71db28f2-4fe5-4f09-a2bc-720341e8eaa6",
+              "_id": "5ea65a1b-f589-49b0-bb0e-1f86fe4e16a9",
               "header": {
                 "clipName": "thegitup",
                 "lessonTitle": "Full Dance @ 100%"
@@ -18434,7 +18434,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "thegitup-a5705cbc-27f0-4202-9ebb-4cf52e022ad7-performance",
+              "identifier": "thegitup-34f89d6e-715c-46f4-a0e6-ccbfdc0568cf-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -18446,13 +18446,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.307107",
+    "created": "2021-09-29T13:58:05.417478",
     "thumbnailSrc": "tiktok/thegitup.jpg"
   },
   {
     "title": "unhhunh with sheet motion",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "3428c41b-1647-4a58-b36e-5881b0b58ab2",
+    "id": "6fbe34fc-7964-4109-85cc-f4906199a23a",
     "stages": [
       {
         "title": "Preview",
@@ -18461,7 +18461,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "75e9e73a-60ca-452c-8451-970387356784",
+              "_id": "036f6432-b5cf-4460-a264-8daa232082f0",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Preview"
@@ -18569,7 +18569,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "3d8dc08d-2a2a-43c4-8347-98d574e56ba9",
+              "_id": "b2086ff1-95f0-4b6b-8cb9-dd86e2bc8d1d",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 1"
@@ -18662,7 +18662,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "c38276ea-811d-4dde-a78f-8e56192849ee",
+              "_id": "25e808bc-6535-4183-a13c-2dac196947de",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 2"
@@ -18773,7 +18773,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "0585ab94-8c11-492f-b41d-a643325b2e25",
+              "_id": "e830b34c-e286-4a1d-92f8-8a7fa7430b71",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 3"
@@ -18884,7 +18884,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "5bbcccd3-faaf-4659-bb7a-469943ce1172",
+              "_id": "868e943a-ff1d-49e1-840d-b0f173c9a18f",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 4"
@@ -18995,7 +18995,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "ce6517d7-34d2-41a3-b6c8-f78c019ca631",
+              "_id": "6bc2b0ca-ba7f-4df5-8510-0b015a0e8a10",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 5"
@@ -19106,7 +19106,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 6",
             "miniLessonEmbedded": {
-              "_id": "9198bb61-3ec2-42ff-968a-353a74f86c35",
+              "_id": "9ca0c1ef-d54b-4615-a530-9af4a0794570",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 6"
@@ -19221,7 +19221,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 7",
             "miniLessonEmbedded": {
-              "_id": "92ec3f8b-7227-4e59-998d-8da652e5b880",
+              "_id": "b0e9f8ff-e8ae-44fb-a840-695bfb178976",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 7"
@@ -19324,7 +19324,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "unhhunh-3428c41b-1647-4a58-b36e-5881b0b58ab2-performance",
+              "identifier": "unhhunh-6fbe34fc-7964-4109-85cc-f4906199a23a-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -19342,7 +19342,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "fd74614b-52c3-449a-a877-c63e9c9f2335",
+              "_id": "36bc6fb0-15d4-4fe1-92e4-b61a96bc2789",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Full Dance @ 50%"
@@ -19410,7 +19410,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "0cbe99da-1de7-4ee1-b239-4c49e77927ee",
+              "_id": "edf72ef4-96ae-4fe8-a6bb-491132a0c3ee",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Full Dance @ 75%"
@@ -19478,7 +19478,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "f2f30271-1d9a-4fd6-b9f3-bb88cd338792",
+              "_id": "277702e3-213c-4860-b61f-869620c17cdc",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Full Dance @ 100%"
@@ -19546,7 +19546,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "unhhunh-3428c41b-1647-4a58-b36e-5881b0b58ab2-performance",
+              "identifier": "unhhunh-6fbe34fc-7964-4109-85cc-f4906199a23a-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -19558,13 +19558,13 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.312127",
+    "created": "2021-09-29T13:58:05.422431",
     "thumbnailSrc": "tiktok/unhhunh.jpg"
   },
   {
     "title": "unhhunh",
     "creationMethod": "SimpleCompiler ('4BeatMeasures' segmentation, 'BeatAligned-filteredByNetMovement' keyframes)",
-    "id": "27873943-3678-4d0e-a2f5-bb06826369b8",
+    "id": "92a22c9d-ee9a-455f-a405-188e54cc82ec",
     "stages": [
       {
         "title": "Preview",
@@ -19573,7 +19573,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Preview",
             "miniLessonEmbedded": {
-              "_id": "976c2a78-ec87-4840-a06f-72e414752d37",
+              "_id": "f72a10af-1b52-46bd-89c8-119585a66aab",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Preview"
@@ -19681,7 +19681,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 1",
             "miniLessonEmbedded": {
-              "_id": "4546cef8-1dd3-4997-94da-34c6e3348d96",
+              "_id": "0bd65880-939f-4003-bb1f-3ba91db73157",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 1"
@@ -19752,7 +19752,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 2",
             "miniLessonEmbedded": {
-              "_id": "02aaf57f-22c4-4857-ad22-d3d2b237f622",
+              "_id": "b69c454b-f037-4014-bba2-9421331b8e61",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 2"
@@ -19837,7 +19837,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 3",
             "miniLessonEmbedded": {
-              "_id": "8830b1bc-4805-419c-a5f4-27ab04d0f1ae",
+              "_id": "250f4c50-8001-49ca-b76c-50da1fa7e9c3",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 3"
@@ -19922,7 +19922,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 4",
             "miniLessonEmbedded": {
-              "_id": "0121ea74-8522-4616-a496-7598b8ae61d4",
+              "_id": "b3d4ed3c-e558-4a58-b53e-e52f825128f2",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 4"
@@ -20007,7 +20007,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 5",
             "miniLessonEmbedded": {
-              "_id": "2a863e34-9c6e-4707-9521-db355467f0d6",
+              "_id": "39fa7d33-8c5a-4415-95dc-2ee6b714a2e7",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 5"
@@ -20092,7 +20092,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 6",
             "miniLessonEmbedded": {
-              "_id": "bd5475ab-983f-424a-bf1c-394b63fb5d1e",
+              "_id": "20225fa9-c030-4ca3-81a5-a8816e173dec",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 6"
@@ -20177,7 +20177,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Segment 7",
             "miniLessonEmbedded": {
-              "_id": "e8825cd6-7789-4052-9b4a-1be06ebba8c9",
+              "_id": "5bf39c9f-0efe-46bc-8fb1-b465b5675aa1",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Segment 7"
@@ -20262,7 +20262,7 @@
             "type": "UploadTask",
             "title": "Initial Performance",
             "upload": {
-              "identifier": "unhhunh-27873943-3678-4d0e-a2f5-bb06826369b8-performance",
+              "identifier": "unhhunh-92a22c9d-ee9a-455f-a405-188e54cc82ec-performance",
               "prompt": "Show us what you've learned so far!"
             },
             "experiment": {
@@ -20280,7 +20280,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 50%",
             "miniLessonEmbedded": {
-              "_id": "784d55bd-61c6-45e9-879e-5011c056a0ab",
+              "_id": "a25d4605-31dd-467c-a9c2-8b41db09a8a3",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Full Dance @ 50%"
@@ -20348,7 +20348,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 75%",
             "miniLessonEmbedded": {
-              "_id": "f3e7a867-acae-4d9d-9305-e68e9288799b",
+              "_id": "57e04712-16b1-4fae-aef4-1c550545e0a4",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Full Dance @ 75%"
@@ -20416,7 +20416,7 @@
             "type": "MiniLessonEmbedded",
             "title": "Full Dance @ 100%",
             "miniLessonEmbedded": {
-              "_id": "932a74f8-bb0b-4a83-a7c2-a36da502b0df",
+              "_id": "e366f2df-55fd-48b2-b7be-c7ca32ae1542",
               "header": {
                 "clipName": "unhhunh",
                 "lessonTitle": "Full Dance @ 100%"
@@ -20484,7 +20484,7 @@
             "type": "UploadTask",
             "title": "Performance",
             "upload": {
-              "identifier": "unhhunh-27873943-3678-4d0e-a2f5-bb06826369b8-performance",
+              "identifier": "unhhunh-92a22c9d-ee9a-455f-a405-188e54cc82ec-performance",
               "prompt": "Now perform this dance!"
             },
             "experiment": {
@@ -20496,7 +20496,7 @@
         "maxStageTimeSecs": 900
       }
     ],
-    "created": "2021-09-29T13:56:08.313108",
+    "created": "2021-09-29T13:58:05.423431",
     "thumbnailSrc": "tiktok/unhhunh.jpg"
   }
 ]
