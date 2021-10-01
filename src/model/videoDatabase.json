@@ -806,10 +806,7 @@
       "TikTok"
     ],
     "landmarkScope": [
-      "pose",
-      "rightHand",
-      "leftHand",
-      "face"
+      "pose"
     ],
     "thumbnailSrc": "tiktok/ohnana.jpg",
     "audioSrc": "tiktok/ohnana.wav"
@@ -851,5 +848,233 @@
     ],
     "thumbnailSrc": "tiktok/red-velvet.jpg",
     "audioSrc": "tiktok/red-velvet.wav"
+  },
+  {
+    "title": "colddance-tutorial",
+    "clipName": "colddance-tutorial",
+    "clipPath": "tiktok/colddance-tutorial.mp4",
+    "frameCount": 1293,
+    "fps": 54.258179231863444,
+    "duration": 23.83050847457627,
+    "width": 576,
+    "height": 1024,
+    "startTime": 0,
+    "endTime": 23.83050847457627,
+    "poseUpperBodyOnly": false,
+    "tags": [],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/colddance-tutorial.jpg",
+    "audioSrc": "tiktok/colddance-tutorial.wav"
+  },
+  {
+    "title": "colddance",
+    "clipName": "colddance",
+    "clipPath": "tiktok/colddance.mp4",
+    "frameCount": 398,
+    "fps": 30.0,
+    "duration": 13.266666666666667,
+    "width": 576,
+    "height": 1024,
+    "startTime": 0,
+    "endTime": 13.266666666666667,
+    "poseUpperBodyOnly": false,
+    "tags": [],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/colddance.jpg",
+    "audioSrc": "tiktok/colddance.wav"
+  },
+  {
+    "title": "hello-b$$$-tutorial",
+    "clipName": "hello-b$$$-tutorial",
+    "clipPath": "tiktok/hello-b$$$-tutorial.mp4",
+    "frameCount": 878,
+    "fps": 29.0,
+    "duration": 30.275862068965516,
+    "width": 576,
+    "height": 1024,
+    "startTime": 0,
+    "endTime": 30.275862068965516,
+    "poseUpperBodyOnly": false,
+    "tags": [],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/hello-b$$$-tutorial.jpg",
+    "audioSrc": "tiktok/hello-b$$$-tutorial.wav"
+  },
+  {
+    "title": "hello-b$$$",
+    "clipName": "hello-b$$$",
+    "clipPath": "tiktok/hello-b$$$.mp4",
+    "frameCount": 568,
+    "fps": 29.0,
+    "duration": 19.586206896551722,
+    "width": 576,
+    "height": 1028,
+    "startTime": 0,
+    "endTime": 19.586206896551722,
+    "poseUpperBodyOnly": false,
+    "tags": [],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/hello-b$$$.jpg",
+    "audioSrc": "tiktok/hello-b$$$.wav"
+  },
+  {
+    "title": "last-christmas-tutorial",
+    "clipName": "last-christmas-tutorial",
+    "clipPath": "tiktok/last-christmas-tutorial.mp4",
+    "frameCount": 452,
+    "fps": 30.0,
+    "duration": 15.066666666666666,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 15.066666666666666,
+    "poseUpperBodyOnly": false,
+    "tags": [],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/last-christmas-tutorial.jpg",
+    "audioSrc": "tiktok/last-christmas-tutorial.wav"
+  },
+  {
+    "title": "mad-at-disney-tutorial",
+    "clipName": "mad-at-disney-tutorial",
+    "clipPath": "tiktok/mad-at-disney-tutorial.mp4",
+    "frameCount": 544,
+    "fps": 29.97,
+    "duration": 18.151484818151484,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 18.151484818151484,
+    "poseUpperBodyOnly": false,
+    "tags": [],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/mad-at-disney-tutorial.jpg",
+    "audioSrc": "tiktok/mad-at-disney-tutorial.wav"
+  },
+  {
+    "title": "mad-at-disney",
+    "clipName": "mad-at-disney",
+    "clipPath": "tiktok/mad-at-disney.mp4",
+    "frameCount": 542,
+    "fps": 30.0,
+    "duration": 18.066666666666666,
+    "width": 576,
+    "height": 1024,
+    "startTime": 0,
+    "endTime": 18.066666666666666,
+    "poseUpperBodyOnly": false,
+    "tags": [],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/mad-at-disney.jpg",
+    "audioSrc": "tiktok/mad-at-disney.wav"
+  },
+  {
+    "title": "pajamaparty-tutorial",
+    "clipName": "pajamaparty-tutorial",
+    "clipPath": "tiktok/pajamaparty-tutorial.mp4",
+    "frameCount": 419,
+    "fps": 30.0,
+    "duration": 13.966666666666667,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 13.966666666666667,
+    "poseUpperBodyOnly": false,
+    "tags": [],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/pajamaparty-tutorial.jpg",
+    "audioSrc": "tiktok/pajamaparty-tutorial.wav"
+  },
+  {
+    "title": "shirt-zha-tutorial",
+    "clipName": "shirt-zha-tutorial",
+    "clipPath": "tiktok/shirt-zha-tutorial.mp4",
+    "frameCount": 954,
+    "fps": 59.0,
+    "duration": 16.16949152542373,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 16.16949152542373,
+    "poseUpperBodyOnly": false,
+    "tags": [],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/shirt-zha-tutorial.jpg",
+    "audioSrc": "tiktok/shirt-zha-tutorial.wav"
+  },
+  {
+    "title": "shirt-zha",
+    "clipName": "shirt-zha",
+    "clipPath": "tiktok/shirt-zha.mp4",
+    "frameCount": 434,
+    "fps": 30.0,
+    "duration": 14.466666666666667,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 14.466666666666667,
+    "poseUpperBodyOnly": false,
+    "tags": [],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/shirt-zha.jpg",
+    "audioSrc": "tiktok/shirt-zha.wav"
+  },
+  {
+    "title": "welcome-to-my-world-tutorial",
+    "clipName": "welcome-to-my-world-tutorial",
+    "clipPath": "tiktok/welcome-to-my-world-tutorial.mp4",
+    "frameCount": 873,
+    "fps": 29.0,
+    "duration": 30.103448275862068,
+    "width": 576,
+    "height": 1024,
+    "startTime": 0,
+    "endTime": 30.103448275862068,
+    "poseUpperBodyOnly": false,
+    "tags": [],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/welcome-to-my-world-tutorial.jpg",
+    "audioSrc": "tiktok/welcome-to-my-world-tutorial.wav"
+  },
+  {
+    "title": "welcome-to-my-world",
+    "clipName": "welcome-to-my-world",
+    "clipPath": "tiktok/welcome-to-my-world.mp4",
+    "frameCount": 430,
+    "fps": 29.0,
+    "duration": 14.827586206896552,
+    "width": 576,
+    "height": 1024,
+    "startTime": 0,
+    "endTime": 14.827586206896552,
+    "poseUpperBodyOnly": false,
+    "tags": [],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/welcome-to-my-world.jpg",
+    "audioSrc": "tiktok/welcome-to-my-world.wav"
   }
 ]
