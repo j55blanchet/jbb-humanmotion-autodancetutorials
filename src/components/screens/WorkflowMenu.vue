@@ -280,13 +280,15 @@ export default defineComponent({
             const stageTimeExpired = stageSecondsRemaining <= 0;
             const isValidAfterExpiredTask = isInActiveStage && isTimeExpiredTask && stageTimeExpired;
             const isValidUnexpired = !isInActiveStage || (!isTimeExpiredTask && !stageTimeExpired);
+            // const isNewlyOnThisStage = this.activeStageIndex === stageIndex-1 && this.isStageCompleted(filteredStages[i-1])
+            const isBeforeTime = (step.experiment?.isBeforeTimeStartTask ?? false);
 
             return {
               step,
               isComplete: step.status === 'completed',
               dbEntry: GetVideoEntryForWorkflowStep(db, step),
               isExpired: !isTimeExpiredTask && stageTimeExpired,
-              isClickable: (isTestMode || isInActiveStage)
+              isClickable: (isTestMode || isInActiveStage || isBeforeTime)
                           && (isValidUnexpired || isValidAfterExpiredTask),
               isValidAfterExpiredTask,
               waitingForTimeExpiration: isInActiveStage && isTimeExpiredTask && !stageTimeExpired,

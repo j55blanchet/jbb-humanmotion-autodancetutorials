@@ -1076,5 +1076,24 @@
     ],
     "thumbnailSrc": "tiktok/welcome-to-my-world.jpg",
     "audioSrc": "tiktok/welcome-to-my-world.wav"
+  },
+  {
+    "title": "last-christmas-blurred",
+    "clipName": "last-christmas-blurred",
+    "clipPath": "tiktok/last-christmas-blurred.mp4",
+    "frameCount": 450,
+    "fps": 29.97002997002997,
+    "duration": 15.015,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 15.015,
+    "poseUpperBodyOnly": false,
+    "tags": [],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/last-christmas-blurred.jpg",
+    "audioSrc": "tiktok/last-christmas-blurred.wav"
   }
 ]
