@@ -13,12 +13,14 @@
       @timeupdate="onTimeUpdated(true)"
       @ended="endReported = true"
       playsinline
+      :showControls="showControls"
     ></video>
     <canvas class="is-overlay" ref="canvasElement" v-show="drawPoseLandmarks"></canvas>
   </div>
 </template>
 
 <script lang="ts">
+import MotionTrail from '@/model/MotionTrail';
 import { DrawPose } from '@/services/MediaPipe';
 import { Landmark } from '@/services/MediaPipeTypes';
 import poseProvider from '@/services/PoseProvider';
@@ -127,6 +129,11 @@ export default defineComponent({
   name: 'VideoPlayer',
   props: {
     videoBaseUrl: String,
+    motionTrails: {
+      type: Array,
+      default: Array,
+      required: false,
+    },
     drawPoseLandmarks: {
       type: Boolean,
       default: false,
@@ -151,6 +158,10 @@ export default defineComponent({
       type: String,
       default: 'red',
     },
+    showControls: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: [
     'playback-completed',
@@ -158,7 +169,7 @@ export default defineComponent({
   ],
   setup(props, ctx) {
     const {
-      videoBaseUrl, drawPoseLandmarks, fps, setDrawStyle, emphasizedJoints, emphasizedJointStyle,
+      videoBaseUrl, motionTrails, drawPoseLandmarks, fps, setDrawStyle, emphasizedJoints, emphasizedJointStyle,
     } = toRefs(props);
 
     const videoElement = ref(null as null | HTMLVideoElement);
@@ -260,15 +271,29 @@ export default defineComponent({
       // }
     };
 
+    function drawMotionTrail(trail: MotionTrail) {
+      const videoE = videoElement.value;
+      const sourceAR = (videoE?.videoHeight && videoE.videoHeight) ? videoE.videoWidth / videoE.videoHeight : 1;
+      const drawCtx = canvasCtx.value;
+      if (!drawCtx) return;
+    }
+
     watch([videoBaseUrl, drawPoseLandmarks], retieveClearPoseFile);
     onMounted(retieveClearPoseFile);
 
-    watch([canvasModified, currentPose, drawPoseLandmarks], () => {
+    watch([canvasModified, currentPose, drawPoseLandmarks, motionTrails], () => {
       canvasModified.value = false;
       clearDrawing();
 
       if (drawPoseLandmarks.value) {
         drawPose(currentPose.value as any);
+      }
+
+      if (motionTrails.value) {
+        for (let i = 0; i < motionTrails.value.length; i += 1) {
+          const trail = motionTrails.value[i];
+          drawMotionTrail(trail as any);
+        }
       }
     });
 
