@@ -9,6 +9,7 @@
         :setDrawStyle="setDrawStyle"
         :emphasizedJoints="emphasizedJoints"
         :emphasizedJointStyle="emphasizedJointStyle"
+        :showControls="showControls"
         />
 </template>
 
@@ -98,6 +99,10 @@ export default defineComponent({
     emphasizedJointStyle: {
       type: String,
       default: 'red',
+    },
+    showControls: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ['playback-completed', 'progress', 'pause-hit', 'pause-end'],

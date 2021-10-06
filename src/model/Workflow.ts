@@ -29,6 +29,7 @@ export interface WorkflowStep {
     showInExperimentOnly?: boolean;
     // disableRepitition?: boolean;
     isTimeExpiredTask?: boolean;
+    isBeforeTimeStartTask?: boolean;
   };
 }
 

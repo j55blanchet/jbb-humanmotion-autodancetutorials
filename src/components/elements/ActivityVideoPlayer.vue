@@ -22,6 +22,7 @@
         @playback-completed="onPlaybackCompleted"
         @pause-hit="onPauseHit"
         @pause-end="onPauseEnded"
+        :showControls="activity?.showVideoControls ?? false"
       />
     </div>
 
