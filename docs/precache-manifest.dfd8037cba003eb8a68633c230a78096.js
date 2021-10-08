@@ -1,7 +1,7 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "3baef06677e3d5ebd8e0",
-    "url": "/css/app.2115cbd8.css"
+    "revision": "7b990ab650b990d0275e",
+    "url": "/css/app.cd51d6c1.css"
   },
   {
     "revision": "434f566c61ffe4138fb0925237a8d95a",
@@ -20,12 +20,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/img/tiktokdances.589b3b61.jpg"
   },
   {
-    "revision": "4ec48cfa3fe4aef1b16818ecc791f78c",
+    "revision": "167719c2ba8b7ff366e3fc73e0c5c173",
     "url": "/index.html"
   },
   {
-    "revision": "3baef06677e3d5ebd8e0",
-    "url": "/js/app.7ae82281.js"
+    "revision": "7b990ab650b990d0275e",
+    "url": "/js/app.f77e6844.js"
   },
   {
     "revision": "f64197709254f61dcd73",
@@ -464,6 +464,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/poses/tiktok/itsafit.pose.csv"
   },
   {
+    "revision": "1e405d4ad94e0a0aa03d8078b31d343c",
+    "url": "/poses/tiktok/last-christmas-blurred.pose.csv"
+  },
+  {
     "revision": "73a58686823d6ccf1102946241d070d4",
     "url": "/poses/tiktok/last-christmas-tutorial.pose.csv"
   },
@@ -680,6 +684,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/thumbs/tiktok/itsafit.jpg"
   },
   {
+    "revision": "abf667aaa859353c460403041dbc4389",
+    "url": "/thumbs/tiktok/last-christmas-blurred.jpg"
+  },
+  {
     "revision": "5caf343886b2b27c410e4046d67794ef",
     "url": "/thumbs/tiktok/last-christmas-tutorial.jpg"
   },
@@ -878,6 +886,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "839b46439f30b22745ca54cf2606e83d",
     "url": "/videos/tiktok/itsafit.mp4"
+  },
+  {
+    "revision": "2c6fce66235072a2e9ae2ce3d487e770",
+    "url": "/videos/tiktok/last-christmas-blurred.mp4"
   },
   {
     "revision": "a5fb3c3ddeba489aa89d5a370607873f",
