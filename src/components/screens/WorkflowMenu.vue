@@ -36,8 +36,15 @@
           <span class="icon" v-if="isStageCompleted(stage)"><i class="fa fa-check"></i></span>
         </span>
       </p>
-
-      <div class="grid-menu container block">
+      <div class="grid-menu container" v-if="stage.beforeStartSteps.length > 0">
+        <WorkflowStepCard
+          v-for="(stepInfo, j) in stage.beforeStartSteps"
+          :stageSecondsRemainingString="stageSecondsRemainingString"
+          :stepInfo="stepInfo"
+          :key="j"
+          @card-selected="startWorkflowStep(stepInfo.step)"/>
+      </div>
+      <div class="grid-menu container">
         <div
           class="box m-4 is-clickable hover-expand has-border-info vcenter-parent"
           v-if="activeStageIndex === i-1 && isStageCompleted(filteredStages[i-1])"
@@ -70,55 +77,22 @@
             </span>
         </div>
 
-        <div class="box m-4"
-            :class="{
-                  'is-clickable': stepInfo.isClickable,
-                  'hover-expand': stepInfo.isClickable,
-                  'has-text-grey': !stepInfo.isClickable,
-                  'has-background-grey-lighter': !stepInfo.isClickable,
-                  'has-background-white-ter': stepInfo.isClickable && stepInfo.step !== nextStepInStage,
-                  'has-border-success': stepInfo.step.status === 'completed',
-                  'has-border-info': stepInfo.step === nextStepInStage,
-                  'has-border-grey': stepInfo.isClickable && stepInfo.step !== nextStepInStage && stepInfo.step.status !== 'completed'
-                }"
-            @click="stepInfo.isClickable && startWorkflowStep(stepInfo.step)"
-            v-for="(stepInfo, j) in stage.filteredSteps" :key="j">
-          <article
-            class="level"
-          >
-            <div class="level-left">
-              <div class="level-item">
-                <p class="image is-48x48" v-if="stepInfo.dbEntry?.thumbnailSrc">
-                  <img class="is-100percent is-contain" :src="stepInfo.dbEntry?.thumbnailSrc" :alt="stepInfo.step.title">
-                </p>
-                <p class="icon is-large" v-else>
-                  <i class="fas fa-2x fa-align-center" v-if="stepInfo.step.type === 'InstructionOnly'"></i>
-                  <i class="fas fa-2x fa-images" v-if="stepInfo.step.type === 'MiniLessonEmbedded' || stepInfo.step.type === 'MiniLessonnReference'"></i>
-                  <i class="fas fa-2x fa-camera" v-if="stepInfo.step.type === 'UploadTask'"></i>
-                </p>
-              </div>
-              <div class="level-item">
-                <div>
-                  <p v-text="stepInfo.step.title"></p>
-                  <p v-if="stepInfo.waitingForTimeExpiration" class="is-size-7">&nbsp;in {{stageSecondsRemainingString}}</p>
-                  <p v-if="stepInfo.isClickable" class="is-size-7">
-                    <span v-if="stepInfo.isComplete">Click to repeat</span>
-                    <span v-if="stepInfo.step === nextStepInStage">Up Next</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="level-right">
-              <div class="level-item">
-                <span class="icon is-large">
-                  <i class="far fa-check-circle has-text-success" v-if="stepInfo.step.status==='completed'"></i>
-                  <i class="far fa-play-circle" v-if="stepInfo.step===nextStepInStage"></i>
-                  <i class="far fa-circle" v-if="stepInfo.step !== nextStepInStage && stepInfo.step.status==='notstarted'"></i>
-                </span>
-              </div>
-            </div>
-          </article>
-        </div>
+        <WorkflowStepCard
+          v-for="(stepInfo, j) in stage.mainSteps"
+          :stageSecondsRemainingString="stageSecondsRemainingString"
+          :stepInfo="stepInfo"
+          :key="j"
+          @card-selected="startWorkflowStep(stepInfo.step)"/>
+
+      </div>
+      <div class="grid-menu container" v-if="stage.afterExpiredSteps.length > 0">
+        <!-- <div class="m-4 p-4">Available in {{stageSecondsRemainingString}}</div> -->
+        <WorkflowStepCard
+          v-for="(stepInfo, j) in stage.afterExpiredSteps"
+          :stageSecondsRemainingString="stageSecondsRemainingString"
+          :stepInfo="stepInfo"
+          :key="j"
+          @card-selected="startWorkflowStep(stepInfo.step)"/>
       </div>
     </div>
 
@@ -191,6 +165,7 @@ import {
   computed, defineComponent, nextTick, onBeforeUnmount, onMounted, ref, toRefs, watch, watchEffect,
 } from 'vue';
 import MiniLessonPlayer from '@/components/elements/MiniLessonPlayer.vue';
+import WorkflowStepCard, { WorkflowStepCardInfo } from '@/components/elements/WorkflowStepCard.vue';
 import db, { DatabaseEntry } from '@/services/MotionDatabase';
 import MiniLesson from '@/model/MiniLesson';
 import workflowManager, { TrackingWorkflow, TrackingWorkflowStage, TrackingWorkflowStep } from '@/services/WorkflowManager';
@@ -234,6 +209,7 @@ export default defineComponent({
   components: {
     MiniLessonPlayer,
     FeedbackUploadScreen,
+    WorkflowStepCard,
   },
   computed: {
     stages() { return ((this as any).workflow?.stages ?? []) as TrackingWorkflowStage[]; },
@@ -290,14 +266,22 @@ export default defineComponent({
               isExpired: !isTimeExpiredTask && stageTimeExpired,
               isClickable: (isTestMode || isInActiveStage || isBeforeTime)
                           && (isValidUnexpired || isValidAfterExpiredTask),
+              isNextStep: step === (this as any).nextStepInStage,
               isValidAfterExpiredTask,
               waitingForTimeExpiration: isInActiveStage && isTimeExpiredTask && !stageTimeExpired,
               stageIndex,
               stepIndex,
-            };
+            } as WorkflowStepCardInfo;
           });
+
+        const beforeStartSteps = filteredSteps.filter((step) => step.step.experiment?.isBeforeTimeStartTask);
+        const mainSteps = filteredSteps.filter((step) => !step.step.experiment?.isBeforeTimeStartTask && !step.step.experiment?.isTimeExpiredTask);
+        const afterExpiredSteps = filteredSteps.filter((step) => step.step.experiment?.isTimeExpiredTask);
         return {
           ...stage,
+          beforeStartSteps,
+          mainSteps,
+          afterExpiredSteps,
           filteredSteps,
           timeLimitString: stage.maxStageTimeSecs ? getDurationString(stage.maxStageTimeSecs) : null,
         };
@@ -360,6 +344,16 @@ export default defineComponent({
 
       }, 1000);
     });
+
+    onMounted(() => {
+      if (workflow.value
+        && workflow.value.stages.length > 0
+        && (workflow.value.stages[0].maxStageTimeSecs ?? null) === null) {
+        // Auto-start the first stage if it isn't timed
+        activeStageIndex.value = 0;
+      }
+    });
+
     onBeforeUnmount(() => {
       clearInterval(stageTimer);
     });
