@@ -19,6 +19,7 @@ export interface PauseInfo {
 export interface SheetMotionFrame {
   timestamp: number;
   type: 'move' | 'pause';
+  motionTrails?: Array<Array<[number, number, number]>>;
 }
 export interface SheetMotionPhrase {
   frames: SheetMotionFrame[];

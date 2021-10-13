@@ -20,7 +20,9 @@
           :fps="dbEntry?.fps ?? 30"
           :drawPoseLandmarks="drawMode === 'skeleton'"
           :videoOpacity="drawMode === 'video' && kf.type === 'move' ? 1.0 : 0.0"
-          style="margin: 0; display:inline-block;background:lightgray;"/>
+          style="margin: 0; display:inline-block;background:lightgray;"
+          :motionTrails="kf.motionTrails"
+          :setDrawStyle="setPoseDrawStyle"/>
           <!-- {{kf}} -->
 
         <div class="motion-hold"></div>
@@ -76,6 +78,10 @@ export default defineComponent({
     },
   },
   methods: {
+    setPoseDrawStyle(ctx: CanvasRenderingContext2D) {
+      ctx.strokeStyle = '#8080ff';
+      ctx.globalAlpha = 1.0;
+    },
     isActive(kf: number, nextkf: number) {
       return this.currentTime >= kf && this.currentTime < nextkf;
     },

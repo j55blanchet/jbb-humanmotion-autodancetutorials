@@ -15,11 +15,12 @@
       playsinline
       :showControls="showControls"
     ></video>
-    <canvas class="is-overlay" ref="canvasElement" v-show="drawPoseLandmarks"></canvas>
+    <canvas class="is-overlay" ref="canvasElement" v-show="drawPoseLandmarks || motionTrails"></canvas>
   </div>
 </template>
 
 <script lang="ts">
+
 import MotionTrail from '@/model/MotionTrail';
 import { DrawPose } from '@/services/MediaPipe';
 import { Landmark } from '@/services/MediaPipeTypes';
@@ -271,11 +272,54 @@ export default defineComponent({
       // }
     };
 
-    function drawMotionTrail(trail: MotionTrail) {
+    function drawMotionTrail(trail: Array<[number, number, number]>) {
       const videoE = videoElement.value;
-      const sourceAR = (videoE?.videoHeight && videoE.videoHeight) ? videoE.videoWidth / videoE.videoHeight : 1;
       const drawCtx = canvasCtx.value;
-      if (!drawCtx) return;
+      if (!drawCtx || !videoE) return;
+
+      drawCtx.save();
+      drawCtx.strokeStyle = '#00ff00';
+      drawCtx.globalAlpha = 1.0;
+      drawCtx.lineWidth = 6;
+
+      if (drawCtx.canvas.width <= 0 || drawCtx.canvas.height <= 0) return;
+      if (videoE.videoWidth <= 0 || videoE.videoHeight <= 0) return;
+      const [xScale, yScale] = [drawCtx.canvas.width / videoE.videoWidth, drawCtx.canvas.height / videoE.videoHeight];
+      console.log('Motion trail scaling', xScale, yScale);
+      drawCtx.scale(xScale, yScale);
+
+      drawCtx.beginPath();
+      let [px, py] = [0, 0];
+
+      // trail = testtrail as any;
+
+      if (trail.length > 0) {
+        const [t, x, y] = trail[0];
+        drawCtx.moveTo(x, y);
+        px = x;
+        py = y;
+      }
+      for (let i = 1; i < trail.length; i += 1) {
+        const [t, x, y] = trail[i];
+        if (x !== px || y !== py) {
+          drawCtx.lineTo(x, y);
+          px = x;
+          py = y;
+        }
+      }
+      drawCtx.stroke();
+
+      // drawCtx.beginPath();
+
+      // drawCtx.moveTo(468.0, 844.8000000000001);
+      // drawCtx.lineTo(338.4, 806.4);
+      // drawCtx.moveTo(videoE.videoWidth * 0.25, videoE.videoHeight / 2);
+      // drawCtx.lineTo(videoE.videoWidth * 0.75, videoE.videoHeight / 2);
+      // console.log('videoWH', videoE.videoWidth, videoE.videoHeight);
+      // drawCtx.moveTo(0, 0);
+      // drawCtx.lineTo(400, 400);
+      // drawCtx.stroke();
+      drawCtx.restore();
     }
 
     watch([videoBaseUrl, drawPoseLandmarks], retieveClearPoseFile);

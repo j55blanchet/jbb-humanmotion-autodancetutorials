@@ -17,6 +17,7 @@ module.exports = {
     'no-continue': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
     'padded-blocks': 'off',
     'max-len': 'off',
     'no-param-reassign': 'off',
