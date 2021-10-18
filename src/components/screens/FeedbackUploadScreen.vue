@@ -6,34 +6,46 @@
 
       <p class="block"><strong>Instructions:</strong> {{prompt}}</p>
 
-      <div class="block" v-if="state === 'Record'">
-        <WebcamBox />
+      <div class="columns">
+        <div class="column" v-show="followAlong && followAlong?.visualMode !== 'none'">
+          <VideoPlayer
+            style="width:100%;height: 5rem;"
+            ref="videoPlayer"
+            :videoBaseUrl="videoBaseUrl"
+            :videoOpacity="1.0"
+            @playback-completed="onVideoPlayBackCompleted"
+            />
+        </div>
 
-        <div class="field is-grouped is-grouped-centered" v-show="webcamStatus === 'running'">
-          <p class="control">
-            <span class="record-icon" :class="{'is-recording': isRecording}">
-            </span>
-            <!-- <span class="icon is-medium" :class="{'has-text-danger': isRecording}">
-              <FAIcon icon="record-vinyl" size="lg" pulse />
-            </span> -->
-          </p>
-          <p class="control">
-            <button class="button animate-width"
-              @click="toggleRecording">
+        <div class="column" v-if="state === 'Record'">
+          <WebcamBox />
 
-               <span v-show="isRecording">
-                Stop
+          <div class="field is-grouped is-grouped-centered" v-show="webcamStatus === 'running'">
+            <p class="control">
+              <span class="record-icon" :class="{'is-recording': isRecording}">
               </span>
-              <span v-show="!isRecording">
-                Record
-              </span>
+              <!-- <span class="icon is-medium" :class="{'has-text-danger': isRecording}">
+                <FAIcon icon="record-vinyl" size="lg" pulse />
+              </span> -->
+            </p>
+            <p class="control">
+              <button class="button animate-width"
+                @click="toggleRecording">
 
-              <!-- <span v-if="!isRecording">Start Recording</span> -->
-            </button>
-          </p>
+                <span v-show="isRecording">
+                  Stop
+                </span>
+                <span v-show="!isRecording">
+                  Record
+                </span>
+
+                <!-- <span v-if="!isRecording">Start Recording</span> -->
+              </button>
+            </p>
+          </div>
         </div>
       </div>
-      <video class="block flipped" v-else controls :src="recordedObjectUrl"></video>
+      <video class="block flipped" v-if="state !== 'Record'" controls :src="recordedObjectUrl"></video>
       <div class="block" v-if="state === 'Review'">
         <div class="field is-grouped is-grouped-centered">
           <p class="control">
@@ -75,14 +87,19 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import {
+  computed, defineComponent, ref, toRefs,
+} from 'vue';
 import webcamProvider from '@/services/WebcamProvider';
 import AzureUploader from '@/services/AzureUploader';
 import WebcamBox from '@/components/elements/WebcamBox.vue';
+import { UploadFollowAlong } from '@/model/Workflow';
+import VideoPlayer from '@/components/elements/VideoPlayer.vue';
+import motionDB from '@/services/MotionDatabase';
 
 export default defineComponent({
   name: 'UploadScreen',
-  components: { WebcamBox },
+  components: { WebcamBox, VideoPlayer },
   emits: ['upload-canceled', 'upload-completed'],
   props: {
     title: {
@@ -101,16 +118,37 @@ export default defineComponent({
       type: String,
       default: null,
     },
+    followAlong: {
+      type: Object,
+      default: null,
+    },
   },
-  setup() {
+  setup(props) {
+    const { followAlong: followAlongRef } = toRefs(props);
 
     const state = ref('Record' as 'Record' | 'Review' | 'Success');
+
+    const videoPlayer = ref(null as typeof VideoPlayer | null);
 
     const lastRecordedBlob = ref(null as Blob | null);
     const recordedObjectUrl = ref('');
     const isUploading = ref(false);
     const uploadError = ref(null as null | any);
     const successfullyUploaded = computed(() => state.value === 'Success');
+
+    const videoBaseUrl = computed(() => {
+      if (!followAlongRef.value) {
+        return '';
+      }
+      const followData = followAlongRef.value as UploadFollowAlong;
+      const dbEntry = motionDB.motionsMap.get(followData.clipName);
+
+      if (!dbEntry) {
+        return '';
+      }
+
+      return `${dbEntry.videoSrc}#t=${followData.startTime},${followData.endTime}`;
+    });
 
     return {
       state,
@@ -122,18 +160,36 @@ export default defineComponent({
       isUploading,
       uploadError,
       successfullyUploaded,
+      videoPlayer,
+      followAlongRef,
+      videoBaseUrl,
     };
   },
   methods: {
+    async onVideoPlayBackCompleted() {
+      if (webcamProvider.isRecording.value) {
+        this.toggleRecording();
+      }
+    },
     async toggleRecording() {
       if (!webcamProvider.isRecording.value) {
         await webcamProvider.startWebcam();
         await webcamProvider.startRecording();
+
+        if (this.followAlongRef && this.videoPlayer) {
+          const followData = this.followAlongRef as UploadFollowAlong;
+          this.videoPlayer.playVideo(followData.startTime, followData.endTime, followData.clipSpeed);
+        }
+
       } else {
         this.lastRecordedBlob = await webcamProvider.stopRecording();
         this.recordedObjectUrl = URL.createObjectURL(this.lastRecordedBlob);
         this.state = 'Review';
         await webcamProvider.stopWebcam();
+
+        if (this.videoPlayer) {
+          this.videoPlayer.pauseVideo();
+        }
       }
     },
     async rerecord() {

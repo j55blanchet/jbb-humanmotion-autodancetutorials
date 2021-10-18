@@ -2,6 +2,13 @@ import { DatabaseEntry } from '@/services/MotionDatabase';
 import Utils from '@/services/Utils';
 import MiniLesson from './MiniLesson';
 
+export interface UploadFollowAlong {
+  clipName: string;
+  clipSpeed: number;
+  startTime: number;
+  endTime: number;
+  visualMode: 'none' | 'skeleton' | 'video';
+}
 /**
  * Userflow.ts
  *
@@ -24,6 +31,8 @@ export interface WorkflowStep {
   upload?: {
     identifier: string;
     prompt: string;
+    maxAllowedAttempts?: number;
+    followAlong? : UploadFollowAlong;
   };
   experiment?: {
     showInExperimentOnly?: boolean;

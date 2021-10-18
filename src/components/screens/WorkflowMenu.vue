@@ -136,6 +136,7 @@
               :title="workflow?.title"
               :subtitle="currentStep?.title"
               :uploadFilename="uploadFilename"
+              :followAlong="currentStep?.upload?.followAlong ?? null"
               @upload-canceled="uploadActive = false"
               @upload-completed="uploadComplete"
             />
