@@ -132,6 +132,7 @@
         <div class="container">
           <div class="box">
             <FeedbackUploadScreen
+              v-if="uploadActive"
               :prompt="currentStep?.upload?.prompt"
               :title="workflow?.title"
               :subtitle="currentStep?.title"
@@ -259,6 +260,7 @@ export default defineComponent({
             const isValidUnexpired = !isInActiveStage || (!isTimeExpiredTask && !stageTimeExpired);
             // const isNewlyOnThisStage = this.activeStageIndex === stageIndex-1 && this.isStageCompleted(filteredStages[i-1])
             const isBeforeTime = (step.experiment?.isBeforeTimeStartTask ?? false);
+            const isRepeatable = !(step.experiment?.disableRepitition ?? false);
 
             return {
               step,
@@ -266,7 +268,8 @@ export default defineComponent({
               dbEntry: GetVideoEntryForWorkflowStep(db, step),
               isExpired: !isTimeExpiredTask && stageTimeExpired,
               isClickable: (isTestMode || isInActiveStage || isBeforeTime)
-                          && (isValidUnexpired || isValidAfterExpiredTask),
+                          && (isValidUnexpired || isValidAfterExpiredTask)
+                          && (isRepeatable || step.status !== 'completed'),
               isNextStep: step === (this as any).nextStepInStage,
               isValidAfterExpiredTask,
               waitingForTimeExpiration: isInActiveStage && isTimeExpiredTask && !stageTimeExpired,
