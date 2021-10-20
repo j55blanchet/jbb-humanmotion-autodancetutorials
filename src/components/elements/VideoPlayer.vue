@@ -129,11 +129,17 @@ function setupVideoPlaying(
 export default defineComponent({
   name: 'VideoPlayer',
   props: {
-    videoBaseUrl: String,
+    videoBaseUrl: {
+      type: String,
+      required: true,
+    },
     motionTrails: {
       type: Array,
-      default: Array,
       required: false,
+    },
+    drawMotionTrailsInTime: {
+      type: Boolean,
+      default: false,
     },
     drawPoseLandmarks: {
       type: Boolean,
@@ -170,7 +176,7 @@ export default defineComponent({
   ],
   setup(props, ctx) {
     const {
-      videoBaseUrl, motionTrails, drawPoseLandmarks, fps, setDrawStyle, emphasizedJoints, emphasizedJointStyle,
+      videoBaseUrl, motionTrails, drawMotionTrailsInTime, drawPoseLandmarks, fps, setDrawStyle, emphasizedJoints, emphasizedJointStyle,
     } = toRefs(props);
 
     const videoElement = ref(null as null | HTMLVideoElement);
@@ -272,11 +278,18 @@ export default defineComponent({
       // }
     };
 
-    function drawMotionTrail(trail: Array<[number, number, number]>) {
+    function drawMotionTrail(trail: Array<[number, number, number]>, time: number) {
       const videoE = videoElement.value;
       const drawCtx = canvasCtx.value;
+      const motionTrailsInTime = drawMotionTrailsInTime.value;
+      // console.log('VideoPlayer :: Drawing motion trail', trail);
+      const lastTrailItem = trail.findIndex(([t, x, y]) => t >= time);
+      // eslint-disable-next-line no-nested-ternary
+      const effectiveTrailLength = !motionTrailsInTime ? trail.length
+        : (lastTrailItem === -1 ? trail.length : lastTrailItem + 1);
+
       if (!drawCtx || !videoE) return;
-      if (trail.length < 3) return;
+      if (effectiveTrailLength < 2) return;
 
       drawCtx.save();
       drawCtx.strokeStyle = '#00ff00';
@@ -286,28 +299,30 @@ export default defineComponent({
       if (drawCtx.canvas.width <= 0 || drawCtx.canvas.height <= 0) return;
       if (videoE.videoWidth <= 0 || videoE.videoHeight <= 0) return;
       const [xScale, yScale] = [drawCtx.canvas.width / videoE.videoWidth, drawCtx.canvas.height / videoE.videoHeight];
-      console.log('Motion trail scaling', xScale, yScale);
+      // console.log('Motion trail scaling', xScale, yScale);
       drawCtx.scale(xScale, yScale);
 
       drawCtx.beginPath();
       // https://stackoverflow.com/questions/7054272/how-to-draw-smooth-curve-through-n-points-using-javascript-html5-canvas
-      let i = -1;
-      if (trail.length > 1) {
-        const [t, x, y] = trail[0];
-        drawCtx.moveTo(x, y);
-        i = 0;
-      }
 
-      for (; i < trail.length - 1; i += 1) {
-        const [t, x, y] = trail[i];
-        const [nt, nx, ny] = trail[i + 1];
-        const xc = (x + nx) / 2;
-        const yc = (y + ny) / 2;
+      const [st, startx, starty] = trail[0];
+      drawCtx.moveTo(startx, starty);
 
-        if (i === trail.length - 2) {
-          drawCtx.quadraticCurveTo(x, y, nx, ny);
-        } else {
-          drawCtx.quadraticCurveTo(x, y, xc, yc);
+      if (effectiveTrailLength <= 2) {
+        const [t, x, y] = trail[1];
+        drawCtx.lineTo(x, y);
+      } else {
+        for (let i = 1; i < effectiveTrailLength - 1; i += 1) {
+          const [t, x, y] = trail[i];
+          const [nt, nx, ny] = trail[i + 1];
+          const xc = (x + nx) / 2;
+          const yc = (y + ny) / 2;
+
+          if (i === effectiveTrailLength - 2) {
+            drawCtx.quadraticCurveTo(x, y, nx, ny);
+          } else {
+            drawCtx.quadraticCurveTo(x, y, xc, yc);
+          }
         }
       }
 
@@ -329,7 +344,13 @@ export default defineComponent({
     watch([videoBaseUrl, drawPoseLandmarks], retieveClearPoseFile);
     onMounted(retieveClearPoseFile);
 
-    watch([canvasModified, currentPose, drawPoseLandmarks, motionTrails], () => {
+    const motionTrailsCurrentTime = computed(() => {
+      const drawingInTime = drawMotionTrailsInTime.value;
+      if (!drawingInTime) return 0;
+      return currentTime.value;
+    });
+
+    watch([canvasModified, currentPose, drawPoseLandmarks, motionTrails, motionTrailsCurrentTime], () => {
       canvasModified.value = false;
       clearDrawing();
 
@@ -337,10 +358,10 @@ export default defineComponent({
         drawPose(currentPose.value as any);
       }
 
-      if (motionTrails.value) {
+      if (motionTrails && motionTrails.value) {
         for (let i = 0; i < motionTrails.value.length; i += 1) {
           const trail = motionTrails.value[i];
-          drawMotionTrail(trail as any);
+          drawMotionTrail(trail as any, motionTrailsCurrentTime.value);
         }
       }
     });
@@ -368,6 +389,7 @@ export default defineComponent({
       currentFrame,
       endReported,
       onTimeUpdated,
+      motionTrailsCurrentTime,
 
       getVideoDimensions: () => ({
         height: videoElement.value?.height ?? 0,

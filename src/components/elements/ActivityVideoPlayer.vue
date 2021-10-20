@@ -23,6 +23,8 @@
         @pause-hit="onPauseHit"
         @pause-end="onPauseEnded"
         :showControls="activity?.showVideoControls ?? false"
+        :motionTrails="activity?.motionTrails ?? []"
+        :drawMotionTrailsInTime="true"
       />
     </div>
 

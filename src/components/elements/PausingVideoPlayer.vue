@@ -10,6 +10,8 @@
         :emphasizedJoints="emphasizedJoints"
         :emphasizedJointStyle="emphasizedJointStyle"
         :showControls="showControls"
+        :motionTrails="motionTrails"
+        :drawMotionTrailsInTime="drawMotionTrailsInTime"
         />
 </template>
 
@@ -69,6 +71,14 @@ export default defineComponent({
   name: 'PausingVideoPlayer',
   components: { VideoPlayer },
   props: {
+    motionTrails: {
+      type: Array,
+      default: Array,
+    },
+    drawMotionTrailsInTime: {
+      type: Boolean,
+      default: false,
+    },
     videoSrc: {
       default: '',
     },

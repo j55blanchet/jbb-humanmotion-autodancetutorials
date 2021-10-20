@@ -11,6 +11,7 @@ export interface PauseInfo {
     manualResume?: boolean;
 }
 
+export type MotionTrail = Array<[number, number, number]>;
 // export interface Keyframe {
 //     time: number;
 //     time2?: number;
@@ -19,7 +20,7 @@ export interface PauseInfo {
 export interface SheetMotionFrame {
   timestamp: number;
   type: 'move' | 'pause';
-  motionTrails?: Array<Array<[number, number, number]>>;
+  motionTrails?: Array<MotionTrail>;
 }
 export interface SheetMotionPhrase {
   frames: SheetMotionFrame[];
@@ -48,6 +49,8 @@ export interface MiniLessonActivity {
   staticInstruction?: string;
   timedInstructions?: Array<TimedInstruction>;
   endInstruction?: string;
+  motionTrails?: Array<MotionTrail>;
+  showVideoControls?: boolean;
 }
 
 export default interface MiniLesson {
