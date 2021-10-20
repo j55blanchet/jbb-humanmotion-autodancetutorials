@@ -13,7 +13,7 @@
       @timeupdate="onTimeUpdated(true)"
       @ended="endReported = true"
       playsinline
-      :showControls="showControls"
+      :controls="showControls"
     ></video>
     <canvas class="is-overlay" ref="canvasElement" v-show="drawPoseLandmarks || motionTrails"></canvas>
   </div>
@@ -424,6 +424,7 @@ export default defineComponent({
 
   canvas {
     margin: auto;
+    pointer-events: none;
   }
 
   video {
