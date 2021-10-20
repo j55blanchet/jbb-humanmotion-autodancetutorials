@@ -6,6 +6,14 @@
 
       <p class="block"><strong>Instructions:</strong> {{prompt}}</p>
 
+      <div class="block" v-if="followAlong">
+        <progress
+          class="progress is-large"
+          :value="followAlongProgress - followAlong.startTime"
+          :max="followAlong.endTime"
+          ></progress>
+      </div>
+
       <div class="columns">
         <div class="column" v-show="followAlong && followAlong?.visualMode !== 'none'">
           <VideoPlayer
@@ -14,6 +22,7 @@
             :videoBaseUrl="videoBaseUrl"
             :videoOpacity="1.0"
             @playback-completed="onVideoPlayBackCompleted"
+            @progress="onProgress"
             />
         </div>
 
@@ -49,7 +58,7 @@
       <div class="block" v-if="state === 'Review'">
         <div class="field is-grouped is-grouped-centered">
           <p class="control">
-            <button class="button" :disabled="isUploading" @click="rerecord">
+            <button class="button" :disabled="isUploading || maxAttemptsIsReached" @click="rerecord">
               Rerecord
               <!-- <span class="icon is-medium" :class="{'has-text-danger': isRecording}">
                 <FAIcon icon="record-vinyl" />
@@ -66,7 +75,9 @@
             </button>
           </p>
         </div>
-
+        <div class="notification" v-if="maxAttemptsIsReached">
+          You've reached the maximum number of attempts.
+        </div>
         <div class="notification" v-if="uploadError">
           <strong>Error Uploading Video:</strong>
           {{uploadError}}
@@ -118,17 +129,23 @@ export default defineComponent({
       type: String,
       default: null,
     },
+    maxAttempts: {
+      type: Number,
+      default: null,
+    },
     followAlong: {
       type: Object,
       default: null,
     },
   },
   setup(props) {
-    const { followAlong: followAlongRef } = toRefs(props);
+    const { followAlong: followAlongRef, maxAttempts } = toRefs(props);
 
     const state = ref('Record' as 'Record' | 'Review' | 'Success');
 
     const videoPlayer = ref(null as typeof VideoPlayer | null);
+    const attempts = ref(0);
+    const followAlongProgress = ref(0);
 
     const lastRecordedBlob = ref(null as Blob | null);
     const recordedObjectUrl = ref('');
@@ -150,9 +167,12 @@ export default defineComponent({
       return `${dbEntry.videoSrc}#t=${followData.startTime},${followData.endTime}`;
     });
 
+    const maxAttemptsIsReached = computed(() => attempts.value >= (maxAttempts.value ?? Infinity));
+
     return {
       state,
       webcamProvider,
+      attempts,
       webcamStatus: webcamProvider.webcamStatus,
       isRecording: webcamProvider.isRecording,
       lastRecordedBlob,
@@ -163,9 +183,17 @@ export default defineComponent({
       videoPlayer,
       followAlongRef,
       videoBaseUrl,
+      followAlongProgress,
+      maxAttemptsIsReached,
     };
   },
   methods: {
+    onProgress(progress: number) {
+      this.followAlongProgress = progress;
+      if (progress >= this.followAlong?.endTime) {
+        this.onVideoPlayBackCompleted();
+      }
+    },
     async onVideoPlayBackCompleted() {
       if (webcamProvider.isRecording.value) {
         this.toggleRecording();
@@ -173,6 +201,7 @@ export default defineComponent({
     },
     async toggleRecording() {
       if (!webcamProvider.isRecording.value) {
+        this.attempts += 1;
         await webcamProvider.startWebcam();
         await webcamProvider.startRecording();
 

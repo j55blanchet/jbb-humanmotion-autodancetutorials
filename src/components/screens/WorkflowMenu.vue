@@ -140,6 +140,7 @@
               :followAlong="currentStep?.upload?.followAlong ?? null"
               @upload-canceled="uploadActive = false"
               @upload-completed="uploadComplete"
+              :maxAttempts="currentStep?.upload?.maxAllowedAttempts ?? null"
             />
           </div>
         </div>
