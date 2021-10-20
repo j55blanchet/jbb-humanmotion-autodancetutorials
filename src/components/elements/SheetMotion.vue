@@ -194,7 +194,7 @@ export default defineComponent({
       padding: 0.5rem;
       margin: 0.25rem;
       border-radius: 0.25rem;
-      height: 15rem;
+      height: 24rem;
       text-align:left;
       align-items: center;
 

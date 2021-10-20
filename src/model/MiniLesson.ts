@@ -50,6 +50,7 @@ export interface MiniLessonActivity {
   timedInstructions?: Array<TimedInstruction>;
   endInstruction?: string;
   motionTrails?: Array<MotionTrail>;
+  motionTrailBreaks?: Array<number>;
   showVideoControls?: boolean;
 }
 

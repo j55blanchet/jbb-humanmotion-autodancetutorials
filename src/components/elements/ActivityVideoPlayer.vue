@@ -23,7 +23,7 @@
         @pause-hit="onPauseHit"
         @pause-end="onPauseEnded"
         :showControls="activity?.showVideoControls ?? false"
-        :motionTrails="activity?.motionTrails ?? []"
+        :motionTrails="motionTrails"
         :drawMotionTrailsInTime="true"
       />
     </div>
@@ -63,7 +63,7 @@ import PausingVideoPlayer from '@/components/elements/PausingVideoPlayer.vue';
 import KeyframeTimeline from '@/components/elements/KeyframeTimeline.vue';
 import WebcamBox from '@/components/elements/WebcamBox.vue';
 import SheetMotion from '@/components/elements/SheetMotion.vue';
-import { MiniLessonActivity, PauseInfo } from '@/model/MiniLesson';
+import { MiniLessonActivity, MotionTrail, PauseInfo } from '@/model/MiniLesson';
 import Constants from '@/services/Constants';
 
 const ActivityPlayState = Object.freeze({
@@ -122,6 +122,41 @@ export default defineComponent({
 
     watchEffect(() => reset(startTime.value));
 
+    const trailBreakEndIndex = computed(() => {
+      const trailBreaks = activity?.value?.motionTrailBreaks as number[];
+      if (!trailBreaks) return -1;
+      const time = videoTime.value;
+      for (let i = 0; i < trailBreaks.length; i += 1) {
+        if (trailBreaks[i] > time) return i;
+      }
+      return trailBreaks.length;
+    });
+    const trailStartTime = computed(() => {
+      const trailBreaks = activity?.value?.motionTrailBreaks as number[];
+      if (trailBreakEndIndex.value < 1 || !trailBreaks) return -Infinity;
+      return trailBreaks[trailBreakEndIndex.value - 1];
+    });
+    const trailEndTime = computed(() => {
+      const trailBreaks = activity?.value?.motionTrailBreaks as number[];
+      if (trailBreakEndIndex.value < 1 || !trailBreaks) return Infinity;
+      return trailBreaks[trailBreakEndIndex.value];
+    });
+
+    const motionTrails = computed(() => {
+      const trailsRaw = activity?.value?.motionTrails as MotionTrail[] ?? [];
+      const trailBreaks = activity?.value?.motionTrailBreaks as number[];
+      if (trailBreaks) {
+        return trailsRaw.map((trail) => {
+          let startIndex = trail.findIndex(([t, x, y]) => t >= trailStartTime.value);
+          let endIndex = trail.findIndex(([t, x, y]) => t > trailEndTime.value);
+          if (startIndex === -1) startIndex = 0;
+          if (endIndex === -1) endIndex = trail.length;
+          return trail.slice(startIndex, endIndex);
+        });
+      }
+      return trailsRaw;
+    });
+
     return {
       webcamBox,
       videoPlayer,
@@ -140,6 +175,10 @@ export default defineComponent({
       onPlaybackCompleted,
       onPauseHit,
       onPauseEnded,
+
+      motionTrails,
+      trailStartTime,
+      trailEndTime,
     };
   },
   computed: {
