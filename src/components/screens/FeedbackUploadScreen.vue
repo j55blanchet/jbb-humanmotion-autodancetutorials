@@ -29,7 +29,7 @@
         <div class="column" v-if="state === 'Record'">
           <WebcamBox />
 
-          <div class="field is-grouped is-grouped-centered" v-show="webcamStatus === 'running'">
+          <div class="field is-grouped is-grouped-centered mt-1" v-show="webcamStatus === 'running'">
             <p class="control">
               <span class="record-icon" :class="{'is-recording': isRecording}">
               </span>
@@ -44,8 +44,12 @@
                 <span v-show="isRecording">
                   Stop
                 </span>
-                <span v-show="!isRecording">
-                  Record
+                <span
+                   v-show="!isRecording"
+                  :disabled="countdownTimerRemaining > 0">
+
+                  <span v-if="countdownTimerRemaining > 0">{{countdownTimerRemaining}}</span>
+                  <span v-else>Record</span>
                 </span>
 
                 <!-- <span v-if="!isRecording">Start Recording</span> -->
@@ -108,6 +112,10 @@ import { UploadFollowAlong } from '@/model/Workflow';
 import VideoPlayer from '@/components/elements/VideoPlayer.vue';
 import motionDB from '@/services/MotionDatabase';
 
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export default defineComponent({
   name: 'UploadScreen',
   components: { WebcamBox, VideoPlayer },
@@ -146,6 +154,7 @@ export default defineComponent({
     const videoPlayer = ref(null as typeof VideoPlayer | null);
     const attempts = ref(0);
     const followAlongProgress = ref(0);
+    const countdownTimerRemaining = ref(0);
 
     const lastRecordedBlob = ref(null as Blob | null);
     const recordedObjectUrl = ref('');
@@ -185,6 +194,7 @@ export default defineComponent({
       videoBaseUrl,
       followAlongProgress,
       maxAttemptsIsReached,
+      countdownTimerRemaining,
     };
   },
   methods: {
@@ -200,15 +210,15 @@ export default defineComponent({
       }
     },
     async toggleRecording() {
-      if (!webcamProvider.isRecording.value) {
-        this.attempts += 1;
-        await webcamProvider.startWebcam();
-        await webcamProvider.startRecording();
+      if (this.countdownTimerRemaining > 0) return;
 
-        if (this.followAlongRef && this.videoPlayer) {
-          const followData = this.followAlongRef as UploadFollowAlong;
-          this.videoPlayer.playVideo(followData.startTime, followData.endTime, followData.clipSpeed);
+      if (!webcamProvider.isRecording.value) {
+        await webcamProvider.startWebcam();
+
+        if (this.followAlong) {
+          await this.doCountdown();
         }
+        await this.startRecording();
 
       } else {
         this.lastRecordedBlob = await webcamProvider.stopRecording();
@@ -219,6 +229,25 @@ export default defineComponent({
         if (this.videoPlayer) {
           this.videoPlayer.pauseVideo();
         }
+      }
+    },
+    async doCountdown() {
+      // Perform countdown
+      this.countdownTimerRemaining = 3;
+      await sleep(1000);
+      this.countdownTimerRemaining = 2;
+      await sleep(1000);
+      this.countdownTimerRemaining = 1;
+      await sleep(1000);
+      this.countdownTimerRemaining = 0;
+    },
+    async startRecording() {
+      this.attempts += 1;
+      await webcamProvider.startRecording();
+
+      if (this.followAlongRef && this.videoPlayer) {
+        const followData = this.followAlongRef as UploadFollowAlong;
+        this.videoPlayer.playVideo(followData.startTime, followData.endTime, followData.clipSpeed);
       }
     },
     async rerecord() {
