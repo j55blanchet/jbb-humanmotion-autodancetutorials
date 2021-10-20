@@ -276,6 +276,7 @@ export default defineComponent({
       const videoE = videoElement.value;
       const drawCtx = canvasCtx.value;
       if (!drawCtx || !videoE) return;
+      if (trail.length < 3) return;
 
       drawCtx.save();
       drawCtx.strokeStyle = '#00ff00';
@@ -289,24 +290,27 @@ export default defineComponent({
       drawCtx.scale(xScale, yScale);
 
       drawCtx.beginPath();
-      let [px, py] = [0, 0];
-
-      // trail = testtrail as any;
-
-      if (trail.length > 0) {
+      // https://stackoverflow.com/questions/7054272/how-to-draw-smooth-curve-through-n-points-using-javascript-html5-canvas
+      let i = -1;
+      if (trail.length > 1) {
         const [t, x, y] = trail[0];
         drawCtx.moveTo(x, y);
-        px = x;
-        py = y;
+        i = 0;
       }
-      for (let i = 1; i < trail.length; i += 1) {
+
+      for (; i < trail.length - 1; i += 1) {
         const [t, x, y] = trail[i];
-        if (x !== px || y !== py) {
-          drawCtx.lineTo(x, y);
-          px = x;
-          py = y;
+        const [nt, nx, ny] = trail[i + 1];
+        const xc = (x + nx) / 2;
+        const yc = (y + ny) / 2;
+
+        if (i === trail.length - 2) {
+          drawCtx.quadraticCurveTo(x, y, nx, ny);
+        } else {
+          drawCtx.quadraticCurveTo(x, y, xc, yc);
         }
       }
+
       drawCtx.stroke();
 
       // drawCtx.beginPath();
