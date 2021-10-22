@@ -33,7 +33,8 @@ export class WebcamProvider {
   private async readPermissionStatus(): Promise<void> {
     if (navigator.permissions) {
       try {
-        const result = await navigator.permissions.query({ name: 'camera' });
+
+        const result = await navigator.permissions.query({ name: 'camera' as any});
         this.permissionState.value = result.state;
 
         // eslint-disable-next-line no-empty
