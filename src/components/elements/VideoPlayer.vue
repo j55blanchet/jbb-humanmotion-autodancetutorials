@@ -21,6 +21,11 @@
 
 <script lang="ts">
 
+const motionTrailColors = [
+  '#59eb59',
+  '#6666ff',
+];
+
 import MotionTrail from '@/model/MotionTrail';
 import { DrawPose } from '@/services/MediaPipe';
 import { Landmark } from '@/services/MediaPipeTypes';
@@ -278,7 +283,32 @@ export default defineComponent({
       // }
     };
 
-    function drawMotionTrail(trail: Array<[number, number, number]>, time: number) {
+    function drawArrow(ctx: CanvasRenderingContext2D, fromX: number, fromY: number, toX: number, toY: number, atEnd: boolean, arrowLength: number) {
+
+      const arrowWidth = arrowLength / 3;
+
+      const dx = toX - fromX;
+      const dy = toY - fromY;
+      const angle = Math.atan2(dy, dx);
+
+
+      ctx.save();
+      if (atEnd) ctx.translate(toX, toY);
+      else ctx.translate(fromX, fromY);
+
+      ctx.rotate(angle);
+      ctx.lineCap = 'square';
+      ctx.beginPath();
+      ctx.ellipse(-arrowLength, 0, arrowLength, arrowWidth, 0, -Math.PI / 2, Math.PI / 2);
+
+      // ctx.lineTo(length - arrow
+
+      ctx.stroke();
+      ctx.restore();
+    }
+
+
+    function drawMotionTrail(trail: Array<[number, number, number]>, time: number, color: string, strokeWidth: number) {
       const videoE = videoElement.value;
       const drawCtx = canvasCtx.value;
       const motionTrailsInTime = drawMotionTrailsInTime.value;
@@ -292,9 +322,9 @@ export default defineComponent({
       if (effectiveTrailLength < 2) return;
 
       drawCtx.save();
-      drawCtx.strokeStyle = '#00ff00';
+      drawCtx.strokeStyle = color;
       drawCtx.globalAlpha = 1.0;
-      drawCtx.lineWidth = 6;
+      drawCtx.lineWidth = strokeWidth;
 
       if (drawCtx.canvas.width <= 0 || drawCtx.canvas.height <= 0) return;
       if (videoE.videoWidth <= 0 || videoE.videoHeight <= 0) return;
@@ -327,6 +357,13 @@ export default defineComponent({
       }
 
       drawCtx.stroke();
+
+      const [t2, x2, y2] = trail[1];
+      drawArrow(drawCtx, startx, starty, x2, y2, false, 30.0);
+
+      const [lastt, lastx, lasty] = trail[effectiveTrailLength - 1];
+      const [secondlastt, secondlastx, secondlasty] = trail[effectiveTrailLength - 2];
+      drawArrow(drawCtx, secondlastx, secondlasty, lastx, lasty, true, 30.0);
 
       // drawCtx.beginPath();
 
@@ -361,7 +398,12 @@ export default defineComponent({
       if (motionTrails && motionTrails.value) {
         for (let i = 0; i < motionTrails.value.length; i += 1) {
           const trail = motionTrails.value[i];
-          drawMotionTrail(trail as any, motionTrailsCurrentTime.value);
+          drawMotionTrail(trail as any, motionTrailsCurrentTime.value, 'black', 9.0);
+        }
+        for (let i = 0; i < motionTrails.value.length; i += 1) {
+          const trail = motionTrails.value[i];
+          const color = motionTrailColors[i % motionTrailColors.length];
+          drawMotionTrail(trail as any, motionTrailsCurrentTime.value, color, 6.0);
         }
       }
     });
