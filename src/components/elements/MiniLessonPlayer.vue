@@ -90,8 +90,8 @@
 </template>
 
 <script lang="ts">
-import MiniLesson, { MiniLessonActivity } from '@/model/MiniLesson';
 import { defineComponent, ref, nextTick } from 'vue';
+import MiniLesson, { MiniLessonActivity } from '@/model/MiniLesson';
 import ActivityVideoPlayer from '@/components/elements/ActivityVideoPlayer.vue';
 import SegmentedProgressBar, { calculateProgressSegments, ProgressSegmentData } from '@/components/elements/SegmentedProgressBar.vue';
 import webcamProvider from '@/services/WebcamProvider';
@@ -165,6 +165,13 @@ export default defineComponent({
   },
   methods: {
     onProgress(val: number) { this.activityProgress = val; },
+    autoPlay() {
+      nextTick(() => {
+        if (!this.needsStartWebcam) {
+          this.playActivity();
+        }
+      });
+    },
     playActivity() { (this.$refs.activityVideoPlayer as any).play(); },
     nextActivity() {
       if (this.hasNextActivity) this.activeActivityIndex += 1;
@@ -177,6 +184,7 @@ export default defineComponent({
     },
     gotoActivity(i: number) {
       this.activeActivityIndex = i;
+      this.autoPlay();
     },
     async startWebcam() {
       return (this.$refs.activityVideoPlayer as any)?.startWebcam();

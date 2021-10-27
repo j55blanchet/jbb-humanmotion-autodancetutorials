@@ -21,15 +21,6 @@
 
 <script lang="ts">
 
-const motionTrailColors = [
-  '#59eb59',
-  '#6666ff',
-];
-
-import MotionTrail from '@/model/MotionTrail';
-import { DrawPose } from '@/services/MediaPipe';
-import { Landmark } from '@/services/MediaPipeTypes';
-import poseProvider from '@/services/PoseProvider';
 import {
   computed,
   defineComponent,
@@ -41,6 +32,15 @@ import {
   Ref,
   watch,
 } from 'vue';
+import MotionTrail from '@/model/MotionTrail';
+import { DrawPose } from '@/services/MediaPipe';
+import { Landmark } from '@/services/MediaPipeTypes';
+import poseProvider from '@/services/PoseProvider';
+
+const motionTrailColors = [
+  '#59eb59',
+  '#6666ff',
+];
 
 function onResize(canvasE: HTMLCanvasElement, videoE: HTMLVideoElement, modified: Ref<boolean>) {
   nextTick(() => {
@@ -283,7 +283,7 @@ export default defineComponent({
       // }
     };
 
-    function drawArrow(ctx: CanvasRenderingContext2D, fromX: number, fromY: number, toX: number, toY: number, atEnd: boolean, arrowLength: number) {
+    function drawArrow(drawCtx: CanvasRenderingContext2D, fromX: number, fromY: number, toX: number, toY: number, atEnd: boolean, arrowLength: number) {
 
       const arrowWidth = arrowLength / 3;
 
@@ -291,22 +291,20 @@ export default defineComponent({
       const dy = toY - fromY;
       const angle = Math.atan2(dy, dx);
 
+      drawCtx.save();
+      if (atEnd) drawCtx.translate(toX, toY);
+      else drawCtx.translate(fromX, fromY);
 
-      ctx.save();
-      if (atEnd) ctx.translate(toX, toY);
-      else ctx.translate(fromX, fromY);
-
-      ctx.rotate(angle);
-      ctx.lineCap = 'square';
-      ctx.beginPath();
-      ctx.ellipse(-arrowLength, 0, arrowLength, arrowWidth, 0, -Math.PI / 2, Math.PI / 2);
+      drawCtx.rotate(angle);
+      drawCtx.lineCap = 'square';
+      drawCtx.beginPath();
+      drawCtx.ellipse(-arrowLength, 0, arrowLength, arrowWidth, 0, -Math.PI / 2, Math.PI / 2);
 
       // ctx.lineTo(length - arrow
 
-      ctx.stroke();
-      ctx.restore();
+      drawCtx.stroke();
+      drawCtx.restore();
     }
-
 
     function drawMotionTrail(trail: Array<[number, number, number]>, time: number, color: string, strokeWidth: number) {
       const videoE = videoElement.value;
