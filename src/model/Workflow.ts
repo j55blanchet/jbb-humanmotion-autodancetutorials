@@ -54,6 +54,7 @@ export interface WorkflowStage {
 
 export interface Workflow {
   title: string;
+  userTitle?: string;
   creationMethod: string;
   id: string;
   stages: WorkflowStage[];
@@ -82,7 +83,7 @@ export function GetWorkflowStepVideoClipName(step: WorkflowStep) {
       : step.miniLessonEmbedded?.header.clipName) ?? null
     : null;
 }
-export function GetVideoEntryForWorkflowStep(db: any, step: WorkflowStep): DatabaseEntry | null{
+export function GetVideoEntryForWorkflowStep(db: any, step: WorkflowStep): DatabaseEntry | null {
   if (!IsMiniLessonStep(step)) return null;
   return db.motionsMap.get(GetWorkflowStepVideoClipName(step));
 }

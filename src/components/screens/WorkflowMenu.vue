@@ -18,7 +18,7 @@
       <div class="hero-body">
         <div class="container">
           <p class="title">
-            {{workflow?.title}}
+            {{ workflow?.userTitle ?? workflow?.title }}
           </p>
         </div>
       </div>

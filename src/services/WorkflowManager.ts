@@ -3,7 +3,7 @@ import optionsManager from '@/services/OptionsManager';
 import motionDB, { DatabaseEntry, MotionDatabase } from '@/services/MotionDatabase';
 import MiniLesson from '@/model/MiniLesson';
 import { Workflow, WorkflowStage, WorkflowStep } from '@/model/Workflow';
-import workflowsJson from '@/model/workflows.json';
+import workflowsJson from '@/model/all_workflows.json';
 import customWorkflowsJson from '@/model/customWorkflows.json';
 import eventHub, { EventNames } from './EventHub';
 import Utils from './Utils';
@@ -31,7 +31,7 @@ export class WorkflowManager {
 
   public workflows = reactive(new Map() as Map<string, Workflow>);
 
-  public allWorkflows = computed(() => new Array(...this.workflows.values()))
+  public allWorkflows = computed(() => new Array(...this.workflows.values()));
 
   public activeFlow = ref(null as TrackingWorkflow | null);
 

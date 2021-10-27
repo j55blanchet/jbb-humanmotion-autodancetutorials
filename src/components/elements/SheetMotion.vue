@@ -5,15 +5,19 @@
       :style="{
         'flex-grow': getPhraseFlexGrow(i),
       }"
-      v-for="(phrase, i) in data.phrases"
+      v-for="(phase, i) in data.phrases"
       :key="i">
       <!-- <div>{{phrase}}</div> -->
 
-      <div class="motion-note" v-for="(kf, j) in phrase.frames" :key="kf"
+      <div class="motion-note" v-for="(kf, j) in phase.frames" :key="kf"
       :style="{
         'background': getFrameBackground(i, j),
         'flex-grow': getFrameFlexGrow(i, j),
-      }">
+      }"
+      :ref="setNoteRef"
+      :data-phase="i"
+      :data-frame="j"
+      >
 
         <VideoPlayer
           :videoBaseUrl="dbEntry?.videoSrc + '#t=' + kf.timestamp"
@@ -22,7 +26,8 @@
           :videoOpacity="drawMode === 'video' && kf.type === 'move' ? 1.0 : 0.0"
           style="margin: 0; display:inline-block;background:lightgray;"
           :motionTrails="kf.motionTrails"
-          :setDrawStyle="setPoseDrawStyle"/>
+          :setDrawStyle="setPoseDrawStyle"
+          />
           <!-- {{kf}} -->
 
         <div class="motion-hold"></div>
@@ -36,6 +41,7 @@
 import { defineComponent } from 'vue';
 
 import VideoPlayer from '@/components/elements/VideoPlayer.vue';
+import { SheetMotion, SheetMotionFrame } from '@/model/MiniLesson';
 
 function constrain(val: number, min: number, max: number) {
   return Math.min(Math.max(val, min), max);
@@ -65,7 +71,8 @@ export default defineComponent({
     data: {
       type: Object,
       default: () => ({
-        kfsByStage: [[]],
+        phrases: [],
+        variableLength: false,
       }),
     },
     fadeInDurationSecs: {
@@ -77,7 +84,79 @@ export default defineComponent({
       default: 0.5,
     },
   },
+  data() {
+    return {
+      noteRefs: [] as {el: HTMLElement, phaseI: number, frameJ: number}[],
+    };
+  },
+  computed: {
+    activeNoteElement(): HTMLElement | null {
+      const { currentTime, data } = this;
+      const typedData = data as SheetMotion;
+      if (!typedData?.phrases || !currentTime) {
+        return null;
+      }
+
+      let pFrame = null as null | SheetMotionFrame;
+      let activePhase = -1;
+      let activeFrame = -1;
+
+      for (let i = 0; i < typedData.phrases.length && activeFrame === -1; i++) {
+        const phrase = typedData.phrases[i];
+        for (let j = 0; j < phrase.frames.length; j++) {
+          const frame = phrase.frames[j];
+          if (frame.timestamp > currentTime) {
+            activePhase = i;
+            activeFrame = j - 1;
+            if (activeFrame < 0) {
+              activeFrame = 0;
+              activePhase -= 1;
+            }
+            if (activePhase < 0) {
+              activePhase = 0;
+            }
+            break;
+          }
+          pFrame = frame;
+        }
+      }
+
+      const noteRef = this.noteRefs.find((ref) => ref.phaseI === activePhase && ref.frameJ === activeFrame);
+      if (noteRef) {
+        return noteRef.el;
+      }
+
+      return null;
+    },
+  },
+  watch: {
+    activeNoteElement: {
+      immediate: true,
+      handler(el) {
+        if (el) {
+          el.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+        }
+      },
+    },
+  },
   methods: {
+    setNoteRef(el: HTMLElement) {
+      const { phase, frame } = el.dataset;
+      if ((phase ?? null) === null || (frame ?? null) === null) {
+        return;
+      }
+      const phaseI = parseInt(phase ?? '', 10);
+      const frameJ = parseInt(frame ?? '', 10);
+
+      this.noteRefs.push({
+        el,
+        phaseI,
+        frameJ,
+      });
+    },
     setPoseDrawStyle(ctx: CanvasRenderingContext2D) {
       ctx.strokeStyle = '#8080ff';
       ctx.globalAlpha = 1.0;

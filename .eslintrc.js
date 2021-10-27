@@ -22,5 +22,6 @@ module.exports = {
     'max-len': 'off',
     'no-param-reassign': 'off',
     'no-underscore-dangle': 'off',
+    'no-plusplus': 'off',
   }
 };
