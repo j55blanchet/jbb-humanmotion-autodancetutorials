@@ -83,11 +83,11 @@ export default defineComponent({
     },
   },
   methods: {
-    async startWebcam() {
+    async startWebcam(videoDeviceId: string, audioDeviceId: string) {
       this.webcamStartError = null;
 
       try {
-        await webcamProvider.startWebcam();
+        await webcamProvider.startWebcam(videoDeviceId, audioDeviceId);
       } catch (e) {
         this.webcamStartError = e;
         return e;

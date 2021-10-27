@@ -50,6 +50,12 @@
         v-if="keyframeVisual !== 'none'"
         />
     </div>
+
+    <div class="is-overlay p-4" v-if="showingWebcam && needsWebcam">
+      <WebcamSourceSelectionMenu
+        v-model:videoDeviceId="videoDeviceId"
+        v-model:audioDeviceId="audioDeviceId" />
+    </div>
   </div>
 </template>
 
@@ -63,8 +69,10 @@ import PausingVideoPlayer from '@/components/elements/PausingVideoPlayer.vue';
 import KeyframeTimeline from '@/components/elements/KeyframeTimeline.vue';
 import WebcamBox from '@/components/elements/WebcamBox.vue';
 import SheetMotion from '@/components/elements/SheetMotion.vue';
+import WebcamSourceSelectionMenu from '@/components/elements/WebcamSourceSelectionMenu.vue';
 import { MiniLessonActivity, MotionTrail, PauseInfo } from '@/model/MiniLesson';
 import Constants from '@/services/Constants';
+import webcamProvider from '@/services/WebcamProvider';
 
 const ActivityPlayState = Object.freeze({
   AwaitingStart: 'AwaitingStart',
@@ -88,6 +96,7 @@ export default defineComponent({
     WebcamBox,
     KeyframeTimeline,
     SheetMotion,
+    WebcamSourceSelectionMenu,
   },
   setup(props) {
     const { activity } = toRefs(props);
@@ -179,6 +188,9 @@ export default defineComponent({
       motionTrails,
       trailStartTime,
       trailEndTime,
+
+      audioDeviceId: ref(''),
+      videoDeviceId: ref(''),
     };
   },
   computed: {
@@ -231,17 +243,23 @@ export default defineComponent({
           text: ti.text,
           start: ti.startTime,
           end: ti.endTime,
-        })
+        }),
       ).filter((ti) => ti.start <= time && time < ti.end) ?? [];
 
       // console.log(`TimedI updated for time ${time}, count=${activeTimedInstructions.length}`, mActivity.timedInstructions);
 
       return activeTimedInstructions;
     },
+    needsWebcam() {
+      return (this.activity?.userVisual ?? 'none') !== 'none' && webcamProvider.webcamStatus.value !== 'running';
+    },
   },
   methods: {
     async startWebcam() {
-      return this.webcamBox?.startWebcam() ?? new Error('WebcamBox is null');
+      if (this.webcamBox) {
+        await this.webcamBox.startWebcam(this.videoDeviceId, this.audioDeviceId);
+      }
+      return new Error('WebcamBox is null');
     },
     play(delay?: number | undefined) {
       this.reset();

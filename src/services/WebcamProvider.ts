@@ -26,6 +26,10 @@ export class WebcamProvider {
 
   public isRecording = ref(false);
 
+  public cachedVideoDeviceId: string | undefined = undefined;
+
+  public cachedAudioDeviceId: string | undefined = undefined;
+
   constructor() {
     this.readPermissionStatus();
   }
@@ -34,7 +38,7 @@ export class WebcamProvider {
     if (navigator.permissions) {
       try {
 
-        const result = await navigator.permissions.query({ name: 'camera' as any});
+        const result = await navigator.permissions.query({ name: 'camera' as any });
         this.permissionState.value = result.state;
 
         // eslint-disable-next-line no-empty
@@ -46,11 +50,14 @@ export class WebcamProvider {
     return this.permissionState;
   }
 
-  public async startWebcam(): Promise<void> {
+  public async startWebcam(videoDeviceId?: string, audioDeviceId?: string): Promise<void> {
     if (this.mediaStream.value || this.isWebcamLoading.value) {
       return;
     }
     this.isWebcamLoading.value = true;
+
+    const audioDevice = audioDeviceId ?? this.cachedAudioDeviceId;
+    const videoDevice = videoDeviceId ?? this.cachedVideoDeviceId;
 
     try {
       const constraints: MediaStreamConstraints = {
@@ -60,13 +67,19 @@ export class WebcamProvider {
           height: WEBCAM_DIMENSIONS.height,
           aspectRatio: 1.777777778,
           frameRate: 30,
+          deviceId: videoDevice,
         },
-        audio: true,
+        audio: {
+          deviceId: audioDevice,
+        },
       };
 
       if (!navigator.mediaDevices?.getUserMedia) throw new Error("Browser doesn't support webcam");
 
       this.mediaStream.value = await navigator.mediaDevices.getUserMedia(constraints);
+
+      this.cachedVideoDeviceId = videoDevice;
+      this.cachedAudioDeviceId = audioDevice;
 
       this.permissionState.value = 'granted';
     } finally {

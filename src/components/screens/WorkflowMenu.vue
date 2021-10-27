@@ -91,6 +91,7 @@
           v-for="(stepInfo, j) in stage.afterExpiredSteps"
           :stageSecondsRemainingString="stageSecondsRemainingString"
           :stepInfo="stepInfo"
+          :nextStepInStage="nextStepInStage"
           :key="j"
           @card-selected="startWorkflowStep(stepInfo.step)"/>
       </div>

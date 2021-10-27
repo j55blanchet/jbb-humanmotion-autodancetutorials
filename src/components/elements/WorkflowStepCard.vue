@@ -84,9 +84,9 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
 import { WorkflowStep } from '@/model/Workflow';
 import { DatabaseEntry } from '@/services/MotionDatabase';
-import { defineComponent } from 'vue';
 
 export interface WorkflowStepCardInfo {
   step: WorkflowStep;
@@ -111,6 +111,10 @@ export default defineComponent({
     stageSecondsRemainingString: {
       type: String,
       required: true,
+    },
+    nextStepInStage: {
+      type: Object,
+      default: null,
     },
   },
   emits: ['card-selected'],

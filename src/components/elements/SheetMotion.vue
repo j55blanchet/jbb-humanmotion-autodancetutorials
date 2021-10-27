@@ -144,6 +144,7 @@ export default defineComponent({
   },
   methods: {
     setNoteRef(el: HTMLElement) {
+      if (!el) return;
       const { phase, frame } = el.dataset;
       if ((phase ?? null) === null || (frame ?? null) === null) {
         return;
