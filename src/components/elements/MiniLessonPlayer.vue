@@ -33,25 +33,18 @@
             </span>
             <span class="pagination-ellipses buttons has-addons" v-if="i===activeActivityIndex">
               <button
-                v-if="!needsStartWebcam && !activityVideoPlayer?.activityFinished"
+                v-if="!activityVideoPlayer?.activityFinished"
                 class="button"
                 :class="{
                   'is-primary': (activityVideoPlayer?.awaitingStart ?? false) || (activityVideoPlayer?.isPendingStart ?? false),
                   'is-loading': (!activityVideoPlayer) || (activityVideoPlayer?.isPlaying ?? false) || (activityVideoPlayer?.isPendingStart ?? false),
                 }"
-                :disabled="!(activityVideoPlayer?.awaitingStart ?? false)"
+                :disabled="needsStartWebcam || !(activityVideoPlayer?.awaitingStart ?? false)"
                 @click="activityVideoPlayer.play()"
               >
                 <strong>{{i+1}}</strong>&nbsp;|&nbsp;
                 <span>{{activeActivity?.title}}</span>
                 <span class="icon"><i class="fas fa-play"></i></span>
-              </button>
-              <button
-                class="button is-primary"
-                v-if="needsStartWebcam"
-                :class="{'is-loading': webcamStatus==='loading'}"
-                @click="startWebcam">
-                Start Webcam
               </button>
               <button
                 class="button is-warning"

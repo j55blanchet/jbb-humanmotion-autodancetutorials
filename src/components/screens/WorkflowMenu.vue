@@ -129,13 +129,13 @@
 
     <div :class="{'is-active': uploadActive}" class="modal">
       <div class="modal-background"></div>
-      <div class="modal-content">
+      <!-- <div class="modal-content"> -->
         <div class="container">
-          <div class="box">
+          <div class="box" style="max-height:90vh;max-width:calc(100vw-2rem);margin-top:calc((10vh) / 2)">
             <FeedbackUploadScreen
               v-if="uploadActive"
               :prompt="currentStep?.upload?.prompt"
-              :title="workflow?.title"
+              :title="workflow?.userTitle ?? workflow?.title ?? 'Video Upload'"
               :subtitle="currentStep?.title"
               :uploadFilename="uploadFilename"
               :followAlong="currentStep?.upload?.followAlong ?? null"
@@ -144,7 +144,7 @@
               :maxAttempts="currentStep?.upload?.maxAllowedAttempts ?? null"
             />
           </div>
-        </div>
+        <!-- </div> -->
       </div>
     </div>
 

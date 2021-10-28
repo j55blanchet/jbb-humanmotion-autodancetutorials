@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1 class="title">Input Device Selection</h1>
+    <h1 class="title">Webcam Access</h1>
     <div v-if="state === 'unloaded'" class="mt-4" style="max-width:60ch">
-      <p class="block mt-4">We need your permission to list options for your webcam &amp; microphone. Click &quot;Load Devices&quot;, select the devices you wish to use, and click &quot;Start Webcam&quot;</p>
-      <button class="block button is-primary" @click="loadDevices">Load Devices</button>
+      <p class="block mt-4">We need your permission to start the webcam.</p>
+      <button class="block button is-primary" @click="loadDevices">Grant Permission</button>
       <div class="block notification is-warning" v-if="error !== null">
         <p class="block"><strong>Error:</strong> <span class="is-family-monospace">{{error}}</span></p>
         <p class="block">Check that your webcam is connected, no other application is using your webcam, and that you have granted permission in your browser.</p>
@@ -35,9 +35,12 @@
         <li v-if="state === 'loading'">Loading...</li>
       </ul>
     </div>
-    <p v-if="state === 'loaded'" class="notification has-text-centered mt-4" style="max-width:60ch;margin:auto;">
+    <p v-if="state === 'loaded'" class="block notification mt-4" style="display:inline-block;">
       <span class="icon"><i class="fas fa-info-circle"></i></span> Click &quot;Start Webcam&quot; when you&rsquo;re ready.
     </p>
+    <div v-if="state === 'loaded'" class="block ">
+      <button class="button is-primary" @click="$emit('startWebcamClicked')">Start Webcam</button>
+    </div>
   </div>
 </template>
 
@@ -47,7 +50,7 @@ import { defineComponent, onMounted, ref } from 'vue';
 export default defineComponent({
   name: 'WebcamSourceSelectionMenu',
   props: ['videoDeviceId', 'audioDeviceId'],
-  emits: ['update:videoDeviceId', 'update:audioDeviceId'],
+  emits: ['update:videoDeviceId', 'update:audioDeviceId', 'startWebcamClicked'],
   setup(props, { emit }) {
     const videoDevices = ref([] as MediaDeviceInfo[]);
     const audioDevices = ref([] as MediaDeviceInfo[]);

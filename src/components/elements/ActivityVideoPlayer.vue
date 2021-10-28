@@ -54,7 +54,8 @@
     <div class="is-overlay p-4" v-if="showingWebcam && needsWebcam">
       <WebcamSourceSelectionMenu
         v-model:videoDeviceId="videoDeviceId"
-        v-model:audioDeviceId="audioDeviceId" />
+        v-model:audioDeviceId="audioDeviceId"
+        @startWebcamClicked="startWebcam" />
     </div>
   </div>
 </template>
@@ -258,6 +259,7 @@ export default defineComponent({
     async startWebcam() {
       if (this.webcamBox) {
         await this.webcamBox.startWebcam(this.videoDeviceId, this.audioDeviceId);
+        this.play();
       }
       return new Error('WebcamBox is null');
     },
