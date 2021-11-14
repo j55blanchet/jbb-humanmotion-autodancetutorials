@@ -854,7 +854,7 @@
     "audioSrc": "tiktok/red-velvet.wav"
   },
   {
-    "title": "Cold Dance Tutorial",
+    "title": "Cold Dance",
     "clipName": "colddance-tutorial",
     "clipPath": "tiktok/colddance-tutorial.mp4",
     "frameCount": 1293,
@@ -896,7 +896,7 @@
     "audioSrc": "tiktok/colddance.wav"
   },
   {
-    "title": "Hello B$$$ Tutorial",
+    "title": "Hello B$$$",
     "clipName": "hello-b$$$-tutorial",
     "clipPath": "tiktok/hello-b$$$-tutorial.mp4",
     "frameCount": 878,
@@ -938,7 +938,7 @@
     "audioSrc": "tiktok/hello-b$$$.wav"
   },
   {
-    "title": "Last Christmas Tutorial",
+    "title": "Last Christmas",
     "clipName": "last-christmas-tutorial",
     "clipPath": "tiktok/last-christmas-tutorial.mp4",
     "frameCount": 452,
@@ -959,7 +959,7 @@
     "audioSrc": "tiktok/last-christmas-tutorial.wav"
   },
   {
-    "title": "Mad At Disney Tutorial",
+    "title": "Mad At Disney",
     "clipName": "mad-at-disney-tutorial",
     "clipPath": "tiktok/mad-at-disney-tutorial.mp4",
     "frameCount": 544,
@@ -1001,7 +1001,7 @@
     "audioSrc": "tiktok/mad-at-disney.wav"
   },
   {
-    "title": "Pajama Party Tutorial",
+    "title": "Pajama Party",
     "clipName": "pajamaparty-tutorial",
     "clipPath": "tiktok/pajamaparty-tutorial.mp4",
     "frameCount": 419,
@@ -1022,7 +1022,7 @@
     "audioSrc": "tiktok/pajamaparty-tutorial.wav"
   },
   {
-    "title": "Shirt-zha Tutorial",
+    "title": "Shirt-zha",
     "clipName": "shirt-zha-tutorial",
     "clipPath": "tiktok/shirt-zha-tutorial.mp4",
     "frameCount": 954,
@@ -1064,7 +1064,7 @@
     "audioSrc": "tiktok/shirt-zha.wav"
   },
   {
-    "title": "Welcome to my World Tutorial",
+    "title": "Welcome to My World",
     "clipName": "welcome-to-my-world-tutorial",
     "clipPath": "tiktok/welcome-to-my-world-tutorial.mp4",
     "frameCount": 873,
@@ -1085,7 +1085,7 @@
     "audioSrc": "tiktok/welcome-to-my-world-tutorial.wav"
   },
   {
-    "title": "Welcome to my World",
+    "title": "Welcome to My World",
     "clipName": "welcome-to-my-world",
     "clipPath": "tiktok/welcome-to-my-world.mp4",
     "frameCount": 430,
@@ -1106,7 +1106,7 @@
     "audioSrc": "tiktok/welcome-to-my-world.wav"
   },
   {
-    "title": "Last Christmas (BL)",
+    "title": "Last Christmas",
     "clipName": "last-christmas-blurred",
     "clipPath": "tiktok/last-christmas-blurred.mp4",
     "frameCount": 450,
@@ -1125,7 +1125,7 @@
     "audioSrc": "tiktok/last-christmas-blurred.wav"
   },
   {
-    "title": "Mad at Disney Tutorial (BL)",
+    "title": "Mad at Disney Tutorial",
     "clipName": "mad-at-disney-tutorial-blurred",
     "clipPath": "tiktok/mad-at-disney-tutorial-blurred.mp4",
     "frameCount": 519,
@@ -1140,16 +1140,13 @@
       "TikTok"
     ],
     "landmarkScope": [
-      "pose",
-      "rightHand",
-      "leftHand",
-      "face"
+      "pose"
     ],
     "thumbnailSrc": "tiktok/mad-at-disney-tutorial-blurred.jpg",
     "audioSrc": "tiktok/mad-at-disney-tutorial-blurred.wav"
   },
   {
-    "title": "Pajama Party Tutorial (BL)",
+    "title": "Pajama Party Tutorial",
     "clipName": "pajama-party-tutorial-blurred",
     "clipPath": "tiktok/pajama-party-tutorial-blurred.mp4",
     "frameCount": 417,
@@ -1164,12 +1161,30 @@
       "TikTok"
     ],
     "landmarkScope": [
-      "pose",
-      "rightHand",
-      "leftHand",
-      "face"
+      "pose"
     ],
     "thumbnailSrc": "tiktok/pajama-party-tutorial-blurred.jpg",
     "audioSrc": "tiktok/pajama-party-tutorial-blurred.wav"
+  },
+  {
+    "title": "Savage Love (Qijia)",
+    "clipName": "qijia-savagelove",
+    "clipPath": "tiktok/qijia-savagelove.mov",
+    "frameCount": 857,
+    "fps": 59.96002664890073,
+    "duration": 14.292855555555557,
+    "width": 720,
+    "height": 1280,
+    "startTime": 0,
+    "endTime": 16.451666666666668,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/qijia-savagelove.jpg",
+    "audioSrc": "tiktok/qijia-savagelove.wav"
   }
 ]

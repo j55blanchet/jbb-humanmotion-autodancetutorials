@@ -252,7 +252,7 @@ export default defineComponent({
       return activeTimedInstructions;
     },
     needsWebcam() {
-      return (this.activity?.userVisual ?? 'none') !== 'none' && webcamProvider.webcamStatus.value !== 'running';
+      return ((this as any).activity?.userVisual ?? 'none') !== 'none' && webcamProvider.webcamStatus.value !== 'running';
     },
   },
   methods: {
