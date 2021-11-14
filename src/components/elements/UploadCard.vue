@@ -117,7 +117,7 @@ export default defineComponent({
         }
       } catch (e) {
         this.currentStatus = Status.Failed;
-        this.uploadError = e;
+        this.uploadError = e as any;
       }
     },
   },

@@ -2,6 +2,13 @@ import { DatabaseEntry } from '@/services/MotionDatabase';
 import Utils from '@/services/Utils';
 import MiniLesson from './MiniLesson';
 
+export interface UploadFollowAlong {
+  clipName: string;
+  clipSpeed: number;
+  startTime: number;
+  endTime: number;
+  visualMode: 'none' | 'skeleton' | 'video';
+}
 /**
  * Userflow.ts
  *
@@ -24,6 +31,14 @@ export interface WorkflowStep {
   upload?: {
     identifier: string;
     prompt: string;
+    maxAllowedAttempts?: number;
+    followAlong? : UploadFollowAlong;
+  };
+  experiment?: {
+    showInExperimentOnly?: boolean;
+    disableRepitition?: boolean;
+    isTimeExpiredTask?: boolean;
+    isBeforeTimeStartTask?: boolean;
   };
 }
 
@@ -34,20 +49,27 @@ export interface WorkflowStage {
     startIndex: number;
     endIndex: number;
   };
+  maxStageTimeSecs?: number;
 }
 
 export interface Workflow {
   title: string;
-  // instructions?: Instructions;
+  userTitle?: string;
+  creationMethod: string;
   id: string;
   stages: WorkflowStage[];
+  experimentMaxTimeSecs?: number;
+  created: Date | string;
+  thumbnailSrc?: string;
 }
 
 export function CreateBlankWorkflow() {
   return {
     title: 'New Workflow',
     id: Utils.uuidv4(),
+    creationMethod: 'User Created',
     stages: [],
+    created: new Date(),
   } as Workflow;
 }
 
@@ -61,7 +83,7 @@ export function GetWorkflowStepVideoClipName(step: WorkflowStep) {
       : step.miniLessonEmbedded?.header.clipName) ?? null
     : null;
 }
-export function GetVideoEntryForWorkflowStep(db: any, step: WorkflowStep): DatabaseEntry | null{
+export function GetVideoEntryForWorkflowStep(db: any, step: WorkflowStep): DatabaseEntry | null {
   if (!IsMiniLessonStep(step)) return null;
   return db.motionsMap.get(GetWorkflowStepVideoClipName(step));
 }

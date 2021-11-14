@@ -33,25 +33,18 @@
             </span>
             <span class="pagination-ellipses buttons has-addons" v-if="i===activeActivityIndex">
               <button
-                v-if="!needsStartWebcam && !activityVideoPlayer?.activityFinished"
+                v-if="!activityVideoPlayer?.activityFinished"
                 class="button"
                 :class="{
                   'is-primary': (activityVideoPlayer?.awaitingStart ?? false) || (activityVideoPlayer?.isPendingStart ?? false),
                   'is-loading': (!activityVideoPlayer) || (activityVideoPlayer?.isPlaying ?? false) || (activityVideoPlayer?.isPendingStart ?? false),
                 }"
-                :disabled="!(activityVideoPlayer?.awaitingStart ?? false)"
+                :disabled="needsStartWebcam || !(activityVideoPlayer?.awaitingStart ?? false)"
                 @click="activityVideoPlayer.play()"
               >
                 <strong>{{i+1}}</strong>&nbsp;|&nbsp;
                 <span>{{activeActivity?.title}}</span>
                 <span class="icon"><i class="fas fa-play"></i></span>
-              </button>
-              <button
-                class="button is-primary"
-                v-if="needsStartWebcam"
-                :class="{'is-loading': webcamStatus==='loading'}"
-                @click="startWebcam">
-                Start Webcam
               </button>
               <button
                 class="button is-warning"
@@ -90,8 +83,8 @@
 </template>
 
 <script lang="ts">
-import MiniLesson, { MiniLessonActivity } from '@/model/MiniLesson';
 import { defineComponent, ref, nextTick } from 'vue';
+import MiniLesson, { MiniLessonActivity } from '@/model/MiniLesson';
 import ActivityVideoPlayer from '@/components/elements/ActivityVideoPlayer.vue';
 import SegmentedProgressBar, { calculateProgressSegments, ProgressSegmentData } from '@/components/elements/SegmentedProgressBar.vue';
 import webcamProvider from '@/services/WebcamProvider';
@@ -165,6 +158,13 @@ export default defineComponent({
   },
   methods: {
     onProgress(val: number) { this.activityProgress = val; },
+    autoPlay() {
+      nextTick(() => {
+        if (!this.needsStartWebcam) {
+          this.playActivity();
+        }
+      });
+    },
     playActivity() { (this.$refs.activityVideoPlayer as any).play(); },
     nextActivity() {
       if (this.hasNextActivity) this.activeActivityIndex += 1;
@@ -177,6 +177,7 @@ export default defineComponent({
     },
     gotoActivity(i: number) {
       this.activeActivityIndex = i;
+      this.autoPlay();
     },
     async startWebcam() {
       return (this.$refs.activityVideoPlayer as any)?.startWebcam();

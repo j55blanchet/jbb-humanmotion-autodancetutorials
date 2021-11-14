@@ -11,10 +11,14 @@
     "startTime": 4.8,
     "endTime": 15.0,
     "poseUpperBodyOnly": true,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
-    "thumbnailSrc": "tiktok/derulo.jpg"
+    "thumbnailSrc": "tiktok/derulo.jpg",
+    "audioSrc": "tiktok/derulo.wav"
   },
   {
     "title": "It's a Fit",
@@ -28,10 +32,14 @@
     "startTime": 1.0,
     "endTime": 10.0,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
-    "thumbnailSrc": "tiktok/itsafit.jpg"
+    "thumbnailSrc": "tiktok/itsafit.jpg",
+    "audioSrc": "tiktok/itsafit.wav"
   },
   {
     "title": "Renegade",
@@ -45,10 +53,14 @@
     "startTime": 0,
     "endTime": 12.233333333333333,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
-    "thumbnailSrc": "tiktok/renegade.jpg"
+    "thumbnailSrc": "tiktok/renegade.jpg",
+    "audioSrc": "tiktok/renegade.wav"
   },
   {
     "title": "Unhhunh",
@@ -62,10 +74,14 @@
     "startTime": 0,
     "endTime": 19.266666666666666,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
-    "thumbnailSrc": "tiktok/unhhunh.jpg"
+    "thumbnailSrc": "tiktok/unhhunh.jpg",
+    "audioSrc": "tiktok/unhhunh.wav"
   },
   {
     "title": "ASL: Coconut",
@@ -79,6 +95,9 @@
     "startTime": 0,
     "endTime": 1.4014014014014013,
     "poseUpperBodyOnly": true,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "rightHand",
       "leftHand"
@@ -97,11 +116,15 @@
     "startTime": 0,
     "endTime": 1.9352666666666667,
     "poseUpperBodyOnly": true,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "rightHand",
       "leftHand"
     ],
-    "thumbnailSrc": "ASL/Cluster1/flipflops.jpg"
+    "thumbnailSrc": "ASL/Cluster1/flipflops.jpg",
+    "audioSrc": "ASL/Cluster1/flipflops.wav"
   },
   {
     "title": "ASL: Ocean",
@@ -115,11 +138,15 @@
     "startTime": 0,
     "endTime": 2.0353666666666665,
     "poseUpperBodyOnly": true,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "rightHand",
       "leftHand"
     ],
-    "thumbnailSrc": "ASL/Cluster1/ocean.jpg"
+    "thumbnailSrc": "ASL/Cluster1/ocean.jpg",
+    "audioSrc": "ASL/Cluster1/ocean.wav"
   },
   {
     "title": "ASL: Sailboat",
@@ -133,11 +160,15 @@
     "startTime": 0,
     "endTime": 2.1021,
     "poseUpperBodyOnly": true,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "rightHand",
       "leftHand"
     ],
-    "thumbnailSrc": "ASL/Cluster1/sailboat.jpg"
+    "thumbnailSrc": "ASL/Cluster1/sailboat.jpg",
+    "audioSrc": "ASL/Cluster1/sailboat.wav"
   },
   {
     "title": "ASL: Turtle",
@@ -151,11 +182,15 @@
     "startTime": 0,
     "endTime": 1.2012012012012012,
     "poseUpperBodyOnly": true,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "rightHand",
       "leftHand"
     ],
-    "thumbnailSrc": "ASL/Cluster1/TURTLE.jpg"
+    "thumbnailSrc": "ASL/Cluster1/TURTLE.jpg",
+    "audioSrc": "ASL/Cluster1/TURTLE.wav"
   },
   {
     "title": "ASL: Umbrella",
@@ -169,11 +204,15 @@
     "startTime": 0,
     "endTime": 1.8018018018018018,
     "poseUpperBodyOnly": true,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "rightHand",
       "leftHand"
     ],
-    "thumbnailSrc": "ASL/Cluster1/UMBRELLA.jpg"
+    "thumbnailSrc": "ASL/Cluster1/UMBRELLA.jpg",
+    "audioSrc": "ASL/Cluster1/UMBRELLA.wav"
   },
   {
     "title": "ASL: Fence",
@@ -187,13 +226,17 @@
     "startTime": 0,
     "endTime": 1.9352666666666667,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
       "leftHand",
       "face"
     ],
-    "thumbnailSrc": "ASL/Cluster2/fence.jpg"
+    "thumbnailSrc": "ASL/Cluster2/fence.jpg",
+    "audioSrc": "ASL/Cluster2/fence.wav"
   },
   {
     "title": "ASL: Truck",
@@ -207,13 +250,17 @@
     "startTime": 0,
     "endTime": 2.0687333333333333,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
       "leftHand",
       "face"
     ],
-    "thumbnailSrc": "ASL/Cluster2/truck_2.jpg"
+    "thumbnailSrc": "ASL/Cluster2/truck_2.jpg",
+    "audioSrc": "ASL/Cluster2/truck_2.wav"
   },
   {
     "title": "ASL: Shelf",
@@ -227,13 +274,17 @@
     "startTime": 0,
     "endTime": 2.2355666666666667,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
       "leftHand",
       "face"
     ],
-    "thumbnailSrc": "ASL/Cluster3/shelf.jpg"
+    "thumbnailSrc": "ASL/Cluster3/shelf.jpg",
+    "audioSrc": "ASL/Cluster3/shelf.wav"
   },
   {
     "title": "ASL: Bus",
@@ -247,13 +298,17 @@
     "startTime": 0,
     "endTime": 1.5682333333333334,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
       "leftHand",
       "face"
     ],
-    "thumbnailSrc": "ASL/Cluster4/bus.jpg"
+    "thumbnailSrc": "ASL/Cluster4/bus.jpg",
+    "audioSrc": "ASL/Cluster4/bus.wav"
   },
   {
     "title": "ASL: Hen",
@@ -267,13 +322,17 @@
     "startTime": 0,
     "endTime": 1.7017,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
       "leftHand",
       "face"
     ],
-    "thumbnailSrc": "ASL/Cluster4/hen.jpg"
+    "thumbnailSrc": "ASL/Cluster4/hen.jpg",
+    "audioSrc": "ASL/Cluster4/hen.wav"
   },
   {
     "title": "ASL: Corn",
@@ -287,13 +346,17 @@
     "startTime": 0,
     "endTime": 2.0687333333333333,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
       "leftHand",
       "face"
     ],
-    "thumbnailSrc": "ASL/Cluster2/CORN_2.jpg"
+    "thumbnailSrc": "ASL/Cluster2/CORN_2.jpg",
+    "audioSrc": "ASL/Cluster2/CORN_2.wav"
   },
   {
     "title": "ASL: Goat",
@@ -307,13 +370,17 @@
     "startTime": 0,
     "endTime": 1.2679346012679347,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
       "leftHand",
       "face"
     ],
-    "thumbnailSrc": "ASL/Cluster2/GOAT.jpg"
+    "thumbnailSrc": "ASL/Cluster2/GOAT.jpg",
+    "audioSrc": "ASL/Cluster2/GOAT.wav"
   },
   {
     "title": "ASL: Milk",
@@ -327,13 +394,17 @@
     "startTime": 0,
     "endTime": 1.0343677010343677,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
       "leftHand",
       "face"
     ],
-    "thumbnailSrc": "ASL/Cluster2/MILK.jpg"
+    "thumbnailSrc": "ASL/Cluster2/MILK.jpg",
+    "audioSrc": "ASL/Cluster2/MILK.wav"
   },
   {
     "title": "ASL: Strawberry",
@@ -347,13 +418,17 @@
     "startTime": 0,
     "endTime": 2.301968635301969,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
       "leftHand",
       "face"
     ],
-    "thumbnailSrc": "ASL/Cluster2/STRAWBERRY.jpg"
+    "thumbnailSrc": "ASL/Cluster2/STRAWBERRY.jpg",
+    "audioSrc": "ASL/Cluster2/STRAWBERRY.wav"
   },
   {
     "title": "ASL: Airplane",
@@ -367,13 +442,17 @@
     "startTime": 0,
     "endTime": 2.2689333333333335,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
       "leftHand",
       "face"
     ],
-    "thumbnailSrc": "ASL/Cluster3/airplane.jpg"
+    "thumbnailSrc": "ASL/Cluster3/airplane.jpg",
+    "audioSrc": "ASL/Cluster3/airplane.wav"
   },
   {
     "title": "ASL: Box",
@@ -387,13 +466,17 @@
     "startTime": 0,
     "endTime": 2.0687333333333333,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
       "leftHand",
       "face"
     ],
-    "thumbnailSrc": "ASL/Cluster3/BOX.jpg"
+    "thumbnailSrc": "ASL/Cluster3/BOX.jpg",
+    "audioSrc": "ASL/Cluster3/BOX.wav"
   },
   {
     "title": "ASL: Peach",
@@ -407,6 +490,9 @@
     "startTime": 0,
     "endTime": 1.5011678345011679,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -427,13 +513,17 @@
     "startTime": 0,
     "endTime": 2.1021,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
       "leftHand",
       "face"
     ],
-    "thumbnailSrc": "ASL/Cluster4/CHERRY.jpg"
+    "thumbnailSrc": "ASL/Cluster4/CHERRY.jpg",
+    "audioSrc": "ASL/Cluster4/CHERRY.wav"
   },
   {
     "title": "ASL: Money",
@@ -447,13 +537,17 @@
     "startTime": 0,
     "endTime": 1.5015,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
       "leftHand",
       "face"
     ],
-    "thumbnailSrc": "ASL/Cluster4/MONEY.jpg"
+    "thumbnailSrc": "ASL/Cluster4/MONEY.jpg",
+    "audioSrc": "ASL/Cluster4/MONEY.wav"
   },
   {
     "title": "ASL: Pie",
@@ -467,13 +561,17 @@
     "startTime": 0,
     "endTime": 3.0026693360026693,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
       "leftHand",
       "face"
     ],
-    "thumbnailSrc": "ASL/Cluster4/PIE.jpg"
+    "thumbnailSrc": "ASL/Cluster4/PIE.jpg",
+    "audioSrc": "ASL/Cluster4/PIE.wav"
   },
   {
     "title": "ASL: Carrot",
@@ -487,6 +585,9 @@
     "startTime": 0,
     "endTime": 1.4681348014681348,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -507,6 +608,9 @@
     "startTime": 0,
     "endTime": 1.3013013013013013,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
@@ -527,13 +631,17 @@
     "startTime": 0,
     "endTime": 1.2012012012012012,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "ASL"
+    ],
     "landmarkScope": [
       "pose",
       "rightHand",
       "leftHand",
       "face"
     ],
-    "thumbnailSrc": "ASL/Cluster4/FLOWER.jpg"
+    "thumbnailSrc": "ASL/Cluster4/FLOWER.jpg",
+    "audioSrc": "ASL/Cluster4/FLOWER.wav"
   },
   {
     "title": "Say So",
@@ -547,10 +655,14 @@
     "startTime": 0,
     "endTime": 58.29156666666667,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
-    "thumbnailSrc": "tiktok/sayso.jpg"
+    "thumbnailSrc": "tiktok/sayso.jpg",
+    "audioSrc": "tiktok/sayso.wav"
   },
   {
     "title": "Ahi Challenge",
@@ -564,10 +676,14 @@
     "startTime": 0,
     "endTime": 14.3,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
-    "thumbnailSrc": "tiktok/ahichallenge.jpg"
+    "thumbnailSrc": "tiktok/ahichallenge.jpg",
+    "audioSrc": "tiktok/ahichallenge.wav"
   },
   {
     "title": "Getup",
@@ -581,10 +697,14 @@
     "startTime": 0,
     "endTime": 18.03333333333333,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
-    "thumbnailSrc": "tiktok/getup.jpg"
+    "thumbnailSrc": "tiktok/getup.jpg",
+    "audioSrc": "tiktok/getup.wav"
   },
   {
     "title": "Blinding Lights",
@@ -598,10 +718,14 @@
     "startTime": 0,
     "endTime": 15.266666666666667,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
-    "thumbnailSrc": "tiktok/blindinglights.jpg"
+    "thumbnailSrc": "tiktok/blindinglights.jpg",
+    "audioSrc": "tiktok/blindinglights.wav"
   },
   {
     "title": "Sup-a-lonely",
@@ -615,10 +739,14 @@
     "startTime": 0,
     "endTime": 21.254566666666665,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
-    "thumbnailSrc": "tiktok/supalonely.jpg"
+    "thumbnailSrc": "tiktok/supalonely.jpg",
+    "audioSrc": "tiktok/supalonely.wav"
   },
   {
     "title": "Debbie-Allen Challenge",
@@ -632,10 +760,14 @@
     "startTime": 0,
     "endTime": 30.733333333333334,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
-    "thumbnailSrc": "tiktok/debbieallenchallenge.jpg"
+    "thumbnailSrc": "tiktok/debbieallenchallenge.jpg",
+    "audioSrc": "tiktok/debbieallenchallenge.wav"
   },
   {
     "title": "The Git Up",
@@ -649,9 +781,395 @@
     "startTime": 0,
     "endTime": 18.118100000000002,
     "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
     "landmarkScope": [
       "pose"
     ],
-    "thumbnailSrc": "tiktok/thegitup.jpg"
+    "thumbnailSrc": "tiktok/thegitup.jpg",
+    "audioSrc": "tiktok/thegitup.wav"
+  },
+  {
+    "title": "Oh-Nana",
+    "clipName": "ohnana",
+    "clipPath": "tiktok/ohnana.MP4",
+    "frameCount": 406,
+    "fps": 29.926289926289925,
+    "duration": 13.566666666666666,
+    "width": 576,
+    "height": 1024,
+    "startTime": 0,
+    "endTime": 13.566666666666666,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/ohnana.jpg",
+    "audioSrc": "tiktok/ohnana.wav"
+  },
+  {
+    "title": "Don't Start Now",
+    "clipName": "dont-start-now",
+    "clipPath": "tiktok/dont-start-now.mp4",
+    "frameCount": 395,
+    "fps": 30.0,
+    "duration": 13.166666666666666,
+    "width": 464,
+    "height": 828,
+    "startTime": 0,
+    "endTime": 13.166666666666666,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/dont-start-now.jpg",
+    "audioSrc": "tiktok/dont-start-now.wav"
+  },
+  {
+    "title": "Red Velvet",
+    "clipName": "red-velvet",
+    "clipPath": "tiktok/red-velvet.mp4",
+    "frameCount": 318,
+    "fps": 30.0,
+    "duration": 10.6,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 10.6,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/red-velvet.jpg",
+    "audioSrc": "tiktok/red-velvet.wav"
+  },
+  {
+    "title": "Cold Dance Tutorial",
+    "clipName": "colddance-tutorial",
+    "clipPath": "tiktok/colddance-tutorial.mp4",
+    "frameCount": 1293,
+    "fps": 54.258179231863444,
+    "duration": 23.83050847457627,
+    "width": 576,
+    "height": 1024,
+    "startTime": 0,
+    "endTime": 23.83050847457627,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/colddance-tutorial.jpg",
+    "audioSrc": "tiktok/colddance-tutorial.wav"
+  },
+  {
+    "title": "Cold Dance",
+    "clipName": "colddance",
+    "clipPath": "tiktok/colddance.mp4",
+    "frameCount": 398,
+    "fps": 30.0,
+    "duration": 13.266666666666667,
+    "width": 576,
+    "height": 1024,
+    "startTime": 0,
+    "endTime": 13.266666666666667,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/colddance.jpg",
+    "audioSrc": "tiktok/colddance.wav"
+  },
+  {
+    "title": "Hello B$$$ Tutorial",
+    "clipName": "hello-b$$$-tutorial",
+    "clipPath": "tiktok/hello-b$$$-tutorial.mp4",
+    "frameCount": 878,
+    "fps": 29.0,
+    "duration": 30.275862068965516,
+    "width": 576,
+    "height": 1024,
+    "startTime": 0,
+    "endTime": 30.275862068965516,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/hello-b$$$-tutorial.jpg",
+    "audioSrc": "tiktok/hello-b$$$-tutorial.wav"
+  },
+  {
+    "title": "Hello B$$$",
+    "clipName": "hello-b$$$",
+    "clipPath": "tiktok/hello-b$$$.mp4",
+    "frameCount": 568,
+    "fps": 29.0,
+    "duration": 19.586206896551722,
+    "width": 576,
+    "height": 1028,
+    "startTime": 0,
+    "endTime": 19.586206896551722,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/hello-b$$$.jpg",
+    "audioSrc": "tiktok/hello-b$$$.wav"
+  },
+  {
+    "title": "Last Christmas Tutorial",
+    "clipName": "last-christmas-tutorial",
+    "clipPath": "tiktok/last-christmas-tutorial.mp4",
+    "frameCount": 452,
+    "fps": 30.0,
+    "duration": 15.066666666666666,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 15.066666666666666,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/last-christmas-tutorial.jpg",
+    "audioSrc": "tiktok/last-christmas-tutorial.wav"
+  },
+  {
+    "title": "Mad At Disney Tutorial",
+    "clipName": "mad-at-disney-tutorial",
+    "clipPath": "tiktok/mad-at-disney-tutorial.mp4",
+    "frameCount": 544,
+    "fps": 29.97,
+    "duration": 18.151484818151484,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 18.151484818151484,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/mad-at-disney-tutorial.jpg",
+    "audioSrc": "tiktok/mad-at-disney-tutorial.wav"
+  },
+  {
+    "title": "Mad At Disney",
+    "clipName": "mad-at-disney",
+    "clipPath": "tiktok/mad-at-disney.mp4",
+    "frameCount": 542,
+    "fps": 30.0,
+    "duration": 18.066666666666666,
+    "width": 576,
+    "height": 1024,
+    "startTime": 0,
+    "endTime": 18.066666666666666,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/mad-at-disney.jpg",
+    "audioSrc": "tiktok/mad-at-disney.wav"
+  },
+  {
+    "title": "Pajama Party Tutorial",
+    "clipName": "pajamaparty-tutorial",
+    "clipPath": "tiktok/pajamaparty-tutorial.mp4",
+    "frameCount": 419,
+    "fps": 30.0,
+    "duration": 13.966666666666667,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 13.966666666666667,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/pajamaparty-tutorial.jpg",
+    "audioSrc": "tiktok/pajamaparty-tutorial.wav"
+  },
+  {
+    "title": "Shirt-zha Tutorial",
+    "clipName": "shirt-zha-tutorial",
+    "clipPath": "tiktok/shirt-zha-tutorial.mp4",
+    "frameCount": 954,
+    "fps": 59.0,
+    "duration": 16.16949152542373,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 16.16949152542373,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/shirt-zha-tutorial.jpg",
+    "audioSrc": "tiktok/shirt-zha-tutorial.wav"
+  },
+  {
+    "title": "Shirt-zha",
+    "clipName": "shirt-zha",
+    "clipPath": "tiktok/shirt-zha.mp4",
+    "frameCount": 434,
+    "fps": 30.0,
+    "duration": 14.466666666666667,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 14.466666666666667,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/shirt-zha.jpg",
+    "audioSrc": "tiktok/shirt-zha.wav"
+  },
+  {
+    "title": "Welcome to my World Tutorial",
+    "clipName": "welcome-to-my-world-tutorial",
+    "clipPath": "tiktok/welcome-to-my-world-tutorial.mp4",
+    "frameCount": 873,
+    "fps": 29.0,
+    "duration": 30.103448275862068,
+    "width": 576,
+    "height": 1024,
+    "startTime": 0,
+    "endTime": 30.103448275862068,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/welcome-to-my-world-tutorial.jpg",
+    "audioSrc": "tiktok/welcome-to-my-world-tutorial.wav"
+  },
+  {
+    "title": "Welcome to my World",
+    "clipName": "welcome-to-my-world",
+    "clipPath": "tiktok/welcome-to-my-world.mp4",
+    "frameCount": 430,
+    "fps": 29.0,
+    "duration": 14.827586206896552,
+    "width": 576,
+    "height": 1024,
+    "startTime": 0,
+    "endTime": 14.827586206896552,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/welcome-to-my-world.jpg",
+    "audioSrc": "tiktok/welcome-to-my-world.wav"
+  },
+  {
+    "title": "Last Christmas (BL)",
+    "clipName": "last-christmas-blurred",
+    "clipPath": "tiktok/last-christmas-blurred.mp4",
+    "frameCount": 450,
+    "fps": 29.97002997002997,
+    "duration": 15.015,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 15.015,
+    "poseUpperBodyOnly": false,
+    "tags": [],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/last-christmas-blurred.jpg",
+    "audioSrc": "tiktok/last-christmas-blurred.wav"
+  },
+  {
+    "title": "Mad at Disney Tutorial (BL)",
+    "clipName": "mad-at-disney-tutorial-blurred",
+    "clipPath": "tiktok/mad-at-disney-tutorial-blurred.mp4",
+    "frameCount": 519,
+    "fps": 30.0,
+    "duration": 17.3,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 17.3,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ],
+    "thumbnailSrc": "tiktok/mad-at-disney-tutorial-blurred.jpg",
+    "audioSrc": "tiktok/mad-at-disney-tutorial-blurred.wav"
+  },
+  {
+    "title": "Pajama Party Tutorial (BL)",
+    "clipName": "pajama-party-tutorial-blurred",
+    "clipPath": "tiktok/pajama-party-tutorial-blurred.mp4",
+    "frameCount": 417,
+    "fps": 29.97002997002997,
+    "duration": 13.9139,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 13.9139,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose",
+      "rightHand",
+      "leftHand",
+      "face"
+    ],
+    "thumbnailSrc": "tiktok/pajama-party-tutorial-blurred.jpg",
+    "audioSrc": "tiktok/pajama-party-tutorial-blurred.wav"
   }
 ]

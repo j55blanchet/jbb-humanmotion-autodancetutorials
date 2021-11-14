@@ -73,4 +73,9 @@ export const PoseLandmarks = {
   rightHeel: 30,
   leftFootIndex: 31,
   rightFootIndex: 32,
+
+  // The following are not part of the MP standard, but are added for convenience
+  midShouder: -1,
+  midHip: -2,
+  midEye: -3,
 };

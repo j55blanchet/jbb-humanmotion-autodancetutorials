@@ -11,6 +11,25 @@ export interface PauseInfo {
     manualResume?: boolean;
 }
 
+export type MotionTrail = Array<[number, number, number]>;
+// export interface Keyframe {
+//     time: number;
+//     time2?: number;
+// }
+
+export interface SheetMotionFrame {
+  timestamp: number;
+  type: 'move' | 'pause';
+  motionTrails?: Array<MotionTrail>;
+}
+export interface SheetMotionPhrase {
+  frames: SheetMotionFrame[];
+}
+export interface SheetMotion {
+  phrases: SheetMotionPhrase[];
+  variableLength: boolean;
+}
+
 export interface MiniLessonActivity {
   title: string;
   startTime: number;
@@ -19,6 +38,8 @@ export interface MiniLessonActivity {
   userVisual: 'video' | 'skeleton' | 'none'; // If the user's webcam should be on
   keyframeVisual?: 'video' | 'skeleton' | 'none'; // If the keyframe should be on
   keyframes?: number[];
+  sheetMotionVisual?: 'video' | 'skeleton' | 'none';
+  sheetMotion?: SheetMotion;
   emphasizedJoints?: number[];
   focusedSegments?: number[];
   pauses?: Array<PauseInfo>;
@@ -28,6 +49,9 @@ export interface MiniLessonActivity {
   staticInstruction?: string;
   timedInstructions?: Array<TimedInstruction>;
   endInstruction?: string;
+  motionTrails?: Array<MotionTrail>;
+  motionTrailBreaks?: Array<number>;
+  showVideoControls?: boolean;
 }
 
 export default interface MiniLesson {

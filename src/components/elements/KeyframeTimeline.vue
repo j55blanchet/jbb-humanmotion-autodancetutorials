@@ -5,23 +5,25 @@
 
       <!-- <span class="item">
         <VideoPlayer :videoBaseUrl="dbEntry?.videoSrc + '#t=' + currentKeyframe"
-          :videoOpacity="displayMode === 'video' ? 1.0 : 0"
+          :videoOpacity="drawMode === 'video' ? 1.0 : 0"
           :setDrawStyle="setKFSkeletonDrawStyle"
           :fps="dbEntry.fps"
-          :drawPoseLandmarks="displayMode === 'skeleton'"/>
+          :drawPoseLandmarks="drawMode === 'skeleton'"/>
       </span> -->
       <span
         class="item"
-        v-for="(kfitem) in nearFutureKeyframes"
+        v-for="(kfitem) in allKeyframes"
         :key="kfitem.kf"
         :style="{
-          'left': 100 * kfitem.percentAcross + '%',
+          'left': 'calc(-14rem + ' + 100 * kfitem.left + '%)',
+          'opacity': kfitem.opacity,
+          'width': '14rem',
         }">
         <VideoPlayer
           :videoBaseUrl="dbEntry?.videoSrc + '#t=' + kfitem.kf"
           :fps="dbEntry.fps"
-          :drawPoseLandmarks="displayMode === 'skeleton'"
-          :videoOpacity="displayMode === 'video' ? 1.0 : 0"
+          :drawPoseLandmarks="drawMode === 'skeleton'"
+          :videoOpacity="drawMode === 'video' ? 1.0 : 0"
           :setDrawStyle="setKFSkeletonDrawStyle"
         />
         <p v-if="showTimestamps" class="has-text-centered">
@@ -56,9 +58,13 @@ export default defineComponent({
     VideoPlayer,
   },
   props: {
-    displayMode: {
+    drawMode: {
       type: String,
-      default: 'video',
+      default: 'skeleton',
+    },
+    timelineActiveItemsLimit: {
+      type: Number,
+      default: 1,
     },
     dbEntry: {
       type: Object,
@@ -72,13 +78,9 @@ export default defineComponent({
       type: Number,
       default: 0,
     },
-    activeTimelineSecs: {
+    maxActiveTimelineSecs: {
       type: Number,
-      default: 5,
-    },
-    maxStackItems: {
-      type: Number,
-      default: 3,
+      default: 2.5,
     },
     showTimestamps: {
       type: Boolean,
@@ -86,13 +88,17 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const minStackItems = 3;
     const {
-      keyframes, currentTime, activeTimelineSecs, maxStackItems,
+      keyframes, currentTime, maxActiveTimelineSecs, timelineActiveItemsLimit,
     } = toRefs(props);
 
     const keyframesTyped = keyframes as Ref<number[]>;
 
-    const currentKeyframe = computed(() => (keyframesTyped.value.find((kf, index) => kf < currentTime.value && (keyframesTyped.value[index + 1] === undefined || keyframesTyped.value[index + 1] >= currentTime.value)) ?? keyframesTyped.value[0]) ?? null);
+    const currentKeyframe = computed(() => keyframesTyped.value.find((kf, index) => (
+      kf < currentTime.value
+      && (keyframesTyped.value[index + 1] === undefined || keyframesTyped.value[index + 1] >= currentTime.value)
+    )) ?? null);
 
     const futureKeyframes = computed(() => keyframesTyped.value
       .map((kf) => ({
@@ -101,35 +107,76 @@ export default defineComponent({
       }))
       .filter((item) => item.timeRemaining > 0));
 
-    const nearFutureKeyframes = computed(
+    const separatedKeyframes = computed(() => {
+      let separationIndex = futureKeyframes.value.findIndex(
+        (kf, i) => i >= timelineActiveItemsLimit.value || kf.timeRemaining > maxActiveTimelineSecs.value,
+      );
+      separationIndex = separationIndex === -1 ? futureKeyframes.value.length : separationIndex;
+      const active = futureKeyframes.value.slice(0, separationIndex);
+      const future = futureKeyframes.value.slice(separationIndex, separationIndex + minStackItems);
+
+      let timelineTime = maxActiveTimelineSecs.value;
+      if (timelineActiveItemsLimit.value === 1 && active.length > 0) {
+        const lastKfTime = currentKeyframe.value ?? 0;
+        const nextKfTime = active[0].kf;
+        const timeTONextKf = nextKfTime - lastKfTime;
+        timelineTime = Math.min(timelineTime, timeTONextKf);
+      }
+      const lastScrollingKf = active[active.length - 1]?.kf;
+
+      return {
+        separationIndex,
+        activeKeyframes: active.map((kfitem) => ({
+          ...kfitem,
+          left: kfitem.timeRemaining / timelineTime,
+          opacity: 1,
+        })),
+        stackTimeline: future.map((kfitem, i) => ({
+          ...kfitem,
+          left: 1.0,
+          // eslint-disable-next-line no-nested-ternary
+          opacity: i > 0 ? 0
+            : (lastScrollingKf
+              ? (kfitem.kf - lastScrollingKf) / 1.5
+              : 1),
+        })),
+      };
+    });
+
+    const allKeyframes = computed(
       () => {
         const current = [];
         if (currentKeyframe.value !== null) {
           current.push({
             kf: currentKeyframe.value,
             timeRemaining: 0,
+            opacity: 1,
+            left: 0,
           });
         }
-        const upcoming = futureKeyframes.value
-          .filter(({ timeRemaining }) => timeRemaining < activeTimelineSecs.value)
-          .map((item) => ({ ...item, percentAcross: item.timeRemaining / activeTimelineSecs.value }));
-        upcoming.reverse();
+        const timeline = separatedKeyframes.value.activeKeyframes;
+        timeline.reverse();
 
-        const allNearFuture = [...current, ...upcoming];
-        return allNearFuture;
+        const stack = separatedKeyframes.value.stackTimeline;
+        stack.reverse();
+
+        return [...stack, ...current, ...timeline];
       },
     );
-    const farFutureKeyframes = computed(() => futureKeyframes.value.filter(({ timeRemaining }) => timeRemaining >= activeTimelineSecs.value).slice(0, maxStackItems.value + 1));
 
     return {
       currentKeyframe,
+      allKeyframes,
+      separatedKeyframes,
       futureKeyframes,
-      nearFutureKeyframes,
-      farFutureKeyframes,
+      // currentKeyframe,
+      // futureKeyframes,
+      // activeKeyframes,
+      // stackTimeline,
 
       setKFSkeletonDrawStyle: (canvasCtx: CanvasRenderingContext2D) => {
-        canvasCtx.strokeStyle = 'rgba(100, 150, 150, 0.9)';
-        canvasCtx.lineWidth = 3.5;
+        canvasCtx.strokeStyle = 'rgba(100, 250, 250, 1)';
+        canvasCtx.lineWidth = 7;
         canvasCtx.lineCap = 'round';
       },
     };
@@ -148,6 +195,7 @@ export default defineComponent({
   .timeline {
     // padding-top: 25%;
     height: 14rem;
+    margin-left: 14rem;
     // background: gray;
     position: relative;
 

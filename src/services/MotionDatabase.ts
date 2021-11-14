@@ -19,9 +19,13 @@ export interface DatabaseEntry {
   thumbnailSrc: string;
   startTime: number;
   endTime: number;
+  tags: string[];
 }
 
 export class MotionDatabase {
+
+  readonly allTags = reactive(new Set<string>());
+
   readonly motionsMap = reactive(new Map<string, DatabaseEntry>());
 
   readonly motions = computed(() => Array.from(this.motionsMap.values()));
@@ -41,6 +45,7 @@ export class MotionDatabase {
         thumbnailSrc: `thumbs/${videoEntry.thumbnailSrc}`,
       });
       this.lessonsByVideo.set(videoEntry.clipName, []);
+      videoEntry.tags.forEach((tag) => this.allTags.add(tag));
     });
 
     console.log(`Motion database: loaded ${this.motionsMap.size} videos`);

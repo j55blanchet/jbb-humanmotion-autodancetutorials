@@ -1,6 +1,10 @@
 <template>
 <div class="app">
 
+  <div id="testData" v-show="isTest" class="tags p-2 mb-0 has-background-dark has-text-grey-lighter">
+    <span class="tag">ParticipantId: {{participantId ?? 'null'}}</span>
+  </div>
+
   <LayoutTest v-if="state === State.LayoutTest" />
 
   <MainMenu
@@ -259,6 +263,8 @@ export default defineComponent({
       cameraSurface,
       State,
       startedWithWorkflow: ref(false),
+      isTest: optionsManager.isTest,
+      participantId: optionsManager.participantId,
     };
   },
   mounted() {

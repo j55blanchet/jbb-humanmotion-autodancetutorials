@@ -13,15 +13,14 @@
       @timeupdate="onTimeUpdated(true)"
       @ended="endReported = true"
       playsinline
+      :controls="showControls"
     ></video>
-    <canvas class="is-overlay" ref="canvasElement" v-show="drawPoseLandmarks"></canvas>
+    <canvas class="is-overlay" ref="canvasElement" v-show="drawPoseLandmarks || motionTrails"></canvas>
   </div>
 </template>
 
 <script lang="ts">
-import { DrawPose } from '@/services/MediaPipe';
-import { Landmark } from '@/services/MediaPipeTypes';
-import poseProvider from '@/services/PoseProvider';
+
 import {
   computed,
   defineComponent,
@@ -33,6 +32,15 @@ import {
   Ref,
   watch,
 } from 'vue';
+import MotionTrail from '@/model/MotionTrail';
+import { DrawPose } from '@/services/MediaPipe';
+import { Landmark } from '@/services/MediaPipeTypes';
+import poseProvider from '@/services/PoseProvider';
+
+const motionTrailColors = [
+  '#59eb59',
+  '#6666ff',
+];
 
 function onResize(canvasE: HTMLCanvasElement, videoE: HTMLVideoElement, modified: Ref<boolean>) {
   nextTick(() => {
@@ -126,7 +134,18 @@ function setupVideoPlaying(
 export default defineComponent({
   name: 'VideoPlayer',
   props: {
-    videoBaseUrl: String,
+    videoBaseUrl: {
+      type: String,
+      required: true,
+    },
+    motionTrails: {
+      type: Array,
+      required: false,
+    },
+    drawMotionTrailsInTime: {
+      type: Boolean,
+      default: false,
+    },
     drawPoseLandmarks: {
       type: Boolean,
       default: false,
@@ -151,6 +170,10 @@ export default defineComponent({
       type: String,
       default: 'red',
     },
+    showControls: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: [
     'playback-completed',
@@ -158,7 +181,7 @@ export default defineComponent({
   ],
   setup(props, ctx) {
     const {
-      videoBaseUrl, drawPoseLandmarks, fps, setDrawStyle, emphasizedJoints, emphasizedJointStyle,
+      videoBaseUrl, motionTrails, drawMotionTrailsInTime, drawPoseLandmarks, fps, setDrawStyle, emphasizedJoints, emphasizedJointStyle,
     } = toRefs(props);
 
     const videoElement = ref(null as null | HTMLVideoElement);
@@ -243,6 +266,7 @@ export default defineComponent({
         emphasizedJoints: emphasizedJoints.value as number[],
         emphasisStroke: emphasizedJointStyle.value,
         sourceAspectRatio: sourceAR,
+        outlineColor: 'black',
       });
     }
 
@@ -259,15 +283,126 @@ export default defineComponent({
       // }
     };
 
+    function drawArrow(drawCtx: CanvasRenderingContext2D, fromX: number, fromY: number, toX: number, toY: number, atEnd: boolean, arrowLength: number) {
+
+      const arrowWidth = arrowLength / 3;
+
+      const dx = toX - fromX;
+      const dy = toY - fromY;
+      const angle = Math.atan2(dy, dx);
+
+      drawCtx.save();
+      if (atEnd) drawCtx.translate(toX, toY);
+      else drawCtx.translate(fromX, fromY);
+
+      drawCtx.rotate(angle);
+      drawCtx.lineCap = 'square';
+      drawCtx.beginPath();
+      drawCtx.ellipse(-arrowLength, 0, arrowLength, arrowWidth, 0, -Math.PI / 2, Math.PI / 2);
+
+      // ctx.lineTo(length - arrow
+
+      drawCtx.stroke();
+      drawCtx.restore();
+    }
+
+    function drawMotionTrail(trail: Array<[number, number, number]>, time: number, color: string, strokeWidth: number) {
+      const videoE = videoElement.value;
+      const drawCtx = canvasCtx.value;
+      const motionTrailsInTime = drawMotionTrailsInTime.value;
+      // console.log('VideoPlayer :: Drawing motion trail', trail);
+      const lastTrailItem = trail.findIndex(([t, x, y]) => t >= time);
+      // eslint-disable-next-line no-nested-ternary
+      const effectiveTrailLength = !motionTrailsInTime ? trail.length
+        : (lastTrailItem === -1 ? trail.length : lastTrailItem + 1);
+
+      if (!drawCtx || !videoE) return;
+      if (effectiveTrailLength < 2) return;
+
+      drawCtx.save();
+      drawCtx.strokeStyle = color;
+      drawCtx.globalAlpha = 1.0;
+      drawCtx.lineWidth = strokeWidth;
+
+      if (drawCtx.canvas.width <= 0 || drawCtx.canvas.height <= 0) return;
+      if (videoE.videoWidth <= 0 || videoE.videoHeight <= 0) return;
+      const [xScale, yScale] = [drawCtx.canvas.width / videoE.videoWidth, drawCtx.canvas.height / videoE.videoHeight];
+      // console.log('Motion trail scaling', xScale, yScale);
+      drawCtx.scale(xScale, yScale);
+
+      drawCtx.beginPath();
+      // https://stackoverflow.com/questions/7054272/how-to-draw-smooth-curve-through-n-points-using-javascript-html5-canvas
+
+      const [st, startx, starty] = trail[0];
+      drawCtx.moveTo(startx, starty);
+
+      if (effectiveTrailLength <= 2) {
+        const [t, x, y] = trail[1];
+        drawCtx.lineTo(x, y);
+      } else {
+        for (let i = 1; i < effectiveTrailLength - 1; i += 1) {
+          const [t, x, y] = trail[i];
+          const [nt, nx, ny] = trail[i + 1];
+          const xc = (x + nx) / 2;
+          const yc = (y + ny) / 2;
+
+          if (i === effectiveTrailLength - 2) {
+            drawCtx.quadraticCurveTo(x, y, nx, ny);
+          } else {
+            drawCtx.quadraticCurveTo(x, y, xc, yc);
+          }
+        }
+      }
+
+      drawCtx.stroke();
+
+      const [t2, x2, y2] = trail[1];
+      drawArrow(drawCtx, startx, starty, x2, y2, false, 30.0);
+
+      const [lastt, lastx, lasty] = trail[effectiveTrailLength - 1];
+      const [secondlastt, secondlastx, secondlasty] = trail[effectiveTrailLength - 2];
+      drawArrow(drawCtx, secondlastx, secondlasty, lastx, lasty, true, 30.0);
+
+      // drawCtx.beginPath();
+
+      // drawCtx.moveTo(468.0, 844.8000000000001);
+      // drawCtx.lineTo(338.4, 806.4);
+      // drawCtx.moveTo(videoE.videoWidth * 0.25, videoE.videoHeight / 2);
+      // drawCtx.lineTo(videoE.videoWidth * 0.75, videoE.videoHeight / 2);
+      // console.log('videoWH', videoE.videoWidth, videoE.videoHeight);
+      // drawCtx.moveTo(0, 0);
+      // drawCtx.lineTo(400, 400);
+      // drawCtx.stroke();
+      drawCtx.restore();
+    }
+
     watch([videoBaseUrl, drawPoseLandmarks], retieveClearPoseFile);
     onMounted(retieveClearPoseFile);
 
-    watch([canvasModified, currentPose, drawPoseLandmarks], () => {
+    const motionTrailsCurrentTime = computed(() => {
+      const drawingInTime = drawMotionTrailsInTime.value;
+      if (!drawingInTime) return 0;
+      return currentTime.value;
+    });
+
+    watch([canvasModified, currentPose, drawPoseLandmarks, motionTrails, motionTrailsCurrentTime], () => {
       canvasModified.value = false;
       clearDrawing();
 
       if (drawPoseLandmarks.value) {
         drawPose(currentPose.value as any);
+      }
+
+      if (motionTrails && motionTrails.value) {
+        for (let i = 0; i < motionTrails.value.length; i += 1) {
+          const trail = motionTrails.value[i];
+          drawMotionTrail(trail as any, motionTrailsCurrentTime.value, 'black', 9.0);
+        }
+        for (let i = 0; i < motionTrails.value.length; i += 1) {
+          const trail = motionTrails.value[i];
+          const color = motionTrailColors[i % motionTrailColors.length];
+          drawMotionTrail(trail as any, motionTrailsCurrentTime.value, color, 6.0);
+        }
       }
     });
 
@@ -294,6 +429,7 @@ export default defineComponent({
       currentFrame,
       endReported,
       onTimeUpdated,
+      motionTrailsCurrentTime,
 
       getVideoDimensions: () => ({
         height: videoElement.value?.height ?? 0,
@@ -328,6 +464,7 @@ export default defineComponent({
 
   canvas {
     margin: auto;
+    pointer-events: none;
   }
 
   video {

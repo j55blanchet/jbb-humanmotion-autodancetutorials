@@ -31,6 +31,24 @@
       <div>
         <input class="slider is-fullwidth" type="range" :value="currentTime" :min="videoEntry.startTime" :max="videoEntry.endTime" step="0.03" @input="this.$refs.videoElement.currentTime = $event.target.value">
       </div>
+      <div class="field is-horizontal">
+        <div class="field-label">
+          <label class="label">Draw Mode</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <div class="select">
+                <select v-model="drawMode">
+                  <!-- <option value="none">None</option> -->
+                  <option value="skeleton">Skeleton</option>
+                  <option value="video">Video</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 <!--
       <div class="block">
         <pre>{{JSON.stringify(modelValue)}}</pre>
@@ -42,6 +60,7 @@
           :currentTime="currentTime"
           :dbEntry="videoEntry"
           :showTimestamps="true"
+          :drawMode="drawMode"
         />
       </div>
 
@@ -165,6 +184,7 @@ export default defineComponent({
       paused,
       currentTime,
       updateCurrentTime,
+      drawMode: ref('skeleton'),
 
       effectiveStartTime,
       effectiveEndTime,

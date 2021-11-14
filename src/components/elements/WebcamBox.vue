@@ -1,13 +1,19 @@
 <template>
   <div class="webcam-box-container">
     <video
+      v-show="webcamStatus === 'running'"
       ref="videoE" muted disablePictureInPicture
       :style="{
         'max-width': '100%',
       }"
     ></video>
-    <div class="is-overlay" v-if="webcamStatus !== 'running'">
-      <div class="vcenter-parent">
+    <div v-if="webcamStatus !== 'running' && showStartWebcamButton" class="has-border-grey-lighter p-4">
+
+      <WebcamSourceSelectionMenu
+        v-model:audioDeviceId="audioDeviceId"
+        v-model:videoDeviceId="videoDeviceId"
+        @startWebcamClicked="selfStartWebcam"/>
+      <!-- <div class="vcenter-parent">
         <div class="notification" v-if="this.webcamStartError !== null">
           {{this.webcamStartError}}
         </div>
@@ -19,7 +25,8 @@
           :class="{'is-loading': webcamStatus==='loading'}">
           Start Webcam
         </button>
-      </div>
+      </div> -->
+
     </div>
   </div>
 </template>
@@ -31,9 +38,13 @@ import {
 } from 'vue';
 
 import webcamProvider from '@/services/WebcamProvider';
+import WebcamSourceSelectionMenu from '@/components/elements/WebcamSourceSelectionMenu.vue';
 
 export default defineComponent({
   name: 'WebcamBox',
+  components: {
+    WebcamSourceSelectionMenu,
+  },
   props: {
     showStartWebcamButton: {
       type: Boolean,
@@ -75,6 +86,9 @@ export default defineComponent({
       webcamProvider,
       webcamStatus: webcamProvider.webcamStatus,
       isRecording: webcamProvider.isRecording,
+
+      audioDeviceId: ref(''),
+      videoDeviceId: ref(''),
     };
   },
   computed: {
@@ -83,11 +97,14 @@ export default defineComponent({
     },
   },
   methods: {
-    async startWebcam() {
+    async selfStartWebcam() {
+      await this.startWebcam(this.videoDeviceId, this.audioDeviceId);
+    },
+    async startWebcam(videoDeviceId: string, audioDeviceId: string) {
       this.webcamStartError = null;
 
       try {
-        await webcamProvider.startWebcam();
+        await webcamProvider.startWebcam(videoDeviceId, audioDeviceId);
       } catch (e) {
         this.webcamStartError = e;
         return e;

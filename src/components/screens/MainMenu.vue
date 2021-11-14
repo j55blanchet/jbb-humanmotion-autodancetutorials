@@ -26,8 +26,33 @@
       <div class="box m-4 hover-expand is-clickable"
         v-for="workflow in workflows"
         :key="workflow.id"
-        @click="$emit('workflow-selected', workflow.id)">{{workflow.title}}
+        @click="$emit('workflow-selected', workflow.id)">
+        <div class="level">
+          <div class="level-item mr-4" v-if="workflow.thumbnailSrc">
+            <img :src="workflow.thumbnailSrc" class="image is-96x96 is-cover">
+          </div>
+          <div class="level-item has-text-left">
+            <div>
+              <p class="is-uppercase">{{workflow.title}}</p>
+              <p class="is-size-7 has-text-grey mt-1 mb-1" style="max-width:40ch;">{{workflow.creationMethod}}</p>
+              <p class="is-size-7 has-text-grey">Created {{workflow.created.toLocaleDateString()}} at {{workflow.created.toLocaleTimeString()}}</p>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+
+    <div v-if="currentTab === Tabs.Videos && availableTags.size > 0" class="has-text-centered container">
+      <!-- <h3 class="subtitle">Tags</h3> -->
+      <strong>Filter by tag: </strong>
+      <span
+        v-for="tag in availableTags"
+        :key="tag"
+        class="tag m-1 is-size-6 is-clickable is-unselectable"
+        :class="{'is-primary': activeTags.has(tag)}"
+        @click="toggleTag(tag)"
+      >{{tag}}</span>
+
     </div>
 
     <div class="grid-menu container block"
@@ -35,31 +60,31 @@
     >
       <div
         class="video-card card hover-expand"
-        v-for="dance in motionList"
-        :key="dance.title"
-        @mouseover="dance.hovering = true"
-        @mouseleave="dance.hovering = false"
-        @click = "dance.clicked = !dance.clicked"
+        v-for="motion in filteredMotionList"
+        :key="motion.title"
+        @mouseover="motion.hovering = true"
+        @mouseleave="motion.hovering = false"
+        @click = "motion.clicked = !motion.clicked"
       >
         <div class="card-image">
-          <figure class="image is-2by3" v-if="(!dance.hovering) && (!dance.clicked)">
-            <img :src="dance.thumbnailSrc" class="is-contain" />
+          <figure class="image is-2by3" v-if="(!motion.hovering) && (!motion.clicked)">
+            <img :src="motion.thumbnailSrc" class="is-contain" />
           </figure>
-          <figure class="image is-2by3" v-else><video controls :src="dance.videoSrc" @playing="dance.clicked=True"></video></figure>
+          <figure class="image is-2by3" v-else><video controls :src="motion.videoSrc" @playing="motion.clicked=True"></video></figure>
         </div>
         <div class="card-content" >
           <div class="level">
             <div class="level-item">
-              {{ dance.title }}
+              {{ motion.title }}
             </div>
             <!-- <transition name="expand-down" appear> -->
               <div class="level-item">
                 <button
                   class="button is-small transition-all is-primary"
                   :class="{
-                    'is-outlined': !(dance.clicked || dance.hovering)
+                    'is-outlined': !(motion.clicked || motion.hovering)
                   }"
-                  @click="selectedDance = dance">
+                  @click="selectedMotion = motion">
                   <span>Go</span>
                   <span class="icon is-small">
                     <i class="fas fa-arrow-right"></i>
@@ -87,12 +112,12 @@
       </div>
     </div>
 
-    <div v-bind:class="{ 'is-active': selectedDance }" class="modal">
+    <div v-bind:class="{ 'is-active': selectedMotion }" class="modal">
       <div class="modal-background"></div>
       <div class="modal-content">
         <LessonCard
-          :motion="selectedDance"
-          @closed="selectedDance = null"
+          :motion="selectedMotion"
+          @closed="selectedMotion = null"
           @lesson-selected="onLessonSelected"
           @create-lesson-selected="createLessonSelected"
           @keyframeselectortool-selected="onKeyframeSelectorToolSelected"
@@ -162,39 +187,66 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const motionList = db.motions;
-    const selectedDance = ref(null as DatabaseEntry | null);
+    const selectedMotion = ref(null as DatabaseEntry | null);
     const uploadLessonUIActive = ref(false);
-    const currentTab = ref(Tabs.Tools);
+    const currentTab = ref(Tabs.Workflows);
+    const activeTags = ref(new Set());
 
     function onLessonSelected(
       videoEntry: DatabaseEntry,
       lesson: MiniLesson,
     ) {
       ctx.emit('lesson-selected', videoEntry, lesson);
-      selectedDance.value = null;
+      selectedMotion.value = null;
     }
 
     function createLessonSelected(videoEntry: DatabaseEntry) {
       ctx.emit('create-lesson-selected', videoEntry);
-      selectedDance.value = null;
+      selectedMotion.value = null;
     }
+
+    const filteredMotionList = computed(() => {
+      const tagMatchingMotions = motionList.value.filter((motion) => {
+
+        if (activeTags.value.size === 0) return true;
+
+        const allTagsMatch = motion.tags.reduce((someTagMatches, currTag) => {
+          const thisTagMatches = activeTags.value.has(currTag);
+          return someTagMatches || thisTagMatches;
+        }, false);
+
+        return allTagsMatch;
+
+      });
+
+      return tagMatchingMotions;
+    });
 
     return {
       workflows: workflowManager.allWorkflows,
-      selectedDance,
+      selectedMotion,
       motionList,
+      filteredMotionList,
       onLessonSelected,
       createLessonSelected,
       uploadLessonUIActive,
       uploadWorkflowUIActive: ref(false),
       workflowManager,
-
+      activeTags,
+      availableTags: db.allTags,
       TabList,
       Tabs,
       currentTab,
     };
   },
   methods: {
+    toggleTag(tag: string) {
+      if (this.activeTags.has(tag)) {
+        this.activeTags.delete(tag);
+      } else {
+        this.activeTags.add(tag);
+      }
+    },
     setTab(tab: string) {
       console.log('Switching to tab:', tab);
       if (!TabSet.has(tab)) {
@@ -250,10 +302,14 @@ export default defineComponent({
 // background: rgba(0, 0, 0, 0.2);
 // }
 
+.video-card.card {
+  max-width: 300px;
+}
+
 .video-card {
   width: 210px;
   flex-grow: 1;
-  max-width: 300px;
+
   margin: 1em;
 
   img {

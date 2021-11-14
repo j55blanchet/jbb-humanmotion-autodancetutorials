@@ -8,6 +8,8 @@ class OptionsManager {
 
   public participantIdWasSet = ref(false);
 
+  public isTest = ref(false);
+
   constructor() {
     this.parsePath();
     window.addEventListener('hashchange', this.parsePath);
@@ -20,6 +22,8 @@ class OptionsManager {
 
     this.workflowId.value = urlParams.get('workflowId');
     this.participantId.value = urlParams.get('participantId');
+    this.isTest.value = this.workflowId.value === null || this.participantId.value === null;
+
     if (this.participantId.value) {
       this.participantIdWasSet.value = true;
     }

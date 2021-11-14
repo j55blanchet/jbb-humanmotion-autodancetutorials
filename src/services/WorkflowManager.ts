@@ -3,10 +3,12 @@ import optionsManager from '@/services/OptionsManager';
 import motionDB, { DatabaseEntry, MotionDatabase } from '@/services/MotionDatabase';
 import MiniLesson from '@/model/MiniLesson';
 import { Workflow, WorkflowStage, WorkflowStep } from '@/model/Workflow';
-import workflowsJson from '@/model/workflows.json';
+import workflowsJson from '@/model/all_workflows.json';
 import customWorkflowsJson from '@/model/customWorkflows.json';
 import eventHub, { EventNames } from './EventHub';
 import Utils from './Utils';
+
+const thumbnailRootDir = 'thumbs/';
 
 const defaultWorkflows = workflowsJson as Workflow[];
 const customWorkflows = customWorkflowsJson as Workflow[];
@@ -29,7 +31,7 @@ export class WorkflowManager {
 
   public workflows = reactive(new Map() as Map<string, Workflow>);
 
-  public allWorkflows = computed(() => new Array(...this.workflows.values()))
+  public allWorkflows = computed(() => new Array(...this.workflows.values()));
 
   public activeFlow = ref(null as TrackingWorkflow | null);
 
@@ -40,11 +42,15 @@ export class WorkflowManager {
   private loadWorkflows() {
     for (let i = 0; i < defaultWorkflows.length; i += 1) {
       const workflow = defaultWorkflows[i] as Workflow;
+      workflow.created = new Date(workflow.created);
+      if (workflow.thumbnailSrc) workflow.thumbnailSrc = thumbnailRootDir + workflow.thumbnailSrc;
       this.addSessionWorkflow(workflow);
       this.bakedInWorkflows.add(workflow.id);
     }
     for (let i = 0; i < customWorkflows.length; i += 1) {
       const workflow = customWorkflows[i];
+      workflow.created = new Date(workflow.created);
+      if (workflow.thumbnailSrc) workflow.thumbnailSrc = thumbnailRootDir + workflow.thumbnailSrc;
       this.addSessionWorkflow(workflow);
       this.bakedInWorkflows.add(workflow.id);
     }
@@ -133,6 +139,7 @@ export class WorkflowManager {
       const workflowRaw = window.localStorage.getItem(`workflow-${id}`);
       if (!workflowRaw) throw new Error(`No workflow found with id: ${id}`);
       const workflow = JSON.parse(workflowRaw);
+      workflow.created = new Date(workflow.created);
       this.addSessionWorkflow(workflow);
     } catch (e) {
       console.warn('Error loading custom lesson', id, e);
