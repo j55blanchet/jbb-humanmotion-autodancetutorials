@@ -1,0 +1,131 @@
+// How to use bulma and vuejs together
+// https://hackernoon.com/how-to-use-bulma-and-vuejs-together-z0103ucp
+@charset "utf-8";
+
+@import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
+
+// Import a Google Font
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
+
+// Set your brand colors
+// $purple: #8A4D76;
+// $pink: #FA7C91;
+// $brown: #757763;
+// $beige-light: #D0D1CD;
+// $beige-lighter: #EFF0EB;
+
+// Update Bulma's global variables
+$family-sans-serif: "Nunito", sans-serif;
+// $grey-dark: $brown;
+// $grey-light: $beige-light;
+// $primary: $purple;
+// $link: $pink;
+// $widescreen-enabled: false;
+// $fullhd-enabled: false;
+
+// Update some of Bulma's component variables
+// $body-background-color: $beige-lighter;
+// $control-border-width: 2px;
+// $input-border-color: transparent;
+// $input-shadow: none;
+
+.grid-menu {
+    text-align: center;
+    display: flex;
+    flex-flow: row wrap;
+    align-content: flex-start;
+    justify-content: center;
+    align-items: center;
+
+    > .box {
+        margin: 1rem;
+    }
+
+    .box:not(:last-child) {
+        margin: 0;
+    }
+}
+
+.hover-expand {
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+        box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.3),
+        0 0 0 2px rgba(10, 10, 10, 0.05);
+        transform: scale(1.02);
+    }
+}
+
+
+.input:invalid {
+    color: red;
+}
+
+.is-cover {
+    object-fit: cover;
+}
+.is-contain {
+    object-fit: contain;
+}
+.is-fill {
+    object-fit: fill;
+}
+.is-scale-down {
+    object-fit: scale-down;
+}
+.is-100percent {
+    width: 100% !important;
+    height: 100% !important;
+}
+.is-100percent-v {
+    height: 100% !important;
+}
+
+.is-overlay {
+    &.is-overlay-bottom {
+        top: auto;
+    }
+    &.is-overlay-left {
+        right: auto;
+    }
+    &.is-overlay-right {
+        left: auto;
+    }
+    &.is-overlay-top {
+        bottom: auto;
+    }
+}
+
+.vcenter-parent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+
+@import '~bulma';
+@import '~bulma-slider';
+
+@each $name, $pair in $colors {
+  $color: nth($pair, 1);
+  .has-border-#{$name} {
+    border: 2px solid $color !important;
+  }
+  .has-outline-#{name} {
+    outline: 10px solid $color !important;
+  }
+}
+@each $name, $pair in $shades {
+  $color: nth($pair, 1);
+  .has-border-#{$name} {
+    border: 2px solid $color !important;
+  }
+}
+
+.section {
+    padding: 0rem;
+    // padding-top: 1rem;
+    // padding-bottom: 1rem;
+}
