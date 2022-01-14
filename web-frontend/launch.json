@@ -1,0 +1,67 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Update Video Database (data)",
+            "type": "python",
+            "request": "launch",
+            "module": "workflow_compiler.update_database",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "data/database.json",
+                "data/videos",
+                "data/thumbnails",
+                "data/audio",
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Landmark File Creation (data)",
+            "type": "python",
+            "module": "workflow_compiler.landmark_generation",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "data/database.json",
+                "data/videos",
+                "data/landmarks",
+            ],
+            "request": "launch"
+        },
+        {
+            "name": "IMR Generation (data)",
+            "type": "python",
+            "request": "launch",
+            "module": "workflow_compiler.posegraph.batch_generate_imr",
+            "args": [
+                "data/database.json",
+                "data/landmarks",
+                "data/audio",
+                "data/imr/",
+                "temp_data/analysis",
+            ]
+        },
+        {
+            "name": "Lesson Generation (data)",
+            "type": "python",
+            "request": "launch",
+            "module": "workflow_compiler.lessongeneration_2d",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "data/imr",
+                "data/workflows",
+                "data/lessonIdCache.json"
+            ],
+            "console": "integratedTerminal"
+        },
+    ]
+}

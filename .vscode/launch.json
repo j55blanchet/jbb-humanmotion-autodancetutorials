@@ -41,7 +41,7 @@
             "name": "IMR Generation (data)",
             "type": "python",
             "request": "launch",
-            "module": "workflow_compiler.posegraph.batch_generate_imr",
+            "module": "workflow_compiler.imr_generation.batch_generate_imr",
             "args": [
                 "data/database.json",
                 "data/landmarks",
@@ -54,7 +54,7 @@
             "name": "Lesson Generation (data)",
             "type": "python",
             "request": "launch",
-            "module": "workflow_compiler.lessongeneration_2d",
+            "module": "workflow_compiler.lesson_compilers.lessongeneration_2d",
             "cwd": "${workspaceFolder}",
             "args": [
                 "data/imr",
