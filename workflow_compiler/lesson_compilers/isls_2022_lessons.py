@@ -220,7 +220,7 @@ def create_simple_lesson(imr: IMR, useSheetMotion: bool, lessonIdCache: Dict[str
                 Instructions.generate_instructionstep(
                     dance_title=imr.clipTitle, 
                     position=Instructions.InstructionPosition.LEARNING_INTRODUCTION,
-                    type=Instructions.WorkflowType.SHEETMUSIC if useSheetMotion else Instructions.WorkflowType.VIDEOSKELETON,
+                    type=Instructions.WorkflowType.LEGACY_SHEETMOTION if useSheetMotion else Instructions.WorkflowType.LEGACY_SKELETON,
                     time_alloted=timedelta(seconds=60*12)
                 ),
                 WorkflowStep.with_minilesson(
@@ -251,7 +251,7 @@ def create_simple_lesson(imr: IMR, useSheetMotion: bool, lessonIdCache: Dict[str
                 Instructions.generate_instructionstep(
                     dance_title=imr.clipTitle, 
                     position=Instructions.InstructionPosition.LEARNING_PREPERFORMANCE,
-                    type=Instructions.WorkflowType.SHEETMUSIC if useSheetMotion else Instructions.WorkflowType.VIDEOSKELETON,
+                    type=Instructions.WorkflowType.LEGACY_SHEETMOTION if useSheetMotion else Instructions.WorkflowType.LEGACY_SKELETON,
                 )
             ] + [
                 WorkflowStep(
@@ -291,7 +291,7 @@ def create_simple_lesson(imr: IMR, useSheetMotion: bool, lessonIdCache: Dict[str
                 Instructions.generate_instructionstep(
                     dance_title=imr.clipTitle, 
                     position=Instructions.InstructionPosition.MASTERY_INTRODUCTION,
-                    type=Instructions.WorkflowType.SHEETMUSIC if useSheetMotion else Instructions.WorkflowType.VIDEOSKELETON,
+                    type=Instructions.WorkflowType.LEGACY_SHEETMOTION if useSheetMotion else Instructions.WorkflowType.LEGACY_SKELETON,
                     time_alloted=timedelta(seconds=60*8)
                 )
             ] + 
@@ -374,7 +374,7 @@ def create_simple_lesson(imr: IMR, useSheetMotion: bool, lessonIdCache: Dict[str
                 Instructions.generate_instructionstep(
                     dance_title=imr.clipTitle, 
                     position=Instructions.InstructionPosition.MASTERY_PREPERFORMANCE,
-                    type=Instructions.WorkflowType.SHEETMUSIC if useSheetMotion else Instructions.WorkflowType.VIDEOSKELETON,
+                    type=Instructions.WorkflowType.LEGACY_SHEETMOTION if useSheetMotion else Instructions.WorkflowType.LEGACY_SKELETON,
                 ),
                 WorkflowStep(
                     type='UploadTask',

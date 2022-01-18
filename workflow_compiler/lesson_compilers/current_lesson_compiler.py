@@ -14,7 +14,7 @@ MOTION_TRAILS_SIMPLIFY_OPTIONS = {
     'dist_threshold_combine': 25,
 }
 
-def create_learningstep(imr: IMR, segment_i: int, speed: float, useSheetMotion: bool) -> WorkflowStep:
+def create_learningstep(imr: IMR, segment_i: int, speed: float) -> WorkflowStep:
 
     COMBINE_PREV_SEGMENT_THRESHOLD = 1.0
 
@@ -42,7 +42,7 @@ def create_learningstep(imr: IMR, segment_i: int, speed: float, useSheetMotion: 
                 is_skeleton=False,
                 startInstruction=f"Let's learn part {i+1}",
                 playingInstruction="Follow along!",
-                endInstruction="Repeat if you need to -- next up we'll try with just " + ("sheet motion" if useSheetMotion else "a skeleton") + ".",
+                endInstruction="Repeat if you need to -- next up we'll try with just a skeleton",
                 override_start_time=start_time,
                 motionTrails=MotionFrame.simplify_trails(seg.motionTrails, MOTION_TRAILS_SIMPLIFY_OPTIONS),
                 motionTrailBreaks=[kf.timestamp for kf in seg.keyframes],
@@ -53,70 +53,18 @@ def create_learningstep(imr: IMR, segment_i: int, speed: float, useSheetMotion: 
                 # pauses=[ActivityPause(time=kf, instruction=f"Keyframe {j +1 }") for j, kf in enumerate(imr.keyframes or []) if start_time < kf < imr.temporalSegments[i].endTime]
             ),
         ] +
-        (
-            [
-                MiniLessonActivity.from_temporal_segment(
-                    imr.temporalSegments[i],
-                    title="Practice",
-                    speed=speed,
-                    is_skeleton=True,
-                    startInstruction=f"Let's practice part {i+1}",
-                    playingInstruction="Follow along!",
-                    endInstruction="Memorize this! Next, you'll try this part from memory!",
-                    override_start_time=start_time,
-                )
-            ] if not useSheetMotion or len(keyframes) <= 2 else
-            [
-                # MiniLessonActivity(
-                #     title="Breakdown",
-                #     startTime=start_time,
-                #     endTime=end_time,
-                #     practiceSpeed=speed,
-                #     startInstruction=f"Let's break this down by the beat",
-                #     playingInstruction="Try following along!",
-                #     endInstruction="Next you'll try it with sheet motion.",
-                #     pauses=[ActivityPause(time=kf.timestamp) for j, kf in enumerate(seg.keyframes or [])],
-                #     motionTrails=MotionFrame.simplify_trails(seg.motionTrails, MOTION_TRAILS_SIMPLIFY_OPTIONS),
-                #     motionTrailBreaks=[kf.timestamp + 0.01 for kf in seg.keyframes[1:]],
-                #     timedInstructions=[
-                #         TimedInstruction(s, e, f'Beat {i+1}')
-                #         for i, (s, e) in enumerate(zip(keyframes, chain(keyframes[1:], [end_time])))
-                #     ]
-                # ),
-                MiniLessonActivity(
-                    title="Practice",
-                    startTime=seg.startTime,
-                    endTime=end_time,
-                    practiceSpeed=speed,
-                    demoVisual='none',
-                    startInstruction=f"Let's practice part {i+1}",
-                    playingInstruction="Follow along! (feel free to go the the previous activity to jog your memory)",
-                    endInstruction="Memorize this! Next, you'll try this part from memory!",
-                    sheetMotionVisual='skeleton',
-                    sheetMotion=SheetMotion(
-                        phrases=[
-                            MotionPhrase(frames=[
-                                MotionFrame(
-                                    timestamp=kf.timestamp,
-                                    type='move' if kf.significance >= 0.0 else 'pause',
-                                    motionTrails=[
-                                        [
-                                            (trail.times[j], trail.x[j], trail.y[j]) for j in range(len(trail.times))
-                                            if trail.times[j] >= kf.timestamp and trail.times[j] < nextkf.timestamp
-                                        ] for trail in seg.motionTrails
-                                    ],
-                                    simplify=MOTION_TRAILS_SIMPLIFY_OPTIONS,
-                                )
-                                for kf, nextkf in zip(
-                                    seg.keyframes,
-                                    itertools.chain(seg.keyframes[1:], [Keyframe(timestamp=end_time, significance=0.0)])
-                                )
-                            ])
-                        ]
-                    )
-                )
-            ]
-        ) +
+        [
+            MiniLessonActivity.from_temporal_segment(
+                imr.temporalSegments[i],
+                title="Practice",
+                speed=speed,
+                is_skeleton=True,
+                startInstruction=f"Let's practice part {i+1}",
+                playingInstruction="Follow along!",
+                endInstruction="Memorize this! Next, you'll try this part from memory!",
+                override_start_time=start_time,
+            )
+        ] +
         [
             MiniLessonActivity(
                 title="Test & Review",
@@ -125,7 +73,7 @@ def create_learningstep(imr: IMR, segment_i: int, speed: float, useSheetMotion: 
                 userVisual='video',
                 demoVisual='none',
                 practiceSpeed=speed,
-                startInstruction="Do you have it? Let's try without the " + ("sheet motion." if useSheetMotion else " skeleton."),
+                startInstruction="Do you have it? Let's try without the skeleton.",
                 playingInstruction="(feel free to go back to the previous activity if you need to)",
                 endInstruction=f"Next up: combining this what you learned earlier",
                 # recordBehavior="video-only",
@@ -134,7 +82,7 @@ def create_learningstep(imr: IMR, segment_i: int, speed: float, useSheetMotion: 
         ]
         + (
             [] if i == 0 or start_time - COMBINE_PREV_SEGMENT_THRESHOLD < imr.startTime else 
-            ([
+            [
                 MiniLessonActivity(
                     title="Full Practice",
                     startTime=imr.startTime,
@@ -145,71 +93,24 @@ def create_learningstep(imr: IMR, segment_i: int, speed: float, useSheetMotion: 
                     startInstruction="Now try everything we learned so far",
                     endInstruction=f"Nice job!"
                 )
-            ] if not useSheetMotion else [
-                MiniLessonActivity(
-                    title="Full Practice",
-                    startTime=imr.startTime,
-                    endTime=imr.temporalSegments[i].endTime,
-                    practiceSpeed=speed,
-                    demoVisual='none',
-                    sheetMotionVisual='skeleton',
-                    startInstruction="Now try everything we learned so far",
-                    endInstruction=f"Nice job!",
-                    sheetMotion=SheetMotion(
-                        phrases=[
-                            MotionPhrase(frames=[
-                                MotionFrame(
-                                    timestamp=kf.timestamp,
-                                    type='move' if kf.significance >= 0.0 else 'pause',
-                                    motionTrails=[
-                                        [
-                                            (trail.times[j], trail.x[j], trail.y[j]) for j in range(len(trail.times))
-                                            if trail.times[j] >= kf.timestamp and trail.times[j] < nextkf.timestamp
-                                        ] for trail in full_practice_seg.motionTrails
-                                    ],
-                                    simplify=MOTION_TRAILS_SIMPLIFY_OPTIONS,
-                                )
-                                for kf, nextkf in zip(
-                                    full_practice_seg.keyframes,
-                                    itertools.chain(full_practice_seg.keyframes[1:], [Keyframe(timestamp=end_time, significance=0.0)])
-                                )
-                            ])
-                            for full_practice_seg in imr.temporalSegments[:segment_i+1]
-                        ]
-                    )
-                )
-            ])
+            ]
         )
     )
 
-def create_simple_lesson(imr: IMR, useSheetMotion: bool, lessonIdCache: Dict[str, str]) -> Workflow:
+def create_simple_lesson(imr: IMR, lessonIdCache: Dict[str, str]) -> Workflow:
 
-    compilationMethod = 'SimpleCompiler' + ('-sm' if useSheetMotion else '-vid')
+    compilationMethod = 'RuleBasedV2',
     fullCreationMethod = f'{compilationMethod} ({imr.generationMethod})'
     idEntry = imr.clipName + "-" + fullCreationMethod
     workflowId = lessonIdCache.get(idEntry, str(uuid.uuid4()))
     lessonIdCache[idEntry] = workflowId
     workflow = Workflow(
-        title=f"{imr.clipName}" + (" with sheet motion" if useSheetMotion else ""),
-        userTitle=f'Learning: "{imr.clipTitle}"',
+        title=f"{imr.clipName}",
+        userTitle=f'Learn "{imr.clipTitle}"',
         id=workflowId,
         creationMethod=fullCreationMethod,
         thumbnailSrc=imr.thumbnailSrc,
     )
-    
-    # workflow.stages.append(
-    #     WorkflowStage(
-    #         title='Instructions',
-    #         steps=[
-    #             WorkflowStep.with_instructions(
-    #                 stepTitle='Instructions',
-    #                 heading='Instructions',
-    #                 text=f"TBD - insert experiment as a whole instructions here",
-    #                 isBeforeTimeStartTask=True,
-    #             )
-    #         ]
-    #     )
-    # )
     
     learning_speeds = [0.5]
     workflow.stages.extend([
@@ -220,7 +121,7 @@ def create_simple_lesson(imr: IMR, useSheetMotion: bool, lessonIdCache: Dict[str
                 Instructions.generate_instructionstep(
                     dance_title=imr.clipTitle, 
                     position=Instructions.InstructionPosition.LEARNING_INTRODUCTION,
-                    type=Instructions.WorkflowType.SHEETMUSIC if useSheetMotion else Instructions.WorkflowType.VIDEOSKELETON,
+                    type=Instructions.WorkflowType.CURRENT_MERGED,
                     time_alloted=timedelta(seconds=60*12)
                 ),
                 WorkflowStep.with_minilesson(
@@ -228,7 +129,7 @@ def create_simple_lesson(imr: IMR, useSheetMotion: bool, lessonIdCache: Dict[str
                     lesson=MiniLesson.construct_imr_preview(imr, speeds=[1, speed])
                 )
             ] + [
-                create_learningstep(imr, i, speed, useSheetMotion)
+                create_learningstep(imr, i, speed)
                 for i in range(len(imr.temporalSegments))
             ] + [
                 # WorkflowStep.with_lessonactivities(
@@ -251,7 +152,7 @@ def create_simple_lesson(imr: IMR, useSheetMotion: bool, lessonIdCache: Dict[str
                 Instructions.generate_instructionstep(
                     dance_title=imr.clipTitle, 
                     position=Instructions.InstructionPosition.LEARNING_PREPERFORMANCE,
-                    type=Instructions.WorkflowType.SHEETMUSIC if useSheetMotion else Instructions.WorkflowType.VIDEOSKELETON,
+                    type=Instructions.WorkflowType.CURRENT_MERGED,
                 )
             ] + [
                 WorkflowStep(
@@ -291,7 +192,7 @@ def create_simple_lesson(imr: IMR, useSheetMotion: bool, lessonIdCache: Dict[str
                 Instructions.generate_instructionstep(
                     dance_title=imr.clipTitle, 
                     position=Instructions.InstructionPosition.MASTERY_INTRODUCTION,
-                    type=Instructions.WorkflowType.SHEETMUSIC if useSheetMotion else Instructions.WorkflowType.VIDEOSKELETON,
+                    type=Instructions.WorkflowType.CURRENT_MERGED,
                     time_alloted=timedelta(seconds=60*8)
                 )
             ] + 
@@ -310,7 +211,8 @@ def create_simple_lesson(imr: IMR, useSheetMotion: bool, lessonIdCache: Dict[str
                             startInstruction=f"Let's perform the whole thing now!",
                             endInstruction=f"Next up: just using the skeleton"
                         ),
-                    ] + ([
+                    ] +
+                    [
                         MiniLessonActivity(
                             title="Skeleton Only",
                             startTime=imr.startTime,
@@ -321,42 +223,8 @@ def create_simple_lesson(imr: IMR, useSheetMotion: bool, lessonIdCache: Dict[str
                             startInstruction=f"Now try it with just the skeleton",
                             endInstruction=f"Next up: doing it from memory. You got this!"
                         ),
-                    ] if not useSheetMotion else [
-                        MiniLessonActivity(
-                            title="Sheet Motion",
-                            startTime=imr.startTime,
-                            endTime=imr.endTime,
-                            userVisual='none',
-                            practiceSpeed=speed,
-                            startInstruction=f"Now try it with just the sheet motion",
-                            endInstruction=f"Next up: doing it from memory. You got this!",
-                            demoVisual='none',
-                            sheetMotionVisual='video',
-                            sheetMotion=SheetMotion(
-                                phrases=[
-                                    MotionPhrase(frames=[
-                                        MotionFrame(
-                                            timestamp=kf.timestamp,
-                                            type='move' if kf.significance >= 0.0 else 'pause',
-                                            motionTrails= [
-                                                [
-                                                    (trail.times[j], trail.x[j], trail.y[j]) for j in range(len(trail.times))
-                                                    if trail.times[j] >= kf.timestamp and trail.times[j] < nextkf.timestamp
-                                                ] for trail in seg.motionTrails
-                                            ],
-                                            simplify=MOTION_TRAILS_SIMPLIFY_OPTIONS,
-                                        )
-                                        for kf, nextkf in zip(
-                                            seg.keyframes,
-                                            itertools.chain(seg.keyframes[1:], [Keyframe(timestamp=seg.endTime, significance=0.0)])
-                                        )]
-                                    )
-                                    for seg in imr.temporalSegments
-                                ]
-                            )
-                        )
-                    ]
-                    ) + [
+                    ] + 
+                    [
                         MiniLessonActivity(
                             title="From Memory",
                             startTime=imr.startTime,
@@ -374,7 +242,7 @@ def create_simple_lesson(imr: IMR, useSheetMotion: bool, lessonIdCache: Dict[str
                 Instructions.generate_instructionstep(
                     dance_title=imr.clipTitle, 
                     position=Instructions.InstructionPosition.MASTERY_PREPERFORMANCE,
-                    type=Instructions.WorkflowType.SHEETMUSIC if useSheetMotion else Instructions.WorkflowType.VIDEOSKELETON,
+                    type=Instructions.WorkflowType.CURRENT_MERGED,
                 ),
                 WorkflowStep(
                     type='UploadTask',

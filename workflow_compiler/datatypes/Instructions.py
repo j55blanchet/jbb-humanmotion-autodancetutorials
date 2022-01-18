@@ -14,15 +14,18 @@ class InstructionPosition(Enum):
 @unique
 class WorkflowType(Enum):
     CONTROL = auto()
-    VIDEOSKELETON = auto()
-    SHEETMUSIC = auto()
+    CURRENT_MERGED = auto()
+    LEGACY_SKELETON = auto()
+    LEGACY_SHEETMOTION = auto()
 
     def welcome_instruction(self):
         if self == WorkflowType.CONTROL:
             return "In this trial, you're going to have full control over how you learn the video. Use the on screen controls to seek different parts of the video."
-        elif self == WorkflowType.VIDEOSKELETON:
+        elif self == WorkflowType.CURRENT_MERGED:
             return "In this trial, you're be guided though learning the dance one part at a time. While learning each part you'll first see a demo of the dance segment, then an activity to practice & memorize the moves, then a chance to try the part from memory, and last an activity to integrate the part with the rest of the song you've already learned."
-        elif self == WorkflowType.SHEETMUSIC:
+        elif self == WorkflowType.LEGACY_SKELETON:
+            return "In this trial, you're be guided though learning the dance one part at a time. While learning each part you'll first see a demo of the dance segment, then an activity to practice & memorize the moves, then a chance to try the part from memory, and last an activity to integrate the part with the rest of the song you've already learned."
+        elif self == WorkflowType.LEGACY_SHEETMOTION:
             return "In this trial, you're be guided though learning the dance one part at a time. While learning each part you'll first see a demo of the dance segment, followed by a breakdown of the individual dance moves, then an activity to practice & memorize the moves using sheet motion, then a chance to try the part from memory, and last an activity to integrate the part with the rest of the song you've already learned."
         else:
             raise Exception(f"Unknown WorkflowType {self}")

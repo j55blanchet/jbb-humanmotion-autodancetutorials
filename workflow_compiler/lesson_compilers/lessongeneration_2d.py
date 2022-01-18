@@ -3,9 +3,10 @@ import os
 import sys
 from pathlib import Path
 from ..datatypes.IMR import IMR
-from .legacy_lesson_compiler import create_legacy_lesson
+from .current_lesson_compiler import create_simple_lesson
+# from .legacy_lesson_compiler import create_legacy_lesson
 from ..datatypes import CustomSerializable
-from .isls_2022_lessons import create_simple_lesson
+# from .isls_2022_lessons import create_simple_lesson
 from .control_lessons import create_control_lesson
 
 if __name__ == "__main__":
@@ -47,18 +48,17 @@ if __name__ == "__main__":
             imr = IMR.from_json(json.load(imrfile))
 
         # lesson = create_lesson(imr)
-        simple_lesson_sheetmusic = create_simple_lesson(imr, useSheetMotion=True, lessonIdCache=lesson_id_cache)
-        simple_lesson_nosheetmusic = create_simple_lesson(imr, useSheetMotion=False, lessonIdCache=lesson_id_cache)
-        control_lesson = create_control_lesson(imr, lesson_id_cache=lesson_id_cache)
+        # simple_lesson_sheetmusic = create_simple_lesson(imr, useSheetMotion=True, lessonIdCache=lesson_id_cache)
+        # simple_lesson_nosheetmusic = create_simple_lesson(imr, useSheetMotion=False, lessonIdCache=lesson_id_cache)
+        current_lesson = create_simple_lesson(imr, lessonIdCache=lesson_id_cache)
+        # control_lesson = create_control_lesson(imr, lesson_id_cache=lesson_id_cache)
 
         out_lesson_file.parent.mkdir(exist_ok=True, parents=True)
         out_lesson_file_simple.parent.mkdir(exist_ok=True, parents=True)
 
-        new_lessons = [
-            # lesson, 
-            simple_lesson_sheetmusic,
-            simple_lesson_nosheetmusic,
-            control_lesson,
+        new_lessons = [ 
+            current_lesson,
+            # control_lesson,
         ]
         all_lessons.extend(new_lessons)
 
