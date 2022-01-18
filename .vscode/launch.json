@@ -19,8 +19,8 @@
             "cwd": "${workspaceFolder}",
             "args": [
                 "data/database.json",
-                "data/videos",
-                "data/thumbnails",
+                "web-frontend/public/videos",
+                "web-frontend/public/thumbs",
                 "data/audio",
             ],
             "console": "integratedTerminal"
@@ -32,8 +32,8 @@
             "cwd": "${workspaceFolder}",
             "args": [
                 "data/database.json",
-                "data/videos",
-                "data/landmarks",
+                "web-frontend/public/videos",
+                "web-frontend/public/landmarks",
             ],
             "request": "launch"
         },
@@ -44,7 +44,7 @@
             "module": "workflow_compiler.imr_generation.batch_generate_imr",
             "args": [
                 "data/database.json",
-                "data/landmarks",
+                "web-frontend/public/landmarks",
                 "data/audio",
                 "data/imr/",
                 "temp_data/analysis",
@@ -58,7 +58,7 @@
             "cwd": "${workspaceFolder}",
             "args": [
                 "data/imr",
-                "data/workflows",
+                "web-frontend/public/workflows",
                 "data/lessonIdCache.json"
             ],
             "console": "integratedTerminal"

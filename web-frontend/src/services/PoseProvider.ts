@@ -12,7 +12,7 @@ export class PoseProvider {
   async GetPose(videoName: string) {
     if (videoName.length < 4) return [];
 
-    let poseFilename = videoName.replace('videos', 'poses');
+    let poseFilename = videoName.replace('videos', 'landmarks');
     for (let i = 0; i < VIDEO_EXTENSIONS.length; i += 1) {
       const extension = VIDEO_EXTENSIONS[i];
       poseFilename = poseFilename.replace(extension, '.pose.csv');
