@@ -23,8 +23,8 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-underscore-dangle': 'off',
     'no-plusplus': 'off',
-    'import/extensions': 'off',
-    'import/no-unresolved': 'off',
+    // 'import/extensions': 'off',
+    // 'import/no-unresolved': 'off',
   // eslint-disable-next-line comma-dangle
   }
 };
