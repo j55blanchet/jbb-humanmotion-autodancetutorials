@@ -1,7 +1,7 @@
 import { computed, reactive, ref } from 'vue';
 import workflowsJson from
   // 'data/workflows/all_workflows.json';
-  '../../../data/workflows/all_workflows.json';
+  '@/data/workflows/all_workflows.json';
 import optionsManager from '@/services/OptionsManager';
 import motionDB, { DatabaseEntry, MotionDatabase } from '@/services/MotionDatabase';
 import MiniLesson from '@/model/MiniLesson';

@@ -1,9 +1,8 @@
+import { computed, reactive } from 'vue';
 import MiniLesson, { MiniLessonActivity } from '@/model/MiniLesson';
 
-import videoDatabase from '@/model/videoDatabase.json';
-// import defaultLessons from '@/model/bakedInLessons.json';
+import videoDatabase from '../../../data/database.json';
 
-import { computed, reactive } from 'vue';
 import Utils from './Utils';
 
 export interface DatabaseEntry {

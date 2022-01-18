@@ -45,7 +45,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import db, { DatabaseEntry } from '@/services/MotionDatabase';
-import keyframeOptions from '@/model/keyframeOptions.json';
+import keyframeOptions from '@/data/keyframeOptions.json';
 
 export default defineComponent({
   name: 'LessonCard',

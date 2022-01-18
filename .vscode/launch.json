@@ -58,7 +58,7 @@
             "cwd": "${workspaceFolder}",
             "args": [
                 "data/imr",
-                "web-frontend/public/workflows",
+                "web-frontend/src/data/workflows",
                 "data/lessonIdCache.json"
             ],
             "console": "integratedTerminal"
