@@ -630,7 +630,9 @@ import {
 
 import Constants from '@/services/Constants';
 import MiniLessonPlayer from '@/components/elements/MiniLessonPlayer.vue';
-import db, { createBlankActivity, createBlankLesson, DatabaseEntry } from '@/services/MotionDatabase';
+import VideoDatabaseEntry from '@/model/VideoDatabaseEntry';
+import db from '@/services/VideoDatabase';
+import { createBlankActivity, createBlankLesson } from '@/services/MiniLessonManager';
 import MiniLesson, { MiniLessonActivity, PauseInfo, TimedInstruction } from '@/model/MiniLesson';
 import Utils from '@/services/Utils';
 import SegmentedProgressBar, { ProgressSegmentData, calculateProgressSegments } from '@/components/elements/SegmentedProgressBar.vue';
@@ -756,7 +758,7 @@ export default defineComponent({
     },
     lessons() {
       if (!this.motion) return [];
-      const motion = this.motion as DatabaseEntry;
+      const motion = this.motion as VideoDatabaseEntry;
       const lessons = db.getLessons(motion);
       return lessons ?? [];
     },
@@ -795,7 +797,7 @@ export default defineComponent({
   setup(props) {
     const { motion } = toRefs(props);
     const isDirty = ref(false);
-    const typedMotion = computed(() => motion.value as unknown as DatabaseEntry);
+    const typedMotion = computed(() => motion.value as unknown as VideoDatabaseEntry);
     const state = ref(LessonCreationState.SelectOpenLesson);
     const lessonUnderConstruction = ref(createBlankLesson(typedMotion.value));
     const activeActivityIndex = ref(0);

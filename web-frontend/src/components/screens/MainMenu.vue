@@ -60,7 +60,7 @@
     >
       <div
         class="video-card card hover-expand"
-        v-for="motion in filteredMotionList"
+        v-for="motion in filteredVideos"
         :key="motion.title"
         @mouseover="motion.hovering = true"
         @mouseleave="motion.hovering = false"
@@ -103,9 +103,6 @@
       </div>
       <div class="box hover-expand is-clickable m-4" @click="uploadWorkflowUIActive = true">
         Upload Custom Workflow
-      </div>
-      <div class="box hover-expand is-clickable m-4" @click="$emit('pose-drawer-selected')">
-        Pose Drawer Test
       </div>
       <div class="box hover-expand is-clickable m-4" @click="$emit('create-workflow-selected')">
         Workflow Editor
@@ -159,7 +156,8 @@
 import { computed, defineComponent, ref } from 'vue';
 import LessonCard from '@/components/elements/LessonCard.vue';
 import UploadCard from '@/components/elements/UploadCard.vue';
-import db, { DatabaseEntry } from '@/services/MotionDatabase';
+import VideoDatabaseEntry from '@/model/VideoDatabaseEntry';
+import db from '@/services/VideoDatabase';
 import MiniLesson from '@/model/MiniLesson';
 import workflowManager, { WorkflowManager } from '@/services/WorkflowManager';
 
@@ -175,7 +173,6 @@ export default defineComponent({
   name: 'MainMenu',
   emits: [
     'lesson-selected',
-    'pose-drawer-selected',
     'create-lesson-selected',
     'workflow-selected',
     'create-workflow-selected',
@@ -186,31 +183,31 @@ export default defineComponent({
     UploadCard,
   },
   setup(props, ctx) {
-    const motionList = db.motions;
-    const selectedMotion = ref(null as DatabaseEntry | null);
+    const videos = db.entries;
+    const selectedMotion = ref(null as VideoDatabaseEntry | null);
     const uploadLessonUIActive = ref(false);
     const currentTab = ref(Tabs.Workflows);
     const activeTags = ref(new Set());
 
     function onLessonSelected(
-      videoEntry: DatabaseEntry,
+      videoEntry: VideoDatabaseEntry,
       lesson: MiniLesson,
     ) {
       ctx.emit('lesson-selected', videoEntry, lesson);
       selectedMotion.value = null;
     }
 
-    function createLessonSelected(videoEntry: DatabaseEntry) {
+    function createLessonSelected(videoEntry: VideoDatabaseEntry) {
       ctx.emit('create-lesson-selected', videoEntry);
       selectedMotion.value = null;
     }
 
-    const filteredMotionList = computed(() => {
-      const tagMatchingMotions = motionList.value.filter((motion) => {
+    const filteredVideos = computed(() => {
+      const tagMatchingMotions = videos.value.filter((motion) => {
 
         if (activeTags.value.size === 0) return true;
 
-        const allTagsMatch = motion.tags.reduce((someTagMatches, currTag) => {
+        const allTagsMatch = motion.tags.reduce((someTagMatches: boolean, currTag: string) => {
           const thisTagMatches = activeTags.value.has(currTag);
           return someTagMatches || thisTagMatches;
         }, false);
@@ -225,8 +222,8 @@ export default defineComponent({
     return {
       workflows: workflowManager.allWorkflows,
       selectedMotion,
-      motionList,
-      filteredMotionList,
+      videos,
+      filteredVideos,
       onLessonSelected,
       createLessonSelected,
       uploadLessonUIActive,
@@ -255,7 +252,7 @@ export default defineComponent({
       }
       this.currentTab = tab;
     },
-    onKeyframeSelectorToolSelected(videoEntry: DatabaseEntry, keyframes: number[]) {
+    onKeyframeSelectorToolSelected(videoEntry: VideoDatabaseEntry, keyframes: number[]) {
       this.$emit('keyframeselectortool-selected', videoEntry, keyframes);
     },
     async uploadLessons(files: FileList) {

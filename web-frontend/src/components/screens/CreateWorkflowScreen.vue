@@ -480,15 +480,15 @@
 <script lang="ts">
 
 import {
+  computed, defineComponent, nextTick, ref, watchEffect,
+} from 'vue';
+import {
   CreateBlankWorkflow, GetVideoEntryForWorkflowStep, Instructions, Workflow, WorkflowStage, WorkflowStep,
 } from '@/model/Workflow';
 import Utils from '@/services/Utils';
 import workflowManager, { WorkflowManager } from '@/services/WorkflowManager';
 import WorkflowMenu from '@/components/screens/WorkflowMenu.vue';
-import {
-  computed, defineComponent, nextTick, ref, watchEffect,
-} from 'vue';
-import motionDb from '@/services/MotionDatabase';
+import videoDB from '@/services/VideoDatabase';
 import MiniLesson from '@/model/MiniLesson';
 import CreateLessonScreen from '@/components/screens/CreateLessonScreen.vue';
 
@@ -521,24 +521,24 @@ export default defineComponent({
     const availableReferenceLessons = computed(() => {
       if (!activeStep.value) return [] as MiniLesson[];
       if (!activeStep.value.miniLessonReference?.clipName) return [] as MiniLesson[];
-      return motionDb.lessonsByVideo.get(activeStep.value.miniLessonReference.clipName) ?? [];
+      return videoDB.lessonsByVideo.get(activeStep.value.miniLessonReference.clipName) ?? [];
     });
     const activeStepLesson = computed(() => {
       if (!activeStep.value) return null;
-      if (isLessonReferenceStep.value && activeStep.value.miniLessonReference?.lessonId) return motionDb.lessonsById.get(activeStep.value.miniLessonReference.lessonId) ?? null;
+      if (isLessonReferenceStep.value && activeStep.value.miniLessonReference?.lessonId) return videoDB.lessonsById.get(activeStep.value.miniLessonReference.lessonId) ?? null;
       if (isLessonEmbeddedStep.value) return activeStep.value.miniLessonEmbedded ?? null;
       return null;
     });
     const canEditActiveStepLessonReference = computed(() => activeStepLesson.value?.source === 'custom');
     const newEmbeddedLessonClipName = ref('');
-    const newEmbeddedLessonMotion = computed(() => motionDb.motionsMap.get(newEmbeddedLessonClipName.value) ?? null);
+    const newEmbeddedLessonMotion = computed(() => videoDB.entriesByClipName.get(newEmbeddedLessonClipName.value) ?? null);
     const canCreateEmbeddedLesson = computed(() => newEmbeddedLessonMotion.value !== null);
     const editLessonActive = ref(false);
     const embeddedLessonMotion = computed(() => {
       if (!activeStep.value) return null;
-      if (isLessonEmbeddedStep.value && activeStep.value.miniLessonEmbedded) return GetVideoEntryForWorkflowStep(motionDb, activeStep.value);
+      if (isLessonEmbeddedStep.value && activeStep.value.miniLessonEmbedded) return GetVideoEntryForWorkflowStep(videoDB, activeStep.value);
       if (isLessonEmbeddedStep.value) return newEmbeddedLessonMotion.value;
-      if (isLessonReferenceStep.value) return GetVideoEntryForWorkflowStep(motionDb, activeStep.value);
+      if (isLessonReferenceStep.value) return GetVideoEntryForWorkflowStep(videoDB, activeStep.value);
       return null;
     });
 
@@ -590,7 +590,7 @@ export default defineComponent({
       isLessonReferenceStep,
       isLessonEmbeddedStep,
       isInstructionStep,
-      availableClips: motionDb.motionNames,
+      availableClips: videoDB.motionNames,
       availableReferenceLessons,
       newEmbeddedLessonClipName,
       newEmbeddedLessonMotion,
@@ -873,7 +873,7 @@ export default defineComponent({
                          + '\n\nNote: be sure to save the lesson.json!')
       ) return;
 
-      motionDb.saveCustomLesson(this.activeStep.miniLessonEmbedded);
+      videoDB.saveCustomLesson(this.activeStep.miniLessonEmbedded);
       this.activeStep.miniLessonReference = {
         clipName: this.activeStep.miniLessonEmbedded.header.clipName,
         lessonId: this.activeStep.miniLessonEmbedded._id,

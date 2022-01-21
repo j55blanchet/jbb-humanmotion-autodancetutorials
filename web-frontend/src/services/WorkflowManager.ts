@@ -3,7 +3,8 @@ import workflowsJson from
   // 'data/workflows/all_workflows.json';
   '@/data/workflows/all_workflows.json';
 import optionsManager from '@/services/OptionsManager';
-import motionDB, { DatabaseEntry, MotionDatabase } from '@/services/MotionDatabase';
+import VideoDatabaseEntry from '@/model/VideoDatabaseEntry';
+import videoDB, { VideoDatabase } from '@/services/VideoDatabase';
 import MiniLesson from '@/model/MiniLesson';
 import { Workflow, WorkflowStage, WorkflowStep } from '@/model/Workflow';
 // import workflowsJson from '@/model/all_workflows.json';
@@ -117,7 +118,7 @@ export class WorkflowManager {
 
         // Refactoring any embedded mini-lessons
         if (newStep.miniLessonEmbedded) {
-          newStep.miniLessonEmbedded = MotionDatabase.updateLessonFormat(newStep.miniLessonEmbedded);
+          newStep.miniLessonEmbedded = VideoDatabase.updateLessonFormat(newStep.miniLessonEmbedded);
         }
 
         return newStep;
@@ -251,14 +252,14 @@ export class WorkflowManager {
 
     } else if (step.type === 'MiniLessonReference') {
       if (!step.miniLessonReference) throw new Error('Step must have a referenced lesson');
-      if (!motionDB.lessonsById.has(step.miniLessonReference.lessonId)) throw new Error(`Step's referenced lesson id ${step.miniLessonReference.lessonId} does not exist`);
-      if (!motionDB.lessonsByVideo.has(step.miniLessonReference.clipName)) throw new Error(`Step's referenced lesson clipName ${step.miniLessonReference.clipName} does not exist`);
+      if (!videoDB.lessonsById.has(step.miniLessonReference.lessonId)) throw new Error(`Step's referenced lesson id ${step.miniLessonReference.lessonId} does not exist`);
+      if (!videoDB.lessonsByVideo.has(step.miniLessonReference.clipName)) throw new Error(`Step's referenced lesson clipName ${step.miniLessonReference.clipName} does not exist`);
 
     } else if (step.type === 'MiniLessonEmbedded') {
       if (!step.miniLessonEmbedded) throw new Error('Step must have a embedded lesson');
 
       try {
-        motionDB.validateLesson(step.miniLessonEmbedded);
+        videoDB.validateLesson(step.miniLessonEmbedded);
       } catch (e) {
         throw new Error(`Step ${step.title} has an invalid embedded lesson. Error: ${e}`);
       }

@@ -1,35 +1,18 @@
 import { computed, reactive } from 'vue';
 import MiniLesson, { MiniLessonActivity } from '@/model/MiniLesson';
-
 import videoDatabase from '../../../data/database.json';
-
 import Utils from './Utils';
+import VideoVideoDatabaseEntry from '@/model/VideoDatabaseEntry';
 
-export interface DatabaseEntry {
-  title: string;
-  clipName: string;
-  clipPath: string;
-  frameCount: number;
-  fps: number;
-  duration: number;
-  width: number;
-  height: number;
-  videoSrc: string;
-  thumbnailSrc: string;
-  startTime: number;
-  endTime: number;
-  tags: string[];
-}
-
-export class MotionDatabase {
+export class VideoDatabase {
 
   readonly allTags = reactive(new Set<string>());
 
-  readonly motionsMap = reactive(new Map<string, DatabaseEntry>());
+  readonly entriesByClipName = reactive(new Map<string, VideoVideoDatabaseEntry>());
 
-  readonly motions = computed(() => Array.from(this.motionsMap.values()));
+  readonly entries = computed(() => Array.from(this.entriesByClipName.values()));
 
-  readonly motionNames = computed(() => this.motions.value.map((dbEntry) => dbEntry.clipName));
+  readonly motionNames = computed(() => this.entries.value.map((dbEntry) => dbEntry.clipName));
 
   readonly lessonsByVideo = reactive(new Map<string, MiniLesson[]>());
 
@@ -38,7 +21,7 @@ export class MotionDatabase {
   constructor() {
 
     videoDatabase.forEach((videoEntry) => {
-      this.motionsMap.set(videoEntry.clipName, {
+      this.entriesByClipName.set(videoEntry.clipName, {
         videoSrc: `videos/${videoEntry.clipPath}`,
         ...videoEntry,
         thumbnailSrc: `thumbs/${videoEntry.thumbnailSrc}`,
@@ -47,7 +30,7 @@ export class MotionDatabase {
       videoEntry.tags.forEach((tag) => this.allTags.add(tag));
     });
 
-    console.log(`Motion database: loaded ${this.motionsMap.size} videos`);
+    console.log(`Motion database: loaded ${this.entriesByClipName.size} videos`);
     // defaultLessons.forEach((lesson) => {
     //   this.upsertLesson({
     //     source: 'builtin',
@@ -67,7 +50,7 @@ export class MotionDatabase {
   }
 
   upsertLesson(lesson: MiniLesson) {
-    const updatedLesson = MotionDatabase.updateLessonFormat(lesson);
+    const updatedLesson = VideoDatabase.updateLessonFormat(lesson);
     const lessonList = this.lessonsByVideo.get(lesson.header.clipName) ?? [];
     const existingIndex = lessonList.findIndex((les) => les._id === lesson._id);
     if (existingIndex !== -1) lessonList[existingIndex] = updatedLesson;
@@ -96,7 +79,7 @@ export class MotionDatabase {
     this.lessonsById.delete(lesson._id);
   }
 
-  getLessons(videoEntry: DatabaseEntry | string) {
+  getLessons(videoEntry: VideoVideoDatabaseEntry | string) {
     let lessons = undefined as undefined | MiniLesson[];
     if (typeof videoEntry === 'object' && videoEntry !== null) lessons = this.lessonsByVideo.get(videoEntry.clipName);
     else lessons = this.lessonsByVideo.get(videoEntry);
@@ -112,7 +95,7 @@ export class MotionDatabase {
   }
 
   private loadCustomLessons(): number {
-    const customLessonIds = MotionDatabase.getCustomLessonIdsList();
+    const customLessonIds = VideoDatabase.getCustomLessonIdsList();
     let countLoaded = 0;
     for (let i = 0; i < customLessonIds.length; i += 1) {
       const id = customLessonIds[i];
@@ -129,7 +112,7 @@ export class MotionDatabase {
     if (!lesson) throw new Error('Lesson is null or undefined');
     const clipName = lesson?.header?.clipName;
     if (!clipName) throw new Error('Clip name missing');
-    if (!this.motionsMap.has(clipName)) throw new Error(`Matching video clip not found for ${clipName}`);
+    if (!this.entriesByClipName.has(clipName)) throw new Error(`Matching video clip not found for ${clipName}`);
     if (!Array.isArray(lesson.activities) || lesson.activities.length < 1) throw new Error('Lesson contains no activities');
   }
 
@@ -137,51 +120,27 @@ export class MotionDatabase {
     this.upsertLesson(lesson);
     window.localStorage.setItem(`lesson-${lesson._id}`, JSON.stringify(lesson));
 
-    const custLessonIds = MotionDatabase.getCustomLessonIdsList();
+    const custLessonIds = VideoDatabase.getCustomLessonIdsList();
     if (custLessonIds.indexOf(lesson._id) === -1) {
       console.log(`Added custom lesson ${lesson.header.lessonTitle} id=${lesson._id} to localstorage`);
       custLessonIds.push(lesson._id);
     } else {
       console.log(`Updated custom lesson ${lesson.header.lessonTitle} id=${lesson._id} in localstorage`);
     }
-    MotionDatabase.saveCustomLessonsIdsList(custLessonIds);
+    VideoDatabase.saveCustomLessonsIdsList(custLessonIds);
   }
 
   deleteCustomLesson(lesson: MiniLesson) {
     this.removeLesson(lesson);
 
-    const custLessonIds = MotionDatabase.getCustomLessonIdsList();
+    const custLessonIds = VideoDatabase.getCustomLessonIdsList();
     const lessonIdIndex = custLessonIds.indexOf(lesson._id);
     if (lessonIdIndex !== -1) custLessonIds.splice(lessonIdIndex, 1);
-    MotionDatabase.saveCustomLessonsIdsList(custLessonIds);
+    VideoDatabase.saveCustomLessonsIdsList(custLessonIds);
 
     window.localStorage.removeItem(`lesson-${lesson._id}`);
   }
 }
 
-export function createBlankActivity(motion: DatabaseEntry, title: string): MiniLessonActivity {
-  return {
-    title,
-    startTime: 0,
-    endTime: motion.duration,
-    demoVisual: 'video',
-    userVisual: 'none',
-    practiceSpeed: 1,
-  };
-}
-
-export function createBlankLesson(videoEntry: DatabaseEntry): MiniLesson {
-  return {
-    _id: Utils.uuidv4(),
-    source: 'custom',
-    header: {
-      clipName: videoEntry.clipName,
-      lessonTitle: 'New Lesson',
-    },
-    segmentBreaks: [0, videoEntry.duration],
-    activities: [createBlankActivity(videoEntry, 'Activity 1')],
-  };
-}
-
-const db = new MotionDatabase();
+const db = new VideoDatabase();
 export default db;

@@ -108,15 +108,15 @@
 </template>
 
 <script lang="ts">
-import Constants from '@/services/Constants';
-import DanceLesson, { Activity, PauseInfo, DanceUtils } from '@/model/MiniLesson';
 import {
   computed, ComputedRef, defineComponent, nextTick, onBeforeUnmount, onMounted, Ref, ref, toRefs, watch,
 } from 'vue';
+import Constants from '@/services/Constants';
+import DanceLesson, { Activity, PauseInfo, DanceUtils } from '@/model/MiniLesson';
 import {
   GestureNames, setupGestureListening, setupMediaPipeListening, TrackingActions,
 } from '@/services/EventHub';
-import { DatabaseEntry } from '@/services/MotionDatabase';
+import VideoDatabaseEntry from '@/model/VideoDatabaseEntry';
 import motionRecorder from '@/services/MotionRecorder';
 import InstructionCarousel, { Instruction } from '@/components/elements/InstructionCarousel.vue';
 import { Landmark } from '@/services/MediaPipeTypes';

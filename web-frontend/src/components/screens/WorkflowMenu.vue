@@ -170,7 +170,8 @@ import {
 } from 'vue';
 import MiniLessonPlayer from '@/components/elements/MiniLessonPlayer.vue';
 import WorkflowStepCard, { WorkflowStepCardInfo } from '@/components/elements/WorkflowStepCard.vue';
-import db, { DatabaseEntry } from '@/services/MotionDatabase';
+import VideoDatabaseEntry from '@/model/VideoDatabaseEntry';
+import db from '@/services/VideoDatabase';
 import MiniLesson from '@/model/MiniLesson';
 import workflowManager, { TrackingWorkflow, TrackingWorkflowStage, TrackingWorkflowStep } from '@/services/WorkflowManager';
 import FeedbackUploadScreen from '@/components/screens/FeedbackUploadScreen.vue';
@@ -217,12 +218,12 @@ export default defineComponent({
   },
   computed: {
     stages() { return ((this as any).workflow?.stages ?? []) as TrackingWorkflowStage[]; },
-    currentVideoEntry(): DatabaseEntry | null {
+    currentVideoEntry(): VideoDatabaseEntry | null {
       if (this.currentStep?.type === 'MiniLessonReference' && this.currentStep?.miniLessonReference) {
-        return db.motionsMap.get(this.currentStep.miniLessonReference.clipName) ?? null;
+        return db.entriesByClipName.get(this.currentStep.miniLessonReference.clipName) ?? null;
       }
       if (this.currentStep?.type === 'MiniLessonEmbedded' && this.currentStep?.miniLessonEmbedded?.header.clipName) {
-        return db.motionsMap.get(this.currentStep.miniLessonEmbedded.header.clipName) ?? null;
+        return db.entriesByClipName.get(this.currentStep.miniLessonEmbedded.header.clipName) ?? null;
       }
       return null;
     },

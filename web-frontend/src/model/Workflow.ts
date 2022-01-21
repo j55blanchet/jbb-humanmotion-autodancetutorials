@@ -1,4 +1,4 @@
-import { DatabaseEntry } from '@/services/MotionDatabase';
+import VideoDatabaseEntry from '@/model/VideoDatabaseEntry';
 import Utils from '@/services/Utils';
 import MiniLesson from './MiniLesson';
 
@@ -83,7 +83,7 @@ export function GetWorkflowStepVideoClipName(step: WorkflowStep) {
       : step.miniLessonEmbedded?.header.clipName) ?? null
     : null;
 }
-export function GetVideoEntryForWorkflowStep(db: any, step: WorkflowStep): DatabaseEntry | null {
+export function GetVideoEntryForWorkflowStep(db: any, step: WorkflowStep): VideoDatabaseEntry | null {
   if (!IsMiniLessonStep(step)) return null;
   return db.motionsMap.get(GetWorkflowStepVideoClipName(step));
 }

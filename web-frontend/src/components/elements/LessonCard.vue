@@ -44,7 +44,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import db, { DatabaseEntry } from '@/services/MotionDatabase';
+import VideoDatabaseEntry from '@/model/VideoDatabaseEntry';
+import db from '@/services/VideoDatabase';
 import keyframeOptions from '@/data/keyframeOptions.json';
 
 export default defineComponent({
@@ -61,13 +62,13 @@ export default defineComponent({
   computed: {
     lessons() {
       if (!this.motion) return [];
-      const motion = this.motion as DatabaseEntry;
+      const motion = this.motion as VideoDatabaseEntry;
       const lessons = db.getLessons(motion);
       return lessons ?? [];
     },
     keyframeOptions() {
       if (!this.motion) return [];
-      const motion = this.motion as DatabaseEntry;
+      const motion = this.motion as VideoDatabaseEntry;
       return keyframeOptions.filter((option) => option.clipName === motion.clipName);
     },
   },

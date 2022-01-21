@@ -86,12 +86,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { WorkflowStep } from '@/model/Workflow';
-import { DatabaseEntry } from '@/services/MotionDatabase';
+import VideoDatabaseEntry from '@/model/VideoDatabaseEntry';
 
 export interface WorkflowStepCardInfo {
   step: WorkflowStep;
   isComplete: boolean;
-  dbEntry: DatabaseEntry | null;
+  dbEntry: VideoDatabaseEntry | null;
   isExpired: boolean;
   isClickable: boolean;
   isValidAfterExpiredTask: boolean;

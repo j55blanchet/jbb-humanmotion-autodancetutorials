@@ -110,7 +110,7 @@ import AzureUploader from '@/services/AzureUploader';
 import WebcamBox from '@/components/elements/WebcamBox.vue';
 import { UploadFollowAlong } from '@/model/Workflow';
 import VideoPlayer from '@/components/elements/VideoPlayer.vue';
-import motionDB from '@/services/MotionDatabase';
+import videoDB from '@/services/VideoDatabase';
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -167,7 +167,7 @@ export default defineComponent({
         return '';
       }
       const followData = followAlongRef.value as UploadFollowAlong;
-      const dbEntry = motionDB.motionsMap.get(followData.clipName);
+      const dbEntry = videoDB.entriesByClipName.get(followData.clipName);
 
       if (!dbEntry) {
         return '';

@@ -5,7 +5,6 @@
 import { Landmark, MpHolisticResults, PoseLandmarks } from './MediaPipeTypes';
 import eventHub, { EventNames } from './EventHub';
 import Utils from './Utils';
-import { Pose } from '@mediapipe/pose';
 
 export const usingHolistic = false;
 
