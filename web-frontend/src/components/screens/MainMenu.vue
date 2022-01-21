@@ -60,31 +60,31 @@
     >
       <div
         class="video-card card hover-expand"
-        v-for="motion in filteredVideos"
-        :key="motion.title"
-        @mouseover="motion.hovering = true"
-        @mouseleave="motion.hovering = false"
-        @click = "motion.clicked = !motion.clicked"
+        v-for="videoEntry in filteredVideos"
+        :key="videoEntry.clipName"
+        @mouseover="videoEntry.hovering = true"
+        @mouseleave="videoEntry.hovering = false"
+        @click = "videoEntry.clicked = !videoEntry.clicked"
       >
         <div class="card-image">
-          <figure class="image is-2by3" v-if="(!motion.hovering) && (!motion.clicked)">
-            <img :src="motion.thumbnailSrc" class="is-contain" />
+          <figure class="image is-2by3" v-if="(!videoEntry.hovering) && (!videoEntry.clicked)">
+            <img :src="videoEntry.thumbnailSrc" class="is-contain" />
           </figure>
-          <figure class="image is-2by3" v-else><video controls :src="motion.videoSrc" @playing="motion.clicked=True"></video></figure>
+          <figure class="image is-2by3" v-else><video controls :src="videoEntry.videoSrc" @playing="videoEntry.clicked=True"></video></figure>
         </div>
         <div class="card-content" >
           <div class="level">
             <div class="level-item">
-              {{ motion.title }}
+              {{ videoEntry.title }}
             </div>
             <!-- <transition name="expand-down" appear> -->
               <div class="level-item">
                 <button
                   class="button is-small transition-all is-primary"
                   :class="{
-                    'is-outlined': !(motion.clicked || motion.hovering)
+                    'is-outlined': !(videoEntry.clicked || videoEntry.hovering)
                   }"
-                  @click="selectedMotion = motion">
+                  @click="selectedVideo = videoEntry">
                   <span>Go</span>
                   <span class="icon is-small">
                     <i class="fas fa-arrow-right"></i>
@@ -109,12 +109,12 @@
       </div>
     </div>
 
-    <div v-bind:class="{ 'is-active': selectedMotion }" class="modal">
+    <div v-bind:class="{ 'is-active': selectedVideo }" class="modal">
       <div class="modal-background"></div>
       <div class="modal-content">
         <LessonCard
-          :motion="selectedMotion"
-          @closed="selectedMotion = null"
+          :motion="selectedVideo"
+          @closed="selectedVideo = null"
           @lesson-selected="onLessonSelected"
           @create-lesson-selected="createLessonSelected"
           @keyframeselectortool-selected="onKeyframeSelectorToolSelected"
@@ -157,6 +157,7 @@ import { computed, defineComponent, ref } from 'vue';
 import LessonCard from '@/components/elements/LessonCard.vue';
 import UploadCard from '@/components/elements/UploadCard.vue';
 import VideoDatabaseEntry from '@/model/VideoDatabaseEntry';
+import miniLessonManager, { MiniLessonManager } from '@/services/MiniLessonManager';
 import db from '@/services/VideoDatabase';
 import MiniLesson from '@/model/MiniLesson';
 import workflowManager, { WorkflowManager } from '@/services/WorkflowManager';
@@ -184,7 +185,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const videos = db.entries;
-    const selectedMotion = ref(null as VideoDatabaseEntry | null);
+    const selectedVideo = ref(null as VideoDatabaseEntry | null);
     const uploadLessonUIActive = ref(false);
     const currentTab = ref(Tabs.Workflows);
     const activeTags = ref(new Set());
@@ -194,20 +195,20 @@ export default defineComponent({
       lesson: MiniLesson,
     ) {
       ctx.emit('lesson-selected', videoEntry, lesson);
-      selectedMotion.value = null;
+      selectedVideo.value = null;
     }
 
     function createLessonSelected(videoEntry: VideoDatabaseEntry) {
       ctx.emit('create-lesson-selected', videoEntry);
-      selectedMotion.value = null;
+      selectedVideo.value = null;
     }
 
     const filteredVideos = computed(() => {
-      const tagMatchingMotions = videos.value.filter((motion) => {
+      const tagMatchingMotions = videos.value.filter((videoEntry) => {
 
         if (activeTags.value.size === 0) return true;
 
-        const allTagsMatch = motion.tags.reduce((someTagMatches: boolean, currTag: string) => {
+        const allTagsMatch = videoEntry.tags.reduce((someTagMatches: boolean, currTag: string) => {
           const thisTagMatches = activeTags.value.has(currTag);
           return someTagMatches || thisTagMatches;
         }, false);
@@ -221,7 +222,7 @@ export default defineComponent({
 
     return {
       workflows: workflowManager.allWorkflows,
-      selectedMotion,
+      selectedVideo,
       videos,
       filteredVideos,
       onLessonSelected,
@@ -264,8 +265,8 @@ export default defineComponent({
         // eslint-disable-next-line no-await-in-loop
         const text = await file.text();
         const lesson = JSON.parse(text);
-        db.validateLesson(lesson);
-        db.saveCustomLesson(lesson);
+        MiniLessonManager.validateLesson(lesson);
+        miniLessonManager.saveCustomLesson(lesson);
       }
       return true;
     },

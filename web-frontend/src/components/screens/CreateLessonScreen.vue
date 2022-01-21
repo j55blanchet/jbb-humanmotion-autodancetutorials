@@ -632,7 +632,7 @@ import Constants from '@/services/Constants';
 import MiniLessonPlayer from '@/components/elements/MiniLessonPlayer.vue';
 import VideoDatabaseEntry from '@/model/VideoDatabaseEntry';
 import db from '@/services/VideoDatabase';
-import { createBlankActivity, createBlankLesson } from '@/services/MiniLessonManager';
+import miniLessonManager, { createBlankActivity, createBlankLesson } from '@/services/MiniLessonManager';
 import MiniLesson, { MiniLessonActivity, PauseInfo, TimedInstruction } from '@/model/MiniLesson';
 import Utils from '@/services/Utils';
 import SegmentedProgressBar, { ProgressSegmentData, calculateProgressSegments } from '@/components/elements/SegmentedProgressBar.vue';
@@ -745,7 +745,7 @@ export default defineComponent({
       return this.lessons[this.activeLessonSelectionIndex] ?? null;
     },
     lessonInDatabase(): boolean {
-      return db.hasLesson(this.lessonUnderConstruction);
+      return miniLessonManager.hasLesson(this.lessonUnderConstruction);
     },
     canDeleteLesson(): boolean {
       return this.lessonInDatabase && this.lessonUnderConstruction.source === 'custom';
@@ -759,7 +759,7 @@ export default defineComponent({
     lessons() {
       if (!this.motion) return [];
       const motion = this.motion as VideoDatabaseEntry;
-      const lessons = db.getLessons(motion);
+      const lessons = miniLessonManager.getLessons(motion);
       return lessons ?? [];
     },
     progressSegments(): ProgressSegmentData[] {
@@ -1048,7 +1048,7 @@ export default defineComponent({
     // },
     saveLesson() {
       if (this.$props.saveToDatabase) {
-        db.saveCustomLesson(this.lessonUnderConstruction);
+        miniLessonManager.saveCustomLesson(this.lessonUnderConstruction);
       }
       this.$emit('lesson-saved', this.lessonUnderConstruction);
       this.isDirty = false;
@@ -1059,7 +1059,7 @@ export default defineComponent({
         return;
       }
 
-      db.deleteCustomLesson(this.lessonUnderConstruction);
+      miniLessonManager.deleteCustomLesson(this.lessonUnderConstruction);
       this.$emit('back-selected');
     },
     exportLesson() {

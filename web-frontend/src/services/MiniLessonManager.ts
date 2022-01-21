@@ -47,8 +47,8 @@ export class MiniLessonManager {
   readonly lessonsById = reactive(new Map<string, MiniLesson>());
 
   constructor() {
-    // const customLessonCount = this.loadCustomLessons();
-    // console.log(`Motion database: loaded ${customLessonCount} custom lessons`);
+    const customLessonCount = this.loadCustomLessons();
+    console.log(`Motion database: loaded ${customLessonCount} custom lessons`);
   }
 
   hasLesson(lesson: MiniLesson): boolean {
@@ -58,7 +58,7 @@ export class MiniLessonManager {
   }
 
   upsertLesson(lesson: MiniLesson) {
-    const updatedLesson = VideoDatabase.updateLessonFormat(lesson);
+    const updatedLesson = MiniLessonManager.updateLessonFormat(lesson);
     const lessonList = this.lessonsByVideo.get(lesson.header.clipName) ?? [];
     const existingIndex = lessonList.findIndex((les) => les._id === lesson._id);
     if (existingIndex !== -1) lessonList[existingIndex] = updatedLesson;
@@ -102,52 +102,52 @@ export class MiniLessonManager {
     window.localStorage.setItem('custom-lessons', JSON.stringify(customLessonIds));
   }
 
-  // private loadCustomLessons(): number {
-  //   const customLessonIds = VideoDatabase.getCustomLessonIdsList();
-  //   let countLoaded = 0;
-  //   for (let i = 0; i < customLessonIds.length; i += 1) {
-  //     const id = customLessonIds[i];
-  //     const custLesson = localStorage.getItem(`lesson-${id}`);
-  //     if (custLesson) {
-  //       this.upsertLesson(JSON.parse(custLesson) as MiniLesson);
-  //       countLoaded += 1;
-  //     }
-  //   }
-  //   return countLoaded;
-  // }
+  private loadCustomLessons(): number {
+    const customLessonIds = MiniLessonManager.getCustomLessonIdsList();
+    let countLoaded = 0;
+    for (let i = 0; i < customLessonIds.length; i += 1) {
+      const id = customLessonIds[i];
+      const custLesson = localStorage.getItem(`lesson-${id}`);
+      if (custLesson) {
+        this.upsertLesson(JSON.parse(custLesson) as MiniLesson);
+        countLoaded += 1;
+      }
+    }
+    return countLoaded;
+  }
 
-  // validateLesson(lesson: MiniLesson) {
-  //   if (!lesson) throw new Error('Lesson is null or undefined');
-  //   const clipName = lesson?.header?.clipName;
-  //   if (!clipName) throw new Error('Clip name missing');
-  //   if (!this.motionsMap.has(clipName)) throw new Error(`Matching video clip not found for ${clipName}`);
-  //   if (!Array.isArray(lesson.activities) || lesson.activities.length < 1) throw new Error('Lesson contains no activities');
-  // }
+  static validateLesson(lesson: MiniLesson) {
+    if (!lesson) throw new Error('Lesson is null or undefined');
+    const clipName = lesson?.header?.clipName;
+    if (!clipName) throw new Error('Clip name missing');
+    if (!videoDB.entriesByClipName.has(clipName)) throw new Error(`Matching video clip not found for ${clipName}`);
+    if (!Array.isArray(lesson.activities) || lesson.activities.length < 1) throw new Error('Lesson contains no activities');
+  }
 
-  // saveCustomLesson(lesson: MiniLesson) {
-  //   this.upsertLesson(lesson);
-  //   window.localStorage.setItem(`lesson-${lesson._id}`, JSON.stringify(lesson));
+  saveCustomLesson(lesson: MiniLesson) {
+    this.upsertLesson(lesson);
+    window.localStorage.setItem(`lesson-${lesson._id}`, JSON.stringify(lesson));
 
-  //   const custLessonIds = VideoDatabase.getCustomLessonIdsList();
-  //   if (custLessonIds.indexOf(lesson._id) === -1) {
-  //     console.log(`Added custom lesson ${lesson.header.lessonTitle} id=${lesson._id} to localstorage`);
-  //     custLessonIds.push(lesson._id);
-  //   } else {
-  //     console.log(`Updated custom lesson ${lesson.header.lessonTitle} id=${lesson._id} in localstorage`);
-  //   }
-  //   VideoDatabase.saveCustomLessonsIdsList(custLessonIds);
-  // }
+    const custLessonIds = MiniLessonManager.getCustomLessonIdsList();
+    if (custLessonIds.indexOf(lesson._id) === -1) {
+      console.log(`Added custom lesson ${lesson.header.lessonTitle} id=${lesson._id} to localstorage`);
+      custLessonIds.push(lesson._id);
+    } else {
+      console.log(`Updated custom lesson ${lesson.header.lessonTitle} id=${lesson._id} in localstorage`);
+    }
+    MiniLessonManager.saveCustomLessonsIdsList(custLessonIds);
+  }
 
-  // deleteCustomLesson(lesson: MiniLesson) {
-  //   this.removeLesson(lesson);
+  deleteCustomLesson(lesson: MiniLesson) {
+    this.removeLesson(lesson);
 
-  //   const custLessonIds = VideoDatabase.getCustomLessonIdsList();
-  //   const lessonIdIndex = custLessonIds.indexOf(lesson._id);
-  //   if (lessonIdIndex !== -1) custLessonIds.splice(lessonIdIndex, 1);
-  //   VideoDatabase.saveCustomLessonsIdsList(custLessonIds);
+    const custLessonIds = MiniLessonManager.getCustomLessonIdsList();
+    const lessonIdIndex = custLessonIds.indexOf(lesson._id);
+    if (lessonIdIndex !== -1) custLessonIds.splice(lessonIdIndex, 1);
+    MiniLessonManager.saveCustomLessonsIdsList(custLessonIds);
 
-  //   window.localStorage.removeItem(`lesson-${lesson._id}`);
-  // }
+    window.localStorage.removeItem(`lesson-${lesson._id}`);
+  }
 }
 
 const miniLessonManager = new MiniLessonManager();

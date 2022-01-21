@@ -46,6 +46,7 @@
 import { defineComponent } from 'vue';
 import VideoDatabaseEntry from '@/model/VideoDatabaseEntry';
 import db from '@/services/VideoDatabase';
+import miniLessonManager from '@/services/MiniLessonManager';
 import keyframeOptions from '@/data/keyframeOptions.json';
 
 export default defineComponent({
@@ -63,7 +64,7 @@ export default defineComponent({
     lessons() {
       if (!this.motion) return [];
       const motion = this.motion as VideoDatabaseEntry;
-      const lessons = db.getLessons(motion);
+      const lessons = miniLessonManager.getLessons(motion);
       return lessons ?? [];
     },
     keyframeOptions() {

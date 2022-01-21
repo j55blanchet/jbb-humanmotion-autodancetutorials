@@ -486,6 +486,7 @@ import {
   CreateBlankWorkflow, GetVideoEntryForWorkflowStep, Instructions, Workflow, WorkflowStage, WorkflowStep,
 } from '@/model/Workflow';
 import Utils from '@/services/Utils';
+import miniLessonManager, { MiniLessonManager } from '@/services/MiniLessonManager';
 import workflowManager, { WorkflowManager } from '@/services/WorkflowManager';
 import WorkflowMenu from '@/components/screens/WorkflowMenu.vue';
 import videoDB from '@/services/VideoDatabase';
@@ -521,11 +522,11 @@ export default defineComponent({
     const availableReferenceLessons = computed(() => {
       if (!activeStep.value) return [] as MiniLesson[];
       if (!activeStep.value.miniLessonReference?.clipName) return [] as MiniLesson[];
-      return videoDB.lessonsByVideo.get(activeStep.value.miniLessonReference.clipName) ?? [];
+      return miniLessonManager.lessonsByVideo.get(activeStep.value.miniLessonReference.clipName) ?? [];
     });
     const activeStepLesson = computed(() => {
       if (!activeStep.value) return null;
-      if (isLessonReferenceStep.value && activeStep.value.miniLessonReference?.lessonId) return videoDB.lessonsById.get(activeStep.value.miniLessonReference.lessonId) ?? null;
+      if (isLessonReferenceStep.value && activeStep.value.miniLessonReference?.lessonId) return miniLessonManager.lessonsById.get(activeStep.value.miniLessonReference.lessonId) ?? null;
       if (isLessonEmbeddedStep.value) return activeStep.value.miniLessonEmbedded ?? null;
       return null;
     });
@@ -590,7 +591,7 @@ export default defineComponent({
       isLessonReferenceStep,
       isLessonEmbeddedStep,
       isInstructionStep,
-      availableClips: videoDB.motionNames,
+      availableClips: videoDB.clipNames,
       availableReferenceLessons,
       newEmbeddedLessonClipName,
       newEmbeddedLessonMotion,
@@ -873,7 +874,7 @@ export default defineComponent({
                          + '\n\nNote: be sure to save the lesson.json!')
       ) return;
 
-      videoDB.saveCustomLesson(this.activeStep.miniLessonEmbedded);
+      miniLessonManager.saveCustomLesson(this.activeStep.miniLessonEmbedded);
       this.activeStep.miniLessonReference = {
         clipName: this.activeStep.miniLessonEmbedded.header.clipName,
         lessonId: this.activeStep.miniLessonEmbedded._id,

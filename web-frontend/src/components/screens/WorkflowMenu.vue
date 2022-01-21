@@ -173,6 +173,7 @@ import WorkflowStepCard, { WorkflowStepCardInfo } from '@/components/elements/Wo
 import VideoDatabaseEntry from '@/model/VideoDatabaseEntry';
 import db from '@/services/VideoDatabase';
 import MiniLesson from '@/model/MiniLesson';
+import miniLessonManager from '@/services/MiniLessonManager';
 import workflowManager, { TrackingWorkflow, TrackingWorkflowStage, TrackingWorkflowStep } from '@/services/WorkflowManager';
 import FeedbackUploadScreen from '@/components/screens/FeedbackUploadScreen.vue';
 import optionsManager from '@/services/OptionsManager';
@@ -229,7 +230,7 @@ export default defineComponent({
     },
     currentLesson(): MiniLesson | null {
       if (this.currentStep?.type === 'MiniLessonReference' && this.currentStep?.miniLessonReference) {
-        return db.lessonsById.get(this.currentStep.miniLessonReference.lessonId) ?? null;
+        return miniLessonManager.lessonsById.get(this.currentStep.miniLessonReference.lessonId) ?? null;
       }
       if (this.currentStep?.type === 'MiniLessonEmbedded' && this.currentStep?.miniLessonEmbedded) {
         return this.currentStep.miniLessonEmbedded;
