@@ -1,6 +1,7 @@
 from typing import *
 import json
 from datetime import datetime
+import io
 
 class CustomSerializable:
     def _json_dict(self) -> Dict:
@@ -13,7 +14,7 @@ class CustomSerializable:
     def _custom_to_json(self, indent: int = None) -> str:
         return json.dumps(self._json_dict(), default = CustomSerializable._custom_default, indent=indent)
 
-    def write_json(self, file: IO, indent=None):
+    def write_json(self, file: io.TextIOBase, indent=None):
         json.dump(self._json_dict(), file, indent=indent, default = CustomSerializable._custom_default)
 
     @staticmethod
@@ -28,5 +29,5 @@ class CustomSerializable:
         return o.__dict__
     
     @staticmethod
-    def write_json_native(obj: List, file: IO, indent=None):
+    def write_json_native(obj: List, file: io.TextIOBase, indent=None):
         json.dump(obj, file, indent=indent, default = CustomSerializable._custom_default)

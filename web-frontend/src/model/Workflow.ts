@@ -85,5 +85,5 @@ export function GetWorkflowStepVideoClipName(step: WorkflowStep) {
 }
 export function GetVideoEntryForWorkflowStep(db: any, step: WorkflowStep): VideoDatabaseEntry | null {
   if (!IsMiniLessonStep(step)) return null;
-  return db.motionsMap.get(GetWorkflowStepVideoClipName(step));
+  return db.entriesByClipName.get(GetWorkflowStepVideoClipName(step));
 }

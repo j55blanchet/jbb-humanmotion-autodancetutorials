@@ -76,6 +76,11 @@ def create_learningstep(imr: IMR, segment_i: int, speed: float) -> WorkflowStep:
                 startInstruction="Do you have it? Let's try without the skeleton.",
                 playingInstruction="(feel free to go back to the previous activity if you need to)",
                 endInstruction=f"Next up: combining this what you learned earlier",
+                recording=None,
+                reviewing=ReviewInfo(
+                    showModelSkeleton=True,
+                    showUserSkeleton=False,
+                )
                 # recordBehavior="video-only",
                 # reviewBehavior="video"
             ),
