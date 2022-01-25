@@ -7,6 +7,7 @@ import cv2
 from typing import Dict, List
 
 from numpy.core.fromnumeric import trace
+from .utils.video_manipulation import extract_audio
 
 valid_file_endings = [
     'mp4',
@@ -80,27 +81,6 @@ def create_thumbnail(video_path: Path, relative_path: Path, timestamp: float, th
     
     return thumbnail_path
 
-def create_audio(video_path: Path, relative_path: Path, audio_dir: Path):
-    audio_path = relative_path.parent.joinpath(relative_path.stem + '.wav')
-    audio_path = audio_dir.joinpath(audio_path)
-    audio_path.parent.mkdir(exist_ok=True, parents=True)
-
-    if audio_path.exists():
-        return audio_path
-
-    print(f'Creating audio for {audio_path}')
-    import subprocess
-    command = f'ffmpeg -i "{str(video_path)}" -ab 160k -ac 1 -ar 44100 -vn {str(audio_path)} -y'
-    proc = subprocess.Popen(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
-    result = proc.wait()
-    if result != 0:
-        output = proc.stderr.readlines()[-1].decode('utf-8')
-        print(f'Unable to create audio for {relative_path}: {output}')
-        return None
-
-    return audio_path
-    
-
 def update_database(database_path: PathLike, videos_dir: PathLike, thumbnails_dir: PathLike, audio_path: PathLike):
     videos_dir = Path(videos_dir)
     database_path = Path(database_path)
@@ -141,7 +121,7 @@ def update_database(database_path: PathLike, videos_dir: PathLike, thumbnails_di
         thumbnail_path = create_thumbnail(videos_dir.joinpath(relative_path), relative_path, start_time, thumbnails_dir)
         entry['thumbnailSrc'] = thumbnail_path.relative_to(thumbnails_dir).as_posix()
 
-        audio_path = create_audio(videos_dir.joinpath(relative_path), relative_path, audio_dir)
+        audio_path = extract_audio(videos_dir.joinpath(relative_path), relative_path, audio_dir)
         if audio_path is not None:
             entry['audioSrc'] = audio_path.relative_to(audio_dir).as_posix()
         out_db[clip_name] = entry
