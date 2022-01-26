@@ -81,7 +81,6 @@ const ActivityPlayState = Object.freeze({
   AwaitingStart: 'AwaitingStart',
   PendingStart: 'PendingStart',
   Playing: 'Playing',
-  Reviewing: 'Reviewing',
   ActivityEnded: 'ActivityEnded',
 });
 
@@ -106,17 +105,19 @@ export default defineComponent({
     const { activity } = toRefs(props);
     const typedActivity = computed(() => (activity.value as MiniLessonActivity) ?? null);
     const state = ref(ActivityPlayState.AwaitingStart);
+
+    const shouldReview = computed(() => (typedActivity?.value?.reviewing) !== undefined);
+    const shouldRecord = computed(() => ((typedActivity?.value?.recording) !== undefined) || shouldReview.value);
+
     const activityFinished = computed(() => state.value === ActivityPlayState.ActivityEnded);
     const awaitingStart = computed(() => state.value === ActivityPlayState.AwaitingStart);
     const isPlaying = computed(() => state.value === ActivityPlayState.Playing);
     const isPendingStart = computed(() => state.value === ActivityPlayState.PendingStart);
-    const isReviewing = computed(() => state.value === ActivityPlayState.Reviewing);
+    const isReviewing = computed(() => state.value === ActivityPlayState.ActivityEnded && shouldReview);
     const videoPlayer = ref(null as null | typeof PausingVideoPlayer);
     const webcamBox = ref(null as null | typeof WebcamBox);
     const videoTime = ref(0);
 
-    const shouldReview = computed(() => (typedActivity?.value?.reviewing) !== undefined);
-    const shouldRecord = computed(() => ((typedActivity?.value?.recording) !== undefined) || shouldReview.value);
     const recordingId = computed(() => {
       if (!shouldRecord.value) return '';
       return typedActivity?.value?.recording?.identifier ?? 'unknown-or-temp-identifier';
@@ -137,8 +138,7 @@ export default defineComponent({
         recordingObjectUrl.value = URL.createObjectURL(blob);
       }
 
-      if (shouldReview.value) state.value = ActivityPlayState.Reviewing;
-      else state.value = ActivityPlayState.ActivityEnded;
+      state.value = ActivityPlayState.ActivityEnded;
     };
     const onPauseHit = (pause: PauseInfo) => {
       console.log(`Hit pause${pause}`);
