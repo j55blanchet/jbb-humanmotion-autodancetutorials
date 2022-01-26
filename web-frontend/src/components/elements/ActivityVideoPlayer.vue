@@ -37,6 +37,8 @@
       />
     </div>
 
+    <video v-if="isReviewing"  style="height:100%" class="flipped" :src="recordingObjectUrl" controls></video>
+
     <div class="is-overlay instructions-overlay mb-4">
       <InstructionCarousel v-show="!activityFinished && timedInstructions.length > 0" :sizeClass="'is-medium'" :instructions="timedInstructions" class="m-2"/>
       <InstructionCarousel v-show="pauseInstructs.length > 0" :sizeClass="'is-medium'" :instructions="pauseInstructs" class="m-2"/>
@@ -51,7 +53,7 @@
         />
     </div>
 
-    <div class="is-overlay p-4" v-if="showingWebcam && needsWebcam">
+    <div class="is-overlay p-4" v-if="needsToStartWebcam">
       <WebcamSourceSelectionMenu
         v-model:videoDeviceId="videoDeviceId"
         v-model:audioDeviceId="audioDeviceId"
@@ -63,7 +65,7 @@
 <script lang="ts">
 
 import {
-  computed, defineComponent, ref, toRefs, watchEffect,
+  computed, defineComponent, onBeforeUnmount, Ref, ref, toRefs, watch, watchEffect,
 } from 'vue';
 import InstructionCarousel, { Instruction } from '@/components/elements/InstructionCarousel.vue';
 import PausingVideoPlayer from '@/components/elements/PausingVideoPlayer.vue';
@@ -79,6 +81,7 @@ const ActivityPlayState = Object.freeze({
   AwaitingStart: 'AwaitingStart',
   PendingStart: 'PendingStart',
   Playing: 'Playing',
+  Reviewing: 'Reviewing',
   ActivityEnded: 'ActivityEnded',
 });
 
@@ -101,18 +104,41 @@ export default defineComponent({
   },
   setup(props) {
     const { activity } = toRefs(props);
+    const typedActivity = computed(() => (activity.value as MiniLessonActivity) ?? null);
     const state = ref(ActivityPlayState.AwaitingStart);
     const activityFinished = computed(() => state.value === ActivityPlayState.ActivityEnded);
     const awaitingStart = computed(() => state.value === ActivityPlayState.AwaitingStart);
     const isPlaying = computed(() => state.value === ActivityPlayState.Playing);
     const isPendingStart = computed(() => state.value === ActivityPlayState.PendingStart);
+    const isReviewing = computed(() => state.value === ActivityPlayState.Reviewing);
     const videoPlayer = ref(null as null | typeof PausingVideoPlayer);
     const webcamBox = ref(null as null | typeof WebcamBox);
     const videoTime = ref(0);
 
+    const shouldReview = computed(() => (typedActivity?.value?.reviewing) !== undefined);
+    const shouldRecord = computed(() => ((typedActivity?.value?.recording) !== undefined) || shouldReview.value);
+    const recordingId = computed(() => {
+      if (!shouldRecord.value) return '';
+      return typedActivity?.value?.recording?.identifier ?? 'unknown-or-temp-identifier';
+    });
+
+    const recordingObjectUrl = ref(null as null | string);
+
+    onBeforeUnmount(() => {
+      webcamProvider.abortRecording(recordingId.value);
+    });
+
     const pauseInstructs = ref([] as Instruction[]);
-    const onPlaybackCompleted = () => {
-      state.value = ActivityPlayState.ActivityEnded;
+    const onPlaybackCompleted = async () => {
+
+      if (shouldRecord.value && webcamProvider.isRecording(recordingId.value)) {
+        await webcamProvider.stopRecording(recordingId.value);
+        const blob = await webcamProvider.getBlob(recordingId.value);
+        recordingObjectUrl.value = URL.createObjectURL(blob);
+      }
+
+      if (shouldReview.value) state.value = ActivityPlayState.Reviewing;
+      else state.value = ActivityPlayState.ActivityEnded;
     };
     const onPauseHit = (pause: PauseInfo) => {
       console.log(`Hit pause${pause}`);
@@ -128,6 +154,7 @@ export default defineComponent({
       const time = newTime ?? startTime.value ?? 0;
 
       if (videoPlayer.value) videoPlayer.value.setTime(time);
+      webcamProvider.abortRecording(recordingId.value);
     }
 
     watchEffect(() => reset(startTime.value));
@@ -168,6 +195,7 @@ export default defineComponent({
     });
 
     return {
+      typedActivity,
       webcamBox,
       videoPlayer,
       videoTime,
@@ -178,6 +206,13 @@ export default defineComponent({
       pauseInstructs,
       isPlaying,
       isPendingStart,
+      isReviewing,
+
+      shouldReview,
+      shouldRecord,
+      recordingId,
+      recordingObjectUrl,
+      isRecording: () => webcamProvider.isRecording(recordingId.value),
 
       reset,
       startTime,
@@ -199,7 +234,8 @@ export default defineComponent({
       return (this as any)?.activity?.keyframeVisual ?? 'none';
     },
     showingWebcam() {
-      return ((this as any)?.activity?.userVisual ?? 'none') !== 'none';
+      const hideForReview = (this as any)?.isReviewing ?? false;
+      return !hideForReview && (((this as any)?.activity?.userVisual ?? 'none') !== 'none');
     },
     showSheetMusic() {
       return ((this as any)?.activity?.sheetMotionVisual ?? 'none') !== 'none';
@@ -251,8 +287,10 @@ export default defineComponent({
 
       return activeTimedInstructions;
     },
-    needsWebcam() {
-      return ((this as any).activity?.userVisual ?? 'none') !== 'none' && webcamProvider.webcamStatus.value !== 'running';
+    needsToStartWebcam() {
+      const needsUserVisual = ((this as any).activity?.userVisual ?? 'none') !== 'none';
+      const needsWebcam = this.shouldRecord || needsUserVisual;
+      return needsWebcam && webcamProvider.webcamStatus.value !== 'running';
     },
   },
   methods: {
@@ -263,7 +301,7 @@ export default defineComponent({
       }
       return new Error('WebcamBox is null');
     },
-    play(delay?: number | undefined) {
+    async play(delay?: number | undefined) {
       this.reset();
       const vidPlayer = this.videoPlayer;
       const vidActivity = this.activity as MiniLessonActivity | null;
@@ -274,6 +312,11 @@ export default defineComponent({
       }
 
       this.state = ActivityPlayState.PendingStart;
+
+      if (this.shouldRecord && !this.isRecording()) {
+        console.log('Gonna do some muthafucking recording!');
+        await webcamProvider.startRecording(this.recordingId);
+      }
 
       vidPlayer.play(
         vidActivity.startTime,

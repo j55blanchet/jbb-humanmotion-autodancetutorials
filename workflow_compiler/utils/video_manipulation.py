@@ -22,7 +22,7 @@ def extract_audio(video_path: Path, relative_path: Path, audio_dir: Path):
 
     return audio_path
 
-def trim_video(video_path: Path, out_filepath: Path, startTimeSecs: float, endTimeSecs: float):
+def make_trimmed_video(video_path: Path, out_filepath: Path, startTimeSecs: float, endTimeSecs: float):
     # Example:
     # Start & End Time
     #   ffmpeg -i input.mp4 -ss 1:19:27 -to 02:18:51 -c:v copy -c:a copy output.mp4

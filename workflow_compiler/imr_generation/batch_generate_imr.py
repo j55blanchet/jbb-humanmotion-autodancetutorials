@@ -17,7 +17,7 @@ from ..datatypes import Workflow, IMR
 
 from . import imr_generation
 
-IMR_GENERATION_METHOD_NAME = 'julien_v2_TemporalSdmMinima_KeyframeExtension'
+# IMR_GENERATION_METHOD_NAME = 'julien_v2_TemporalSdmMinima_KeyframeExtension'
 
 plt.ioff()
 

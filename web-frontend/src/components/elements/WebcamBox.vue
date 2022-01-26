@@ -50,17 +50,11 @@ export default defineComponent({
       type: Boolean,
       default: true,
     },
-    enableRecordButton: {
-      type: Boolean,
-      default: false,
-    },
     maxHeight: {
       type: String,
     },
   },
   setup() {
-    // const enableRecordButton = toRefs(props);
-
     const videoE = ref(null as null | HTMLVideoElement);
     const webcamStartError = ref(null as null | any);
 
@@ -85,7 +79,6 @@ export default defineComponent({
       webcamStartError,
       webcamProvider,
       webcamStatus: webcamProvider.webcamStatus,
-      isRecording: webcamProvider.isRecording,
 
       audioDeviceId: ref(''),
       videoDeviceId: ref(''),

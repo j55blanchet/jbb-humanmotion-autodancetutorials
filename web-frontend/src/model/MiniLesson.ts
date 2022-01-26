@@ -52,8 +52,15 @@ export interface MiniLessonActivity {
   motionTrails?: Array<MotionTrail>;
   motionTrailBreaks?: Array<number>;
   showVideoControls?: boolean;
-  recordBehavior?: 'none' | 'video-only' | 'video-with-audio';
-  reviewBehavior?: 'none' | 'skeleton' | 'video';
+  recording?: {
+    identifier: string;
+    includeAudio: boolean;
+    maxAllowedAttempts?: number;
+  };
+  reviewing?: {
+    showModelSkeleton: boolean;
+    showUserSkeleton: boolean;
+  }
 }
 
 export default interface MiniLesson {

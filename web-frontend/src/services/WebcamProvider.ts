@@ -1,6 +1,8 @@
 import RecordRTC, { invokeSaveAsDialog } from 'recordrtc';
 
-import { computed, ref, Ref } from 'vue';
+import {
+  computed, reactive, ref, Ref,
+} from 'vue';
 
 export const WEBCAM_DIMENSIONS = Object.freeze({
   width: 640,
@@ -10,7 +12,9 @@ export const WEBCAM_DIMENSIONS = Object.freeze({
 export class WebcamProvider {
 
   // Recorder class
-  private recorder = ref(null as null | RecordRTC);
+  private readonly ongoingRecordings = new Map<string, RecordRTC>();
+
+  private readonly cachedRecordings = new Map<string, RecordRTC>();
 
   // The actual media stream
   private mediaStream = ref(null as null | MediaStream);
@@ -23,8 +27,6 @@ export class WebcamProvider {
   private isWebcamLoading = ref(false);
 
   public webcamError = ref(null as any);
-
-  public isRecording = ref(false);
 
   public cachedVideoDeviceId: string | undefined = undefined;
 
@@ -113,15 +115,18 @@ export class WebcamProvider {
 
     videoE.srcObject = null;
 
-    if (this.activeConnections.size === 0 && !this.recorder) {
+    if (this.activeConnections.size === 0 && this.ongoingRecordings.size === 0) {
       this.stopWebcam();
     }
   }
 
   public async stopWebcam(): Promise<void> {
-    if (this.recorder) {
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const recorderId of this.ongoingRecordings.keys()) {
       try {
-        await this.stopRecording();
+        // eslint-disable-next-line no-await-in-loop
+        await this.abortRecording(recorderId);
         // eslint-disable-next-line no-empty
       } catch { }
     }
@@ -132,41 +137,76 @@ export class WebcamProvider {
     this.mediaStream.value = null;
   }
 
-  public async startRecording(): Promise<void> {
-    if (this.recorder.value || this.isRecording.value) {
-      return;
-    }
+  public async startRecording(recordingId: string): Promise<void> {
 
     if (!this.mediaStream.value) {
       throw new Error('Webcam must be started before recording can happen');
     }
 
-    this.isRecording.value = true;
-
     const rtc = new RecordRTC(this.mediaStream.value, {
       type: 'video',
     });
     rtc.startRecording();
-    this.recorder.value = rtc;
+
+    this.ongoingRecordings.set(recordingId, rtc);
+
+    console.log(`WebcamProvider :: starting recording with id ${recordingId}`);
   }
 
-  public async stopRecording(): Promise<Blob> {
-
+  public async abortRecording(recordingId: string): Promise<void> {
+    const recorder = this.ongoingRecordings.get(recordingId);
     return new Promise((res) => {
-      if (!this.recorder.value) throw new Error("Haven't started recording");
-      this.isRecording.value = false;
-      const recorder = this.recorder.value;
-      this.recorder.value.stopRecording(() => {
-        res(recorder.getBlob());
-        this.recorder.value = null;
+      const end = () => {
+        this.ongoingRecordings.delete(recordingId);
+        res();
+      };
+
+      if (!recorder) {
+        end();
+        return;
+      }
+
+      recorder.stopRecording(() => {
+        console.log(`WebcamProvider :: aborting recording with id ${recordingId}`);
+        end();
       });
     });
   }
 
-  public async clearRecording(): Promise<void> {
-    // TODO: pay attention to status of recording
-    // this.recorder?.stopRecording();
-    this.recorder.value = null;
+  public async stopRecording(recordingId: string): Promise<void> {
+
+    if (!this.ongoingRecordings.has(recordingId)) {
+      // console.warn(`WebcamProvider:: stopRecording -- Not currently recording for id ${recordingId}`);
+      return Promise.resolve();
+    }
+
+    return new Promise((res) => {
+      const recorder = this.ongoingRecordings.get(recordingId) as RecordRTC;
+      recorder.stopRecording(() => {
+        this.ongoingRecordings.delete(recordingId);
+        this.cachedRecordings.set(recordingId, recorder);
+        console.log(`WebcamProvider :: stopping recording with id ${recordingId}`);
+        res();
+      });
+    });
+  }
+
+  public isRecording(recordingId: string): boolean {
+    return this.ongoingRecordings.has(recordingId);
+  }
+
+  public async getBlob(recordingId: string): Promise<Blob> {
+    const recorder = this.cachedRecordings.get(recordingId);
+    if (!recorder) throw new Error(`No saved recording with id: ${recordingId}`);
+    return recorder.getBlob();
+  }
+
+  public async clearRecording(recordingId: string) {
+    this.cachedRecordings.delete(recordingId);
+  }
+
+  public getAllRecordings(): string[] {
+    return [...this.cachedRecordings.keys()];
   }
 
   // public async postFiles(url: string, filename: string): Promise<void> {

@@ -31,7 +31,7 @@
 
           <div class="field is-grouped is-grouped-centered mt-1" v-show="webcamStatus === 'running'">
             <p class="control">
-              <span class="record-icon" :class="{'is-recording': isRecording}">
+              <span class="record-icon" :class="{'is-recording': isRecording()}">
               </span>
               <!-- <span class="icon is-medium" :class="{'has-text-danger': isRecording}">
                 <FAIcon icon="record-vinyl" size="lg" pulse />
@@ -41,11 +41,11 @@
               <button class="button animate-width"
                 @click="toggleRecording">
 
-                <span v-show="isRecording">
+                <span v-if="isRecording()">
                   Stop
                 </span>
                 <span
-                   v-show="!isRecording"
+                   v-else
                   :disabled="countdownTimerRemaining > 0">
 
                   <span v-if="countdownTimerRemaining > 0">{{countdownTimerRemaining}}</span>
@@ -103,7 +103,7 @@
 
 <script lang="ts">
 import {
-  computed, defineComponent, ref, toRefs,
+  computed, defineComponent, onBeforeUnmount, ref, toRefs,
 } from 'vue';
 import webcamProvider from '@/services/WebcamProvider';
 import AzureUploader from '@/services/AzureUploader';
@@ -147,7 +147,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { followAlong: followAlongRef, maxAttempts } = toRefs(props);
+    const { followAlong: followAlongRef, maxAttempts, uploadFilename } = toRefs(props);
 
     const state = ref('Record' as 'Record' | 'Review' | 'Success');
 
@@ -178,12 +178,18 @@ export default defineComponent({
 
     const maxAttemptsIsReached = computed(() => attempts.value >= (maxAttempts.value ?? Infinity));
 
+    onBeforeUnmount(async () => {
+      const filename = uploadFilename.value;
+      await webcamProvider.abortRecording(filename);
+      await webcamProvider.clearRecording(filename);
+    });
+
     return {
       state,
       webcamProvider,
       attempts,
       webcamStatus: webcamProvider.webcamStatus,
-      isRecording: webcamProvider.isRecording,
+      isRecording: () => webcamProvider.isRecording(uploadFilename.value),
       lastRecordedBlob,
       recordedObjectUrl,
       isUploading,
@@ -205,14 +211,14 @@ export default defineComponent({
       }
     },
     async onVideoPlayBackCompleted() {
-      if (webcamProvider.isRecording.value) {
+      if (this.isRecording()) {
         this.toggleRecording();
       }
     },
     async toggleRecording() {
       if (this.countdownTimerRemaining > 0) return;
 
-      if (!webcamProvider.isRecording.value) {
+      if (!this.isRecording()) {
         await webcamProvider.startWebcam();
 
         if (this.followAlong) {
@@ -221,7 +227,10 @@ export default defineComponent({
         await this.startRecording();
 
       } else {
-        this.lastRecordedBlob = await webcamProvider.stopRecording();
+        await webcamProvider.stopRecording(this.uploadFilename);
+        const blob = await webcamProvider.getBlob(this.uploadFilename);
+
+        this.lastRecordedBlob = blob;
         this.recordedObjectUrl = URL.createObjectURL(this.lastRecordedBlob);
         this.state = 'Review';
         await webcamProvider.stopWebcam();
@@ -243,7 +252,7 @@ export default defineComponent({
     },
     async startRecording() {
       this.attempts += 1;
-      await webcamProvider.startRecording();
+      await webcamProvider.startRecording(this.uploadFilename);
 
       if (this.followAlongRef && this.videoPlayer) {
         const followData = this.followAlongRef as UploadFollowAlong;
