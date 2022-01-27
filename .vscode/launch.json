@@ -63,5 +63,19 @@
             ],
             "console": "integratedTerminal"
         },
+        {
+            "name": "Movie Clip Extractor",
+            "type": "python",
+            "request": "launch",
+            "module": "workflow_compiler.utils.video_clip_extractor",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "data/database.json",
+                "web-frontend/public/videos",
+                "data/imr",
+                "temp_data/movie_clips/",
+            ],
+            "console": "integratedTerminal"
+        },
     ]
 }
