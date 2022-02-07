@@ -8,12 +8,15 @@ from .Workflow import WorkflowStepExperimentData, WorkflowStepInstructions, Work
 class InstructionPosition(Enum):
     LEARNING_INTRODUCTION = auto()
     LEARNING_PREPERFORMANCE = auto()
+    SINGLE_STAGE_INTRODUCTION = auto()
+    SINGLE_STAGE_PREPERFORMANCE = auto()
     MASTERY_INTRODUCTION = auto()
     MASTERY_PREPERFORMANCE = auto()
 
 @unique
 class WorkflowType(Enum):
     CONTROL = auto()
+    SIMPLE_SEGMENTED = auto()
     CURRENT_MERGED = auto()
     LEGACY_SKELETON = auto()
     LEGACY_SHEETMOTION = auto()
@@ -21,6 +24,8 @@ class WorkflowType(Enum):
     def welcome_instruction(self):
         if self == WorkflowType.CONTROL:
             return "In this trial, you're going to have full control over how you learn the video. Use the on screen controls to seek different parts of the video."
+        elif self == WorkflowType.SIMPLE_SEGMENTED:
+            return "In this trial, the dance has been divided into a few parts for you to practice. Feel free to practice the parts in any order you like. \n\nA few practice speeds are available to you. We recommend learning the dance at a slow speed at first before practicing at higher speeds."
         elif self == WorkflowType.CURRENT_MERGED:
             return "In this trial, you're be guided though learning the dance one part at a time. While learning each part you'll first see a demo of the dance segment, then an activity to practice & memorize the moves, then a chance to try the part from memory, and last an activity to integrate the part with the rest of the song you've already learned."
         elif self == WorkflowType.LEGACY_SKELETON:
@@ -59,11 +64,41 @@ def generate_instructionstep(dance_title: str, position: InstructionPosition, ty
     stepTitle = {
         InstructionPosition.LEARNING_INTRODUCTION: "Trial Instructions",
         InstructionPosition.LEARNING_PREPERFORMANCE: "CheckIn Performance Instructions",
+        InstructionPosition.SINGLE_STAGE_INTRODUCTION: "How to use this app",
+        InstructionPosition.SINGLE_STAGE_PREPERFORMANCE: "Recording & uploading your performance",
         InstructionPosition.MASTERY_INTRODUCTION: "Mastery Introduction",
         InstructionPosition.MASTERY_PREPERFORMANCE: "Final Performance Instructions"
     }[position]
 
-    text = {
+    text_dict = {
+        InstructionPosition.SINGLE_STAGE_INTRODUCTION: inspect.cleandoc(f"""Welcome!
+
+        In this app, you're going to learn the dance "{dance_title}".
+
+        First, you'll have {time_alloted_str} to learn the dance. Try your best to memorize and become as fluent and confident with the dance as you can.
+
+        {type.welcome_instruction()}
+
+        After that, you'll record a video of you performing the dance.
+        
+        Remember, we are rewarding participants who put in great effort to learn the dances. So try your best!
+
+        When you're ready, close this dialog and click 'Begin'!
+        """),
+
+        InstructionPosition.SINGLE_STAGE_PREPERFORMANCE: inspect.cleandoc(f"""Congrats on your progress learning the dance!
+
+        Now, we ask you to share what you've learned with us by recording two videos of you performing the dance. 
+        - For the first recording, the music will play at half speed. This will help us observe your memorization of the dance.
+        - For the second recording, the music will be played at full speed. This will help us observe your fluency with the dance.
+
+        Don't worry if you aren't perfect or struggle with the dance. Do you're best and show us what you've learned so far!
+        
+        PLEASE MAKE SURE THAT YOU ARE IN THE VIDEO FRAME AND THAT MUSIC IS AUDIBLE IN THE RECORDINGS. Please take headphones off and play the music through speakers so that it comes through in the recording.
+
+        If a glitch happens or you're not happy with your initial recordings, you'll have one opportunity to re-record.
+        """),
+
         InstructionPosition.LEARNING_INTRODUCTION: inspect.cleandoc(f"""Welcome! 
         
         In this trial, you're going to be learning the dance "{dance_title}". 
@@ -115,7 +150,9 @@ def generate_instructionstep(dance_title: str, position: InstructionPosition, ty
 
         Good luck!
         """)
-    }[position]
+    }
+    
+    text = text_dict[position]
     
 
     return WorkflowStep.with_instructions(

@@ -8,6 +8,7 @@ from .current_lesson_compiler import create_simple_lesson
 from ..datatypes import CustomSerializable
 # from .isls_2022_lessons import create_simple_lesson
 from .control_lessons import create_control_lesson
+from .simple_segmented_lesson import create_simple_segmented_lesson
 
 if __name__ == "__main__":
     imr_dir = Path(sys.argv[1])
@@ -50,14 +51,16 @@ if __name__ == "__main__":
         # lesson = create_lesson(imr)
         # simple_lesson_sheetmusic = create_simple_lesson(imr, useSheetMotion=True, lessonIdCache=lesson_id_cache)
         # simple_lesson_nosheetmusic = create_simple_lesson(imr, useSheetMotion=False, lessonIdCache=lesson_id_cache)
-        current_lesson = create_simple_lesson(imr, lessonIdCache=lesson_id_cache)
+        # current_lesson = create_simple_lesson(imr, lessonIdCache=lesson_id_cache)
         # control_lesson = create_control_lesson(imr, lesson_id_cache=lesson_id_cache)
+        simple_segmented_lesson = create_simple_segmented_lesson(imr, lesson_id_cache=lesson_id_cache)
 
         out_lesson_file.parent.mkdir(exist_ok=True, parents=True)
         out_lesson_file_simple.parent.mkdir(exist_ok=True, parents=True)
 
         new_lessons = [ 
-            current_lesson,
+            simple_segmented_lesson,
+            # current_lesson,
             # control_lesson,
         ]
         all_lessons.extend(new_lessons)
