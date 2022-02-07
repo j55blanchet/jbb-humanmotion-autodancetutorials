@@ -46,14 +46,14 @@ def create_simple_segmented_lesson(imr: IMR, lesson_id_cache: Dict[str, str]):
                 ] + [
                     WorkflowStep.with_lessonactivities(
                         imr=imr,
-                        stepTitle='Practice',
+                        stepTitle=f'Segment {i+1} @ {spd}x',
                         activities=[
                             MiniLessonActivity(
-                                title=f'Segment {i+1} @ {spd}x',
+                                title=f'Practice',
                                 startTime=seg.startTime,
                                 endTime=seg.endTime,
                                 practiceSpeed=spd,
-                                showVideoControls=True,
+                                showVideoControls=False,
                                 startInstruction="Get ready to follow along!",
                                 playingInstruction="Follow along!",
                                 endInstruction="Try again as many times as you'd like!",
@@ -64,8 +64,8 @@ def create_simple_segmented_lesson(imr: IMR, lesson_id_cache: Dict[str, str]):
                             )
                         ]
                     )
-                    for i, seg in enumerate(imr.temporalSegments)
                     for spd in [0.5, 0.75, 1]
+                    for i, seg in enumerate(imr.temporalSegments)
                 ] + [
                     Instructions.generate_instructionstep(
                         dance_title=imr.clipTitle, 

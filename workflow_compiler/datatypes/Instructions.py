@@ -71,7 +71,8 @@ def generate_instructionstep(dance_title: str, position: InstructionPosition, ty
     }[position]
 
     text_dict = {
-        InstructionPosition.SINGLE_STAGE_INTRODUCTION: inspect.cleandoc(f"""Welcome!
+        InstructionPosition.SINGLE_STAGE_INTRODUCTION: inspect.cleandoc(f"""
+        Welcome!
 
         In this app, you're going to learn the dance "{dance_title}".
 
@@ -86,7 +87,8 @@ def generate_instructionstep(dance_title: str, position: InstructionPosition, ty
         When you're ready, close this dialog and click 'Begin'!
         """),
 
-        InstructionPosition.SINGLE_STAGE_PREPERFORMANCE: inspect.cleandoc(f"""Congrats on your progress learning the dance!
+        InstructionPosition.SINGLE_STAGE_PREPERFORMANCE: inspect.cleandoc(f"""
+        Congrats on your progress learning the dance!
 
         Now, we ask you to share what you've learned with us by recording two videos of you performing the dance. 
         - For the first recording, the music will play at half speed. This will help us observe your memorization of the dance.
@@ -161,7 +163,7 @@ def generate_instructionstep(dance_title: str, position: InstructionPosition, ty
         text=text,
         experiment=WorkflowStepExperimentData(
             showInExperimentOnly=True,
-            isBeforeTimeStartTask=position in [InstructionPosition.LEARNING_INTRODUCTION, InstructionPosition.MASTERY_INTRODUCTION],
-            isTimeExpiredTask=position in [InstructionPosition.LEARNING_PREPERFORMANCE, InstructionPosition.MASTERY_PREPERFORMANCE],
+            isBeforeTimeStartTask=position in [InstructionPosition.LEARNING_INTRODUCTION, InstructionPosition.MASTERY_INTRODUCTION, InstructionPosition.SINGLE_STAGE_INTRODUCTION],
+            isTimeExpiredTask=position in [InstructionPosition.LEARNING_PREPERFORMANCE, InstructionPosition.MASTERY_PREPERFORMANCE, InstructionPosition.SINGLE_STAGE_PREPERFORMANCE],
         ),
     )
