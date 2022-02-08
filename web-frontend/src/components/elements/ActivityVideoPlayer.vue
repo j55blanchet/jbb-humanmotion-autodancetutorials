@@ -7,11 +7,16 @@
       :showStartWebcamButton="false"
       v-show="showingWebcam"/>
 
-    <div :class="{
+    <div
+        :class="{
           'is-overlay': showingWebcam || showSheetMusic,
-        }" class="is-flex-grow-1 is-flex-shrink-1" :style="{
+        }"
+        class="is-flex-grow-1 is-flex-shrink-1"
+        :style="{
           height: showingWebcam ? '100%' : 0,
-        }">
+        }"
+
+        v-show="!needsToStartWebcam">
       <PausingVideoPlayer
         :videoSrc="motion?.videoSrc"
         ref="videoPlayer"
@@ -113,7 +118,7 @@ export default defineComponent({
     const awaitingStart = computed(() => state.value === ActivityPlayState.AwaitingStart);
     const isPlaying = computed(() => state.value === ActivityPlayState.Playing);
     const isPendingStart = computed(() => state.value === ActivityPlayState.PendingStart);
-    const isReviewing = computed(() => state.value === ActivityPlayState.ActivityEnded && shouldReview);
+    const isReviewing = computed(() => state.value === ActivityPlayState.ActivityEnded && shouldReview.value);
     const videoPlayer = ref(null as null | typeof PausingVideoPlayer);
     const webcamBox = ref(null as null | typeof WebcamBox);
     const videoTime = ref(0);

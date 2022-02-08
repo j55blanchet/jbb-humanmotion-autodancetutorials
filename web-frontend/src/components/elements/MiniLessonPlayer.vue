@@ -146,7 +146,7 @@ export default defineComponent({
       return this.activeActivityIndex > 0;
     },
     needsStartWebcam(): boolean {
-      return this.activeActivity !== null && (this.$refs.activityVideoPlayer as typeof ActivityVideoPlayer)?.needsToStartWebcam;
+      return this.activeActivity !== null && (this.activityVideoPlayer as typeof ActivityVideoPlayer)?.needsToStartWebcam;
     },
   },
   data() {

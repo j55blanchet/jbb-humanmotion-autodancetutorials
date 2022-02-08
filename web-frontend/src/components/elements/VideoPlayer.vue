@@ -217,7 +217,7 @@ export default defineComponent({
 
       currentTime.value = time;
 
-      if (!ignoreEnd && (time + 1 / 60 >= endTime.value || endReported.value)) {
+      if (!ignoreEnd && ((time + 1 / 60 >= endTime.value) || endReported.value)) {
         vidElement.pause();
         vidElement.currentTime = endTime.value; // pin to end time
         ctx.emit('progress', endTime.value);
@@ -232,7 +232,7 @@ export default defineComponent({
 
     const startProgressUpdating = () => {
       if (timerId !== -1) clearInterval(timerId);
-      timerId = window.setInterval(onTimeUpdated, 1000 / 30);
+      timerId = window.setInterval(() => { onTimeUpdated(); }, 1000 / 30);
     };
 
     const { playVideo, pauseVideo } = setupVideoPlaying(
