@@ -1105,20 +1105,20 @@
   resolved "https://registry.yarnpkg.com/@mediapipe/drawing_utils/-/drawing_utils-0.2.1614567093.tgz#018f8b328efcf010ce2eaae1771604862eae1799"
   integrity sha512-8poSzSf6rY1QpJBBGUyQgbuQoC5QJbmZqln2Cgs9USz/lKNJzcj5jypdRiVvYF/qnIbIbGOwO9fw8pkQ3fo77w==
 
-"@mediapipe/hands@^0.1.1614621970":
-  version "0.1.1614621970"
-  resolved "https://registry.yarnpkg.com/@mediapipe/hands/-/hands-0.1.1614621970.tgz#0c776c2adc7a826b14cfab71be9ef5c0f3b9d150"
-  integrity sha512-lP5Z45XDhAd/VgVA0uyZiLB7OeC2Ily/uD9pWBq+tJ8COqNNH9Ee86ojgKD07OTqXUHymDng2YL5Mjyp5u58aw==
+"@mediapipe/hands@^0.4.1635986972":
+  version "0.4.1635986972"
+  resolved "https://registry.yarnpkg.com/@mediapipe/hands/-/hands-0.4.1635986972.tgz#21116c13ed69ddb3452b94a7862367f77a5b6927"
+  integrity sha512-xVsoT7beiY9glBAHtcEBkfYO1eDMMzmU0U3wOYEy+sphu5y4Lx4Eg9k1qR+IsYYr1CDx+hYQH3YMVXm9D68+8Q==
 
-"@mediapipe/holistic@^0.1.1613603339":
-  version "0.1.1613603339"
-  resolved "https://registry.yarnpkg.com/@mediapipe/holistic/-/holistic-0.1.1613603339.tgz#21d975586af78dfce5988f2ce6f0decd1c94c1f2"
-  integrity sha512-+X0uSzbm4+dKjdmRiZGkecWuUButto6DJqbrO5wq6aNjS1Mv0qXO7cLalQUAZ2d3FPoB6I4SKoAC8wAFcywcSg==
+"@mediapipe/holistic@^0.5.1635989137":
+  version "0.5.1635989137"
+  resolved "https://registry.yarnpkg.com/@mediapipe/holistic/-/holistic-0.5.1635989137.tgz#68a2af45056f1f9bfa9bcf8a5b28a66a0ec56161"
+  integrity sha512-iY1bOZ4QUR1jBwJzmaQI6u3BZLYfOTAdj2S8EgXPp/ngGtcyNN3oaVH3eTGUBzYsBd/MXG1RmDzBPd9e9DyKJw==
 
-"@mediapipe/pose@^0.2.1617147663":
-  version "0.2.1617147663"
-  resolved "https://registry.yarnpkg.com/@mediapipe/pose/-/pose-0.2.1617147663.tgz#1879b9c684c8a7050271a01373093a49265f8cab"
-  integrity sha512-/hiMN8Dkvg47RnDCqjg7ufaPuRwGZ1KJ9fsLJg8sxkwfO+2JexgyD38w0IeuGHBINZLeMq03S8f1hYJaX/ioGg==
+"@mediapipe/pose@^0.5.1635988162":
+  version "0.5.1635988162"
+  resolved "https://registry.yarnpkg.com/@mediapipe/pose/-/pose-0.5.1635988162.tgz#905e626cb07bce86c692d8ec057f04558ddd26fe"
+  integrity sha512-t0dpl+iG/MTPtPPxEYHyVWo+X7G+qgYUYaB4y9pxavQRNzuQQeHeSmUnT+A8qOKnuB0ccxgyrrFmGUaaL0F3wQ==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
