@@ -4,15 +4,15 @@ from ..datatypes.Workflow import *
 from ..datatypes import Instructions
 from typing import *
 
-def create_simple_segmented_lesson(imr: IMR, lesson_id_cache: Dict[str, str]):
+def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str]):
 
-    compilationMethod = 'SimpleSegmentedLesson'
+    compilationMethod = 'SimpleSpeedStep'
     idEntry = f"{imr.clipName}-{compilationMethod}"
     workflowId = lesson_id_cache.get(idEntry, str(uuid.uuid4()))
     lesson_id_cache[idEntry] = workflowId
 
     return Workflow(
-        title=f"{imr.clipName} (Simple Segmented)",
+        title=f"{imr.clipName} (SpeedStep)",
         userTitle=f'Learning: "{imr.clipTitle}"',
         id=workflowId,
         creationMethod=compilationMethod,
@@ -36,7 +36,7 @@ def create_simple_segmented_lesson(imr: IMR, lesson_id_cache: Dict[str, str]):
                     Instructions.generate_instructionstep(
                         dance_title=imr.clipTitle, 
                         position=Instructions.InstructionPosition.SINGLE_STAGE_INTRODUCTION,
-                        type=Instructions.WorkflowType.SIMPLE_SEGMENTED,
+                        type=Instructions.WorkflowType.SPEED_STEP,
                         time_alloted=timedelta(seconds=60*12)
                     ),
                     WorkflowStep.with_minilesson(
@@ -46,12 +46,12 @@ def create_simple_segmented_lesson(imr: IMR, lesson_id_cache: Dict[str, str]):
                 ] + [
                     WorkflowStep.with_lessonactivities(
                         imr=imr,
-                        stepTitle=f'Segment {i+1} @ {spd}x',
+                        stepTitle=f'Practice @ {spd}x',
                         activities=[
                             MiniLessonActivity(
                                 title=f'Practice',
-                                startTime=seg.startTime,
-                                endTime=seg.endTime,
+                                startTime=imr.startTime,
+                                endTime=imr.endTime,
                                 practiceSpeed=spd,
                                 showVideoControls=False,
                                 startInstruction="Get ready to follow along!",
@@ -65,12 +65,12 @@ def create_simple_segmented_lesson(imr: IMR, lesson_id_cache: Dict[str, str]):
                         ]
                     )
                     for spd in [0.5, 0.75, 1]
-                    for i, seg in enumerate(imr.temporalSegments)
+                    # for i, seg in enumerate(imr.temporalSegments)
                 ] + [
                     Instructions.generate_instructionstep(
                         dance_title=imr.clipTitle, 
                         position=Instructions.InstructionPosition.SINGLE_STAGE_PREPERFORMANCE,
-                        type=Instructions.WorkflowType.SIMPLE_SEGMENTED,
+                        type=Instructions.WorkflowType.SPEED_STEP,
                     ),
                 ] + [
                     WorkflowStep(

@@ -8,7 +8,7 @@ from .current_lesson_compiler import create_simple_lesson
 from ..datatypes import CustomSerializable
 # from .isls_2022_lessons import create_simple_lesson
 from .control_lessons import create_control_lesson
-from .simple_segmented_lesson import create_simple_segmented_lesson
+from .simple_speedstep import create_simple_speedstepped_lesson
 
 if __name__ == "__main__":
     imr_dir = Path(sys.argv[1])
@@ -53,7 +53,7 @@ if __name__ == "__main__":
         # simple_lesson_nosheetmusic = create_simple_lesson(imr, useSheetMotion=False, lessonIdCache=lesson_id_cache)
         # current_lesson = create_simple_lesson(imr, lessonIdCache=lesson_id_cache)
         # control_lesson = create_control_lesson(imr, lesson_id_cache=lesson_id_cache)
-        simple_segmented_lesson = create_simple_segmented_lesson(imr, lesson_id_cache=lesson_id_cache)
+        simple_segmented_lesson = create_simple_speedstepped_lesson(imr, lesson_id_cache=lesson_id_cache)
 
         out_lesson_file.parent.mkdir(exist_ok=True, parents=True)
         out_lesson_file_simple.parent.mkdir(exist_ok=True, parents=True)

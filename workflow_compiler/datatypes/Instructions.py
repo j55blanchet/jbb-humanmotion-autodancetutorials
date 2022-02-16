@@ -16,7 +16,7 @@ class InstructionPosition(Enum):
 @unique
 class WorkflowType(Enum):
     CONTROL = auto()
-    SIMPLE_SEGMENTED = auto()
+    SPEED_STEP = auto()
     CURRENT_MERGED = auto()
     LEGACY_SKELETON = auto()
     LEGACY_SHEETMOTION = auto()
@@ -24,8 +24,8 @@ class WorkflowType(Enum):
     def welcome_instruction(self):
         if self == WorkflowType.CONTROL:
             return "In this trial, you're going to have full control over how you learn the video. Use the on screen controls to seek different parts of the video."
-        elif self == WorkflowType.SIMPLE_SEGMENTED:
-            return "In this trial, the dance has been divided into a few parts for you to practice. Feel free to practice the parts in any order you like. \n\nA few practice speeds are available to you. We recommend learning the dance at a slow speed at first before practicing at higher speeds."
+        elif self == WorkflowType.SPEED_STEP:
+            return "In this trial, a few practice speeds are available to you. We recommend learning the dance at a slow speed at first before practicing at higher speeds."
         elif self == WorkflowType.CURRENT_MERGED:
             return "In this trial, you're be guided though learning the dance one part at a time. While learning each part you'll first see a demo of the dance segment, then an activity to practice & memorize the moves, then a chance to try the part from memory, and last an activity to integrate the part with the rest of the song you've already learned."
         elif self == WorkflowType.LEGACY_SKELETON:

@@ -39,6 +39,9 @@
             </div>
           </div>
         </div>
+        <div style="max-width:40ch;" class="is-size-7">
+          <button class="button" @click.stop="copyLink(workflow.id, $event)">Copy Link</button>
+        </div>
       </div>
     </div>
 
@@ -238,6 +241,26 @@ export default defineComponent({
     };
   },
   methods: {
+    copyLink(workflowId: string, event: MouseEvent) {
+      const url = `https://${window.location.host}?workflowId=${workflowId}&participantId=PARTICIPANTID`;
+      navigator.clipboard.writeText(url);
+
+      const target = event?.target as (HTMLButtonElement | undefined);
+      if (target) {
+        target.classList.add('is-success');
+        const originalText = target.innerText;
+        target.innerText = 'Copied!';
+        target.disabled = true;
+
+        setTimeout(() => {
+          if (target) {
+            target.classList.remove('is-success');
+            target.innerText = originalText;
+            target.disabled = false;
+          }
+        }, 1000);
+      }
+    },
     toggleTag(tag: string) {
       if (this.activeTags.has(tag)) {
         this.activeTags.delete(tag);
