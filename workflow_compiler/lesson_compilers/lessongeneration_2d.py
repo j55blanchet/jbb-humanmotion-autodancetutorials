@@ -53,13 +53,15 @@ if __name__ == "__main__":
         # simple_lesson_nosheetmusic = create_simple_lesson(imr, useSheetMotion=False, lessonIdCache=lesson_id_cache)
         # current_lesson = create_simple_lesson(imr, lessonIdCache=lesson_id_cache)
         # control_lesson = create_control_lesson(imr, lesson_id_cache=lesson_id_cache)
-        simple_segmented_lesson = create_simple_speedstepped_lesson(imr, lesson_id_cache=lesson_id_cache)
+        noskeleton_speedstep_lesson = create_simple_speedstepped_lesson(imr, lesson_id_cache=lesson_id_cache, showSkeleton=False)
+        skeleton_speedstep_lesson = create_simple_speedstepped_lesson(imr, lesson_id_cache=lesson_id_cache, showSkeleton=True)
 
         out_lesson_file.parent.mkdir(exist_ok=True, parents=True)
         out_lesson_file_simple.parent.mkdir(exist_ok=True, parents=True)
 
         new_lessons = [ 
-            simple_segmented_lesson,
+            noskeleton_speedstep_lesson,
+            skeleton_speedstep_lesson,
             # current_lesson,
             # control_lesson,
         ]

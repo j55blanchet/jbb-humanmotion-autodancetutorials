@@ -4,15 +4,15 @@ from ..datatypes.Workflow import *
 from ..datatypes import Instructions
 from typing import *
 
-def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str]):
+def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str], showSkeleton: bool):
 
-    compilationMethod = 'SimpleSpeedStep'
+    compilationMethod = 'SimpleSpeedStep' + ('(Skeleton)' if showSkeleton else '')
     idEntry = f"{imr.clipName}-{compilationMethod}"
     workflowId = lesson_id_cache.get(idEntry, str(uuid.uuid4()))
     lesson_id_cache[idEntry] = workflowId
 
     return Workflow(
-        title=f"{imr.clipName} (SpeedStep)",
+        title=f"{imr.clipName} (SpeedStep)" + (' (Skeleton)' if showSkeleton else ''),
         userTitle=f'Learning: "{imr.clipTitle}"',
         id=workflowId,
         creationMethod=compilationMethod,
@@ -48,7 +48,7 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str])
                         imr=imr,
                         stepTitle=f'Practice @ {spd}x',
                         activities=[
-                            MiniLessonActivity(
+                             MiniLessonActivity(
                                 title=f'Practice',
                                 startTime=imr.startTime,
                                 endTime=imr.endTime,
@@ -57,8 +57,20 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str])
                                 startInstruction="Get ready to follow along!",
                                 playingInstruction="Follow along!",
                                 endInstruction="Try again as many times as you'd like!",
+                            ),
+                            MiniLessonActivity(
+                                title=f'Record & Review',
+                                startTime=imr.startTime,
+                                endTime=imr.endTime,
+                                practiceSpeed=spd,
+                                showVideoControls=False,
+                                userVisual='video',
+                                demoVisual='skeleton' if showSkeleton else 'none',
+                                startInstruction="Get ready to follow along! We'll record you so you can see how you did at the end",
+                                playingInstruction="Follow along!",
+                                endInstruction="Try again as many times as you'd like!",
                                 reviewing=ReviewInfo(
-                                    showModelSkeleton=True,
+                                    showModelSkeleton=showSkeleton,
                                     showUserSkeleton=False,
                                 )
                             )
