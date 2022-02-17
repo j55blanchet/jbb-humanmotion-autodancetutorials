@@ -71,6 +71,7 @@ export default interface MiniLesson {
     lessonTitle: string;
   };
   segmentBreaks: number[];
+  segmentLabels?: string[];
   activities: Array<MiniLessonActivity>;
 
   // fps: number;

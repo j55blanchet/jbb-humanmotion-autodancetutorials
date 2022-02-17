@@ -46,7 +46,7 @@
                 "data/database.json",
                 "web-frontend/public/landmarks",
                 "data/audio",
-                "data/imr/",
+                "data/imr/autogen",
                 "temp_data/analysis",
             ]
         },

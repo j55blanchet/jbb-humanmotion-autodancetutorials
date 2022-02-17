@@ -1,0 +1,140 @@
+{
+  "clipName": "mad-at-disney-tutorial",
+  "clipPath": "tiktok/mad-at-disney-tutorial.mp4",
+  "clipTitle": "Mad At Disney",
+  "generationMethod": "Human-Created (TikTok)",
+  "startTime": 0.0,
+  "endTime": 18.151484818151484,
+  "temporalSegments": [
+    {
+      "startTime": 0.0,
+      "endTime": 1.5,
+      "label": "🥁"
+    },
+    {
+      "startTime": 1.5,
+      "endTime": 2.13,
+      "label": "👏🏼"
+    },
+    {
+      "startTime": 2.13,
+      "endTime": 4.040271751077011,
+      "label": "slide"
+    },
+    {
+      "startTime": 4.040271751077011,
+      "endTime": 6.34,
+      "label": "🚲"
+    },
+    {
+      "startTime": 6.34,
+      "endTime": 8.080543502154022,
+      "label": "👉🏼 + 🚁"
+    },
+    {
+      "startTime": 8.080543502154022,
+      "endTime": 10.2,
+      "label": "👋🏼🔄"
+    },
+    {
+      "startTime": 10.2,
+      "endTime": 12.120815253231033,
+      "label": "slide"
+    },
+    {
+      "startTime": 12.120815253231033,
+      "endTime": 14.14,
+      "label": "🤷🏻‍♀️ + 🙅🏻‍♀️"
+    },
+    {
+      "startTime": 14.14,
+      "endTime": 16,
+      "label": "👐🏼🔄"
+    },
+    {
+      "startTime": 16,
+      "endTime": 18.151484818151484,
+      "label": "🌊"
+    }
+  ],
+  "fps": 29.97,
+  "landmarkScope": [
+    "pose"
+  ],
+  "keyframes": [
+    {
+      "timestamp": 0.033366700033366704,
+      "significance": 8.000668135859122
+    },
+    {
+      "timestamp": 1.001001001001001,
+      "significance": 5.50772936722699
+    },
+    {
+      "timestamp": 2.0353687020353686,
+      "significance": 8.486123856000827
+    },
+    {
+      "timestamp": 3.0363697030363697,
+      "significance": 6.866438083179126
+    },
+    {
+      "timestamp": 4.037370704037371,
+      "significance": 8.615297629639448
+    },
+    {
+      "timestamp": 5.038371705038372,
+      "significance": 6.589788621782082
+    },
+    {
+      "timestamp": 6.072739406072739,
+      "significance": 6.869071444916832
+    },
+    {
+      "timestamp": 7.073740407073741,
+      "significance": 5.227224672912522
+    },
+    {
+      "timestamp": 8.074741408074741,
+      "significance": 11.274819501958255
+    },
+    {
+      "timestamp": 9.075742409075742,
+      "significance": 3.8076285315958542
+    },
+    {
+      "timestamp": 10.11011011011011,
+      "significance": 6.356813011671205
+    },
+    {
+      "timestamp": 11.11111111111111,
+      "significance": 6.979360980406634
+    },
+    {
+      "timestamp": 12.112112112112113,
+      "significance": 5.31252625527376
+    },
+    {
+      "timestamp": 13.146479813146481,
+      "significance": 7.093208291914383
+    },
+    {
+      "timestamp": 14.147480814147482,
+      "significance": 5.085734904507998
+    },
+    {
+      "timestamp": 15.148481815148482,
+      "significance": 6.320236093111177
+    },
+    {
+      "timestamp": 16.149482816149483,
+      "significance": 3.1828866919787675
+    },
+    {
+      "timestamp": 17.183850517183853,
+      "significance": 2.725047910337779
+    }
+  ],
+  "tempoBPM": 59.40194491522098,
+  "thumbnailSrc": "tiktok/mad-at-disney-tutorial.jpg"
+}

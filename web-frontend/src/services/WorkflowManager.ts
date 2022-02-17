@@ -36,7 +36,11 @@ export class WorkflowManager {
 
   public workflows = reactive(new Map() as Map<string, Workflow>);
 
-  public allWorkflows = computed(() => new Array(...this.workflows.values()));
+  public allWorkflows = computed(() => {
+    const array = new Array(...this.workflows.values());
+    array.sort((a, b) => a.title.localeCompare(b.title));
+    return array;
+  });
 
   public activeFlow = ref(null as TrackingWorkflow | null);
 

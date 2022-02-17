@@ -53,15 +53,19 @@ if __name__ == "__main__":
         # simple_lesson_nosheetmusic = create_simple_lesson(imr, useSheetMotion=False, lessonIdCache=lesson_id_cache)
         # current_lesson = create_simple_lesson(imr, lessonIdCache=lesson_id_cache)
         # control_lesson = create_control_lesson(imr, lesson_id_cache=lesson_id_cache)
-        noskeleton_speedstep_lesson = create_simple_speedstepped_lesson(imr, lesson_id_cache=lesson_id_cache, showSkeleton=False)
-        skeleton_speedstep_lesson = create_simple_speedstepped_lesson(imr, lesson_id_cache=lesson_id_cache, showSkeleton=True)
+        unsegmented_noskeleton_speedstep_lesson = create_simple_speedstepped_lesson(imr, lesson_id_cache=lesson_id_cache, showSkeleton=False, segmentLesson=False, spds=[0.5])
+        unsegmented_skeleton_speedstep_lesson = create_simple_speedstepped_lesson(imr, lesson_id_cache=lesson_id_cache, showSkeleton=True, segmentLesson=False, spds=[0.5])
+        segmented_noskeleton_speedstep_lesson = create_simple_speedstepped_lesson(imr, lesson_id_cache=lesson_id_cache, showSkeleton=False, segmentLesson=True, spds=[0.5])
+        segmented_skeleton_speedstep_lesson = create_simple_speedstepped_lesson(imr, lesson_id_cache=lesson_id_cache, showSkeleton=True, segmentLesson=True, spds=[0.5])
 
         out_lesson_file.parent.mkdir(exist_ok=True, parents=True)
         out_lesson_file_simple.parent.mkdir(exist_ok=True, parents=True)
 
         new_lessons = [ 
-            noskeleton_speedstep_lesson,
-            skeleton_speedstep_lesson,
+            unsegmented_noskeleton_speedstep_lesson,
+            unsegmented_skeleton_speedstep_lesson,
+            segmented_noskeleton_speedstep_lesson,
+            segmented_skeleton_speedstep_lesson,
             # current_lesson,
             # control_lesson,
         ]

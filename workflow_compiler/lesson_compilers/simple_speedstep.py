@@ -4,18 +4,21 @@ from ..datatypes.Workflow import *
 from ..datatypes import Instructions
 from typing import *
 
-def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str], showSkeleton: bool):
+def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str], showSkeleton: bool, segmentLesson: bool, spds: List[float]):
 
-    compilationMethod = 'SimpleSpeedStep' + ('(Skeleton)' if showSkeleton else '')
-    idEntry = f"{imr.clipName}-{compilationMethod}"
+    creationMethod = imr.generationMethod
+    learningScheme = f'SimpleSpeedStep {spds}' + (' (Skeleton)' if showSkeleton else '') + (' (Segmented)' if segmentLesson else '')
+    idEntry = f"{imr.clipName}-{learningScheme}-{creationMethod}"
     workflowId = lesson_id_cache.get(idEntry, str(uuid.uuid4()))
     lesson_id_cache[idEntry] = workflowId
 
+    spd_title_addon = (f" @ {spds[0]}x" if len(spds) == 1 else '')
     return Workflow(
-        title=f"{imr.clipName} (SpeedStep)" + (' (Skeleton)' if showSkeleton else ''),
-        userTitle=f'Learning: "{imr.clipTitle}"',
+        title=f"{imr.clipName}" + spd_title_addon,
+        userTitle=f'Learning: "{imr.clipTitle}"' + spd_title_addon,
         id=workflowId,
-        creationMethod=compilationMethod,
+        learningScheme=learningScheme,
+        creationMethod=creationMethod,
         thumbnailSrc=imr.thumbnailSrc,
         stages=[
             # WorkflowStage(
@@ -41,17 +44,17 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                     ),
                     WorkflowStep.with_minilesson(
                         stepTitle='Preview',
-                        lesson=MiniLesson.construct_imr_preview(imr, speeds=[1, 0.5])
+                        lesson=MiniLesson.construct_imr_preview(imr, speeds=[1.0, 0.5])
                     ),
                 ] + [
                     WorkflowStep.with_lessonactivities(
                         imr=imr,
-                        stepTitle=f'Practice @ {spd}x',
+                        stepTitle=f'{title}' + (' @ {spd}x' if len(spds) > 1 else ''),
                         activities=[
                              MiniLessonActivity(
-                                title=f'Practice',
-                                startTime=imr.startTime,
-                                endTime=imr.endTime,
+                                title=title,
+                                startTime=startTime,
+                                endTime=endTime,
                                 practiceSpeed=spd,
                                 showVideoControls=False,
                                 startInstruction="Get ready to follow along!",
@@ -60,8 +63,8 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                             ),
                             MiniLessonActivity(
                                 title=f'Record & Review',
-                                startTime=imr.startTime,
-                                endTime=imr.endTime,
+                                startTime=startTime,
+                                endTime=endTime,
                                 practiceSpeed=spd,
                                 showVideoControls=False,
                                 userVisual='video',
@@ -76,8 +79,12 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                             )
                         ]
                     )
-                    for spd in [0.5, 0.75, 1]
-                    # for i, seg in enumerate(imr.temporalSegments)
+                    for spd in spds
+                    for title, startTime, endTime in 
+                    chain(
+                        [] if not segmentLesson else [(f'Part {i+1}' + (f': {seg.label}' if seg.label is not None else ''), seg.startTime, seg.endTime) for i, seg in enumerate(imr.temporalSegments)], 
+                        [('Practice' if not segmentLesson else 'Full Practice', imr.startTime, imr.endTime)]
+                    )
                 ] + [
                     Instructions.generate_instructionstep(
                         dance_title=imr.clipTitle, 

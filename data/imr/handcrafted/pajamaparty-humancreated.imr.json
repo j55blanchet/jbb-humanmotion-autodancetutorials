@@ -1,0 +1,56 @@
+{
+    "clipName": "pajamaparty-tutorial",
+    "clipPath": "tiktok/pajamaparty-tutorial.mp4",
+    "clipTitle": "Pajama Party",
+    "generationMethod": "Human-Created (TikTok)",
+    "startTime": 0.0,
+    "endTime": 13.9666666667,
+    "fps": 30.0,
+    "landmarkScope": [
+        "pose"
+    ],
+    "tempoBPM": 89.41604511551755,
+    "thumbnailSrc": "tiktok/pajamaparty-tutorial.jpg",
+    "temporalSegments": [
+        {
+            "startTime": 0,
+            "endTime": 2.68408203125,
+            "label": "🍑R,L"
+        },
+        {
+            "startTime": 2.68408203125,
+            "endTime": 5.3681640625,
+            "label": "R🔫+🍑R,L"
+        },
+        {
+            "startTime": 5.3681640625,
+            "endTime": 6.713,
+            "label": "🤲,wave"
+        },
+        {
+            "startTime": 6.713,
+            "endTime": 8.05224609375,
+            "label": "💧"
+        },
+        {
+            "startTime": 8.05224609375,
+            "endTime": 10.736328125,
+            "label": "b-down x2"
+        },
+        {
+            "startTime": 10.736328125,
+            "endTime": 12.5,
+            "label": "💪R,L"
+        },
+        {
+            "startTime": 12.5,
+            "endTime": 13.42041015625,
+            "label": "👐🚁"
+        },
+        {
+            "startTime": 13.42041015625,
+            "endTime": 13.966666666666667,
+            "label": "🎲 roll"
+        }
+    ] 
+}

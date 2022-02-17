@@ -34,13 +34,14 @@
           <div class="level-item has-text-left">
             <div>
               <p class="is-uppercase">{{workflow.title}}</p>
-              <p class="is-size-7 has-text-grey mt-1 mb-1" style="max-width:40ch;">{{workflow.creationMethod}}</p>
-              <p class="is-size-7 has-text-grey">Created {{workflow.created.toLocaleDateString()}} at {{workflow.created.toLocaleTimeString()}}</p>
+              <p class="is-size-7 has-text-grey mt-1 mb-1" style="max-width:40ch;"><strong>Algorithm: </strong>{{workflow.creationMethod}}</p>
+              <p class="is-size-7 has-text-grey mt-1 mb-1" style="max-width:40ch;"><strong>Lesson: </strong>{{workflow.learningScheme}}</p>
+              <p class="is-size-7 has-text-grey"><strong>Created:</strong> {{workflow.created.toLocaleDateString()}} at {{workflow.created.toLocaleTimeString()}}</p>
             </div>
           </div>
         </div>
-        <div style="max-width:40ch;" class="is-size-7">
-          <button class="button" @click.stop="copyLink(workflow.id, $event)">Copy Link</button>
+        <div style="" class="is-size-7">
+          <button class="button is-info is-light" @click.stop="copyLink(workflow.id, $event)">Copy Link</button>
         </div>
       </div>
     </div>

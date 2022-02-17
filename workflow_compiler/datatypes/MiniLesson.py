@@ -113,7 +113,7 @@ class MiniLessonActivity(CustomSerializable):
         VIDEO = 'video'
 
 class MiniLesson(CustomSerializable):
-    def __init__(self, segmentBreaks: List[float], _id: str = None, header: MotionLessonHeader = None, activities: List[MiniLessonActivity] = [] , landmarkScope: Optional[List[str]] = None, clipName: Optional[str] = None, lessonTitle: Optional[str] = None) -> None:
+    def __init__(self, segmentBreaks: List[float], _id: str = None, segmentLabels: Optional[List[str]] = None, header: MotionLessonHeader = None, activities: List[MiniLessonActivity] = [] , landmarkScope: Optional[List[str]] = None, clipName: Optional[str] = None, lessonTitle: Optional[str] = None) -> None:
 
         self._id = str(uuid.uuid4()) if _id is None else _id
         self.id = _id
@@ -121,6 +121,7 @@ class MiniLesson(CustomSerializable):
         self.clipName = self.header.clipName
         self.lessonTitle = self.header.lessonTitle
         self.segmentBreaks = segmentBreaks
+        self.segmentLabels = segmentLabels
         self.activities = activities
         self.landmarkScope = landmarkScope
         self.source = 'builtin'
@@ -147,7 +148,7 @@ class MiniLesson(CustomSerializable):
                     TimedInstruction(
                         seg.startTime, 
                         seg.endTime,
-                        f"Part {i+1}"
+                        f"Part {i+1}" if seg.label is None else seg.label,
                     )
                     for i, seg in enumerate(imr.temporalSegments)
                 ],
@@ -184,5 +185,6 @@ class MiniLesson(CustomSerializable):
             lessonTitle=lessonTitle,
             clipName=imr.clipName,
             segmentBreaks=imr.get_segment_breaks(),
+            segmentLabels=imr.get_segment_labels(),
             activities=activities
         )

@@ -31,6 +31,7 @@ def create_embeddedminilesson_workflowstep(imr: IMR, title: str, activities: Lis
         title=title,
         miniLessonEmbedded=MiniLesson(
             segmentBreaks=imr.get_segment_breaks(),
+            segmentLabels=imr.get_segment_labels(),
             clipName=imr.clipName,
             lessonTitle=title,
             activities=activities,

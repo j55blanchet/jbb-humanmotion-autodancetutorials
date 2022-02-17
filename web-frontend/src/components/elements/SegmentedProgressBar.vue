@@ -1,5 +1,5 @@
 <template>
-  <div class="segmented-progress-bar">
+  <div class="segmented-progress-bar is-relative">
     <progress
       v-for="seg in segmentsData"
       :key="seg.id"
@@ -9,6 +9,16 @@
       :value="progress - seg.min"
       :style="{ 'flex-grow': (seg.max - seg.min) }"
     ></progress>
+    <div class="is-absolute is-overlay is-flex">
+      <div
+        v-for="seg in segmentsData"
+        :key="seg.id"
+        :style="{ 'flex-grow': (seg.max - seg.min) }"
+        class="has-text-centered label-div"
+        :class="{'is-active': seg.enabled}">
+        {{seg.label}}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -20,17 +30,21 @@ export interface ProgressSegmentData {
   min: number;
   max: number;
   enabled: boolean;
+  label: string;
 }
 
 export function calculateProgressSegments(lesson: MiniLesson, activity: MiniLessonActivity) {
   if (!lesson) return [];
 
+  const allLabels = lesson.segmentLabels ?? [];
   let last = undefined as undefined | number;
   const segs = lesson.segmentBreaks.map((timestamp, i) => {
     let segData = undefined as undefined | ProgressSegmentData;
+    const label = allLabels[i - 1] ?? '';
     if (last !== undefined) {
       const doesOverlap = Math.max(last, activity.startTime) < Math.min(timestamp, activity.endTime);
       segData = {
+        label,
         min: last,
         max: timestamp,
         enabled: activity?.focusedSegments ? activity.focusedSegments.indexOf(i - 1) !== -1 : doesOverlap,
@@ -96,10 +110,17 @@ export default defineComponent({
   flex-direction: row;
   width: 100%;
 
-  progress.progress {
+  progress.progress, .label-div {
     border-radius: 0.5rem;
     flex-basis: 10px;
     margin-bottom: auto;
+  }
+
+  .label-div.is-active {
+    font-weight: 700;
+  }
+
+  progress.progress {
     // border: 2px solid #BBB;
 
     -webkit-appearance: none;

@@ -85,6 +85,7 @@ class WorkflowStep(CustomSerializable):
             title=stepTitle,
             miniLessonEmbedded=MiniLesson(
                 segmentBreaks=imr.get_segment_breaks(),
+                segmentLabels=imr.get_segment_labels(),
                 clipName=imr.clipName,
                 lessonTitle=stepTitle,
                 activities=activities,
@@ -104,6 +105,7 @@ class Workflow(CustomSerializable):
     title: str
     userTitle: str
     creationMethod: str
+    learningScheme: str
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
     stages: List[WorkflowStage] = field(default_factory=list)
     created: Optional[datetime] = field(default_factory=datetime.utcnow)

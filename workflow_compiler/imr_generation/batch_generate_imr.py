@@ -184,7 +184,7 @@ if __name__ == '__main__':
                 itertools.chain(keyframesIndices[1:], [end_frame])
             )
         ]
-        keyframeMethod += "-filteredByNetMovement"
+        keyframeMethod += "-filtered"
 
         chart_handspd = 0, 0
         

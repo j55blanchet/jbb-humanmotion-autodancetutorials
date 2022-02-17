@@ -1,7 +1,7 @@
 from ..datatypes import CustomSerializable
 
 
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
@@ -32,12 +32,14 @@ class Motion(CustomSerializable):
 class TemporalSegment(CustomSerializable):
     startTime: float = 0.0
     endTime: float = 1.0
-    motions: List[Motion] = field(default_factory=list)
+    label: Optional[str] = field(default=None)
+    motions: Optional[List[Motion]] = field(default_factory=lambda: None)
     keyframes: List[Keyframe] = field(default_factory=list)
     motionTrails: List[MotionTrail] = field(default_factory=list)
 
+
 class IMR(CustomSerializable):
-    def __init__(self, clipName: str, clipPath: str, clipTitle: str, genMethod: str, startTime: float, endTime: float, segments: List[TemporalSegment], fps:  int, landmarkScope: List[str], tempoBPM: float = None, keyframes: List[Keyframe] = [], thumbnailSrc: str = None) -> None:
+    def __init__(self, clipName: str, clipPath: str, clipTitle: str, genMethod: str, startTime: float, endTime: float, segments: List[TemporalSegment], fps:  int, landmarkScope: List[str], tempoBPM: float = None, keyframes: Optional[List[Keyframe]] = None, thumbnailSrc: str = None) -> None:
         self.clipName = clipName
         self.clipPath = clipPath
         self.clipTitle = clipTitle
@@ -62,12 +64,13 @@ class IMR(CustomSerializable):
         temporalSegments: List = json["temporalSegments"]
         fps: int = json["fps"]
         landmarkScope: str = json["landmarkScope"]
-        keyframes: List[float] = json["keyframes"]
-        thumbnailSrc: str = json.get("thumbnailSrc", None)
-        tempoBPM: float = json.get("tempoBPM", None)
+        keyframes: Optional[List[float]] = json.get("keyframes", None)
+        thumbnailSrc: Optional[str] = json.get("thumbnailSrc", None)
+        tempoBPM: Optional[float] = json.get("tempoBPM", None)
 
         temporalSegments = list(map(TemporalSegment.from_dict, temporalSegments))
-        keyframes = list(map(Keyframe.from_dict, keyframes))
+        if keyframes is not None:
+            keyframes = list(map(Keyframe.from_dict, keyframes))
 
         return IMR(
             clipName=clipName, 
@@ -87,6 +90,10 @@ class IMR(CustomSerializable):
         breaks = list(map(lambda ts: ts.startTime, self.temporalSegments))
         breaks.append(self.endTime)
         return breaks
-
+    
+    def get_segment_labels(self):
+        labels = list(map(lambda ts: "" if ts.label is None else ts.label, self.temporalSegments))
+        return labels
+        
     def get_segment_nobreaks(self):
         return [self.startTime, self.endTime]

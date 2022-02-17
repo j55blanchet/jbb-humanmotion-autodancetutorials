@@ -20,7 +20,7 @@ def create_imr(
         clipName, 
         clipPath,
         clipTitle,
-        genMethod=f"'{segmentationMethod}' segmentation, '{keyframeMethod}' keyframes",
+        genMethod=f"Autogen {segmentationMethod}-{keyframeMethod}",
         startTime=segmentation[0],
         endTime=segmentation[-1],
         segments=[

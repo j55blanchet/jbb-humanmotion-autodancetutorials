@@ -56,6 +56,7 @@ export interface Workflow {
   title: string;
   userTitle?: string;
   creationMethod: string;
+  learningScheme: string;
   id: string;
   stages: WorkflowStage[];
   experimentMaxTimeSecs?: number;
@@ -68,6 +69,7 @@ export function CreateBlankWorkflow() {
     title: 'New Workflow',
     id: Utils.uuidv4(),
     creationMethod: 'User Created',
+    learningScheme: 'Custom',
     stages: [],
     created: new Date(),
   } as Workflow;
