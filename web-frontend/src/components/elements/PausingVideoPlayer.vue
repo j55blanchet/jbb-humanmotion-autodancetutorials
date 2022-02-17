@@ -17,11 +17,11 @@
 
 <script lang="ts">
 
-import Constants from '@/services/Constants';
-import { PauseInfo } from '@/model/MiniLesson';
 import {
   computed, defineComponent, onBeforeUnmount, ref,
 } from 'vue';
+import Constants from '@/services/Constants';
+import { PauseInfo } from '@/model/MiniLesson';
 import VideoPlayer from './VideoPlayer.vue';
 
 const DEFAULT_PAUSE_DURATION = Constants.DefaultPauseDuration;

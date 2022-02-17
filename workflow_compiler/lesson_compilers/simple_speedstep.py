@@ -4,6 +4,8 @@ from ..datatypes.Workflow import *
 from ..datatypes import Instructions
 from typing import *
 
+REVIEW_ACTIVITY_THRESHOLD_SECS = 3.0
+
 def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str], showSkeleton: bool, segmentLesson: bool, spds: List[float]):
 
     creationMethod = imr.generationMethod
@@ -58,9 +60,12 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                                 practiceSpeed=spd,
                                 showVideoControls=False,
                                 startInstruction="Get ready to follow along!",
-                                playingInstruction="Follow along!",
-                                endInstruction="Try again as many times as you'd like!",
+                                # playingInstruction="Follow along!",
+                                endInstruction="Try to memorize this!",
+                                timedInstructions=([TimedInstruction(startTime, endTime, text=label)] if (label is not None and label != '') else [])
                             ),
+                        ] + 
+                        ([
                             MiniLessonActivity(
                                 title=f'Record & Review',
                                 startTime=startTime,
@@ -69,21 +74,21 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                                 showVideoControls=False,
                                 userVisual='video',
                                 demoVisual='skeleton' if showSkeleton else 'none',
-                                startInstruction="Get ready to follow along! We'll record you so you can see how you did at the end",
-                                playingInstruction="Follow along!",
-                                endInstruction="Try again as many times as you'd like!",
+                                startInstruction="This part is optional - if you'd like to review your performance, record it and review it now! This recording is just for practice and won't be uploaded.",
+                                playingInstruction="Recording...",
+                                endInstruction="Review your performance and feel free to repeat!",
                                 reviewing=ReviewInfo(
                                     showModelSkeleton=showSkeleton,
                                     showUserSkeleton=False,
-                                )
+                                ),
                             )
-                        ]
+                        ] if includeReview else [])
                     )
                     for spd in spds
-                    for title, startTime, endTime in 
+                    for title, startTime, endTime, label, includeReview in 
                     chain(
-                        [] if not segmentLesson else [(f'Part {i+1}' + (f': {seg.label}' if seg.label is not None else ''), seg.startTime, seg.endTime) for i, seg in enumerate(imr.temporalSegments)], 
-                        [('Practice' if not segmentLesson else 'Full Practice', imr.startTime, imr.endTime)]
+                        [] if not segmentLesson else [(f'Part {i+1}' + (f': {seg.label}' if seg.label is not None else ''), seg.startTime, seg.endTime, seg.label, seg.endTime - seg.startTime > REVIEW_ACTIVITY_THRESHOLD_SECS ) for i, seg in enumerate(imr.temporalSegments)], 
+                        [('Practice' if not segmentLesson else 'Full Practice', imr.startTime, imr.endTime, None, True)]
                     )
                 ] + [
                     Instructions.generate_instructionstep(

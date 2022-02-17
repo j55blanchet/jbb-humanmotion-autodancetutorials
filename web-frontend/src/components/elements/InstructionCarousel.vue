@@ -48,8 +48,18 @@ export default defineComponent({
     border-radius: 0.25rem;
     text-align: center;
     border: 1px solid black;
-    background: #CCC;
+    background: #EFEFEF;
     padding: 0.25rem 0.5rem;
+  }
+
+  .flextag.is-large {
+    font-size: 2rem;
+    border: 2px solid black;
+    border-radius: 0.5rem;
+  }
+
+  .flextag.is-white {
+    background: #EFEFEF;
   }
 }
 

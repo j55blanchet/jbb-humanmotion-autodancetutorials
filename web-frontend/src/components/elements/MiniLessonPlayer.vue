@@ -89,6 +89,7 @@ import ActivityVideoPlayer from '@/components/elements/ActivityVideoPlayer.vue';
 import SegmentedProgressBar, { calculateProgressSegments, ProgressSegmentData } from '@/components/elements/SegmentedProgressBar.vue';
 import webcamProvider from '@/services/WebcamProvider';
 import Utils from '@/services/Utils';
+import eventLogger from '@/services/EventLogger';
 
 export default defineComponent({
   name: 'MiniLessonPlayer',
@@ -165,7 +166,9 @@ export default defineComponent({
         }
       });
     },
-    playActivity() { (this.$refs.activityVideoPlayer as any).play(); },
+    playActivity() {
+      (this.$refs.activityVideoPlayer as any).play();
+    },
     nextActivity() {
       if (this.hasNextActivity) this.activeActivityIndex += 1;
       nextTick(() => {
@@ -184,6 +187,7 @@ export default defineComponent({
     },
     repeat() {
       const vidPlayer = (this.$refs.activityVideoPlayer as any);
+      eventLogger.log(`Repeating lesson activity ${this.activeActivity?.title}`);
       vidPlayer.reset();
       vidPlayer.play();
     },

@@ -1,8 +1,9 @@
 import RecordRTC, { invokeSaveAsDialog } from 'recordrtc';
-
 import {
-  computed, reactive, ref, Ref,
+  computed, ref, Ref,
 } from 'vue';
+
+import eventLogger from '@/services/EventLogger';
 
 export const WEBCAM_DIMENSIONS = Object.freeze({
   width: 640,
@@ -84,6 +85,8 @@ export class WebcamProvider {
       this.cachedAudioDeviceId = audioDevice;
 
       this.permissionState.value = 'granted';
+
+      eventLogger.log('Started webcam');
     } finally {
       this.isWebcamLoading.value = false;
     }
@@ -135,12 +138,17 @@ export class WebcamProvider {
       this.mediaStream.value.getTracks().forEach((x) => x.stop());
     }
     this.mediaStream.value = null;
+
+    eventLogger.log('Stopped webcam');
   }
 
   public async startRecording(recordingId: string): Promise<void> {
 
     if (!this.mediaStream.value) {
       throw new Error('Webcam must be started before recording can happen');
+    }
+    if (this.ongoingRecordings.has(recordingId)) {
+      console.warn(`Recording ${recordingId} already in progress`);
     }
 
     const rtc = new RecordRTC(this.mediaStream.value, {
@@ -149,6 +157,8 @@ export class WebcamProvider {
     rtc.startRecording();
 
     this.ongoingRecordings.set(recordingId, rtc);
+
+    eventLogger.log(`Starting recording '${recordingId}'`);
 
     console.log(`WebcamProvider :: starting recording with id ${recordingId}`);
   }
@@ -186,6 +196,7 @@ export class WebcamProvider {
         this.ongoingRecordings.delete(recordingId);
         this.cachedRecordings.set(recordingId, recorder);
         console.log(`WebcamProvider :: stopping recording with id ${recordingId}`);
+        eventLogger.log(`Stopped recording '${recordingId}'`);
         res();
       });
     });

@@ -58,11 +58,13 @@ export function calculateProgressSegments(lesson: MiniLesson, activity: MiniLess
 }
 
 const cssClassOptions = [
-  'is-info',
-  'is-success',
-  'is-warning',
+  // 'is-light',
+  // 'is-info',
+  // 'is-success',
+  // 'is-warning',
   'is-primary',
-  'is-danger',
+  // 'is-danger',
+  // '',
 ];
 
 export default defineComponent({
@@ -118,6 +120,7 @@ export default defineComponent({
 
   .label-div.is-active {
     font-weight: 700;
+    // color: white;
   }
 
   progress.progress {
@@ -130,6 +133,8 @@ export default defineComponent({
     &.is-disabled {
       background: #888;
     }
+
+    border: 1px solid gray;
 
     &.is-disabled::-moz-progress-bar,
     &.is-disabled::-webkit-progress-value,

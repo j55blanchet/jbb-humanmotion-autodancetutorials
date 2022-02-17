@@ -180,6 +180,7 @@ import optionsManager from '@/services/OptionsManager';
 import {
   GetVideoEntryForWorkflowStep, IsMiniLessonStep, Workflow, WorkflowStage,
 } from '@/model/Workflow';
+import eventLogger from '@/services/EventLogger';
 
 function getDurationString(seconds: number) {
   if (seconds === Infinity) return 'Untimed';
@@ -318,6 +319,10 @@ export default defineComponent({
     const uploadActive = ref(false);
     const workflow = workflowManager.activeFlow;
 
+    onMounted(() => {
+      eventLogger.log(`Starting workflow ${workflow.value?.title} - ${workflow.value?.id}`);
+    });
+
     const workflowStartTime = ref(new Date());
     const workflowStageStartTime = ref(new Date());
     const enableExperimentMode = ref(!optionsManager.isTest.value);
@@ -364,6 +369,7 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       clearInterval(stageTimer);
+      eventLogger.log(`Exited workflow '${workflow.value?.id}'`);
     });
 
     watch(workflow, () => {
@@ -371,8 +377,11 @@ export default defineComponent({
     });
     watchEffect(() => {
       const isInCurrentStage = (activeStage.value?.steps ?? []).indexOf(currentStep.value as any) !== -1;
+
       if (isInCurrentStage && stageSecondsRemaining.value <= 0 && !currentStep.value?.experiment?.isTimeExpiredTask) {
+        eventLogger.log(`Stage time expired '${activeStage.value?.title}'`);
         lessonActive.value = false;
+        currentStep.value = null;
       }
     });
 
@@ -402,6 +411,7 @@ export default defineComponent({
   methods: {
     startTiming() {
       this.workflowStartTime = new Date();
+      eventLogger.log(`Started workflow ${(this.workflow as any)?.id}`);
     },
     // getStepInfo(stage: TrackingWorkflowStage, stageIndex: number) {
 
@@ -434,6 +444,7 @@ export default defineComponent({
       const step = this.currentStep;
       if (!step) return;
       step.status = 'inprogress';
+      eventLogger.log(`Closed instructions '${step.title}'`);
       this.continueWorkflowStep(step);
     },
     startWorkflowStep(item: TrackingWorkflowStep) {
@@ -441,6 +452,7 @@ export default defineComponent({
       this.currentStep = item;
       if (item.type === 'InstructionOnly') {
         this.instructionsActive = true;
+        eventLogger.log(`Opened instructions '${item.title}'`);
         return;
       }
       this.continueWorkflowStep(item);
@@ -450,8 +462,10 @@ export default defineComponent({
         // Instructions only - there's nothing else to do. Move to next activity!
         this.completeStep(item);
       } else if (item.type === 'MiniLessonReference' || item.type === 'MiniLessonEmbedded') {
+        eventLogger.log(`Started mini lesson '${item.title}'`);
         this.lessonActive = true;
       } else if (item.type === 'UploadTask') {
+        eventLogger.log(`Started upload task '${item.title}'`);
         this.uploadActive = true;
       } else {
         console.error(`Item type ${item.type} not supported`);
@@ -459,10 +473,12 @@ export default defineComponent({
     },
     lessonCompleted() {
       this.lessonActive = false;
+      eventLogger.log(`Finished mini lesson '${this.currentStep?.title}'`);
       this.completeStep(this.currentStep);
     },
     uploadComplete() {
       this.uploadActive = false;
+      eventLogger.log(`Finished upload task '${this.currentStep?.title}'`);
       this.completeStep(this.currentStep);
     },
     completeStep(step: TrackingWorkflowStep | null) {
@@ -477,6 +493,7 @@ export default defineComponent({
     },
     startStage(stageIndex: number) {
       this.workflowStageStartTime = new Date();
+      eventLogger.log(`Started stage #${stageIndex} timed portion `);
       nextTick(() => {
         this.activeStageIndex = stageIndex;
       });

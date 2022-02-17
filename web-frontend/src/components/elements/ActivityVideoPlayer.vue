@@ -45,7 +45,7 @@
     <video v-if="isReviewing"  style="height:100%" class="flipped" :src="recordingObjectUrl" controls></video>
 
     <div class="is-overlay instructions-overlay mb-4">
-      <InstructionCarousel v-show="!activityFinished && timedInstructions.length > 0" :sizeClass="'is-medium'" :instructions="timedInstructions" class="m-2"/>
+      <InstructionCarousel v-show="!activityFinished && timedInstructions.length > 0" :sizeClass="'is-large'" :instructions="timedInstructions" class="m-2"/>
       <InstructionCarousel v-show="pauseInstructs.length > 0" :sizeClass="'is-medium'" :instructions="pauseInstructs" class="m-2"/>
       <InstructionCarousel v-show="instructions.length > 0" :sizeClass="'is-medium'" :instructions="instructions" class="m-2"/>
       <InstructionCarousel v-show="activity?.staticInstruction" :sizeClass="'is-medium'"  :instructions="[{id:0, text:activity?.staticInstruction}]" class="m-2"/>
@@ -81,6 +81,7 @@ import WebcamSourceSelectionMenu from '@/components/elements/WebcamSourceSelecti
 import { MiniLessonActivity, MotionTrail, PauseInfo } from '@/model/MiniLesson';
 import Constants from '@/services/Constants';
 import webcamProvider from '@/services/WebcamProvider';
+import eventLogger from '@/services/EventLogger';
 
 const ActivityPlayState = Object.freeze({
   AwaitingStart: 'AwaitingStart',
@@ -142,6 +143,8 @@ export default defineComponent({
         const blob = await webcamProvider.getBlob(recordingId.value);
         recordingObjectUrl.value = URL.createObjectURL(blob);
       }
+
+      eventLogger.log(`Playback completed for activity ${activity.value?.title}`);
 
       state.value = ActivityPlayState.ActivityEnded;
     };
@@ -322,6 +325,8 @@ export default defineComponent({
         console.log('Gonna do some muthafucking recording!');
         await webcamProvider.startRecording(this.recordingId);
       }
+
+      eventLogger.log(`Starting playback of activity ${this.activity?.title} at ${vidActivity.startTime.toFixed(2)}`);
 
       vidPlayer.play(
         vidActivity.startTime,
