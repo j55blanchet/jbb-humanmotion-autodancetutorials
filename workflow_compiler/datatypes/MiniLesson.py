@@ -80,7 +80,8 @@ class MiniLessonActivity(CustomSerializable):
             reviewing: Optional[ReviewInfo] = None,
     ):
 
-        assert isinstance(pauses, list)        
+        assert isinstance(pauses, list) 
+        if timedInstructions is None: timedInstructions = []
         assert isinstance(timedInstructions, list)
 
         self.title = title

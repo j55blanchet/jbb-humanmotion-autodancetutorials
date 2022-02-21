@@ -1,0 +1,48 @@
+{
+  "clipName": "last-christmas-blurred",
+  "clipPath": "tiktok/last-christmas-blurred.mp4",
+  "clipTitle": "Last Christmas",
+  "generationMethod": "Human-Created (TikTok)",
+  "startTime": 0.0,
+  "endTime": 15.066666666666666,
+  "temporalSegments": [
+    {
+      "startTime": 0.0,
+      "endTime": 3.643
+    },
+    {
+      "startTime": 3.643,
+      "endTime": 4.352106094359516
+    },
+    {
+      "startTime": 4.352106094359516,
+      "endTime": 6.731
+    },
+    {
+      "startTime": 6.731,
+      "endTime": 8.704212188719032
+    },
+    {
+      "startTime": 8.704212188719032,
+      "endTime": 10.541
+    },
+    {
+      "startTime": 10.541,
+      "endTime": 11.3
+    },
+    {
+      "startTime": 11.3,
+      "endTime": 13.056318283078546
+    },
+    {
+      "startTime": 13.056318283078546,
+      "endTime": 15.066666666666666
+    }
+  ],
+  "fps": 30.0,
+  "landmarkScope": [
+    "pose"
+  ],
+  "tempoBPM": 55.14571446478489,
+  "thumbnailSrc": "tiktok/last-christmas-blurred.jpg"
+}

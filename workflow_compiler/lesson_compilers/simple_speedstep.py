@@ -5,6 +5,7 @@ from ..datatypes import Instructions
 from typing import *
 
 REVIEW_ACTIVITY_THRESHOLD_SECS = 3.0
+SEGMENT_LABEL_TIMEDINSTRUCTION_QUEUELENGTH_SECS = 1.0
 
 def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str], showSkeleton: bool, segmentLesson: bool, spds: List[float]):
 
@@ -62,7 +63,14 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                                 startInstruction="Get ready to follow along!",
                                 # playingInstruction="Follow along!",
                                 endInstruction="Try to memorize this!",
-                                timedInstructions=([TimedInstruction(startTime, endTime, text=label)] if (label is not None and label != '') else [])
+                                timedInstructions=(
+                                    None if (timedInstructs is None) else
+                                    [
+                                        TimedInstruction(tiStart, tiEnd, text=tiLabel) 
+                                        for tiStart, tiEnd, tiLabel in timedInstructs
+                                        if tiLabel is not None and tiLabel != ''
+                                    ]
+                                )
                             ),
                         ] + 
                         ([
@@ -77,6 +85,14 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                                 startInstruction="This part is optional - if you'd like to review your performance, record it and review it now! This recording is just for practice and won't be uploaded.",
                                 playingInstruction="Recording...",
                                 endInstruction="Review your performance and feel free to repeat!",
+                                timedInstructions=(
+                                    None if (timedInstructs is None) else
+                                    [
+                                        TimedInstruction(tiStart, tiEnd, text=tiLabel) 
+                                        for tiStart, tiEnd, tiLabel in timedInstructs
+                                        if tiLabel is not None and tiLabel != ''
+                                    ]
+                                ),
                                 reviewing=ReviewInfo(
                                     showModelSkeleton=showSkeleton,
                                     showUserSkeleton=False,
@@ -85,10 +101,30 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                         ] if includeReview else [])
                     )
                     for spd in spds
-                    for title, startTime, endTime, label, includeReview in 
+                    for 
+                        title, 
+                        startTime, 
+                        endTime,   
+                        timedInstructs, 
+                        includeReview in 
                     chain(
-                        [] if not segmentLesson else [(f'Part {i+1}' + (f': {seg.label}' if seg.label is not None else ''), seg.startTime, seg.endTime, seg.label, seg.endTime - seg.startTime > REVIEW_ACTIVITY_THRESHOLD_SECS ) for i, seg in enumerate(imr.temporalSegments)], 
-                        [('Practice' if not segmentLesson else 'Full Practice', imr.startTime, imr.endTime, None, True)]
+                        ([] if not segmentLesson else [
+                            (f'Part {i+1}' + (f': {seg.label}' if seg.label is not None else ''), 
+                            seg.startTime, 
+                            seg.endTime, 
+                            [(seg.startTime, seg.endTime, seg.label if seg.label is not None else f'Part {i+1}')], 
+                            seg.endTime - seg.startTime > REVIEW_ACTIVITY_THRESHOLD_SECS
+                            ) 
+                            for i, seg in enumerate(imr.temporalSegments)
+                        ])
+                        , 
+                        [
+                            ('Practice' if not segmentLesson else 'Full Practice', 
+                             imr.startTime, 
+                             imr.endTime, 
+                             [] if not segmentLesson else ([(seg.startTime - (SEGMENT_LABEL_TIMEDINSTRUCTION_QUEUELENGTH_SECS * spd), seg.endTime, seg.label if seg.label is not None else f'Part {i+1}') for i, seg in enumerate(imr.temporalSegments)]), 
+                             True)
+                        ]
                     )
                 ] + [
                     Instructions.generate_instructionstep(
