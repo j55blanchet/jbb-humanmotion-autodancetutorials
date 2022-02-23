@@ -1,0 +1,41 @@
+{
+  "clipName": "bartender",
+  "clipPath": "tiktok/bartender.mp4",
+  "clipTitle": "Bartender",
+  "generationMethod": "Human-Created (TikTok)",
+  "startTime": 0.0,
+  "endTime": 14.9,
+  "temporalSegments": [
+    {
+      "startTime": 0.0,
+      "endTime": 5.5,
+      "label": "hands↙️↘️, 🔄arms"
+    },
+    {
+      "startTime": 5.5,
+      "endTime": 8.316,
+      "label": "pop chest, rock & wipe ⬇️"
+    },
+    {
+      "startTime": 8.316,
+      "endTime": 10.85,
+      "label": "👏🏾, hands⬅️➡️"
+    },
+    {
+      "startTime": 10.85,
+      "endTime": 13.0,
+      "label": "shrug 4x"
+    },
+    {
+      "startTime": 13.0,
+      "endTime": 14.9,
+      "label": "🔄 hips & 👏🏾2x"
+    }
+  ],
+  "fps": 30.0,
+  "landmarkScope": [
+    "pose"
+  ],
+  "tempoBPM": 53.346764449260654,
+  "thumbnailSrc": "tiktok/bartender.jpg"
+}

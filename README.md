@@ -10,3 +10,9 @@ The installation processes are described in a readme associated with each compon
 
 What worked: 
 > Check SSH_AUTH_SOCK isn't pointing at a stale ssh-agent endpoint. Unset it (unset SSH_AUTH_SOCK) to test.
+
+
+## How to blur videos
+<https://flixier.com/tools/blur-or-pixelate-video>
+
+<https://editor.flixier.com/projects/1f82dc5d-9f5a-443d-839d-9130197bd7ee>

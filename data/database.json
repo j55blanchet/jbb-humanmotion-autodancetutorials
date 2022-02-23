@@ -1186,5 +1186,129 @@
     ],
     "thumbnailSrc": "tiktok/qijia-savagelove.jpg",
     "audioSrc": "tiktok/qijia-savagelove.wav"
+  },
+  {
+    "title": "Let's Get Married",
+    "clipName": "lets-get-married",
+    "clipPath": "tiktok/lets-get-married.mp4",
+    "frameCount": 427,
+    "fps": 30.0,
+    "duration": 14.233333333333333,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 14.233333333333333,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/lets-get-married.jpg",
+    "audioSrc": "tiktok/lets-get-married.wav"
+  },
+  {
+    "title": "Masquerade",
+    "clipName": "masquerade",
+    "clipPath": "tiktok/masquerade.mp4",
+    "frameCount": 1043,
+    "fps": 48.03897254207263,
+    "duration": 21.711538461538463,
+    "width": 576,
+    "height": 1246,
+    "startTime": 0,
+    "endTime": 21.711538461538463,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/masquerade.jpg",
+    "audioSrc": "tiktok/masquerade.wav"
+  },
+  {
+    "title": "Wavy",
+    "clipName": "wavy",
+    "clipPath": "tiktok/wavy.mp4",
+    "frameCount": 484,
+    "fps": 29.97,
+    "duration": 16.149482816149483,
+    "width": 576,
+    "height": 1024,
+    "startTime": 0,
+    "endTime": 16.149482816149483,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/wavy.jpg",
+    "audioSrc": "tiktok/wavy.wav"
+  },
+  {
+    "title": "Bartender",
+    "clipName": "bartender-blurred",
+    "clipPath": "tiktok/bartender-blurred.mp4",
+    "frameCount": 567,
+    "fps": 30.0,
+    "duration": 18.9,
+    "width": 720,
+    "height": 1280,
+    "startTime": 0,
+    "endTime": 18.9,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/bartender-blurred.jpg",
+    "audioSrc": "tiktok/bartender-blurred.wav"
+  },
+  {
+    "title": "Side to side",
+    "clipName": "side-to-side",
+    "clipPath": "tiktok/side-to-side.mp4",
+    "frameCount": 571,
+    "fps": 29.97,
+    "duration": 19.052385719052385,
+    "width": 540,
+    "height": 960,
+    "startTime": 0,
+    "endTime": 19.052385719052385,
+    "poseUpperBodyOnly": false,
+    "tags": [],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/side-to-side.jpg",
+    "audioSrc": "tiktok/side-to-side.wav"
+  },
+  {
+    "title": "Bartender",
+    "clipName": "bartender",
+    "clipPath": "tiktok/bartender.mp4",
+    "frameCount": 566,
+    "fps": 30.0,
+    "duration": 18.866666666666667,
+    "width": 576,
+    "height": 1024,
+    "startTime": 0,
+    "endTime": 18.866666666666667,
+    "poseUpperBodyOnly": false,
+    "tags": [
+      "TikTok"
+    ],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "tiktok/bartender.jpg",
+    "audioSrc": "tiktok/bartender.wav"
   }
 ]

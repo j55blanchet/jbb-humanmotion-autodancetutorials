@@ -1,0 +1,36 @@
+{
+  "clipName": "bartender-blurred",
+  "clipPath": "tiktok/bartender-blurred.mp4",
+  "clipTitle": "Bartender",
+  "generationMethod": "Human-Created (TikTok)",
+  "startTime": 0.0,
+  "endTime": 14.9,
+  "temporalSegments": [
+    {
+      "startTime": 0.0,
+      "endTime": 5.5
+    },
+    {
+      "startTime": 5.5,
+      "endTime": 8.316
+    },
+    {
+      "startTime": 8.316,
+      "endTime": 10.85
+    },
+    {
+      "startTime": 10.85,
+      "endTime": 13.0
+    },
+    {
+      "startTime": 13.0,
+      "endTime": 14.9
+    }
+  ],
+  "fps": 30.0,
+  "landmarkScope": [
+    "pose"
+  ],
+  "tempoBPM": 53.3575096884227,
+  "thumbnailSrc": "tiktok/bartender-blurred.jpg"
+}
