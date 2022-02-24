@@ -79,13 +79,22 @@ class WorkflowStep(CustomSerializable):
         )
 
     @staticmethod
-    def with_lessonactivities(imr: IMR, stepTitle: str, activities: List[MiniLessonActivity]):
+    def with_lessonactivities(
+        imr: IMR, 
+        stepTitle: str, 
+        activities: List[MiniLessonActivity], 
+        disableSegmentation: bool = False,
+        hideSegmentLabels: bool = False
+    ):
         return WorkflowStep(
             type="MiniLessonEmbedded",
             title=stepTitle,
             miniLessonEmbedded=MiniLesson(
-                segmentBreaks=imr.get_segment_breaks(),
-                segmentLabels=imr.get_segment_labels(),
+                segmentBreaks= [imr.startTime, imr.endTime] if disableSegmentation else imr.get_segment_breaks(),
+                segmentLabels= 
+                    [""] if disableSegmentation else 
+                        (["" for _ in imr.temporalSegments] if hideSegmentLabels else
+                        imr.get_segment_labels()),
                 clipName=imr.clipName,
                 lessonTitle=stepTitle,
                 activities=activities,

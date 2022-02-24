@@ -131,7 +131,7 @@ def create_simple_lesson(imr: IMR, lessonIdCache: Dict[str, str]) -> Workflow:
                 ),
                 WorkflowStep.with_minilesson(
                     stepTitle='Preview',
-                    lesson=MiniLesson.construct_imr_preview(imr, speeds=[1, speed])
+                    lesson=MiniLesson.construct_imr_preview(imr)
                 )
             ] + [
                 create_learningstep(imr, i, speed)

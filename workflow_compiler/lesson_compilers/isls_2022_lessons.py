@@ -225,7 +225,7 @@ def create_simple_lesson(imr: IMR, useSheetMotion: bool, lessonIdCache: Dict[str
                 ),
                 WorkflowStep.with_minilesson(
                     stepTitle='Preview',
-                    lesson=MiniLesson.construct_imr_preview(imr, speeds=[1, speed])
+                    lesson=MiniLesson.construct_imr_preview(imr)
                 )
             ] + [
                 create_isls2022_lesson(imr, i, speed, useSheetMotion)

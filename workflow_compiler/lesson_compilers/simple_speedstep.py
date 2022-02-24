@@ -16,6 +16,7 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
     lesson_id_cache[idEntry] = workflowId
 
     spd_title_addon = (f" @ {spds[0]}x" if len(spds) == 1 else '')
+    preview_endinstruction = f"Preview complete!\nNext, you'll practice this dance at {spds[0]}x speed"
     return Workflow(
         title=f"{imr.clipName}" + spd_title_addon,
         userTitle=f'Learning: "{imr.clipTitle}"' + spd_title_addon,
@@ -47,15 +48,22 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                     ),
                     WorkflowStep.with_minilesson(
                         stepTitle='Preview',
-                        lesson=MiniLesson.construct_imr_preview(imr, speeds=[1.0, 0.5])
+                        lesson=MiniLesson.construct_imr_preview(
+                            imr, 
+                            disableSegmentation=not segmentLesson,
+                            hideSegmentLabels=True,
+                            endInstruction=preview_endinstruction,
+                        )
                     ),
                 ] + [
                     WorkflowStep.with_lessonactivities(
                         imr=imr,
-                        stepTitle=f'{title}' + (' @ {spd}x' if len(spds) > 1 else ''),
+                        disableSegmentation= not segmentLesson,
+                        hideSegmentLabels=True,
+                        stepTitle=f'{stepTitle}' + (f' @ {spd}x' if len(spds) > 1 or not segmentLesson else ''),
                         activities=[
                              MiniLessonActivity(
-                                title=title,
+                                title=activityTitle,
                                 startTime=startTime,
                                 endTime=endTime,
                                 practiceSpeed=spd,
@@ -64,7 +72,7 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                                 # playingInstruction="Follow along!",
                                 endInstruction="Try to memorize this!",
                                 timedInstructions=(
-                                    None if (timedInstructs is None) else
+                                    None if (timedInstructs is None or (not segmentLesson)) else
                                     [
                                         TimedInstruction(tiStart, tiEnd, text=tiLabel) 
                                         for tiStart, tiEnd, tiLabel in timedInstructs
@@ -86,7 +94,7 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                                 playingInstruction="Recording...",
                                 endInstruction="Review your performance and feel free to repeat!",
                                 timedInstructions=(
-                                    None if (timedInstructs is None) else
+                                    None if (timedInstructs is None or (not segmentLesson)) else
                                     [
                                         TimedInstruction(tiStart, tiEnd, text=tiLabel) 
                                         for tiStart, tiEnd, tiLabel in timedInstructs
@@ -102,7 +110,8 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                     )
                     for spd in spds
                     for 
-                        title, 
+                        stepTitle,
+                        activityTitle, 
                         startTime, 
                         endTime,   
                         timedInstructs, 
@@ -110,16 +119,18 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                     chain(
                         ([] if not segmentLesson else [
                             (f'Part {i+1}' + (f': {seg.label}' if seg.label is not None else ''), 
+                            (f'Part {i+1}'),
                             seg.startTime, 
                             seg.endTime, 
                             [(seg.startTime, seg.endTime, seg.label if seg.label is not None else f'Part {i+1}')], 
-                            seg.endTime - seg.startTime > REVIEW_ACTIVITY_THRESHOLD_SECS
+                            False,# seg.endTime - seg.startTime > REVIEW_ACTIVITY_THRESHOLD_SECS
                             ) 
                             for i, seg in enumerate(imr.temporalSegments)
                         ])
                         , 
                         [
-                            ('Practice' if not segmentLesson else 'Full Practice', 
+                            ('Practice' if not segmentLesson else 'Full Practice',
+                            ('Practice'),
                              imr.startTime, 
                              imr.endTime, 
                              [] if not segmentLesson else ([(seg.startTime - (SEGMENT_LABEL_TIMEDINSTRUCTION_QUEUELENGTH_SECS * spd), seg.endTime, seg.label if seg.label is not None else f'Part {i+1}') for i, seg in enumerate(imr.temporalSegments)]), 
@@ -135,9 +146,9 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                 ] + [
                     WorkflowStep(
                         type='UploadTask',
-                        title=f'Performance ({int(speed * 100)}% speed)',
+                        title=f'Performance @ {speed}x speed)',
                         upload=WorkflowStepUploadData(
-                            identifier=f'{imr.clipName}-{workflowId}-{int(speed*100)}spd',
+                            identifier=f'clip={imr.clipName}-workflow={workflowId}-spd={int(speed*100)}',
                             prompt=f"Show us what you've learned so far!",
                             maxAllowedAttempts=2,
                             followAlong=WorkflowStepUploadDataFollowAlong(
@@ -154,7 +165,7 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                             isTimeExpiredTask=True,
                         )
                     )
-                    for speed in (0.5, 1.0)
+                    for speed in [0.5] #, 1.0)
                 ]
             ),
             # WorkflowStage(

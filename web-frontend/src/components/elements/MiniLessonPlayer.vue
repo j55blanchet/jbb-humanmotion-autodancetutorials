@@ -1,5 +1,11 @@
 <template>
   <div class="mini-lesson-player">
+    <div class="block is-flex-grow-0 is-flex-shrink-0">
+      <SegmentedProgressBar
+        :segments="progressSegments"
+        :progress="activityProgress"
+      />
+    </div>
     <div class="video-container">
       <ActivityVideoPlayer
         ref="activityVideoPlayer"
@@ -10,11 +16,11 @@
     </div>
     <div class="is-flex-grow-0 is-flex-shrink-0">
       <div class="block"></div>
-      <SegmentedProgressBar
+      <!-- <SegmentedProgressBar
         class="block"
         :segments="progressSegments"
         :progress="activityProgress"
-      />
+      /> -->
       <nav class="pagination is-centered" v-if="miniLesson">
         <div class="pagination-list" style="max-width:calc(100vw - 2.5rem);">
           <li  v-for="(i, index) in nearbyActivityIndices" :key="index">

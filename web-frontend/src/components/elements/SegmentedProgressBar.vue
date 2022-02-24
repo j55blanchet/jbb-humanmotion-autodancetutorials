@@ -134,7 +134,7 @@ export default defineComponent({
       background: #888;
     }
 
-    border: 1px solid gray;
+    // border: 1px solid gray;
 
     &.is-disabled::-moz-progress-bar,
     &.is-disabled::-webkit-progress-value,

@@ -50,6 +50,7 @@ export default defineComponent({
     border: 1px solid black;
     background: #EFEFEF;
     padding: 0.25rem 0.5rem;
+    margin: 2px;
   }
 
   .flextag.is-large {
@@ -59,7 +60,7 @@ export default defineComponent({
   }
 
   .flextag.is-white {
-    background: #EFEFEF;
+    background: #fff;
   }
 }
 

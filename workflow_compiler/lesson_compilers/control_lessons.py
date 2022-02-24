@@ -41,7 +41,7 @@ def create_control_lesson(imr: IMR, lesson_id_cache: Dict[str, str]):
                     ),
                     WorkflowStep.with_minilesson(
                         stepTitle='Preview',
-                        lesson=MiniLesson.construct_imr_preview(imr, speeds=[1, 0.5])
+                        lesson=MiniLesson.construct_imr_preview(imr)
                     ),
                     WorkflowStep.with_lessonactivities(
                         imr=imr,

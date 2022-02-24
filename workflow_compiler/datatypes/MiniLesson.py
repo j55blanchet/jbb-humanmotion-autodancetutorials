@@ -130,33 +130,59 @@ class MiniLesson(CustomSerializable):
         super().__init__()
     
     @staticmethod
-    def construct_imr_preview(imr: IMR, lessonTitle: str = 'Preview', activityTitle: str = 'Preview', speeds: float=[1]):
+    def construct_imr_preview(
+        imr: IMR, 
+        lessonTitle: str = 'Preview', 
+        # activityTitle: str = 'Preview',
+        disableSegmentation: bool=False,
+        hideSegmentLabels: bool=False,
+        endInstruction: str=None,
+    ):
         activities = []
 
-        keyframes = None
-        if imr.tempoBPM is not None:
-            secs_per_beat = 60.0 / imr.tempoBPM
-            keyframes = list(np.arange(imr.startTime, imr.endTime, secs_per_beat))
+        disableSegmentation = disableSegmentation or len(imr.temporalSegments) == 1
 
-        for spd in speeds:
-            preview_activity = MiniLessonActivity(
-                title=(activityTitle + f" @ {spd}x") if len(speeds) > 1 else activityTitle,
-                startTime=imr.startTime,
-                endTime=imr.endTime,
-                practiceSpeed=spd,
-                startInstruction="Here's the dance you'll be learning...",
-                timedInstructions=[  
-                    TimedInstruction(
-                        seg.startTime, 
-                        seg.endTime,
-                        f"Part {i+1}" if seg.label is None else seg.label,
-                    )
-                    for i, seg in enumerate(imr.temporalSegments)
-                ],
-                # keyframes= keyframes, 
-                # keyframeVisual='skeleton' if keyframes is not None else 'none',
-            )
-            activities.append(preview_activity)
+        fast_preview = MiniLessonActivity(
+            title="Fast Preview",
+            startTime=imr.startTime,
+            endTime=imr.endTime,
+            practiceSpeed=1.5,
+            startInstruction="Here's a sped-up version of the dance",
+            playingInstruction="Sped-up version",
+            endInstruction="Click a button below to continue"
+        )
+        activities.append(fast_preview)
+
+        preview_activity = MiniLessonActivity(
+            title="Slow Preview" if disableSegmentation else "Split into parts",
+            startTime=imr.startTime,
+            endTime=imr.endTime,
+            practiceSpeed=1.0,
+            startInstruction=
+                "Here's the dance at a normal speed" + (
+                    "" if disableSegmentation 
+                    else f". The dance is split into {len(imr.temporalSegments)} parts"
+                ),
+            playingInstruction=f"Normal speed" if disableSegmentation else None,
+            endInstruction=endInstruction,
+            timedInstructions=[] if disableSegmentation else [  
+                TimedInstruction(
+                    seg.startTime, 
+                    seg.endTime,
+                    f"Part {i+1}" if seg.label is None else seg.label,
+                )
+                for i, seg in enumerate(imr.temporalSegments)
+            ],
+            pauses=[] if disableSegmentation else [
+                ActivityPause(
+                    time=seg.startTime,
+                    instruction=f"Now, Part {i+1}" if seg.label is not None else None,
+                ) for i, seg in enumerate(imr.temporalSegments)
+            ],
+            # keyframes= keyframes, 
+            # keyframeVisual='skeleton' if keyframes is not None else 'none',
+        )
+        activities.append(preview_activity)
 
         # sheetmusic_activity = MiniLessonActivity(
         #     title=f"{activityTitle} Sheet Music",
@@ -185,7 +211,8 @@ class MiniLesson(CustomSerializable):
         return MiniLesson(
             lessonTitle=lessonTitle,
             clipName=imr.clipName,
-            segmentBreaks=imr.get_segment_breaks(),
-            segmentLabels=imr.get_segment_labels(),
+            segmentBreaks=[imr.startTime, imr.endTime] if disableSegmentation else imr.get_segment_breaks(),
+            segmentLabels=[""] if disableSegmentation else 
+                    (["" for _ in imr.temporalSegments] if hideSegmentLabels else imr.get_segment_labels()),
             activities=activities
         )
