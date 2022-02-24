@@ -68,9 +68,9 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                                 endTime=endTime,
                                 practiceSpeed=spd,
                                 showVideoControls=False,
-                                startInstruction="Get ready to follow along!",
-                                # playingInstruction="Follow along!",
-                                endInstruction="Try to memorize this!",
+                                startInstruction=startInstruction,
+                                playingInstruction="Follow along!",
+                                endInstruction=endInstruction,
                                 timedInstructions=(
                                     None if (timedInstructs is None or (not segmentLesson)) else
                                     [
@@ -83,16 +83,35 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                         ] + 
                         ([
                             MiniLessonActivity(
-                                title=f'Record & Review',
+                                title=f'Practice',
                                 startTime=startTime,
                                 endTime=endTime,
                                 practiceSpeed=spd,
                                 showVideoControls=False,
                                 userVisual='video',
                                 demoVisual='skeleton' if showSkeleton else 'none',
-                                startInstruction="This part is optional - if you'd like to review your performance, record it and review it now! This recording is just for practice and won't be uploaded.",
+                                startInstruction="Try practicing this without the video!",
+                                endInstruction=endInstruction,
+                                timedInstructions=(
+                                    None if (timedInstructs is None or (not segmentLesson)) else
+                                    [
+                                        TimedInstruction(tiStart, tiEnd, text=tiLabel) 
+                                        for tiStart, tiEnd, tiLabel in timedInstructs
+                                        if tiLabel is not None and tiLabel != ''
+                                    ]
+                                ),
+                            ),
+                            MiniLessonActivity(
+                                title=f'Record / Review',
+                                startTime=startTime,
+                                endTime=endTime,
+                                practiceSpeed=spd,
+                                showVideoControls=False,
+                                userVisual='video',
+                                demoVisual='skeleton' if showSkeleton else 'none',
+                                startInstruction="This part is optional - if you'd like to see how you look, record it and review it now! This recording is just for practice and won't be uploaded.",
                                 playingInstruction="Recording...",
-                                endInstruction="Review your performance and feel free to repeat!",
+                                endInstruction=endInstruction,
                                 timedInstructions=(
                                     None if (timedInstructs is None or (not segmentLesson)) else
                                     [
@@ -111,7 +130,9 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                     for spd in spds
                     for 
                         stepTitle,
-                        activityTitle, 
+                        activityTitle,
+                        startInstruction, 
+                        endInstruction,
                         startTime, 
                         endTime,   
                         timedInstructs, 
@@ -120,6 +141,8 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                         ([] if not segmentLesson else [
                             (f'Part {i+1}' + (f': {seg.label}' if seg.label is not None else ''), 
                             (f'Part {i+1}'),
+                            f"Now we'll learn part {i+1}. Try to follow along",
+                            "We suggest repeating this part until you have the hang of it",
                             seg.startTime, 
                             seg.endTime, 
                             [(seg.startTime, seg.endTime, seg.label if seg.label is not None else f'Part {i+1}')], 
@@ -128,13 +151,33 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                             for i, seg in enumerate(imr.temporalSegments)
                         ])
                         , 
+                        ([] if not segmentLesson else 
                         [
-                            ('Practice' if not segmentLesson else 'Full Practice',
-                            ('Practice'),
+                            ('Practice',
+                            ('Follow along'),
                              imr.startTime, 
-                             imr.endTime, 
-                             [] if not segmentLesson else ([(seg.startTime - (SEGMENT_LABEL_TIMEDINSTRUCTION_QUEUELENGTH_SECS * spd), seg.endTime, seg.label if seg.label is not None else f'Part {i+1}') for i, seg in enumerate(imr.temporalSegments)]), 
+                             imr.endTime,
+                             "Now let's put it all together", 
+                             "Feel free to repeat until you have the hang of it",
+                             [] if not segmentLesson else 
+                             ([
+                                 (seg.startTime - (SEGMENT_LABEL_TIMEDINSTRUCTION_QUEUELENGTH_SECS * spd), 
+                                  seg.endTime, 
+                                  seg.label if seg.label is not None else f'Part {i+1}'
+                                  ) 
+                                  for i, seg in enumerate(imr.temporalSegments)
+                             ]), 
                              True)
+                        ]) + [
+                            ('Practice' if not segmentLesson else 'Harder Practice',
+                            ('Follow along'),
+                            "Now let's practice without any reminders" if not segmentLesson 
+                              else "Practice this dance alongside the video!",
+                            "Keep working on it and make use of all the time you have left!",
+                            imr.startTime, 
+                            imr.endTime, 
+                            [], 
+                            True)
                         ]
                     )
                 ] + [
