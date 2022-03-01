@@ -68,7 +68,3 @@ def get_file_bpm(path, params=None):
     return beats_to_bpm(beats, path)
 
 
-
-# from https://stackoverflow.com/questions/25394937/automatically-sync-two-audio-recordings-in-python
-#   > https://github.com/Algomorph/cvcalib
-#   > sync/
