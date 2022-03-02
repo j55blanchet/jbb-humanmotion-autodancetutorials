@@ -7,7 +7,7 @@
         'max-width': '100%',
       }"
     ></video>
-    <div v-if="webcamStatus !== 'running' && showStartWebcamButton" class="has-border-grey-lighter p-4">
+    <div v-if="webcamStatus !== 'running' && showStartWebcamButton" class="has-border-grey-lighter m-4">
 
       <WebcamSourceSelectionMenu
         v-model:audioDeviceId="audioDeviceId"

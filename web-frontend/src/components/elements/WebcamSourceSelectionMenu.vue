@@ -9,7 +9,7 @@
         <p class="block">Check that your webcam is connected, no other application is using your webcam, and that you have granted permission in your browser.</p>
       </div>
     </div>
-    <div class="menu" v-else>
+    <div class="menu block" v-else>
       <p class="menu-label">Video Devices</p>
       <ul class="menu-list">
         <li v-for="device in videoDevices" :key="device.deviceId">
@@ -35,11 +35,11 @@
         <li v-if="state === 'loading'">Loading...</li>
       </ul>
     </div>
-    <p v-if="state === 'loaded'" class="block notification mt-4" style="display:inline-block;">
-      <span class="icon"><i class="fas fa-info-circle"></i></span> Click &quot;Start Webcam&quot; when you&rsquo;re ready.
-    </p>
     <div v-if="state === 'loaded'" class="block ">
       <button class="button is-primary" @click="$emit('startWebcamClicked')">Start Webcam</button>
+      <p class="notification mt-4" style="display:inline-block;">
+      <span class="icon"><i class="fas fa-info-circle"></i></span> Click &quot;Start Webcam&quot; when you&rsquo;re ready.
+    </p>
     </div>
   </div>
 </template>

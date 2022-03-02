@@ -182,6 +182,6 @@ def generate_instructionstep(dance_title: str, position: InstructionPosition, ty
         experiment=WorkflowStepExperimentData(
             showInExperimentOnly=True,
             isBeforeTimeStartTask=position in [InstructionPosition.LEARNING_INTRODUCTION, InstructionPosition.MASTERY_INTRODUCTION, InstructionPosition.SINGLE_STAGE_INTRODUCTION],
-            isTimeExpiredTask=position in [InstructionPosition.LEARNING_PREPERFORMANCE, InstructionPosition.MASTERY_PREPERFORMANCE, InstructionPosition.SINGLE_STAGE_PREPERFORMANCE],
+            isTimeExpiredTask=position in [InstructionPosition.LEARNING_PREPERFORMANCE, InstructionPosition.MASTERY_PREPERFORMANCE, InstructionPosition.SINGLE_STAGE_PREPERFORMANCE, InstructionPosition.WORKFLOW_COMPLETE],
         ),
     )
