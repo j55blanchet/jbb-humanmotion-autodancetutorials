@@ -77,5 +77,16 @@
             ],
             "console": "integratedTerminal"
         },
+        {
+            "name": "IMR to Segmentation",
+            "type": "python",
+            "request": "launch",
+            "module": "workflow_compiler.utils.imr_to_segmentation",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "--dest-file=temp_data/segmentations/segmentations.json",
+                "temp_data/segmentations/*.imr.json",
+            ]
+        }
     ]
 }

@@ -1,4 +1,5 @@
 # Ignore everything in this directory except for the README and .gitignore.
 *
+!segmentations/segmentations.md
 !README.md
 !.gitignore
