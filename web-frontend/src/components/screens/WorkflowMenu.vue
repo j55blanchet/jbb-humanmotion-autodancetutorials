@@ -131,7 +131,7 @@
       <div class="modal-background"></div>
       <!-- <div class="modal-content"> -->
         <div class="container">
-          <div class="box" style="max-height:90vh;max-width:calc(100vw-2rem);margin-top:calc((10vh) / 2)">
+          <div class="box" style="max-height:90vh;max-width:calc(100vw-2rem);margin-top:calc((10vh) / 2);overflow:scroll;">
             <FeedbackUploadScreen
               v-if="uploadActive"
               :prompt="currentStep?.upload?.prompt"

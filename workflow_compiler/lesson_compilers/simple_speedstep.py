@@ -171,7 +171,7 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                         ]) + [
                             ('Practice' if not segmentLesson else 'Harder Practice',
                             ('Follow along'),
-                            "Now let's practice without any reminders" if not segmentLesson 
+                            "Now let's practice without any reminders" if segmentLesson 
                               else "Practice this dance alongside the video!",
                             "Keep working on it and make use of all the time you have left!",
                             imr.startTime, 
@@ -209,6 +209,12 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                         )
                     )
                     for speed in [0.5] #, 1.0)
+                ] + [
+                    Instructions.generate_instructionstep(
+                        dance_title=imr.clipTitle, 
+                        position=Instructions.InstructionPosition.WORKFLOW_COMPLETE,
+                        type=Instructions.WorkflowType.SPEED_STEP,
+                    ),
                 ]
             ),
             # WorkflowStage(

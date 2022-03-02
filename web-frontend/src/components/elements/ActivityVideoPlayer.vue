@@ -58,7 +58,7 @@
         />
     </div>
 
-    <div class="is-overlay p-4" v-if="needsToStartWebcam">
+    <div class="is-overlay p-4 has-background-white" style="overflow: scroll;" v-if="needsToStartWebcam">
       <WebcamSourceSelectionMenu
         v-model:videoDeviceId="videoDeviceId"
         v-model:audioDeviceId="audioDeviceId"

@@ -12,6 +12,7 @@ class InstructionPosition(Enum):
     SINGLE_STAGE_PREPERFORMANCE = auto()
     MASTERY_INTRODUCTION = auto()
     MASTERY_PREPERFORMANCE = auto()
+    WORKFLOW_COMPLETE = auto()
 
 @unique
 class WorkflowType(Enum):
@@ -79,7 +80,8 @@ def generate_instructionstep(dance_title: str, position: InstructionPosition, ty
         InstructionPosition.SINGLE_STAGE_INTRODUCTION: "How to use this app",
         InstructionPosition.SINGLE_STAGE_PREPERFORMANCE: "Recording & uploading your performance",
         InstructionPosition.MASTERY_INTRODUCTION: "Mastery Introduction",
-        InstructionPosition.MASTERY_PREPERFORMANCE: "Final Performance Instructions"
+        InstructionPosition.MASTERY_PREPERFORMANCE: "Final Performance Instructions",
+        InstructionPosition.WORKFLOW_COMPLETE: "What's next"
     }[position]
 
     text_dict = {
@@ -159,7 +161,15 @@ def generate_instructionstep(dance_title: str, position: InstructionPosition, ty
         As a reminder, please ensure that you are in the video frame and that the music is audible in the recordings (again, take any headphones off and play the music through speakers).
 
         Good luck!
-        """)
+        """),
+
+
+        InstructionPosition.WORKFLOW_COMPLETE: inspect.cleandoc(f"""Congrats on completing this trial!
+
+        Please return to Qualtrics to continue.
+
+        Thank you!
+        """),
     }
     
     text = text_dict[position]
