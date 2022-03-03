@@ -245,14 +245,14 @@ export default defineComponent({
       const participantId = optionsManager.participantId.value ?? 'Anonomous';
       const workflowId = this.workflow?.id ?? 'NullWorkflow';
 
-      return `${workflowId}-${participantId}-${uploadId}`;
+      return `user${participantId}-upload${uploadId}-workflow${workflowId}`;
     },
     activityLogUploadFilename(): string | null {
       const uploadId = this.currentStep?.upload?.activityLogUploadIdentifier ?? null;
       const participantId = optionsManager.participantId.value ?? 'Anonomous';
       const workflowId = this.workflow?.id ?? 'NullWorkflow';
 
-      return uploadId === null ? null : `${workflowId}-${participantId}-${uploadId}`;
+      return uploadId === null ? null : `user${participantId}-upload${uploadId}-workflow${workflowId}`;
     },
     filteredStages() {
       const workflow = (this as any).workflow as TrackingWorkflow;

@@ -205,7 +205,7 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                 ] + [
                     WorkflowStep(
                         type='UploadTask',
-                        title=f'Performance @ {speed}x speed)',
+                        title=f'Performance @ {speed}x speed',
                         upload=WorkflowStepUploadData(
                             identifier=f'vidUpload--clip={imr.clipName}-workflow={workflowId}-spd={int(speed*100)}',
                             prompt=f"Show us what you've learned so far!",
