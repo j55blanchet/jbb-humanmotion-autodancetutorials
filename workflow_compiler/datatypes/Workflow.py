@@ -32,6 +32,7 @@ class WorkflowStepUploadDataFollowAlong(CustomSerializable):
 class WorkflowStepUploadData(CustomSerializable):
     identifier: str
     prompt: str
+    activityLogId: Optional[str] = None
     maxAllowedAttempts: int = -1
     followAlong: Optional[WorkflowStepUploadDataFollowAlong] = field(default=None)
 

@@ -167,8 +167,8 @@ class MiniLesson(CustomSerializable):
             endInstruction="Click a button below to continue",
             timedInstructions=[] if disableSegmentation else [  
                 TimedInstruction(
-                    seg.startTime, 
-                    seg.endTime,
+                    seg.startTime - 0.1, 
+                    seg.endTime - 0.1,
                     f"Part {i+1}" if seg.label is None else seg.label,
                 )
                 for i, seg in enumerate(imr.temporalSegments)
@@ -186,8 +186,8 @@ class MiniLesson(CustomSerializable):
 
         slow_preview_activity = MiniLessonActivity(
             title="Slow Preview" + ("" if disableSegmentation else " (by parts)"),
-            startTime=imr.startTime - 0.1,
-            endTime=imr.endTime - 0.1,
+            startTime=imr.startTime,
+            endTime=imr.endTime,
             practiceSpeed=0.5,
             startInstruction=
                 "Here's the dance at a slow speed" + (

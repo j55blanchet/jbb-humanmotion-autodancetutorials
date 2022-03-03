@@ -71,6 +71,11 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                                 startInstruction=startInstruction,
                                 playingInstruction="Follow along!",
                                 endInstruction=endInstruction,
+                                pauses=[
+                                    ActivityPause(time, instruction=instruction) 
+                                    for time, instruction 
+                                    in pauses
+                                ],
                                 timedInstructions=(
                                     None if (timedInstructs is None or (not segmentLesson)) else
                                     [
@@ -135,16 +140,20 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                         endInstruction,
                         startTime, 
                         endTime,   
+                        pauses,
                         timedInstructs, 
                         includeReview in 
                     chain(
                         ([] if not segmentLesson else [
                             (f'Part {i+1}' + (f': {seg.label}' if seg.label is not None else ''), 
                             (f'Part {i+1}'),
+                            # ⬇️ start instruction
                             f"Now we'll learn part {i+1}. Try to follow along",
+                            # ⬇️ end instruction 
                             "We suggest repeating this part until you have the hang of it",
                             seg.startTime, 
                             seg.endTime, 
+                            [], # pauses
                             [(seg.startTime, seg.endTime, seg.label if seg.label is not None else f'Part {i+1}')], 
                             False,# seg.endTime - seg.startTime > REVIEW_ACTIVITY_THRESHOLD_SECS
                             ) 
@@ -153,30 +162,37 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                         , 
                         ([] if not segmentLesson else 
                         [
-                            ('Practice',
+                            ('Practice w/ Pauses',
                             ('Follow along'),
+                            # ⬇️ start instruction
                              "Now let's put it all together", 
+                             # ⬇️ end instruction 
                              "Feel free to repeat until you have the hang of it",
                              imr.startTime, 
                              imr.endTime,
-                             [] if not segmentLesson else 
-                             ([
+                             [  
+                                (seg.startTime, None) 
+                                for i, seg 
+                                in enumerate(imr.temporalSegments)
+                            ], # pauses
+                             ([ 
                                  (seg.startTime - (SEGMENT_LABEL_TIMEDINSTRUCTION_QUEUELENGTH_SECS * spd), 
                                   seg.endTime, 
                                   seg.label if seg.label is not None else f'Part {i+1}'
                                   ) 
                                   for i, seg in enumerate(imr.temporalSegments)
                              ]), 
-                             True)
+                             True),
                         ]) + [
-                            ('Practice' if not segmentLesson else 'Harder Practice',
+                            ('Practice',
                             ('Follow along'),
                             "Now let's practice without any reminders" if segmentLesson 
                               else "Practice this dance alongside the video!",
                             "Keep working on it and make use of all the time you have left!",
                             imr.startTime, 
                             imr.endTime, 
-                            [], 
+                            [], # pauses
+                            [], # timed instructions
                             True)
                         ]
                     )
@@ -191,9 +207,10 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                         type='UploadTask',
                         title=f'Performance @ {speed}x speed)',
                         upload=WorkflowStepUploadData(
-                            identifier=f'clip={imr.clipName}-workflow={workflowId}-spd={int(speed*100)}',
+                            identifier=f'vidUpload--clip={imr.clipName}-workflow={workflowId}-spd={int(speed*100)}',
                             prompt=f"Show us what you've learned so far!",
                             maxAllowedAttempts=2,
+                            activityLogId=f"activityLog--clip={imr.clipName}-workflow={workflowId}",
                             followAlong=WorkflowStepUploadDataFollowAlong(
                                 clipName=imr.clipName,
                                 visualMode='none',
