@@ -1,10 +1,14 @@
 <template>
   <div class="mini-lesson-player">
-    <div class="block is-flex-grow-0 is-flex-shrink-0">
+    <div class="block is-flex-grow-0 is-flex-shrink-0 is-relative is-flex">
       <SegmentedProgressBar
         :segments="progressSegments"
         :progress="activityProgress"
+        class="is-flex-grow-1 is-flex-shrink-1"
       />
+      <div class="is-flex-grow-0 is-flex-grow-0 ml-2 has-text-grey" v-if="timeRemaining !== null">
+        {{timeRemaining}}
+      </div>
     </div>
     <div class="video-container">
       <ActivityVideoPlayer
@@ -108,6 +112,7 @@ export default defineComponent({
     miniLesson: { type: Object },
     // maxVideoHeight: { type: String, default: 'none' },
     enableCompleteLesson: { type: Boolean, default: false },
+    timeRemaining: { type: String, default: null },
   },
   setup() {
     const activityVideoPlayer = ref(null as null | typeof ActivityVideoPlayer);
@@ -124,9 +129,22 @@ export default defineComponent({
       const maxIndex = Math.min(maxActivityIndex, this.activeActivityIndex + margin);
       const count = (maxIndex + 1) - minIndex;
       let indices: number[] = [];
-      if (minIndex > 0) indices = indices.concat([0, -1]);
+      if (minIndex > 0) {
+        if (minIndex === 1) {
+          indices.push(0);
+        } else {
+          indices.push(0, -1);
+        }
+        // indices = indices.concat([0, -1]);
+      }
       indices = indices.concat(Utils.range(count, minIndex));
-      if (maxIndex < maxActivityIndex) indices = indices.concat([-1, maxActivityIndex]);
+      if (maxIndex < maxActivityIndex) {
+        if (maxIndex === maxActivityIndex - 1) {
+          indices.push(maxActivityIndex);
+        } else {
+          indices.push(-1, maxActivityIndex);
+        }
+      }
       return indices;
     },
     lesson() {

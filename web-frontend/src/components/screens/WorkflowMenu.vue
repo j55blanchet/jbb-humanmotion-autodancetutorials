@@ -121,6 +121,7 @@
             :miniLesson="currentLesson"
             @lesson-completed="lessonCompleted"
             :maxVideoHeight="'calc(100vh - 152px - 3.75rem)'"
+            :timeRemaining="stageSecondsRemaining !== Infinity ? stageSecondsRemainingString : null"
             :enableCompleteLesson="true"/>
         </div>
       </div>

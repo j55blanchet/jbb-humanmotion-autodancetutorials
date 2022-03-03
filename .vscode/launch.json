@@ -51,13 +51,26 @@
             ]
         },
         {
-            "name": "Lesson Generation (data)",
+            "name": "Lesson Generation (/data - all)",
             "type": "python",
             "request": "launch",
             "module": "workflow_compiler.lesson_compilers.lessongeneration_2d",
             "cwd": "${workspaceFolder}",
             "args": [
                 "data/imr",
+                "web-frontend/src/data/workflows",
+                "data/lessonIdCache.json"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Lesson Generation (/data/handcrafted)",
+            "type": "python",
+            "request": "launch",
+            "module": "workflow_compiler.lesson_compilers.lessongeneration_2d",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "data/imr/handcrafted",
                 "web-frontend/src/data/workflows",
                 "data/lessonIdCache.json"
             ],

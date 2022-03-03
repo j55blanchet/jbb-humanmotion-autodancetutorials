@@ -155,10 +155,10 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                         [
                             ('Practice',
                             ('Follow along'),
-                             imr.startTime, 
-                             imr.endTime,
                              "Now let's put it all together", 
                              "Feel free to repeat until you have the hang of it",
+                             imr.startTime, 
+                             imr.endTime,
                              [] if not segmentLesson else 
                              ([
                                  (seg.startTime - (SEGMENT_LABEL_TIMEDINSTRUCTION_QUEUELENGTH_SECS * spd), 

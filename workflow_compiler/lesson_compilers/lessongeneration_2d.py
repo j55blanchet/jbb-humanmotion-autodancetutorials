@@ -63,9 +63,9 @@ if __name__ == "__main__":
 
         new_lessons = [ 
             unsegmented_noskeleton_speedstep_lesson,
-            unsegmented_skeleton_speedstep_lesson,
+            # unsegmented_skeleton_speedstep_lesson,
             segmented_noskeleton_speedstep_lesson,
-            segmented_skeleton_speedstep_lesson,
+            # segmented_skeleton_speedstep_lesson,
             # current_lesson,
             # control_lesson,
         ]
