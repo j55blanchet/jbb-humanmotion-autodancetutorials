@@ -177,7 +177,7 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                             ], # pauses
                              ([ 
                                  (seg.startTime - (SEGMENT_LABEL_TIMEDINSTRUCTION_QUEUELENGTH_SECS * spd), 
-                                  seg.endTime, 
+                                  seg.endTime - 0.1, 
                                   seg.label if seg.label is not None else f'Part {i+1}'
                                   ) 
                                   for i, seg in enumerate(imr.temporalSegments)
