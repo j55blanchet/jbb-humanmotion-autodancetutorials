@@ -210,7 +210,7 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                             identifier=f'vidUpload--clip={imr.clipName}-workflow={workflowId}-spd={int(speed*100)}',
                             prompt=f"Show us what you've learned so far!",
                             maxAllowedAttempts=2,
-                            activityLogId=f"activityLog--clip={imr.clipName}-workflow={workflowId}",
+                            activityLogUploadIdentifier=f"activityLog--clip={imr.clipName}-workflow={workflowId}",
                             followAlong=WorkflowStepUploadDataFollowAlong(
                                 clipName=imr.clipName,
                                 visualMode='none',

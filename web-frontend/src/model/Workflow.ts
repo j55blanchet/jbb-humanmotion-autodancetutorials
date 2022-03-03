@@ -32,6 +32,7 @@ export interface WorkflowStep {
     identifier: string;
     prompt: string;
     maxAllowedAttempts?: number;
+    activityLogUploadIdentifier?: string;
     followAlong? : UploadFollowAlong;
   };
   experiment?: {

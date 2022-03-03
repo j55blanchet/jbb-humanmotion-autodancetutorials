@@ -140,6 +140,7 @@
               :subtitle="currentStep?.title"
               :uploadFilename="uploadFilename"
               :followAlong="currentStep?.upload?.followAlong ?? null"
+              :activityLogUploadFilename="activityLogUploadFilename"
               @upload-canceled="uploadActive = false"
               @upload-completed="uploadComplete"
               :maxAttempts="currentStep?.upload?.maxAllowedAttempts ?? null"
@@ -245,6 +246,13 @@ export default defineComponent({
       const workflowId = this.workflow?.id ?? 'NullWorkflow';
 
       return `${workflowId}-${participantId}-${uploadId}`;
+    },
+    activityLogUploadFilename(): string | null {
+      const uploadId = this.currentStep?.upload?.activityLogUploadIdentifier ?? null;
+      const participantId = optionsManager.participantId.value ?? 'Anonomous';
+      const workflowId = this.workflow?.id ?? 'NullWorkflow';
+
+      return uploadId === null ? null : `${workflowId}-${participantId}-${uploadId}`;
     },
     filteredStages() {
       const workflow = (this as any).workflow as TrackingWorkflow;

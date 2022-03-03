@@ -111,6 +111,7 @@ import WebcamBox from '@/components/elements/WebcamBox.vue';
 import { UploadFollowAlong } from '@/model/Workflow';
 import VideoPlayer from '@/components/elements/VideoPlayer.vue';
 import videoDB from '@/services/VideoDatabase';
+import eventLogger from '@/services/EventLogger';
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -134,6 +135,10 @@ export default defineComponent({
       default: 'Upload your video here',
     },
     uploadFilename: {
+      type: String,
+      default: null,
+    },
+    activityLogUploadFilename: {
       type: String,
       default: null,
     },
@@ -275,11 +280,27 @@ export default defineComponent({
       this.uploadError = null;
       const blobName = `${this.$props.uploadFilename}.webm`;
 
+      console.log(`Uploading recorded video: ${blobName}`);
       try {
         await AzureUploader.upload(this.lastRecordedBlob, blobName);
       } catch (e) {
         console.error('Error uploading video', e);
         this.uploadError = e;
+      }
+
+      if (this.$props.activityLogUploadFilename) {
+
+        const logText = eventLogger.retrieveLog();
+        const logBlob = new Blob([logText], { type: 'text/plain' });
+        const logBlobName = `${this.$props.activityLogUploadFilename}.txt`;
+        console.log(`Uploading activity log: ${logBlobName}`);
+
+        try {
+          await AzureUploader.upload(logBlob, logBlobName);
+        } catch (e) {
+          console.error('Error uploading activity log', e);
+          this.uploadError = e;
+        }
       }
 
       if (this.uploadError === null) {
