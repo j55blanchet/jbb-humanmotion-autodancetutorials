@@ -164,7 +164,7 @@ class MiniLesson(CustomSerializable):
                     else f". The dance is split into {len(imr.temporalSegments)} parts"
                 ),
             playingInstruction=f"Normal speed" if disableSegmentation else None,
-            endInstruction=endInstruction,
+            endInstruction="Click a button below to continue",
             timedInstructions=[] if disableSegmentation else [  
                 TimedInstruction(
                     seg.startTime, 
