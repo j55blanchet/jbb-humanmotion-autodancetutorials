@@ -1,5 +1,6 @@
 # Ignore everything in this directory except for the README and .gitignore.
 *
-!segmentations/segmentations.md
+!segmentations.md
+!uservideos.md
 !README.md
 !.gitignore

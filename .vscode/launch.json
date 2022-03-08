@@ -100,6 +100,17 @@
                 "--dest-file=temp_data/segmentations/segmentations.json",
                 "temp_data/segmentations/*.imr.json",
             ]
+        },
+        {
+            "name": "User Video Segmenter",
+            "type": "python",
+            "request": "launch",
+            "module": "workflow_compiler.utils.user_video_segmenter",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "--dest-folder=temp_data/segmentations/segmentations.json",
+                "temp_data/segmentations/*.imr.json",
+            ]
         }
     ]
 }
