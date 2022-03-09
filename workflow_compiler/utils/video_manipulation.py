@@ -22,7 +22,7 @@ def extract_audio(video_path: Path, relative_path: Path, audio_dir: Path):
 
     return audio_path
 
-def make_trimmed_video(video_path: Path, out_filepath: Path, startTimeSecs: float, endTimeSecs: float):
+def make_trimmed_video(video_path: Path, out_filepath: Path, startTimeSecs: float, endTimeSecs: float, copyEncoding: bool=False):
     # Example:
     # Start & End Time
     #   ffmpeg -i input.mp4 -ss 1:19:27 -to 02:18:51 -c:v copy -c:a copy output.mp4
@@ -36,7 +36,10 @@ def make_trimmed_video(video_path: Path, out_filepath: Path, startTimeSecs: floa
     # Another option, using trim filter (from 10sec to 25sec)
     # ffmpeg -i my_video.mp4 -vf trim=10:25,setpts=PTS-STARTPTS clip.mp4
 
-    command = f'ffmpeg -ss 00:00:{startTimeSecs} -i "{str(video_path)}" -to 00:00:{endTimeSecs} -async -1 "{str(out_filepath)}"'
+    copy_args = '' # "-async -1" if not copyEncoding else "-c:v copy -c:a copy"
+
+    command = f'ffmpeg -i "{str(video_path)}" -ss {startTimeSecs} -to {endTimeSecs} {copy_args} "{str(out_filepath)}"'
+    # print("\t\t" + command)
     proc = subprocess.Popen(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
     result = proc.wait()
     if result != 0:

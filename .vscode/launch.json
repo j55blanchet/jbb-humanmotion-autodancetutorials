@@ -108,8 +108,9 @@
             "module": "workflow_compiler.utils.user_video_segmenter",
             "cwd": "${workspaceFolder}",
             "args": [
-                "--dest-folder=temp_data/segmentations/segmentations.json",
-                "temp_data/segmentations/*.imr.json",
+                "--dest-folder=temp_data/segmentations/clipped",
+                // "--dest-folder=\"/Volumes/GoogleDrive-115289909313703457863/Shared\\ drives/Human\\ Motion\\ Lab/ISLS2022\\ -\\ 2D\\ Dance\\ \\\"TikTok\\\"\\ Teaching/UserVideos/AzureBlobFiles/user-study-1-segmented\"",
+                "temp_data/uservideos/*.webm",
             ]
         }
     ]

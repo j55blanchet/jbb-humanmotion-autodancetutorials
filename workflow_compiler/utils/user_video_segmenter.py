@@ -54,8 +54,13 @@ from .video_manipulation import make_trimmed_video
 def parse_videofile_name_userstudy1(filename: str):  
     workflow_id = filename[:36]
     user_id = filename[37:41]
-    clip_name = filename[42:-55]
-    return workflow_id, user_id, clip_name
+    remaining_filename = filename[42:]
+
+    id_start = remaining_filename.index(workflow_id)
+    clipname = remaining_filename[:id_start-1]
+
+    suffix_info = remaining_filename[id_start + 1 + len(workflow_id):]
+    return workflow_id, user_id, clipname, suffix_info
 
 def main():
     parser = argparse.ArgumentParser()
@@ -64,37 +69,54 @@ def main():
     args = parser.parse_args()
 
     dest_folder = Path(args.dest_folder)
+    dest_folder.mkdir(parents=True, exist_ok=True)
+    
 
     for i, video_filepath_str in enumerate(args.input_files):
         video_filepath = Path(video_filepath_str)
-        workflow_id, user_id, clip_name = parse_videofile_name_userstudy1(video_filepath.stem)
-        segmentation = segmentations.get(workflow_id)
-        workflow_condition = workflow_condition_names.get(workflow_id)
+        print(f"Processing {i+1}/{len(args.input_files)}...")
+        print(f"    {video_filepath.name=}")
+        print(f"    ", end='')
+        try:
+            workflow_id, user_id, clip_name, suffix_info = parse_videofile_name_userstudy1(video_filepath.stem)
+                
+            segmentation = segmentations.get(workflow_id)
+            workflow_condition = workflow_condition_names.get(workflow_id)
 
-        print(f"Processing {i+1}/{len(args.input_files)}...", end='')
+            if segmentation is None:
+                print('Error!')
+                print(f'No segmentation found for id={workflow_id} at {video_filepath}', file=sys.stderr)
+                continue
+            if workflow_condition is None:
+                print('Error!')
+                print(f'No workflow condition name found for id={workflow_id} at {video_filepath}', file=sys.stderr)
+                continue
+            
+            segments = len(segmentation)
+            print(f'{user_id=}, {workflow_condition=}, {segments=}')
+            for j, (start, end) in enumerate(zip(segmentation[:-1], segmentation[1:])):
+                clip_path = dest_folder / f'user{user_id}____{suffix_info.replace(".", "-")}____{workflow_condition}____workflowid-{workflow_id}____clip{j+1}.mp4'
+                print(f'    ({j+1}/{segments}) [{start}s, {end}s]', end='') # ==> {clip_path.name}')
+                if clip_path.exists():
+                    print('Cached')
+                    continue
+                else:
+                    print()
+                clip_path.unlink(missing_ok=True)
+                make_trimmed_video(
+                    video_filepath,
+                    clip_path,
+                    start,
+                    end,
+                    copyEncoding=False
+                )
+            print()
+        except Exception as e:
+            print(f"Error: {e}")
+            print()
 
-        if segmentation is None:
-            print('Error!')
-            print(f'No segmentation found for id={workflow_id} at {video_filepath}', file=sys.stderr)
-            continue
-        if workflow_condition is None:
-            print('Error!')
-            print(f'No workflow condition name found for id={workflow_id} at {video_filepath}', file=sys.stderr)
-            continue
-        
-        segments = len(segmentation)
-        print(f'{user_id=}, {workflow_condition=}, {segments=}')
-        for j, (start, end) in enumerate(zip(segmentation[:-1], segmentation[1:])):
-            clip_path = dest_folder / f'user{user_id}_condition-{workflow_condition}_workflowid-{workflow_id}_clip{j+1}.mp4'
-            print(f'    ({j+1}) ==> {clip_path}')
-            make_trimmed_video(
-                video_filepath,
-                clip_path,
-                start,
-                end,
-            )
-
-
+if __name__ == "__main__":
+    main()
 
 
 
