@@ -38,8 +38,10 @@ export default class Utils {
   static DoEveryFrame(
     onFrame: () => Promise<void>,
     shouldRun?: () => boolean,
+    shouldCancel?: () => boolean,
   ) {
 
+    if (shouldCancel && shouldCancel()) return;
     if (shouldRun !== undefined && !shouldRun()) {
       requestAnimationFrame(() => {
         Utils.DoEveryFrame(onFrame);

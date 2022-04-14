@@ -42,7 +42,7 @@
       />
     </div>
 
-    <video v-if="isReviewing"  style="height:100%" class="flipped" :src="recordingObjectUrl" controls></video>
+    <video ref="reviewVideoElement" v-if="isReviewing"  style="height:100%" class="flipped" :src="recordingObjectUrl" controls></video>
 
     <div class="is-overlay instructions-overlay mb-4">
       <InstructionCarousel v-show="pauseInstructs.length > 0" :sizeClass="'is-medium'" :tagClass="'is-white'" :instructions="pauseInstructs" class="m-2"/>
@@ -82,6 +82,8 @@ import { MiniLessonActivity, MotionTrail, PauseInfo } from '@/model/MiniLesson';
 import Constants from '@/services/Constants';
 import webcamProvider from '@/services/WebcamProvider';
 import eventLogger from '@/services/EventLogger';
+
+import { processVideoElement } from '@/services/MediaPipe';
 
 const ActivityPlayState = Object.freeze({
   AwaitingStart: 'AwaitingStart',
@@ -124,6 +126,11 @@ export default defineComponent({
     const webcamBox = ref(null as null | typeof WebcamBox);
     const videoTime = ref(0);
 
+    const startTime = computed(() => activity?.value?.startTime ?? 0);
+    const endTime = computed(() => activity?.value?.endTime ?? 0);
+
+    const reviewVideoElement = ref(null as null | HTMLVideoElement);
+
     const recordingId = computed(() => {
       if (!shouldRecord.value) return '';
       return typedActivity?.value?.recording?.identifier ?? 'unknown-or-temp-identifier';
@@ -136,6 +143,7 @@ export default defineComponent({
     });
 
     const pauseInstructs = ref([] as Instruction[]);
+
     const onPlaybackCompleted = async () => {
 
       if (shouldRecord.value && webcamProvider.isRecording(recordingId.value)) {
@@ -147,14 +155,19 @@ export default defineComponent({
       eventLogger.log(`Playback completed for activity ${activity.value?.title}`);
 
       state.value = ActivityPlayState.ActivityEnded;
+
+      if (recordingObjectUrl.value) {
+        console.log('Starting processing video element');
+        const frames = await processVideoElement(recordingObjectUrl.value, startTime.value, endTime.value);
+        console.log('Done processing video element. Results:', frames);
+      }
     };
+
     const onPauseHit = (pause: PauseInfo) => {
       console.log(`Hit pause${pause}`);
       if (pause.instruction) pauseInstructs.value.push({ id: pause.time, text: pause.instruction });
     };
     const onPauseEnded = () => pauseInstructs.value.splice(0);
-
-    const startTime = computed(() => activity?.value?.startTime ?? 0);
 
     function reset(newTime?: number) {
       pauseInstructs.value.splice(0);
@@ -203,6 +216,7 @@ export default defineComponent({
     });
 
     return {
+      reviewVideoElement,
       typedActivity,
       webcamBox,
       videoPlayer,

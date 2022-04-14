@@ -2,8 +2,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/prefer-default-export */
+import { delay } from '@azure/core-http';
+import { Holistic } from '@mediapipe/holistic';
+import { Pose } from '@mediapipe/pose';
 import { Landmark, MpHolisticResults, PoseLandmarks } from './MediaPipeTypes';
-import eventHub, { EventNames } from './EventHub';
+import eventHub, { EventNames, TrackingActions } from './EventHub';
 import Utils from './Utils';
 
 export const usingHolistic = false;
@@ -233,11 +236,12 @@ const trackingCount = () => Object
   .filter((x) => x).length;
 
 let latestResults: MpHolisticResults | null = null;
+
 export function GetLatestResults() {
   return Object.freeze(latestResults);
 }
 
-export function StartTracking(videoE: HTMLVideoElement): void {
+export async function StartTracking(videoE: HTMLVideoElement) {
   if (trackingStarted) { throw Error('Tracking alread started'); }
 
   trackingStarted = true;
@@ -254,33 +258,214 @@ export function StartTracking(videoE: HTMLVideoElement): void {
     minTrackingConfidence: 0.5,
   });
 
-  let frameId = 0;
-  let timestamp = Date.now();
-  mpInstance.onResults((res: MpHolisticResults) => {
-    trackingRequests.initial = false;
-    latestResults = res;
-    res.timestamp = timestamp;
-    eventHub.emit(EventNames.trackingResults, res, frameId);
-  });
+  console.log('Creating tracking promise');
 
-  eventHub.on(EventNames.trackingRequested, (id: string) => {
-    trackingRequests[id] = true;
-  });
-  eventHub.on(EventNames.trackingRequestFinished, (id: string) => {
-    trackingRequests[id] = false;
-  });
+  return new Promise<void>((resolve) => {
+    let frameId = 0;
+    let timestamp = Date.now();
+    let sendSrcTime = 0;
+    mpInstance.onResults((res: MpHolisticResults) => {
+      trackingRequests.initial = false;
+      latestResults = res;
+      res.timestamp = timestamp;
+      eventHub.emit(EventNames.trackingResults, res, frameId);
+      resolve();
+    });
 
-  Utils.DoEveryFrame(
-    async () => {
-      frameId += 1;
-      eventHub.emit(EventNames.trackingProcessingStarted, frameId);
-      timestamp = Date.now();
-      if (trackingCount() > 0) await mpInstance.send({ image: videoE });
-    },
-    () => true,
-  );
+    eventHub.on(EventNames.trackingRequested, (id: string) => {
+      trackingRequests[id] = true;
+    });
+    eventHub.on(EventNames.trackingRequestFinished, (id: string) => {
+      trackingRequests[id] = false;
+    });
+
+    console.log('Creating tracking promise');
+    Utils.DoEveryFrame(
+      async () => {
+        if (videoE.currentTime === sendSrcTime) {
+          // Ensure that we don't send the same frame twice
+          return;
+        }
+
+        frameId += 1;
+        eventHub.emit(EventNames.trackingProcessingStarted, frameId);
+        timestamp = Date.now();
+        sendSrcTime = videoE.currentTime;
+        if (trackingCount() > 0) await mpInstance.send({ image: videoE });
+      },
+      () => true,
+    );
+  });
 }
 
 export function isTracking() {
   return trackingCount() > 0;
+}
+
+// https://stackoverflow.com/questions/32699721/javascript-extract-video-frames-reliably
+async function extractFramesFromVideo(videoUrl: string, startTime?: number, endTime?: number, fps = 25, onFrame?: (index: number, dataUrl: string) => void): Promise<number> {
+
+  // eslint-disable-next-line no-async-promise-executor
+  return new Promise(async (resolve) => {
+
+    // fully download it first (no buffering):
+    const videoBlob = await fetch(videoUrl).then((r) => r.blob());
+    const videoObjectUrl = URL.createObjectURL(videoBlob);
+    const video = document.createElement('video');
+
+    let seekResolve: any;
+    video.addEventListener('seeked', async () => {
+      if (seekResolve) seekResolve();
+    });
+
+    video.src = videoObjectUrl;
+
+    // workaround chromium metadata bug (https://stackoverflow.com/q/38062864/993683)
+    while ((video.duration === Infinity || Number.isNaN(video.duration)) && video.readyState < 2) {
+      // eslint-disable-next-line no-await-in-loop
+      await new Promise((r) => setTimeout(r, 1000));
+      video.currentTime = 10000000 * Math.random();
+    }
+    const { duration } = video;
+
+    const canvas = document.createElement('canvas');
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const context = canvas.getContext('2d')!;
+    const [w, h] = [video.videoWidth, video.videoHeight];
+    canvas.width =  w;
+    canvas.height = h;
+
+    let frameCount = 0;
+    const interval = 1 / fps;
+    let currentTime = startTime ?? 0;
+
+    while (currentTime < (endTime ?? duration)) {
+      video.currentTime = currentTime;
+      // eslint-disable-next-line no-await-in-loop, no-loop-func
+      await new Promise((r) => { seekResolve = r; });
+
+      context.drawImage(video, 0, 0, w, h);
+      const base64ImageData = canvas.toDataURL();
+      if (onFrame) onFrame(frameCount, base64ImageData);
+      frameCount += 1;
+      console.log(`Got frame ${frameCount}`);
+
+      currentTime += interval;
+    }
+    resolve(frameCount);
+  });
+}
+
+export async function processVideoElement(videoObjectURL: string, startTime: number, endTime: number) {
+  console.log(`processVideoElement :: Processing video element from ${startTime} to ${endTime}`);
+
+  let mediapipe: Pose | Holistic;
+  if (usingHolistic) mediapipe = new mp.Holistic({ locateFile: (file: any) => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.5.1635989137/${file}` });
+  else mediapipe = new mp.Pose({ locateFile: (file: any) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1635988162/${file}` });
+
+  mediapipe.setOptions({
+    modelComplexity: 0,
+    smoothLandmarks: true,
+    enableSegmentation: false,
+  });
+
+  await mediapipe.initialize();
+
+  console.log('Mediapipe initialized');
+
+  const imageTestE = document.createElement('img');
+  imageTestE.style.visibility = 'hidden';
+  const results: Array<MpHolisticResults> = [];
+
+  mediapipe.onResults((mpResults: MpHolisticResults) => {
+    console.log(`Got mp results ${results.length}`);
+    results.push(mpResults);
+  });
+
+  const frameQueue: Array<string> = [];
+  const allFramesPromise = extractFramesFromVideo(
+    videoObjectURL,
+    startTime,
+    endTime,
+    30.0,
+    // onFrame:
+    (index, dataUrl) => {
+      frameQueue.push(dataUrl);
+    },
+  );
+
+  let allFramesExtracted = false;
+  let countExtractedFrames = -1;
+
+  Utils.DoEveryFrame(
+    async () => {
+      if (frameQueue.length === 0) {
+        await new Promise((r) => setTimeout(r, 100));
+        return;
+      }
+
+      const frame = frameQueue[0];
+      // eslint-disable-next-line prefer-destructuring
+      if (imageTestE.src !== frame) imageTestE.src = frame;
+      if (!imageTestE.complete) return;
+      console.log(`Mediapipe processing frame ${results.length}`);
+
+      await mediapipe.send(imageTestE as any);
+
+      frameQueue.splice(0, 1);
+    },
+    undefined,
+    () => allFramesExtracted === true && countExtractedFrames === results.length,
+  );
+
+  countExtractedFrames = await allFramesPromise;
+  allFramesExtracted = true;
+
+  while (countExtractedFrames !== results.length) {
+    // eslint-disable-next-line no-await-in-loop
+    await new Promise((r) => setTimeout(r, 500));
+    console.log(`Waiting for ${countExtractedFrames - results.length} frames to process`);
+  }
+
+  await mediapipe.close();
+
+  return results;
+
+  // srcVideoE.oncanplay = async () => {
+  //   startTime = Math.min(Math.abs(startTime), srcVideoE.duration);
+  //   endTime = Math.min(Math.abs(endTime), srcVideoE.duration);
+  // };
+
+  // srcVideoE.onseeked = async () => {
+
+  // };
+
+  // srcVideoE.src = videoObjectURL;
+
+  // await mediapipe.close();
+
+  // startTime = Math.min(e.duration, Math.abs(startTime));
+  // endTime = Math.min(e.duration, Math.abs(endTime));
+
+  // if (!isTracking()) {
+  //   await StartTracking(e);
+  // }
+
+  // const trackInfo = [];
+
+  // console.log('processVideoElement :: Tracking started; moving time along');
+
+  // TrackingActions.requestTracking('videoProcessing');
+
+  // e.currentTime = startTime;
+  // while (e.currentTime < endTime) {
+
+  //   e.currentTime += 1 / 30.0;
+  //   delay(100);
+  //   trackInfo.push(GetLatestResults());
+
+  // }
+
+  // TrackingActions.endTrackingRequest('videoProcessing');
 }

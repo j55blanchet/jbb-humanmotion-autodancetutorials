@@ -35,7 +35,7 @@
         <li v-if="state === 'loading'">Loading...</li>
       </ul>
     </div>
-    <div v-if="state === 'loaded'" class="block ">
+    <div v-if="state === 'loaded'" class="block">
       <button class="button is-primary" @click="$emit('startWebcamClicked')">Start Webcam</button>
       <p class="notification mt-4">
       <span class="icon"><i class="fas fa-info-circle"></i></span> Click &quot;Start Webcam&quot; when you&rsquo;re ready.

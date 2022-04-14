@@ -127,7 +127,7 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
                                 ),
                                 reviewing=ReviewInfo(
                                     showModelSkeleton=showSkeleton,
-                                    showUserSkeleton=False,
+                                    showUserSkeleton=True,
                                 ),
                             )
                         ] if includeReview else [])
