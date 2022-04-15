@@ -511,9 +511,9 @@
                               <div class="select">
                                 <select class="select" v-model="activeStep.upload.followAlong.visualMode">
                                   <option disabled value="">Select a mode</option>
-                                  <option value="'none'">Audio Only</option>
-                                  <option value="'skeleton'">Skeleton Visual</option>
-                                  <option value="'video'">Video</option>
+                                  <option value="none">Audio Only</option>
+                                  <option value="skeleton">Skeleton Visual</option>
+                                  <option value="video">Video</option>
                                 </select>
                               </div>
                             </div>
