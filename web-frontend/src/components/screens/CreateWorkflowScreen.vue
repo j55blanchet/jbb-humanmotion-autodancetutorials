@@ -291,7 +291,7 @@
           <hr>
 
           <div v-if="isInstructionStep" class="block">
-              <div class="field is-horizontal">
+            <div class="field is-horizontal">
               <div class="field-label is-normal">
                 <label class="label">Heading</label>
               </div>
@@ -299,18 +299,6 @@
                 <div class="field">
                   <div class="control">
                     <input class="input" type="text" v-model="activeStep.instructions.heading">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Text</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <div class="control">
-                    <textarea class="textarea" v-model="activeStep.instructions.text"></textarea>
                   </div>
                 </div>
               </div>
@@ -430,9 +418,201 @@
             </div>
           </div>
 
-          <div v-if="isVideoUploadStep" class="block"></div>
+          <div v-if="isVideoUploadStep" class="block">
+            <h3 class="is-size-5 block">Upload Settings</h3>
+            <button v-if="!activeStep.upload" class="button" @click="activeStep.upload = {}">&plus; Add</button>
+            <div v-else>
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">File Identifier</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <input class="input" type="text" v-model="activeStep.upload.identifier">
+                    </div>
+                  </div>
+                </div>
+              </div>
 
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">Log Identifier</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <input class="input" type="text" v-model="activeStep.upload.activityLogUploadIdentifier">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">Prompt</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <input class="input" type="text" v-model="activeStep.upload.prompt">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">Max Attempts</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <input class="input" type="number" min="0" max="10" v-model.number="activeStep.upload.maxAllowedAttempts">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">Follow Along</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <button class="button" v-if="!activeStep.upload.followAlong" @click="activeStep.upload.followAlong = {}">&plus; Add</button>
+                    <div class="box" v-else>
+
+                      <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                          <label class="label">Clip</label>
+                        </div>
+                        <div class="field-body">
+                          <div class="field">
+                            <div class="control">
+                              <div class="select">
+                                <select class="select" v-model="activeStep.upload.followAlong.clipName">
+                                  <option disabled value="">Select a clip</option>
+                                  <option v-for="clipName in availableClips" :key="clipName">{{clipName}}</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                          <label class="label">Visual Mode</label>
+                        </div>
+                        <div class="field-body">
+                          <div class="field">
+                            <div class="control">
+                              <div class="select">
+                                <select class="select" v-model="activeStep.upload.followAlong.visualMode">
+                                  <option disabled value="">Select a mode</option>
+                                  <option value="'none'">Audio Only</option>
+                                  <option value="'skeleton'">Skeleton Visual</option>
+                                  <option value="'video'">Video</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="pl-4">Duration: {{durationOfClip(activeStep.upload.followAlong.clipName)}}</div>
+
+                      <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                          <label class="label">Speed</label>
+                        </div>
+                        <div class="field-body">
+                          <div class="field">
+                            <div class="control">
+                              <input type="number" class="input" min="0.1" max="4.0" step="0.1" v-model.number="activeStep.upload.followAlong.clipSpeed" @change="(event) => activeStep.upload.followAlong.endTime = durationOfClip(event.target.value)"/>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                          <label class="label">Start</label>
+                        </div>
+                        <div class="field-body">
+                          <div class="field">
+                            <div class="control">
+                              <input type="number" class="input" min="0" :max="durationOfClip(activeStep.upload.followAlong.clipName)" step="0.01" v-model.number="activeStep.upload.followAlong.startTime"/>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                          <label class="label">End</label>
+                        </div>
+                        <div class="field-body">
+                          <div class="field">
+                            <div class="control">
+                              <input type="number" class="input" min="0" :max="durationOfClip(activeStep.upload.followAlong.clipName)" step="0.01" v-model.number="activeStep.upload.followAlong.endTime"/>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <hr>
+
+          <div class="block">
+            <h3 class="is-size-5 block">Experiment</h3>
+             <button v-if="!activeStep.experiment" class="button" @click="activeStep.experiment = {}">&plus; Add</button>
+             <div v-else>
+
+              <div class="field">
+                <div class="control">
+                  <label class="checkbox">
+                    <input class="" type="checkbox" v-model="activeStep.experiment.showInExperimentOnly">
+                    Show in Experiment Only
+                  </label>
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="control">
+                  <label class="checkbox">
+                    <input class="" type="checkbox" v-model="activeStep.experiment.disableRepitition">
+                    Disable Repitition
+                  </label>
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="control">
+                  <label class="checkbox">
+                    <input class="" type="checkbox" v-model="activeStep.experiment.isTimeExpiredTask">
+                    Is Time Expired Task
+                  </label>
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="control">
+                  <label class="checkbox">
+                    <input class="" type="checkbox" v-model="activeStep.experiment.isBeforeTimeStartTask">
+                    Is Before Time Start Task
+                  </label>
+                </div>
+              </div>
+
+             </div>
+          </div>
 
           <div class="buttons is-right">
             <button class="button is-danger is-outlined" @click="deleteStep">Delete</button>
@@ -621,6 +801,11 @@ export default defineComponent({
   computed: {
   },
   methods: {
+    durationOfClip(clipName: string) {
+      const entry = videoDB.entriesByClipName.get(clipName);
+      if (!entry) return 0;
+      return entry.duration;
+    },
     goBack(skipPrompt?: boolean) {
       if (!this.activeWorkflow) {
         this.$emit('back-selected');
