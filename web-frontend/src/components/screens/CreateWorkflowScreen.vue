@@ -958,8 +958,9 @@ export default defineComponent({
     reorderStep(increment: number) {
       const workflow = this.activeWorkflow;
       if (!workflow) return;
-      const steps = workflow.stages[this.selectedStageIndex]?.steps;
-      if (!steps) return;
+      const ogSteps = workflow.stages[this.selectedStageIndex]?.steps;
+      if (!ogSteps) return;
+      const steps = [...ogSteps];
       const swapIndex = this.selectedStepIndex + increment;
       const curStep = steps[this.selectedStepIndex];
       const swapStep = steps[swapIndex];
@@ -967,7 +968,7 @@ export default defineComponent({
         console.warn(`Unable to swap steps ${this.selectedStepIndex} and ${swapIndex}`);
         return;
       }
-      steps[this.selectedStageIndex] = swapStep;
+      steps[this.selectedStepIndex] = swapStep;
       steps[swapIndex] = curStep;
       this.selectedStepIndex = swapIndex;
       workflow.stages[this.selectedStageIndex].steps = steps;
