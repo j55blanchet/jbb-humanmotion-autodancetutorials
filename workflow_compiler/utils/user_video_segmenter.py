@@ -11,6 +11,27 @@ workflow_condition_names = {
     'd6ad5749-50d4-4cc7-99b5-6b9ddecebbf4': 'userstudy1--mad-at-disney--sheetmotion',
     'e525302b-2740-4e73-aa37-170bd8ceb8d1': 'userstudy1--mad-at-disney--control',
     'ec8fbc4c-bf9d-404d-a4ab-c626e23a4d2e': 'userstudy1--last-christmas--sheetmotion',
+
+    '863816e2-19eb-4459-9531-dd84ffaa2e03': 'userstudy2-bartender-control',
+    '4a58e38b-adce-42d8-bfbc-997d40084308': 'userstudy2-bartender-emoji',
+    'c096aef4-3cd9-415d-9ca1-f8709a7f770a': 'userstudy2-bartender-segmented',
+    'd114fd87-11bb-4da5-a7c5-f17c55540a8f': 'userstudy2-bartender-emojiandsegmented',
+
+    'e1d510c2-5bc5-4b00-9e97-f82139c7be35': 'userstudy2-lastchristmas-control',
+    '9047689f-b735-4e52-811b-7782ab08931d': 'userstudy2-lastchristmas-emoji',
+    '0e6c3e35-4ba3-4e76-8c4e-dd7e1c42e3df': 'userstudy2-lastchristmas-segmented',
+    '6d42a03e-8de1-4daf-81c3-7bd7ea3e071c': 'userstudy2-lastchristmas-emojiandsegmented',
+
+    '0b78f385-a6be-41d7-8898-57f075f777ab': 'userstudy2-pajamaparty-control',
+    '5e5d43f1-4914-40bf-bf51-bd6f1d9c2013': 'userstudy2-pajamaparty-emoji',
+    '786b141b-3b92-48a0-925f-602e5ac8c454': 'userstudy2-pajamaparty-segmented',
+    'c489d783-4f40-464d-87ed-e86fdacadece': 'userstudy2-pajamaparty-emojiandsegmented',
+
+    'f77787d8-9af4-4358-98e0-4cf00813438e': 'userstudy2-madatdisney-control',
+    '0cb498c3-8cdb-4bd3-80c8-d61f38b0d833': 'userstudy2-madatdisney-emoji',
+    '9cf99b96-0a03-4f76-ad94-666b4701e02b': 'userstudy2-madatdisney-segmented',
+    '568e88b5-0a90-4755-bef4-3132efd7ffa1': 'userstudy2-madatdisney-emojiandsegmented',
+
 }
 # Nov 2021 User Study
 segmentations = {
@@ -42,6 +63,36 @@ segmentations = {
     'ec8fbc4c-bf9d-404d-a4ab-c626e23a4d2e': [0.0, 4.352, 8.704, 13.056, 15.066],
 }
 
+# May 2022 User Study
+segmentations_by_name = {
+    'bartender': [0.0, 5.5, 8.316, 10.85, 13.0, 14.9],
+    'last-christmas': [0.0, 3.643, 4.3521, 6.731, 8.704, 10.541, 11.3, 13.056, 15.067],
+    'mad-at-disney': [0.0, 1.5, 2.13, 4.04, 6.34, 8.08, 10.20, 12.12, 14.14, 16, 18.15],
+    'pajamaparty-tutorial': [0, 2.68, 5.368, 6.713, 8.052, 10.736, 12.5, 13.42, 13.96]
+}
+
+segmentations.update({
+    '863816e2-19eb-4459-9531-dd84ffaa2e03': segmentations_by_name['bartender'],
+    '4a58e38b-adce-42d8-bfbc-997d40084308': segmentations_by_name['bartender'],
+    'c096aef4-3cd9-415d-9ca1-f8709a7f770a': segmentations_by_name['bartender'],
+    'd114fd87-11bb-4da5-a7c5-f17c55540a8f': segmentations_by_name['bartender'],
+
+    'e1d510c2-5bc5-4b00-9e97-f82139c7be35': segmentations_by_name['last-christmas'],
+    '9047689f-b735-4e52-811b-7782ab08931d': segmentations_by_name['last-christmas'],
+    '0e6c3e35-4ba3-4e76-8c4e-dd7e1c42e3df': segmentations_by_name['last-christmas'],
+    '6d42a03e-8de1-4daf-81c3-7bd7ea3e071c': segmentations_by_name['last-christmas'],
+
+    '0b78f385-a6be-41d7-8898-57f075f777ab': segmentations_by_name['pajamaparty-tutorial'],
+    '5e5d43f1-4914-40bf-bf51-bd6f1d9c2013': segmentations_by_name['pajamaparty-tutorial'],
+    '786b141b-3b92-48a0-925f-602e5ac8c454': segmentations_by_name['pajamaparty-tutorial'],
+    'c489d783-4f40-464d-87ed-e86fdacadece': segmentations_by_name['pajamaparty-tutorial'],
+
+    'f77787d8-9af4-4358-98e0-4cf00813438e': segmentations_by_name['mad-at-disney'],
+    '0cb498c3-8cdb-4bd3-80c8-d61f38b0d833': segmentations_by_name['mad-at-disney'],
+    '9cf99b96-0a03-4f76-ad94-666b4701e02b': segmentations_by_name['mad-at-disney'],
+    '568e88b5-0a90-4755-bef4-3132efd7ffa1': segmentations_by_name['mad-at-disney'],
+})
+
 import argparse
 from pathlib import Path
 import sys, os
@@ -62,15 +113,38 @@ def parse_videofile_name_userstudy1(filename: str):
     suffix_info = remaining_filename[id_start + 1 + len(workflow_id):]
     return workflow_id, user_id, clipname, suffix_info
 
+
+def parse_videofile_name_userstudy2(filename: str):
+    #userPARTICIPANTID4163-uploadvidUpload--clip=bartender-workflow=d114fd87-11bb-4da5-a7c5-f17c55540a8f-spd=50-workflowd114fd87-11bb-4da5-a7c5-f17c55540a8f.webm
+    user_index = filename.find('user')
+    user_id = filename[user_index + 4:filename.find('-', user_index)]
+    user_id = user_id.replace("PARTICIPANTID", "")
+    user_id = 'useridmissing' if user_id == '' else user_id
+
+    upload_index = filename.find('upload')
+    uploadType = filename[upload_index + 6: filename.find("-", upload_index)]
+
+    clip_index = filename.find('clip=')
+    workflow_index = filename.find('workflow=')
+    spd_index = filename.find("spd=")
+    clip_name = filename[clip_index + 5: workflow_index - 1]
+    workflow_id = filename[workflow_index + 9: spd_index - 1]
+    spd = filename[spd_index + 4: filename.find('-', spd_index)]
+    return workflow_id, user_id, clip_name, '', #f"spd={spd}-type={uploadType}"
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dest-folder', type=str, required=True)
-    parser.add_argument('input_files', nargs="*", metavar='video inputs', type=str, help='User Vide Clips to generate segmentated clips for')
+    parser.add_argument('--study', type=int, required=False, default=1),
+    parser.add_argument('input_files', nargs="*", metavar='video inputs', type=str, help='User Video Clips to generate segmentated clips for')
     args = parser.parse_args()
 
     dest_folder = Path(args.dest_folder)
     dest_folder.mkdir(parents=True, exist_ok=True)
-    
+
+    segmentations_by_name_keys = list(segmentations_by_name.keys())
+
+    parse_videofile = parse_videofile_name_userstudy1 if args.study == 1 else parse_videofile_name_userstudy2
 
     for i, video_filepath_str in enumerate(args.input_files):
         video_filepath = Path(video_filepath_str)
@@ -78,8 +152,8 @@ def main():
         print(f"    {video_filepath.name=}")
         print(f"    ", end='')
         try:
-            workflow_id, user_id, clip_name, suffix_info = parse_videofile_name_userstudy1(video_filepath.stem)
-                
+            workflow_id, user_id, clip_name, suffix_info = parse_videofile(video_filepath.stem)
+        
             segmentation = segmentations.get(workflow_id)
             workflow_condition = workflow_condition_names.get(workflow_id)
 
@@ -92,7 +166,7 @@ def main():
                 print(f'No workflow condition name found for id={workflow_id} at {video_filepath}', file=sys.stderr)
                 continue
             
-            segments = len(segmentation)
+            segments = len(segmentation) - 1
             print(f'{user_id=}, {workflow_condition=}, {segments=}')
             for j, (start, end) in enumerate(zip(segmentation[:-1], segmentation[1:])):
                 clip_path = dest_folder / f'user{user_id}____{suffix_info.replace(".", "-")}____{workflow_condition}____workflowid-{workflow_id}____clip{j+1}.mp4'
