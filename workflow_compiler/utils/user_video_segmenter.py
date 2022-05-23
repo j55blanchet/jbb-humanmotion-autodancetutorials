@@ -95,12 +95,22 @@ segmentations.update({
 
 import argparse
 from pathlib import Path
+import pathlib
 import sys, os
 
 from .video_manipulation import make_trimmed_video
 # import signal
 # import librosa
 # import numpy as np
+
+
+def is_float(element) -> bool:
+    try:
+        float(element)
+        return True
+    except ValueError:
+        return False
+
 
 def parse_videofile_name_userstudy1(filename: str):  
     workflow_id = filename[:36]
@@ -111,7 +121,9 @@ def parse_videofile_name_userstudy1(filename: str):
     clipname = remaining_filename[:id_start-1]
 
     suffix_info = remaining_filename[id_start + 1 + len(workflow_id):]
-    return workflow_id, user_id, clipname, suffix_info
+
+    speed = 1.0
+    return workflow_id, user_id, clipname, suffix_info, speed
 
 
 def parse_videofile_name_userstudy2(filename: str):
@@ -130,7 +142,11 @@ def parse_videofile_name_userstudy2(filename: str):
     clip_name = filename[clip_index + 5: workflow_index - 1]
     workflow_id = filename[workflow_index + 9: spd_index - 1]
     spd = filename[spd_index + 4: filename.find('-', spd_index)]
-    return workflow_id, user_id, clip_name, '', #f"spd={spd}-type={uploadType}"
+    if is_float(spd):
+        spd = (float(spd) / 100)
+    else:
+        spd = 1.0
+    return workflow_id, user_id, clip_name, '', spd #f"spd={spd}-type={uploadType}"
 
 def main():
     parser = argparse.ArgumentParser()
@@ -144,6 +160,11 @@ def main():
 
     segmentations_by_name_keys = list(segmentations_by_name.keys())
 
+    if len(args.input_files) == 1:
+        path = pathlib.Path(args.input_files[0])
+        files = list(path.parent.glob(path.name))
+        args.input_files = files
+
     parse_videofile = parse_videofile_name_userstudy1 if args.study == 1 else parse_videofile_name_userstudy2
 
     for i, video_filepath_str in enumerate(args.input_files):
@@ -152,7 +173,7 @@ def main():
         print(f"    {video_filepath.name=}")
         print(f"    ", end='')
         try:
-            workflow_id, user_id, clip_name, suffix_info = parse_videofile(video_filepath.stem)
+            workflow_id, user_id, clip_name, suffix_info, vidspd = parse_videofile(video_filepath.stem)
         
             segmentation = segmentations.get(workflow_id)
             workflow_condition = workflow_condition_names.get(workflow_id)
@@ -168,7 +189,10 @@ def main():
             
             segments = len(segmentation) - 1
             print(f'{user_id=}, {workflow_condition=}, {segments=}')
-            for j, (start, end) in enumerate(zip(segmentation[:-1], segmentation[1:])):
+            segment_start_ends = list(enumerate(zip(segmentation[:-1], segmentation[1:])))
+            for j, (start, end) in segment_start_ends:
+                start = start / vidspd
+                end = end / vidspd
                 clip_path = dest_folder / f'user{user_id}____{suffix_info.replace(".", "-")}____{workflow_condition}____workflowid-{workflow_id}____clip{j+1}.mp4'
                 print(f'    ({j+1}/{segments}) [{start}s, {end}s]', end='') # ==> {clip_path.name}')
                 if clip_path.exists():

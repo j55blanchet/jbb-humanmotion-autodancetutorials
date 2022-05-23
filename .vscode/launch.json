@@ -107,12 +107,14 @@
             "request": "launch",
             "module": "workflow_compiler.utils.user_video_segmenter",
             "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
             "args": [
-                "--dest-folder=temp_data/segmentations/clipped",
+                "--dest-folder=temp_data/abc",
+                // "--dest-folder=temp_data/segmentations/clipped",
                 // "--dest-folder=\"/Volumes/GoogleDrive-115289909313703457863/Shared\\ drives/Human\\ Motion\\ Lab/ISLS2022\\ -\\ 2D\\ Dance\\ \\\"TikTok\\\"\\ Teaching/UserVideos/AzureBlobFiles/user-study-1-segmented\"",
                 "--study=2",
-                "temp_data/uservideos/*.webm",
-                
+                // "temp_data/uservideos/*.webm",
+                "temp_data/defg/*.mp4"
                 // "temp_data/temp/*.mp4",
                 
             ]
