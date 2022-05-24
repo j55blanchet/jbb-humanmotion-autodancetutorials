@@ -120,6 +120,21 @@
                 // "temp_data/temp/*.mp4",
                 
             ]
+        },
+        {
+            "name": "Activity Log Analyzer",
+            "type": "python",
+            "request": "launch",
+            "module": "workflow_compiler.utils.activitylog_analysis",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "args": [
+                "--dest-folder=/Volumes/GoogleDrive/Shared drives/Human Motion Lab/ISLS2022 - 2D Dance \"TikTok\" Teaching/UserVideos/AzureBlobFiles/user-study-2-loganalysis",
+                // "--dest-folder=temp_data/temp",
+                "/Volumes/GoogleDrive/Shared drives/Human Motion Lab/ISLS2022 - 2D Dance \"TikTok\" Teaching/UserVideos/AzureBlobFiles/user-study-2/*.txt"
+                // "temp_data/abc/*.txt"
+                
+            ]
         }
     ]
 }
