@@ -38,7 +38,12 @@ def make_trimmed_video(video_path: Path, out_filepath: Path, startTimeSecs: floa
 
     copy_args = '' # "-async -1" if not copyEncoding else "-c:v copy -c:a copy"
 
-    command = f'ffmpeg -i "{str(video_path)}" -ss {startTimeSecs} -to {endTimeSecs} {copy_args} "{str(out_filepath)}"'
+    path_escaped = str(video_path)
+    path_escaped = path_escaped.replace('"', '\\"').replace("'", "\\'").replace(" ", "\\ ")
+
+    outpath_escaped = str(out_filepath)
+    outpath_escaped = outpath_escaped.replace("\"", "\\\"").replace("'", "\\'").replace(" ", "\\ ")
+    command = f'ffmpeg -y -i {path_escaped} -ss {startTimeSecs} -to {endTimeSecs} {copy_args} {outpath_escaped}'
     # print("\t\t" + command)
     proc = subprocess.Popen(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
     result = proc.wait()

@@ -109,12 +109,14 @@
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
             "args": [
-                "--dest-folder=temp_data/abc",
+                "--dest-folder=/Volumes/GoogleDrive-115289909313703457863/Shared drives/Human Motion Lab/ISLS2022 - 2D Dance \"TikTok\" Teaching/UserVideos/AzureBlobFiles/user-study-2-segmented",
                 // "--dest-folder=temp_data/segmentations/clipped",
                 // "--dest-folder=\"/Volumes/GoogleDrive-115289909313703457863/Shared\\ drives/Human\\ Motion\\ Lab/ISLS2022\\ -\\ 2D\\ Dance\\ \\\"TikTok\\\"\\ Teaching/UserVideos/AzureBlobFiles/user-study-1-segmented\"",
                 "--study=2",
                 // "temp_data/uservideos/*.webm",
-                "temp_data/defg/*.mp4"
+                "/Volumes/GoogleDrive-115289909313703457863/Shared drives/Human Motion Lab/ISLS2022 - 2D Dance \"TikTok\" Teaching/UserVideos/AzureBlobFiles/user-study-2/*.webm"
+                // "smb://localhost/Google Drive/Shared drives/Human Motion Lab/ISLS2022 - 2D Dance "TikTok" Teaching/UserVideos/AzureBlobFiles/user-study-2"
+                // "temp_data/defg/*.mp4"
                 // "temp_data/temp/*.mp4",
                 
             ]
