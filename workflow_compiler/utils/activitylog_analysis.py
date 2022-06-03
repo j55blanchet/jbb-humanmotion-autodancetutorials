@@ -3,8 +3,9 @@ from pathlib import Path
 import re
 import json
 from dataclasses import dataclass, field
-from typing import Final
+from typing import Final, Union
 from dataclasses_json import dataclass_json
+from dateutil import parser as dateparser
 
 from .workflow_condition_names import workflow_condition_names
 
@@ -23,6 +24,7 @@ REGEX_ACTIVITY_PLAYBACK: Final[str] = r"(\d\d\d\d\-\d\d\-\d\dT\d\d\:\d\d\:\d\d\.
 REGEX_RECORDING_STARTED: Final[str] = r"(\d\d\d\d\-\d\d\-\d\dT\d\d\:\d\d\:\d\d\.\d\d\dZ): Starting recording \'([\w\-\=\@\ \.]+)\'"
 REGEX_RECORDING_STOPPED: Final[str] = r"(\d\d\d\d\-\d\d\-\d\dT\d\d\:\d\d\:\d\d\.\d\d\dZ): Stopped recording \'([\w\-\=\@\ \.]+)\'"
 REGEX_LAST_LINE: Final[str] = r'(\d\d\d\d\-\d\d\-\d\dT\d\d\:\d\d\:\d\d\.\d\d\dZ): ([ \S]*)$'
+REGEX_STAGE_EXPIRED: Final[str] = r'(\d\d\d\d\-\d\d\-\d\dT\d\d\:\d\d\:\d\d\.\d\d\dZ): Stage time expired \'(.+)\''
 
 @dataclass_json
 @dataclass
@@ -33,8 +35,10 @@ class AnalyzedActivityLog:
     participant_id: str = 'not_found'
     lesson_playbacks: dict = field(default_factory=dict)
     activity_playbacks: dict = field(default_factory=dict)
+    activity_repeated_playbacks: dict = field(default_factory=dict)
     recordings_started = 0
     recordings_completed = 0
+    idle_time_before_first_stage_expiration_secs: Union[None, float] = None
 
     def parse_file(self, text: str):
         
@@ -54,6 +58,13 @@ class AnalyzedActivityLog:
         # Count recordings
         self.recordings_started = len(re.findall(REGEX_RECORDING_STARTED, text))
         self.recordings_completed = len(re.findall(REGEX_RECORDING_STOPPED, text))
+
+        stage_expired_match = re.search(REGEX_STAGE_EXPIRED, text)
+        if stage_expired_match:
+            expiration_datetime = dateparser.parse(stage_expired_match.group(1))
+            prev_action = re.search(REGEX_LAST_LINE, text[:stage_expired_match.start()])
+            prev_action_datetime = dateparser.parse(prev_action.group(1))
+            self.idle_time_before_first_stage_expiration_secs = (expiration_datetime - prev_action_datetime).total_seconds()
 
         # Start going through mini lessons in the log. Try to match start and finish lesson events.
         minilesson_start_matches = [m for m in re.finditer(REGEX_STARTED_MINI_LESSON, text)]
@@ -180,6 +191,11 @@ def main():
             [study, dance, condition, "lesson-start", "no-activity", 0.00, analyzed_log.participant_id, 0]
         )
 
+        if analyzed_log.idle_time_before_first_stage_expiration_secs is not None:
+            participant_csv.append(
+                [study, dance, condition, 'stage-expired', 'idle-time', analyzed_log.idle_time_before_first_stage_expiration_secs, analyzed_log.participant_id, 0]
+            )
+
         for lesson, pb_count in analyzed_log.lesson_playbacks.items():
             key = analyzed_log.workflow_condition + '__' + lesson
             playbacks_by_lesson[key] = playbacks_by_lesson.get(key, 0) + pb_count
@@ -200,7 +216,9 @@ def main():
 
     
     print("Writing CSV data: playbacks by lesson ...")
-    with open(str(dest_folder / 'playback_count_by_lesson.csv'), 'w') as f:
+    playback_by_lesson_filepath = dest_folder / 'playbacks_by_lesson.csv'
+    print(f"\t{playback_by_lesson_filepath!s}")
+    with open(str(playback_by_lesson_filepath), 'w') as f:
         writer = csv.writer(f)
         writer.writerow(['study', 'dance', 'condition', 'lesson', 'playbacks', 'participants'])
         for key, playback_count in playbacks_by_lesson.items():
@@ -212,7 +230,9 @@ def main():
 
 
     print("Writing CSV data: playbacks by activity...")
-    with open(str(dest_folder / 'playback_count_by_lessonactivity.csv'), 'w') as f:
+    playback_by_activity_filepath = dest_folder / 'playbacks_by_activity.csv'
+    print(f"\t{playback_by_activity_filepath!s}")
+    with open(str(playback_by_activity_filepath), 'w') as f:
         writer = csv.writer(f)
         writer.writerow(['study', 'dance', 'condition', 'lesson', 'activity_name', 'playback_start', 'playbacks', 'participants'])
         for key, playback_count in playbacks_by_activity.items():
@@ -221,7 +241,10 @@ def main():
             participants = participants_by_workflow.get(workflow_condition, 0)
             writer.writerow([study, dance, condition, lesson, activity_name, playback_start, playback_count, participants])
 
-    with open(str(dest_folder / 'playback_count_by_participant.csv'), 'w') as f:
+    print("Writing CSV data: participants...")
+    participant_filepath = dest_folder / 'playback_count_by_participant.csv'
+    print(f"\t{participant_filepath!s}")
+    with open(str(participant_filepath), 'w') as f:
         writer = csv.writer(f)
         for r in participant_csv:
             writer.writerow(r)
