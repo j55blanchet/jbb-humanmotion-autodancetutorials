@@ -22,7 +22,14 @@ def extract_audio(video_path: Path, relative_path: Path, audio_dir: Path):
 
     return audio_path
 
-def make_trimmed_video(video_path: Path, out_filepath: Path, startTimeSecs: float, endTimeSecs: float, copyEncoding: bool=False):
+def make_trimmed_video(
+    video_path: Path, 
+    out_filepath: Path, 
+    startTimeSecs: float, 
+    endTimeSecs: float,
+    speedUpFactor: float = 1.0, 
+    copyEncoding: bool=False):
+
     # Example:
     # Start & End Time
     #   ffmpeg -i input.mp4 -ss 1:19:27 -to 02:18:51 -c:v copy -c:a copy output.mp4
@@ -38,12 +45,21 @@ def make_trimmed_video(video_path: Path, out_filepath: Path, startTimeSecs: floa
 
     copy_args = '' # "-async -1" if not copyEncoding else "-c:v copy -c:a copy"
 
+    filter_args = ''
+
+    # Speed up video with audio using ffmpeg complex filter
+    # https://superuser.com/questions/1324525/is-it-possible-to-speed-up-video-with-audio-using-ffmpeg-without-changing-audio
+    if speedUpFactor != 1.0:
+        filter_args = f'-filter_complex "[0:v]setpts={1/speedUpFactor}*PTS[v];[0:a]atempo={speedUpFactor}[a]" -map "[v]" -map "[a]"'
+
+    framerate_args = "-r 30"
+
     path_escaped = str(video_path)
-    path_escaped = path_escaped.replace('"', '\\"').replace("'", "\\'").replace(" ", "\\ ")
+    path_escaped = path_escaped.replace('"', '\\"').replace("'", "\\'").replace(" ", "\\ ").replace("|", "\\|")
 
     outpath_escaped = str(out_filepath)
-    outpath_escaped = outpath_escaped.replace("\"", "\\\"").replace("'", "\\'").replace(" ", "\\ ")
-    command = f'ffmpeg -y -i {path_escaped} -ss {startTimeSecs} -to {endTimeSecs} {copy_args} {outpath_escaped}'
+    outpath_escaped = outpath_escaped.replace("\"", "\\\"").replace("'", "\\'").replace(" ", "\\ ").replace("|", "\\|")
+    command = f'ffmpeg -y -i {path_escaped} -ss {startTimeSecs} -to {endTimeSecs} {copy_args} {filter_args} {framerate_args} {outpath_escaped}'
     # print("\t\t" + command)
     proc = subprocess.Popen(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
     result = proc.wait()

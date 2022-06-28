@@ -32,10 +32,10 @@ segmentations = {
 
 # May 2022 User Study
 segmentations_by_name = {
-    'bartender': [0.0, 5.5, 8.316, 10.85, 13.0, 14.9],
-    'last-christmas': [0.0, 3.643, 4.3521, 6.731, 8.704, 10.541, 11.3, 13.056, 15.067],
-    'mad-at-disney': [0.0, 1.5, 2.13, 4.04, 6.34, 8.08, 10.20, 12.12, 14.14, 16, 18.15],
-    'pajamaparty-tutorial': [0, 2.68, 5.368, 6.713, 8.052, 10.736, 12.5, 13.42, 13.96]
+    'bartender': [0.0, 4.498, 8.997, 13.496, 17.995, 18.866],# [0.0, 5.5, 8.316, 10.85, 13.0, 14.9],
+    'last-christmas': [0.0, 4.352, 8.704, 13.056, 15.066], #[0.0, 3.643, 4.3521, 6.731, 8.704, 10.541, 11.3, 13.056, 15.067],
+    'mad-at-disney': [0.0, 4.04, 8.08, 12.12, 16.16, 18.15], # [0.0, 1.5, 2.13, 4.04, 6.34, 8.08, 10.20, 12.12, 14.14, 16, 18.15],
+    'pajamaparty-tutorial': [0.0, 2.682, 5.365, 8.048, 10.731, 13.913], #[0, 2.68, 5.368, 6.713, 8.052, 10.736, 12.5, 13.42, 13.96]
 }
 
 segmentations.update({
@@ -119,6 +119,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dest-folder', type=str, required=True)
     parser.add_argument('--study', type=int, required=False, default=1),
+    parser.add_argument('--normalize_1x_speed', default=False, action="store_true")
     parser.add_argument('input_files', nargs="*", metavar='video inputs', type=str, help='User Video Clips to generate segmentated clips for')
     args = parser.parse_args()
 
@@ -158,8 +159,9 @@ def main():
             print(f'{user_id=}, {workflow_condition=}, {segments=}')
             segment_start_ends = list(enumerate(zip(segmentation[:-1], segmentation[1:])))
             for j, (start, end) in segment_start_ends:
-                start = start / vidspd
-                end = end / vidspd
+                if not args.normalize_1x_speed:
+                    start = start / vidspd
+                    end = end / vidspd
                 clip_path = dest_folder / f'user{user_id}____{suffix_info.replace(".", "-")}____{workflow_condition}____workflowid-{workflow_id}____clip{j+1}.mp4'
                 print(f'    ({j+1}/{segments}) [{start}s, {end}s]', end='') # ==> {clip_path.name}')
                 if clip_path.exists():
@@ -168,11 +170,13 @@ def main():
                 else:
                     print()
                 clip_path.unlink(missing_ok=True)
+                speed_up_factor = 1.0 if not args.normalize_1x_speed else (1 / vidspd)
                 make_trimmed_video(
                     video_filepath,
                     clip_path,
                     start,
                     end,
+                    speedUpFactor=speed_up_factor,
                     copyEncoding=False
                 )
             print()
