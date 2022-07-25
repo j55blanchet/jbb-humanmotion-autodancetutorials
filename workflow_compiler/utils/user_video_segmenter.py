@@ -193,9 +193,9 @@ def main():
                 clip_path = args.dest_whole_folder / f'user{user_id}____{suffix_info.replace(".", "-")}____{workflow_condition}____workflowid-{workflow_id}____whole.mp4'
                 print(f'    (whole video)', end='')
                 if clip_path.exists() and not args.overwrite:
-                    print('Cached')                    
+                    print(' ... Cached')                    
                 else:
-                    print('')
+                    
                     clip_path.unlink(missing_ok=True)
                     speed_up_factor = 1.0 if not args.normalize_1x_speed else (1 / vidspd)
                     transcode_video(
@@ -206,6 +206,7 @@ def main():
                         speedUpFactor=speed_up_factor,
                         copyEncoding=False
                     )
+                    print(' ... Done')
 
 
             for j, (start, end) in segment_start_ends:
@@ -222,8 +223,6 @@ def main():
                          (args.normalize_1x_speed and start > (src_duration * vidspd))):
                     print(' ... Skipped (video too short)')
                     continue
-                else:
-                    print('')
 
                 clip_path.unlink(missing_ok=True)
                 speed_up_factor = 1.0 if not args.normalize_1x_speed else (1 / vidspd)
@@ -235,6 +234,7 @@ def main():
                     speedUpFactor=speed_up_factor,
                     copyEncoding=False
                 )
+                print (' ... Done')
             print()
         except Exception as e:
             print(f"Error: {e}")
