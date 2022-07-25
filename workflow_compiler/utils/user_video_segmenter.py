@@ -1,5 +1,7 @@
 from .workflow_condition_names import workflow_condition_names
 
+import cv2
+
 # Nov 2021 User Study
 segmentations = {
     # 00388bd7-d313-4ce1-89e5-c88091f25357 pajama-party-tutorial-blurred
@@ -65,7 +67,7 @@ from pathlib import Path
 import pathlib
 import sys, os
 
-from .video_manipulation import make_trimmed_video
+from .video_manipulation import transcode_video
 # import signal
 # import librosa
 # import numpy as np
@@ -78,6 +80,23 @@ def is_float(element) -> bool:
     except ValueError:
         return False
 
+def get_vid_duration_and_fps(filename):
+    # https://stackoverflow.com/questions/3844430/how-to-get-the-duration-of-a-video-in-python
+    import subprocess, json
+
+    filename = Path(filename)
+    str_filename = str(filename)
+    filename_escaped = str_filename.replace('"', '\\"').replace("'", "\\'").replace(" ", "\\ ").replace("|", "\\|")
+
+    result = subprocess.check_output(
+            f'ffprobe -v quiet -show_streams -select_streams v:0 -of json {filename_escaped}',
+            shell=True).decode()
+    fields = json.loads(result)['streams'][0]
+
+    tags = fields['tags']
+    duration = tags.get('DURATION')
+    fps      = eval(fields['r_frame_rate'])
+    return duration, fps
 
 def parse_videofile_name_userstudy1(filename: str):  
     workflow_id = filename[:36]
@@ -116,14 +135,18 @@ def parse_videofile_name_userstudy2(filename: str):
     return workflow_id, user_id, clip_name, '', spd #f"spd={spd}-type={uploadType}"
 
 def main():
+    from pathlib import Path
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dest-folder', type=str, required=True)
+    parser.add_argument('--dest-clip-folder', type=str, required=True)
+    parser.add_argument('--dest-whole-folder', type=Path, required=False, default=None)
     parser.add_argument('--study', type=int, required=False, default=1),
     parser.add_argument('--normalize_1x_speed', default=False, action="store_true")
+    parser.add_argument('--overwrite',default=False, action="store_true")
     parser.add_argument('input_files', nargs="*", metavar='video inputs', type=str, help='User Video Clips to generate segmentated clips for')
+    
     args = parser.parse_args()
 
-    dest_folder = Path(args.dest_folder)
+    dest_folder = Path(args.dest_clip_folder)
     dest_folder.mkdir(parents=True, exist_ok=True)
 
     segmentations_by_name_keys = list(segmentations_by_name.keys())
@@ -135,8 +158,7 @@ def main():
 
     parse_videofile = parse_videofile_name_userstudy1 if args.study == 1 else parse_videofile_name_userstudy2
 
-    for i, video_filepath_str in enumerate(args.input_files):
-        video_filepath = Path(video_filepath_str)
+    for i, video_filepath in enumerate(args.input_files):
         print(f"Processing {i+1}/{len(args.input_files)}...")
         print(f"    {video_filepath.name=}")
         print(f"    ", end='')
@@ -154,28 +176,62 @@ def main():
                 print('Error!')
                 print(f'No workflow condition name found for id={workflow_id} at {video_filepath}', file=sys.stderr)
                 continue
-            
+        
             segments = len(segmentation) - 1
             print(f'{user_id=}, {workflow_condition=}, {segments=}')
             segment_start_ends = list(enumerate(zip(segmentation[:-1], segmentation[1:])))
+
+            vid_capture = cv2.VideoCapture(str(video_filepath))
+            src_frame_count = int(vid_capture.get(cv2.CAP_PROP_FRAME_COUNT))
+            src_frame_rate = vid_capture.get(cv2.CAP_PROP_FPS)
+            src_duration = src_frame_count / src_frame_rate
+            vid_capture.release()
+            del vid_capture
+
+            if args.dest_whole_folder is not None:
+                args.dest_whole_folder.mkdir(parents=True, exist_ok=True)
+                clip_path = args.dest_whole_folder / f'user{user_id}____{suffix_info.replace(".", "-")}____{workflow_condition}____workflowid-{workflow_id}____whole.mp4'
+                print(f'    (whole video)', end='')
+                if clip_path.exists() and not args.overwrite:
+                    print('Cached')                    
+                else:
+                    print('')
+                    clip_path.unlink(missing_ok=True)
+                    speed_up_factor = 1.0 if not args.normalize_1x_speed else (1 / vidspd)
+                    transcode_video(
+                        video_path=video_filepath,
+                        out_filepath=clip_path,
+                        startTimeSecs = None,
+                        endTimeSecs = None,
+                        speedUpFactor=speed_up_factor,
+                        copyEncoding=False
+                    )
+
+
             for j, (start, end) in segment_start_ends:
                 if not args.normalize_1x_speed:
                     start = start / vidspd
                     end = end / vidspd
                 clip_path = dest_folder / f'user{user_id}____{suffix_info.replace(".", "-")}____{workflow_condition}____workflowid-{workflow_id}____clip{j+1}.mp4'
                 print(f'    ({j+1}/{segments}) [{start}s, {end}s]', end='') # ==> {clip_path.name}')
-                if clip_path.exists():
-                    print('Cached')
+                if clip_path.exists() and not args.overwrite:
+                    print(' ... Cached')
+                    continue
+                elif src_duration > 0 and \
+                        ((not args.normalize_1x_speed and start > src_duration) or \
+                         (args.normalize_1x_speed and start > (src_duration * vidspd))):
+                    print(' ... Skipped (video too short)')
                     continue
                 else:
-                    print()
+                    print('')
+
                 clip_path.unlink(missing_ok=True)
                 speed_up_factor = 1.0 if not args.normalize_1x_speed else (1 / vidspd)
-                make_trimmed_video(
-                    video_filepath,
-                    clip_path,
-                    start,
-                    end,
+                transcode_video(
+                    video_path=video_filepath,
+                    out_filepath=clip_path,
+                    startTimeSecs=start,
+                    endTimeSecs=end,
                     speedUpFactor=speed_up_factor,
                     copyEncoding=False
                 )

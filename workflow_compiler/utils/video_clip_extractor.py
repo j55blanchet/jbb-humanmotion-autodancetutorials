@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 
 from ..datatypes import IMR, VideoDatabase
-from .video_manipulation import make_trimmed_video
+from .video_manipulation import transcode_video
 
 if __name__ == "__main__":
     # database_file = Path(sys.argv[1])
@@ -36,4 +36,4 @@ if __name__ == "__main__":
         for i, seg in enumerate(imr.temporalSegments):
             out_segment_clippath = out_clippath.parent / Path(out_clippath.stem + f'.clip-{i+1}' + out_clippath.suffix)
             print(f"\tClip {i+1}: {seg.startTime:.2f}s -> {seg.endTime:.2f}s  ==> {str(out_segment_clippath)}")
-            make_trimmed_video(vid_filepath, out_segment_clippath, seg.startTime, seg.endTime)
+            transcode_video(vid_filepath, out_segment_clippath, seg.startTime, seg.endTime)

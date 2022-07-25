@@ -22,11 +22,11 @@ def extract_audio(video_path: Path, relative_path: Path, audio_dir: Path):
 
     return audio_path
 
-def make_trimmed_video(
+def transcode_video(
     video_path: Path, 
     out_filepath: Path, 
-    startTimeSecs: float, 
-    endTimeSecs: float,
+    startTimeSecs: float = None, 
+    endTimeSecs: float = None,
     speedUpFactor: float = 1.0, 
     copyEncoding: bool=False):
 
@@ -59,7 +59,11 @@ def make_trimmed_video(
 
     outpath_escaped = str(out_filepath)
     outpath_escaped = outpath_escaped.replace("\"", "\\\"").replace("'", "\\'").replace(" ", "\\ ").replace("|", "\\|")
-    command = f'ffmpeg -y -i {path_escaped} -ss {startTimeSecs} -to {endTimeSecs} {copy_args} {filter_args} {framerate_args} {outpath_escaped}'
+
+    to_argument = '' if endTimeSecs is None else f'-to {endTimeSecs}'
+    start_argument = '' if startTimeSecs is None else f'-ss {startTimeSecs}'
+    command = f'ffmpeg -y -i {path_escaped} {start_argument} {to_argument} {copy_args} {filter_args} {framerate_args} {outpath_escaped}'
+
     # print("\t\t" + command)
     proc = subprocess.Popen(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
     result = proc.wait()
