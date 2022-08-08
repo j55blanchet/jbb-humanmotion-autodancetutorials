@@ -1,0 +1,15 @@
+{
+   "eslint.validate": [
+       "vue",
+       "html",
+       "javascript",
+       "typescript"
+   ],
+   "git.autoRepositoryDetection": "openEditors",
+   "typescript.inlayHints.parameterTypes.enabled": true,
+   "typescript.inlayHints.variableTypes.enabled": true,
+   "typescript.inlayHints.parameterNames.enabled": "all",
+"javascript.inlayHints.parameterNames.enabled": "all",
+"workbench.colorTheme": "Quiet Light",
+"python.pythonPath": "d:\\dev\\humanmotion\\jbb-humanmotion-autodancetutorials\\.env\\Scripts\\python.exe"
+}

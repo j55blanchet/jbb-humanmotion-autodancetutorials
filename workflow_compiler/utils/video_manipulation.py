@@ -45,6 +45,7 @@ def transcode_video(
 
     copy_args = '' # "-async -1" if not copyEncoding else "-c:v copy -c:a copy"
 
+    codec_args = " -c:v nvenc_hevc -tag:v hvc1 "
     filter_args = ''
 
     # Speed up video with audio using ffmpeg complex filter
@@ -62,7 +63,8 @@ def transcode_video(
 
     to_argument = '' if endTimeSecs is None else f'-to {endTimeSecs}'
     start_argument = '' if startTimeSecs is None else f'-ss {startTimeSecs}'
-    command = f'ffmpeg -y -i {path_escaped} {start_argument} {to_argument} {copy_args} {filter_args} {framerate_args} {outpath_escaped}'
+
+    command = f'ffmpeg -y -i {path_escaped} {codec_args} {start_argument} {to_argument} {copy_args} {filter_args} {framerate_args} {outpath_escaped}'
 
     # print("\t\t" + command)
     proc = subprocess.Popen(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)

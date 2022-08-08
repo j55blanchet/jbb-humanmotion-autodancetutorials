@@ -137,18 +137,21 @@ def parse_videofile_name_userstudy2(filename: str):
 def main():
     from pathlib import Path
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dest-clip-folder', type=str, required=True)
+    parser.add_argument('--dest-clip-folder', type=str, required=False)
     parser.add_argument('--dest-whole-folder', type=Path, required=False, default=None)
     parser.add_argument('--study', type=int, required=False, default=1),
     parser.add_argument('--normalize_1x_speed', default=False, action="store_true")
     parser.add_argument('--overwrite',default=False, action="store_true")
+    parser.add_argument('--keep_whole_src_names', default=False, action="store_true")
     parser.add_argument('input_files', nargs="*", metavar='video inputs', type=str, help='User Video Clips to generate segmentated clips for')
     
     args = parser.parse_args()
 
-    dest_folder = Path(args.dest_clip_folder)
-    dest_folder.mkdir(parents=True, exist_ok=True)
 
+    dest_clip_folder = Path(args.dest_clip_folder) if args.dest_clip_folder is not None else None
+    if dest_clip_folder is not None:
+        dest_clip_folder.mkdir(parents=True, exist_ok=True)
+        
     segmentations_by_name_keys = list(segmentations_by_name.keys())
 
     if len(args.input_files) == 1:
@@ -164,22 +167,8 @@ def main():
         print(f"    ", end='')
         try:
             workflow_id, user_id, clip_name, suffix_info, vidspd = parse_videofile(video_filepath.stem)
-        
             segmentation = segmentations.get(workflow_id)
             workflow_condition = workflow_condition_names.get(workflow_id)
-
-            if segmentation is None:
-                print('Error!')
-                print(f'No segmentation found for id={workflow_id} at {video_filepath}', file=sys.stderr)
-                continue
-            if workflow_condition is None:
-                print('Error!')
-                print(f'No workflow condition name found for id={workflow_id} at {video_filepath}', file=sys.stderr)
-                continue
-        
-            segments = len(segmentation) - 1
-            print(f'{user_id=}, {workflow_condition=}, {segments=}')
-            segment_start_ends = list(enumerate(zip(segmentation[:-1], segmentation[1:])))
 
             vid_capture = cv2.VideoCapture(str(video_filepath))
             src_frame_count = int(vid_capture.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -190,7 +179,10 @@ def main():
 
             if args.dest_whole_folder is not None:
                 args.dest_whole_folder.mkdir(parents=True, exist_ok=True)
-                clip_path = args.dest_whole_folder / f'user{user_id}____{suffix_info.replace(".", "-")}____{workflow_condition}____workflowid-{workflow_id}____whole.mp4'
+                whole_fname = video_filepath.stem + '.mp4' if args.keep_whole_src_names else \
+                    f'user{user_id}____{suffix_info.replace(".", "-")}____{workflow_condition}____workflowid-{workflow_id}____whole.mp4'
+
+                clip_path = args.dest_whole_folder / whole_fname
                 print(f'    (whole video)', end='')
                 if clip_path.exists() and not args.overwrite:
                     print(' ... Cached')                    
@@ -208,12 +200,27 @@ def main():
                     )
                     print(' ... Done')
 
+            if args.dest_clip_folder is None:
+                continue
+
+            if segmentation is None:
+                print('Error!')
+                print(f'No segmentation found for id={workflow_id} at {video_filepath}', file=sys.stderr)
+                continue
+            if workflow_condition is None:
+                print('Error!')
+                print(f'No workflow condition name found for id={workflow_id} at {video_filepath}', file=sys.stderr)
+                continue
+        
+            segments = len(segmentation) - 1
+            print(f'{user_id=}, {workflow_condition=}, {segments=}')
+            segment_start_ends = list(enumerate(zip(segmentation[:-1], segmentation[1:])))
 
             for j, (start, end) in segment_start_ends:
                 if not args.normalize_1x_speed:
                     start = start / vidspd
                     end = end / vidspd
-                clip_path = dest_folder / f'user{user_id}____{suffix_info.replace(".", "-")}____{workflow_condition}____workflowid-{workflow_id}____clip{j+1}.mp4'
+                clip_path = dest_clip_folder / f'user{user_id}____{suffix_info.replace(".", "-")}____{workflow_condition}____workflowid-{workflow_id}____clip{j+1}.mp4'
                 print(f'    ({j+1}/{segments}) [{start}s, {end}s]', end='') # ==> {clip_path.name}')
                 if clip_path.exists() and not args.overwrite:
                     print(' ... Cached')
