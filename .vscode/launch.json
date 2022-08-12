@@ -118,6 +118,7 @@
                 // "--dest-clip-folder=\"/Volumes/GoogleDrive-115289909313703457863/Shared\\ drives/Human\\ Motion\\ Lab/ISLS2022\\ -\\ 2D\\ Dance\\ \\\"TikTok\\\"\\ Teaching/UserVideos/AzureBlobFiles/user-study-1-segmented\"",
                 // "--dest-whole-folder=/Volumes/GoogleDrive/Shared drives/Human Motion Lab/2022 | ISLS - 2D Dance \"TikTok\" Teaching/UserVideos/AzureBlobFiles/user-study-2-whole-reencoded",
                 "--dest-whole-folder=C:/Users/julie/Desktop/vids_reencoded",
+                // "--dest-whole-folder=G:/Shared drives/Human Motion Lab/TBD - EEG Cognitive Load and Sementic Representations/LanguagePilot1",
                 "--study=2",
                 // "temp_data/uservideos/*.mp4",
                 // "/Volumes/GoogleDrive-115289909313703457863/Shared drives/Human Motion Lab/2022 | ISLS - 2D Dance \"TikTok\" Teaching/UserVideos/AzureBlobFiles/user-study-2/*.webm",

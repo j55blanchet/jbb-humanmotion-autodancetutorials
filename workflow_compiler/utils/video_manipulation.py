@@ -55,11 +55,11 @@ def transcode_video(
 
     framerate_args = "-r 30"
 
-    path_escaped = str(video_path)
+    path_escaped = video_path.as_posix()
     path_escaped = path_escaped.replace('"', '\\"').replace("'", "\\'").replace(" ", "\\ ").replace("|", "\\|")
 
-    outpath_escaped = str(out_filepath)
-    outpath_escaped = outpath_escaped.replace("\"", "\\\"").replace("'", "\\'").replace(" ", "\\ ").replace("|", "\\|")
+    outpath_escaped = out_filepath.as_posix()
+    outpath_escaped = outpath_escaped.replace("\"", "\\\"").replace("'", "\\'").replace(" ", "\ ").replace("|", "\\|")
 
     to_argument = '' if endTimeSecs is None else f'-to {endTimeSecs}'
     start_argument = '' if startTimeSecs is None else f'-ss {startTimeSecs}'
@@ -70,7 +70,8 @@ def transcode_video(
     proc = subprocess.Popen(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
     result = proc.wait()
     if result != 0:
-        output = proc.stderr.readlines()[-1].decode('utf-8')
+        all_outlines = proc.stderr.readlines()
+        output = all_outlines[-1].decode('utf-8')
         print(f'Unable to create clip for {video_path} from {startTimeSecs} to {endTimeSecs}: {output}', file=sys.stderr)
     
     
