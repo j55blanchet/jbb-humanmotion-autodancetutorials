@@ -3,9 +3,10 @@ from pathlib import Path
 import re
 import json
 from dataclasses import dataclass, field
-from typing import Final, Union
+from typing import Final, Optional, Union
 from dataclasses_json import dataclass_json
 from dateutil import parser as dateparser
+from datetime import datetime
 
 from .workflow_condition_names import workflow_condition_names
 
@@ -24,7 +25,8 @@ REGEX_ACTIVITY_PLAYBACK: Final[str] = r"(\d\d\d\d\-\d\d\-\d\dT\d\d\:\d\d\:\d\d\.
 REGEX_RECORDING_STARTED: Final[str] = r"(\d\d\d\d\-\d\d\-\d\dT\d\d\:\d\d\:\d\d\.\d\d\dZ): Starting recording \'([\w\-\=\@\ \.]+)\'"
 REGEX_RECORDING_STOPPED: Final[str] = r"(\d\d\d\d\-\d\d\-\d\dT\d\d\:\d\d\:\d\d\.\d\d\dZ): Stopped recording \'([\w\-\=\@\ \.]+)\'"
 REGEX_LAST_LINE: Final[str] = r'(\d\d\d\d\-\d\d\-\d\dT\d\d\:\d\d\:\d\d\.\d\d\dZ): ([ \S]*)$'
-REGEX_STAGE_EXPIRED: Final[str] = r'(\d\d\d\d\-\d\d\-\d\dT\d\d\:\d\d\:\d\d\.\d\d\dZ): Stage time expired \'(.+)\''
+REGEX_FIRST_LINE: Final[str] = r'^(\d\d\d\d\-\d\d\-\d\dT\d\d\:\d\d\:\d\d\.\d\d\dZ): ([ \S]*)'
+REGEX_STAGE_EXPIRED: Final[str] = r"(\d\d\d\d\-\d\d\-\d\dT\d\d\:\d\d\:\d\d\.\d\d\dZ): Stage time expired '(.+)'"
 
 @dataclass_json
 @dataclass
@@ -39,10 +41,18 @@ class AnalyzedActivityLog:
     recordings_started = 0
     recordings_completed = 0
     idle_time_before_first_stage_expiration_secs: Union[None, float] = None
+    start_time: Optional[datetime] = None
+    end_time: Optional[datetime] = None
 
     def parse_file(self, text: str):
         
+        first_line_match = re.search(REGEX_FIRST_LINE, text)
+        if first_line_match is not None:
+            self.start_time = dateparser.parse(first_line_match.group(1))
+
         last_line_match = re.search(REGEX_LAST_LINE, text)
+        if last_line_match is not None:
+            self.end_time = dateparser.parse(last_line_match.group(1))
 
         # Metadata - find workflow name and workflow id
         start_workflow_match = re.search(REGEX_START_WORKFLOW, text)
@@ -113,6 +123,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dest-folder', type=str, required=True)
     parser.add_argument('input_files', nargs="*", metavar='activity logs', type=str, help='User activity logs generate a report of')
+    parser.add_argument('--save_json', action='store_true', help='Save JSON Log Entries')
     args = parser.parse_args()
 
     dest_folder = Path(args.dest_folder)
@@ -151,7 +162,7 @@ def main():
         print(f"Processing {i+1}/{len(args.input_files)}...")
         analyzed_log = AnalyzedActivityLog()
         log_contents = ''
-        with open(log_filepath_str, 'r') as f:
+        with open(log_filepath_str, 'r', encoding='utf-8') as f:
             log_contents = f.read()
 
         analyzed_log.parse_file(log_contents)
@@ -188,13 +199,22 @@ def main():
         study, dance, condition = analyzed_log.workflow_condition.split('-')
 
         participant_csv.append(
-            [study, dance, condition, "lesson-start", "no-activity", 0.00, analyzed_log.participant_id, 0]
+            [study, dance, condition, "info", "lesson-start", 0.00, analyzed_log.participant_id, 0]
         )
 
         if analyzed_log.idle_time_before_first_stage_expiration_secs is not None:
             participant_csv.append(
-                [study, dance, condition, 'stage-expired', 'idle-time', analyzed_log.idle_time_before_first_stage_expiration_secs, analyzed_log.participant_id, 0]
+                [study, dance, condition, 'info', 'stage-expired-idle-time', analyzed_log.idle_time_before_first_stage_expiration_secs, analyzed_log.participant_id, 0]
             )
+        
+        start_time_str = 'unknown' if analyzed_log.start_time is None else analyzed_log.start_time.strftime('%x %X')
+        participant_csv.append(
+            [study, dance, condition, 'info', 'start_time', start_time_str, analyzed_log.participant_id, 0]
+        )
+        end_time_str = 'unknown' if analyzed_log.end_time is None else analyzed_log.end_time.strftime('%x %X')
+        participant_csv.append(
+            [study, dance, condition, 'info', 'end_time', end_time_str, analyzed_log.participant_id, 0]
+        )
 
         for lesson, pb_count in analyzed_log.lesson_playbacks.items():
             key = analyzed_log.workflow_condition + '__' + lesson
@@ -210,15 +230,15 @@ def main():
             ])
         
 
-
-        with open(str(outpath), 'w') as f:
-            json.dump(analyzed_log.to_dict(), f, indent=2)
+        if args.save_json:
+            with open(str(outpath), 'w', encoding="utf-8") as f:
+                json.dump(analyzed_log.to_dict(), f, indent=2)
 
     
     print("Writing CSV data: playbacks by lesson ...")
     playback_by_lesson_filepath = dest_folder / 'playbacks_by_lesson.csv'
     print(f"\t{playback_by_lesson_filepath!s}")
-    with open(str(playback_by_lesson_filepath), 'w') as f:
+    with open(str(playback_by_lesson_filepath), 'w', encoding='utf-8', newline="") as f:
         writer = csv.writer(f)
         writer.writerow(['study', 'dance', 'condition', 'lesson', 'playbacks', 'participants'])
         for key, playback_count in playbacks_by_lesson.items():
@@ -232,7 +252,7 @@ def main():
     print("Writing CSV data: playbacks by activity...")
     playback_by_activity_filepath = dest_folder / 'playbacks_by_activity.csv'
     print(f"\t{playback_by_activity_filepath!s}")
-    with open(str(playback_by_activity_filepath), 'w') as f:
+    with open(str(playback_by_activity_filepath), 'w', encoding='utf-8', newline="") as f:
         writer = csv.writer(f)
         writer.writerow(['study', 'dance', 'condition', 'lesson', 'activity_name', 'playback_start', 'playbacks', 'participants'])
         for key, playback_count in playbacks_by_activity.items():
@@ -244,7 +264,7 @@ def main():
     print("Writing CSV data: participants...")
     participant_filepath = dest_folder / 'playback_count_by_participant.csv'
     print(f"\t{participant_filepath!s}")
-    with open(str(participant_filepath), 'w') as f:
+    with open(str(participant_filepath), 'w', encoding='utf-8', newline="") as f:
         writer = csv.writer(f)
         for r in participant_csv:
             writer.writerow(r)
