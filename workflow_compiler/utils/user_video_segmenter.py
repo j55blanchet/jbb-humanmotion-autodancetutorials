@@ -4,31 +4,31 @@ import cv2
 
 # Nov 2021 User Study
 segmentations = {
-    # 00388bd7-d313-4ce1-89e5-c88091f25357 pajama-party-tutorial-blurred
+    # 00388bd7-d313-4ce1-89e5-c88091f25357 pajama-party-tutorial-blurred (Sheet Motion)
     '00388bd7-d313-4ce1-89e5-c88091f25357': [0.0, 2.682, 5.365, 8.048, 10.731, 13.913],
 
-    # 0079b262-7575-4ae7-a377-60e21070106e last-christmas-tutorial
+    # 0079b262-7575-4ae7-a377-60e21070106e last-christmas-tutorial (Control)
     '0079b262-7575-4ae7-a377-60e21070106e': [0.0, 4.352, 8.704, 13.056, 15.066],
 
-    # 02883b27-c152-4415-ae7a-1cb4c5f086e5 last-christmas-blurred
+    # 02883b27-c152-4415-ae7a-1cb4c5f086e5 last-christmas-blurred (Skeleton)
     '02883b27-c152-4415-ae7a-1cb4c5f086e5': [0.0, 4.352, 8.704, 13.056, 15.066],
 
-    # 102d5dd7-f1f4-447d-9c0c-6e10a8afc4c3 pajama-party-tutorial-blurred
+    # 102d5dd7-f1f4-447d-9c0c-6e10a8afc4c3 pajama-party-tutorial-blurred (Skeleton)
     '102d5dd7-f1f4-447d-9c0c-6e10a8afc4c3': [0.0, 2.682, 5.365, 8.048, 10.731, 13.913],
 
-    # 44e54afd-19c0-4342-b753-fb4ab123aaad mad-at-disney-tutorial-blurred
+    # 44e54afd-19c0-4342-b753-fb4ab123aaad mad-at-disney-tutorial-blurred (Skeleton)
     '44e54afd-19c0-4342-b753-fb4ab123aaad': [0.0, 4.04, 8.08, 12.12, 16.16, 18.15],
 
-    # 917fe4e1-9590-44eb-a541-1cef13e4f1ea pajamaparty-tutorial
+    # 917fe4e1-9590-44eb-a541-1cef13e4f1ea pajamaparty-tutorial (Control)
     '917fe4e1-9590-44eb-a541-1cef13e4f1ea': [0.0, 2.682, 5.365, 8.048, 10.731, 13.913],
 
-    # d6ad5749-50d4-4cc7-99b5-6b9ddecebbf4 mad-at-disney-tutorial-blurred
+    # d6ad5749-50d4-4cc7-99b5-6b9ddecebbf4 mad-at-disney-tutorial-blurred (Sheet Motion)
     'd6ad5749-50d4-4cc7-99b5-6b9ddecebbf4': [0.0, 4.04, 8.08, 12.12, 16.16, 18.15],
 
-    # e525302b-2740-4e73-aa37-170bd8ceb8d1 mad-at-disney-tutorial
+    # e525302b-2740-4e73-aa37-170bd8ceb8d1 mad-at-disney-tutorial (Control)
     'e525302b-2740-4e73-aa37-170bd8ceb8d1': [0.0, 4.04, 8.08, 12.12, 16.16, 18.15],
 
-    # ec8fbc4c-bf9d-404d-a4ab-c626e23a4d2e last-christmas-blurred
+    # ec8fbc4c-bf9d-404d-a4ab-c626e23a4d2e last-christmas-blurred (Sheet Motion)
     'ec8fbc4c-bf9d-404d-a4ab-c626e23a4d2e': [0.0, 4.352, 8.704, 13.056, 15.066],
 }
 
@@ -85,11 +85,11 @@ def get_vid_duration_and_fps(filename):
     import subprocess, json
 
     filename = Path(filename)
-    str_filename = str(filename)
-    filename_escaped = str_filename.replace('"', '\\"').replace("'", "\\'").replace(" ", "\\ ").replace("|", "\\|")
+    str_filename = filename.as_posix()
+    filename_escaped = str_filename.replace('"', '\"').replace("'", "\'").replace(" ", "\ ").replace("|", "\|")
 
     result = subprocess.check_output(
-            f'ffprobe -v quiet -show_streams -select_streams v:0 -of json {filename_escaped}',
+            f'ffprobe -v quiet -show_streams -select_streams v:0 -of json "{filename_escaped}"',
             shell=True).decode()
     fields = json.loads(result)['streams'][0]
 
@@ -109,6 +109,15 @@ def parse_videofile_name_userstudy1(filename: str):
     suffix_info = remaining_filename[id_start + 1 + len(workflow_id):]
 
     speed = 1.0
+    if suffix_info.endswith('0.5'):
+        speed = 0.5
+        # suffix_info = suffix_info[:-4]
+    elif suffix_info.endswith('1.0'):
+        speed = 1.0
+        # suffix_info = suffix_info[:-4]
+    # else:
+        # suffix_info += '-speed-overwritten'
+
     return workflow_id, user_id, clipname, suffix_info, speed
 
 
@@ -143,6 +152,7 @@ def main():
     parser.add_argument('--normalize_1x_speed', default=False, action="store_true")
     parser.add_argument('--overwrite',default=False, action="store_true")
     parser.add_argument('--keep_whole_src_names', default=False, action="store_true")
+    parser.add_argument('--input-contain-filter', action='append', default=None, help='Filter input files by containing this string')
     parser.add_argument('input_files', nargs="*", metavar='video inputs', type=str, help='User Video Clips to generate segmentated clips for')
     
     args = parser.parse_args()
@@ -158,6 +168,16 @@ def main():
         path = pathlib.Path(args.input_files[0])
         files = list(path.parent.glob(path.name))
         args.input_files = files
+
+    if args.input_contain_filter is not None:
+        filtered_input_files = [
+            f for f in args.input_files
+            if all((filter_word in f.stem for filter_word in args.input_contain_filter))
+        ]
+        num_files_filtered_out = len(args.input_files) - len(filtered_input_files)
+        num_files_remaining = len(filtered_input_files)
+        print(f"Filtered out {num_files_filtered_out} files, {num_files_remaining} remaining")
+        args.input_files = filtered_input_files
 
     parse_videofile = parse_videofile_name_userstudy1 if args.study == 1 else parse_videofile_name_userstudy2
 

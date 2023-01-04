@@ -110,23 +110,28 @@
             "console": "integratedTerminal",
             "args": [
                 "--normalize_1x_speed",
-                "--keep_whole_src_names",
+                // "--keep_whole_src_names",
                 // "--dest-clip-folder=/Volumes/GoogleDrive/Shared drives/Human Motion Lab/2022 | ISLS - 2D Dance \"TikTok\" Teaching/UserVideos/AzureBlobFiles/user-study-2-segmented-take3-beataligned-spedup",
                 // "--dest-clip-folder=/Volumes/GoogleDrive-115289909313703457863/Shared drives/Human Motion Lab/2022 | ISLS - 2D Dance \"TikTok\" Teaching/UserVideos/AzureBlobFiles/user-study-2-segmented-take3-beataligned-spedup",
                 // "--dest-clip-folder=/Volumes/GoogleDrive-115289909313703457863/Shared drives/Human Motion Lab/2022 | ISLS - 2D Dance \"TikTok\" Teaching/UserVideos/AzureBlobFiles/user-study-2-segmented-take2",
                 // "--dest-clip-folder=temp_data/segmentations/clipped",
+                
+                "--dest-clip-folder=C:/Users/julie/Desktop/user-study-1-initial-work/halfspeed-clips",
                 // "--dest-clip-folder=\"/Volumes/GoogleDrive-115289909313703457863/Shared\\ drives/Human\\ Motion\\ Lab/ISLS2022\\ -\\ 2D\\ Dance\\ \\\"TikTok\\\"\\ Teaching/UserVideos/AzureBlobFiles/user-study-1-segmented\"",
                 // "--dest-whole-folder=/Volumes/GoogleDrive/Shared drives/Human Motion Lab/2022 | ISLS - 2D Dance \"TikTok\" Teaching/UserVideos/AzureBlobFiles/user-study-2-whole-reencoded",
-                "--dest-whole-folder=C:/Users/julie/Desktop/vids_reencoded",
+                "--dest-whole-folder=C:/Users/julie/Desktop/user-study-1-initial-work/initialhalfspeed-whole",
                 // "--dest-whole-folder=G:/Shared drives/Human Motion Lab/TBD - EEG Cognitive Load and Sementic Representations/LanguagePilot1",
-                "--study=2",
+                "--study=1",
+                "--input-contain-filter=initial",
                 // "temp_data/uservideos/*.mp4",
                 // "/Volumes/GoogleDrive-115289909313703457863/Shared drives/Human Motion Lab/2022 | ISLS - 2D Dance \"TikTok\" Teaching/UserVideos/AzureBlobFiles/user-study-2/*.webm",
                 // "/Volumes/GoogleDrive/Shared drives/Human Motion Lab/2022 | ISLS - 2D Dance \"TikTok\" Teaching/UserVideos/AzureBlobFiles/user-study-2/*.mp4"
-                "C:/Users/julie/Desktop/standalone-video-uploads/*.webm",
+                // "C:/Users/julie/Desktop/standalone-video-uploads/*.webm",
+                "C:/Users/julie/Desktop/user-study-1-initial-work/user-videos/*.webm",
                 // "smb://localhost/Google Drive/Shared drives/Human Motion Lab/ISLS2022 - 2D Dance "TikTok" Teaching/UserVideos/AzureBlobFiles/user-study-2"
                 // "temp_data/defg/*.mp4"
                 // "temp_data/temp/*.mp4",
+                
                 
             ]
         },
