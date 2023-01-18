@@ -1,4 +1,4 @@
-import aubio
+# import aubio
 import numpy as np
 from pathlib import Path
 
@@ -7,6 +7,12 @@ def perform_audio_analysis(audio_file: Path):
 
 # From https://github.com/aubio/aubio/blob/master/python/demos/demo_bpm_extract.py
 def get_file_bpm(path, params=None):
+    try:
+        import aubio
+    except ImportError as e:
+        print(f"Error: failed to import aubio: {e}")
+        return 0
+
     """ Calculate the beats per minute (bpm) of a given file.
         path: path to the file
         param: dictionary of parameters

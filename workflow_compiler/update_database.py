@@ -8,6 +8,7 @@ from typing import Dict, List
 
 from numpy.core.fromnumeric import trace
 from .utils.video_manipulation import extract_audio
+from .utils.audio_analysis import get_file_bpm
 
 valid_file_endings = [
     'mp4',
@@ -124,6 +125,10 @@ def update_database(database_path: PathLike, videos_dir: PathLike, thumbnails_di
         audio_path = extract_audio(videos_dir.joinpath(relative_path), relative_path, audio_dir)
         if audio_path is not None:
             entry['audioSrc'] = audio_path.relative_to(audio_dir).as_posix()
+            bpm = get_file_bpm(audio_path)
+            if bpm > 0:
+                entry['bpm'] = bpm
+
         out_db[clip_name] = entry
     
     new_db = list(out_db.values())
