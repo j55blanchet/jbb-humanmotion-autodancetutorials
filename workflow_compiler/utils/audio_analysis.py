@@ -13,6 +13,8 @@ def get_file_bpm(path, params=None):
         print(f"Error: failed to import aubio: {e}")
         return 0
 
+    path = str(Path(path))
+
     """ Calculate the beats per minute (bpm) of a given file.
         path: path to the file
         param: dictionary of parameters

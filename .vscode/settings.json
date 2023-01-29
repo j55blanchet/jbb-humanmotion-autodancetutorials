@@ -11,5 +11,5 @@
    "typescript.inlayHints.parameterNames.enabled": "all",
 "javascript.inlayHints.parameterNames.enabled": "all",
 "workbench.colorTheme": "Quiet Light",
-"python.pythonPath": "d:\\dev\\humanmotion\\jbb-humanmotion-autodancetutorials\\.env\\Scripts\\python.exe"
+"python.pythonPath": ".env/bin/python"
 }

@@ -18,7 +18,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/derulo.jpg",
-    "audioSrc": "tiktok/derulo.wav"
+    "audioSrc": "tiktok/derulo.wav",
+    "bpm": 152.71840170716814
   },
   {
     "title": "It's a Fit",
@@ -39,7 +40,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/itsafit.jpg",
-    "audioSrc": "tiktok/itsafit.wav"
+    "audioSrc": "tiktok/itsafit.wav",
+    "bpm": 101.36767973292817
   },
   {
     "title": "Renegade",
@@ -60,7 +62,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/renegade.jpg",
-    "audioSrc": "tiktok/renegade.wav"
+    "audioSrc": "tiktok/renegade.wav",
+    "bpm": 151.82451313979584
   },
   {
     "title": "Unhhunh",
@@ -81,7 +84,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/unhhunh.jpg",
-    "audioSrc": "tiktok/unhhunh.wav"
+    "audioSrc": "tiktok/unhhunh.wav",
+    "bpm": 156.66990392804314
   },
   {
     "title": "ASL: Coconut",
@@ -571,7 +575,8 @@
       "face"
     ],
     "thumbnailSrc": "ASL/Cluster4/PIE.jpg",
-    "audioSrc": "ASL/Cluster4/PIE.wav"
+    "audioSrc": "ASL/Cluster4/PIE.wav",
+    "bpm": 199.17198925464896
   },
   {
     "title": "ASL: Carrot",
@@ -662,7 +667,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/sayso.jpg",
-    "audioSrc": "tiktok/sayso.wav"
+    "audioSrc": "tiktok/sayso.wav",
+    "bpm": 112.4926646801815
   },
   {
     "title": "Ahi Challenge",
@@ -704,7 +710,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/getup.jpg",
-    "audioSrc": "tiktok/getup.wav"
+    "audioSrc": "tiktok/getup.wav",
+    "bpm": 130.73114577305213
   },
   {
     "title": "Blinding Lights",
@@ -725,7 +732,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/blindinglights.jpg",
-    "audioSrc": "tiktok/blindinglights.wav"
+    "audioSrc": "tiktok/blindinglights.wav",
+    "bpm": 174.53819115970293
   },
   {
     "title": "Sup-a-lonely",
@@ -767,7 +775,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/debbieallenchallenge.jpg",
-    "audioSrc": "tiktok/debbieallenchallenge.wav"
+    "audioSrc": "tiktok/debbieallenchallenge.wav",
+    "bpm": 123.65064297211724
   },
   {
     "title": "The Git Up",
@@ -788,7 +797,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/thegitup.jpg",
-    "audioSrc": "tiktok/thegitup.wav"
+    "audioSrc": "tiktok/thegitup.wav",
+    "bpm": 132.52529167511435
   },
   {
     "title": "Oh-Nana",
@@ -851,7 +861,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/red-velvet.jpg",
-    "audioSrc": "tiktok/red-velvet.wav"
+    "audioSrc": "tiktok/red-velvet.wav",
+    "bpm": 127.90027307202433
   },
   {
     "title": "Cold Dance",
@@ -872,7 +883,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/colddance-tutorial.jpg",
-    "audioSrc": "tiktok/colddance-tutorial.wav"
+    "audioSrc": "tiktok/colddance-tutorial.wav",
+    "bpm": 122.5368012916309
   },
   {
     "title": "Cold Dance",
@@ -893,7 +905,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/colddance.jpg",
-    "audioSrc": "tiktok/colddance.wav"
+    "audioSrc": "tiktok/colddance.wav",
+    "bpm": 122.15221620822004
   },
   {
     "title": "Hello B$$$",
@@ -914,7 +927,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/hello-b$$$-tutorial.jpg",
-    "audioSrc": "tiktok/hello-b$$$-tutorial.wav"
+    "audioSrc": "tiktok/hello-b$$$-tutorial.wav",
+    "bpm": 147.97785314774134
   },
   {
     "title": "Hello B$$$",
@@ -935,7 +949,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/hello-b$$$.jpg",
-    "audioSrc": "tiktok/hello-b$$$.wav"
+    "audioSrc": "tiktok/hello-b$$$.wav",
+    "bpm": 147.2249547088486
   },
   {
     "title": "Last Christmas",
@@ -956,7 +971,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/last-christmas-tutorial.jpg",
-    "audioSrc": "tiktok/last-christmas-tutorial.wav"
+    "audioSrc": "tiktok/last-christmas-tutorial.wav",
+    "bpm": 110.29142892956978
   },
   {
     "title": "Mad At Disney",
@@ -977,7 +993,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/mad-at-disney-tutorial.jpg",
-    "audioSrc": "tiktok/mad-at-disney-tutorial.wav"
+    "audioSrc": "tiktok/mad-at-disney-tutorial.wav",
+    "bpm": 118.80388983044196
   },
   {
     "title": "Mad At Disney",
@@ -998,7 +1015,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/mad-at-disney.jpg",
-    "audioSrc": "tiktok/mad-at-disney.wav"
+    "audioSrc": "tiktok/mad-at-disney.wav",
+    "bpm": 118.69708684012429
   },
   {
     "title": "Pajama Party",
@@ -1019,7 +1037,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/pajamaparty-tutorial.jpg",
-    "audioSrc": "tiktok/pajamaparty-tutorial.wav"
+    "audioSrc": "tiktok/pajamaparty-tutorial.wav",
+    "bpm": 178.8320902310351
   },
   {
     "title": "Shirt-zha",
@@ -1040,7 +1059,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/shirt-zha-tutorial.jpg",
-    "audioSrc": "tiktok/shirt-zha-tutorial.wav"
+    "audioSrc": "tiktok/shirt-zha-tutorial.wav",
+    "bpm": 137.84114909690027
   },
   {
     "title": "Shirt-zha",
@@ -1061,7 +1081,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/shirt-zha.jpg",
-    "audioSrc": "tiktok/shirt-zha.wav"
+    "audioSrc": "tiktok/shirt-zha.wav",
+    "bpm": 122.09864024460654
   },
   {
     "title": "Welcome to My World",
@@ -1082,7 +1103,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/welcome-to-my-world-tutorial.jpg",
-    "audioSrc": "tiktok/welcome-to-my-world-tutorial.wav"
+    "audioSrc": "tiktok/welcome-to-my-world-tutorial.wav",
+    "bpm": 133.1319394040709
   },
   {
     "title": "Welcome to My World",
@@ -1103,7 +1125,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/welcome-to-my-world.jpg",
-    "audioSrc": "tiktok/welcome-to-my-world.wav"
+    "audioSrc": "tiktok/welcome-to-my-world.wav",
+    "bpm": 131.80571849964804
   },
   {
     "title": "Last Christmas",
@@ -1122,7 +1145,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/last-christmas-blurred.jpg",
-    "audioSrc": "tiktok/last-christmas-blurred.wav"
+    "audioSrc": "tiktok/last-christmas-blurred.wav",
+    "bpm": 110.3373674318118
   },
   {
     "title": "Mad at Disney Tutorial",
@@ -1143,7 +1167,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/mad-at-disney-tutorial-blurred.jpg",
-    "audioSrc": "tiktok/mad-at-disney-tutorial-blurred.wav"
+    "audioSrc": "tiktok/mad-at-disney-tutorial-blurred.wav",
+    "bpm": 118.84125425009445
   },
   {
     "title": "Pajama Party Tutorial",
@@ -1164,7 +1189,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/pajama-party-tutorial-blurred.jpg",
-    "audioSrc": "tiktok/pajama-party-tutorial-blurred.wav"
+    "audioSrc": "tiktok/pajama-party-tutorial-blurred.wav",
+    "bpm": 178.91676608136413
   },
   {
     "title": "Savage Love (Qijia)",
@@ -1185,7 +1211,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/qijia-savagelove.jpg",
-    "audioSrc": "tiktok/qijia-savagelove.wav"
+    "audioSrc": "tiktok/qijia-savagelove.wav",
+    "bpm": 152.08656049662054
   },
   {
     "title": "Let's Get Married",
@@ -1227,7 +1254,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/masquerade.jpg",
-    "audioSrc": "tiktok/masquerade.wav"
+    "audioSrc": "tiktok/masquerade.wav",
+    "bpm": 122.4659598116524
   },
   {
     "title": "Wavy",
@@ -1248,7 +1276,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/wavy.jpg",
-    "audioSrc": "tiktok/wavy.wav"
+    "audioSrc": "tiktok/wavy.wav",
+    "bpm": 136.7624522127552
   },
   {
     "title": "Bartender",
@@ -1269,7 +1298,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/bartender-blurred.jpg",
-    "audioSrc": "tiktok/bartender-blurred.wav"
+    "audioSrc": "tiktok/bartender-blurred.wav",
+    "bpm": 106.7150193768454
   },
   {
     "title": "Side to side",
@@ -1288,7 +1318,8 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/side-to-side.jpg",
-    "audioSrc": "tiktok/side-to-side.wav"
+    "audioSrc": "tiktok/side-to-side.wav",
+    "bpm": 147.84605948662997
   },
   {
     "title": "Bartender",
@@ -1309,6 +1340,7 @@
       "pose"
     ],
     "thumbnailSrc": "tiktok/bartender.jpg",
-    "audioSrc": "tiktok/bartender.wav"
+    "audioSrc": "tiktok/bartender.wav",
+    "bpm": 106.69352889852131
   }
 ]
