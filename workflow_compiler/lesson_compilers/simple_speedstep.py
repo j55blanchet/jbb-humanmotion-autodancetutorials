@@ -10,7 +10,7 @@ SEGMENT_LABEL_TIMEDINSTRUCTION_QUEUELENGTH_SECS = 1.0
 def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str], showSkeleton: bool, segmentLesson: bool, spds: List[float]):
 
     creationMethod = imr.generationMethod
-    learningScheme = f'SimpleSpeedStep {spds}' + (' (Skeleton)' if showSkeleton else '') + (' (Segmented)' if segmentLesson else '')
+    learningScheme = f'Study2 Format {spds}' + (' (Skeleton)' if showSkeleton else '') + (' (Segmented)' if segmentLesson else '')
     idEntry = f"{imr.clipName}-{learningScheme}-{creationMethod}"
     workflowId = lesson_id_cache.get(idEntry, str(uuid.uuid4()))
     lesson_id_cache[idEntry] = workflowId

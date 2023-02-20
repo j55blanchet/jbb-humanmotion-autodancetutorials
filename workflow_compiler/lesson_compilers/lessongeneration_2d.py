@@ -6,7 +6,7 @@ from ..datatypes.IMR import IMR
 from .current_lesson_compiler import create_simple_lesson
 # from .legacy_lesson_compiler import create_legacy_lesson
 from ..datatypes import CustomSerializable
-# from .isls_2022_lessons import create_simple_lesson
+from .isls_2022_lessons import create_isls2022_lesson
 from .control_lessons import create_control_lesson
 from .simple_speedstep import create_simple_speedstepped_lesson
 

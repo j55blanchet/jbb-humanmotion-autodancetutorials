@@ -182,18 +182,19 @@ def create_isls2022_lesson(imr: IMR, segment_i: int, speed: float, useSheetMotio
         )
     )
 
-def create_simple_lesson(imr: IMR, useSheetMotion: bool, lessonIdCache: Dict[str, str]) -> Workflow:
+def create_isls2022_lesson(imr: IMR, useSheetMotion: bool, lessonIdCache: Dict[str, str]) -> Workflow:
 
-    compilationMethod = 'SimpleCompiler' + ('-sm' if useSheetMotion else '-vid')
-    fullCreationMethod = f'{compilationMethod} ({imr.generationMethod})'
-    idEntry = imr.clipName + "-" + fullCreationMethod
+    compilationMethod = imr.generationMethod,
+    learningScheme= "Study1 Format w/ " + ("Sheet Motion" if useSheetMotion else "Skeleton Overlay")
+    idEntry = f"{imr.clipName}-{compilationMethod}-{learningScheme}",
     workflowId = lessonIdCache.get(idEntry, str(uuid.uuid4()))
     lessonIdCache[idEntry] = workflowId
     workflow = Workflow(
         title=f"{imr.clipName}" + (" with sheet motion" if useSheetMotion else ""),
         userTitle=f'Learning: "{imr.clipTitle}"',
         id=workflowId,
-        creationMethod=fullCreationMethod,
+        creationMethod=compilationMethod,
+        learningScheme=learningScheme,
         thumbnailSrc=imr.thumbnailSrc,
     )
     
