@@ -8,7 +8,9 @@ class OptionsManager {
 
   public participantIdWasSet = ref(false);
 
-  public isTest = ref(false);
+  public isDebug = ref(false);
+
+  public isExperimentActive = ref(false);
 
   constructor() {
     this.parsePath();
@@ -22,7 +24,7 @@ class OptionsManager {
 
     this.workflowId.value = urlParams.get('workflowId');
     this.participantId.value = urlParams.get('participantId');
-    this.isTest.value = this.workflowId.value === null || this.participantId.value === null;
+    this.isExperimentActive.value = this.workflowId.value !== null || this.participantId.value !== null;
 
     if (this.participantId.value) {
       this.participantIdWasSet.value = true;

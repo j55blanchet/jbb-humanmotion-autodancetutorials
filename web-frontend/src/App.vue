@@ -1,7 +1,7 @@
 <template>
 <div class="app">
 
-  <div id="testData" v-show="isTest" class="tags p-2 mb-0 has-background-dark has-text-grey-lighter">
+  <div id="debugData" v-show="isDebug" class="tags p-2 mb-0 has-background-dark has-text-grey-lighter">
     <span class="tag">ParticipantId: {{participantId ?? 'null'}}</span>
   </div>
 
@@ -138,7 +138,7 @@ export default defineComponent({
       State,
       startKeyframeSelection,
       startedWithWorkflow: ref(false),
-      isTest: optionsManager.isTest,
+      isDebug: optionsManager.isDebug,
       participantId: optionsManager.participantId,
     };
   },

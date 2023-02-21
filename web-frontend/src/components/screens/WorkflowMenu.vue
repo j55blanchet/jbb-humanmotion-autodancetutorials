@@ -1,6 +1,6 @@
 <template>
 
-  <teleport to="#testData" v-if="optionsManager.isTest">
+  <teleport to="#debugData" v-if="optionsManager.isDebug">
     <span class="tag">Workflow Id: {{workflow?.id ?? 'null'}}</span>
     <span class="tag">Experiment Mode: <input type="checkbox" v-model="enableExperimentMode"></span>
 
@@ -334,8 +334,8 @@ export default defineComponent({
 
     const workflowStartTime = ref(new Date());
     const workflowStageStartTime = ref(new Date());
-    const enableExperimentMode = ref(!optionsManager.isTest.value);
-    const isTiming = ref(!optionsManager.isTest.value);
+    const enableExperimentMode = ref(optionsManager.isExperimentActive.value);
+    const isTiming = ref(!optionsManager.isExperimentActive.value);
     const timingNotStarted = computed(() => isTiming.value && !workflowStartTime.value);
 
     const activeStageIndex = ref(-1);
