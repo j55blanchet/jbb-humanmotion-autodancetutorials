@@ -11,9 +11,18 @@ from .control_lessons import create_control_lesson
 from .simple_speedstep import create_simple_speedstepped_lesson
 
 if __name__ == "__main__":
-    imr_dir = Path(sys.argv[1])
-    output_dir = Path(sys.argv[2])
-    lesson_id_cache_path = Path(sys.argv[3])
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("imr_dir", type=Path)
+    parser.add_argument("output_dir", type=Path)
+    parser.add_argument('lesson_id_cache_path', type=Path)
+    parser.add_argument('--wl_song', action='append')
+    args = parser.parse_args()
+
+    imr_dir = args.imr_dir
+    output_dir = args.output_dir
+    lesson_id_cache_path = args.lesson_id_cache_path
+    wl_songs = args.wl_song
 
     lesson_id_cache = {}
     if lesson_id_cache_path.exists():
@@ -24,6 +33,10 @@ if __name__ == "__main__":
         os.makedirs(output_dir)
 
     imr_files = list(imr_dir.rglob('*.[i][m][r].[j][s][o][n]'))
+    
+    if wl_songs is not None:
+        wl_songs_set = set(wl_songs)
+        imr_files = [f for f in imr_files if Path(f.stem).stem in wl_songs_set]
     out_lesson_files = [
         (
             output_dir.joinpath(

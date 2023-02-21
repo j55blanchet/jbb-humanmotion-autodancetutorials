@@ -59,7 +59,8 @@
             "args": [
                 "data/imr",
                 "web-frontend/src/data/workflows",
-                "data/lessonIdCache.json"
+                "data/lessonIdCache.json",
+                "--wl_song=mad-at-disney-tutorial-blurred"
             ],
             "console": "integratedTerminal"
         },
