@@ -14,7 +14,7 @@ MOTION_TRAILS_SIMPLIFY_OPTIONS = {
     'dist_threshold_combine': 25,
 }
 
-def create_isls2022_lesson(imr: IMR, segment_i: int, speed: float, useSheetMotion: bool) -> WorkflowStep:
+def create_isls2022_segmentlearningstep(imr: IMR, segment_i: int, speed: float, useSheetMotion: bool) -> WorkflowStep:
 
     COMBINE_PREV_SEGMENT_THRESHOLD = 1.0
 
@@ -27,7 +27,7 @@ def create_isls2022_lesson(imr: IMR, segment_i: int, speed: float, useSheetMotio
     start_time = prev_seg_start_time if prev_seg_start_time > target_start_time - COMBINE_PREV_SEGMENT_THRESHOLD else target_start_time
     end_time = seg.endTime
 
-    keyframes = [kf.timestamp for kf in imr.keyframes if kf.timestamp >= start_time and kf.timestamp <= end_time]
+    keyframes = [kf.timestamp for kf in imr.keyframes if kf.timestamp >= start_time and kf.timestamp <= end_time] if imr.keyframes is not None else []
     keyframes = list(chain([start_time], keyframes, [end_time]))
     keyframes.sort()
 
@@ -37,19 +37,14 @@ def create_isls2022_lesson(imr: IMR, segment_i: int, speed: float, useSheetMotio
         [
             MiniLessonActivity.from_temporal_segment(
                 imr.temporalSegments[i],
-                title="Demo",
+                title="Learn",
                 speed=speed,
                 is_skeleton=False,
-                startInstruction=f"Let's learn part {i+1}",
-                playingInstruction="Follow along!",
-                endInstruction="Repeat if you need to -- next up we'll try with just " + ("sheet motion" if useSheetMotion else "a skeleton") + ".",
+                startInstruction=f"Let's memorize part {i+1}. Follow along with the video.",
+                endInstruction="Now try repeating this part until you've memorized it.\n(try doing it with your eyes closed)" if not useSheetMotion else "Feel free to repeat this step to help get it memorized!",
                 override_start_time=start_time,
-                motionTrails=MotionFrame.simplify_trails(seg.motionTrails, MOTION_TRAILS_SIMPLIFY_OPTIONS),
-                motionTrailBreaks=[kf.timestamp for kf in seg.keyframes],
-                timedInstructions=[
-                    TimedInstruction(s, e, f'Beat {i+1}')
-                    for i, (s, e) in enumerate(zip(keyframes, chain(keyframes[1:], [end_time])))
-                ]
+                # motionTrails=MotionFrame.simplify_trails(seg.motionTrails, MOTION_TRAILS_SIMPLIFY_OPTIONS),
+                # motionTrailBreaks=[kf.timestamp for kf in seg.keyframes],
                 # pauses=[ActivityPause(time=kf, instruction=f"Keyframe {j +1 }") for j, kf in enumerate(imr.keyframes or []) if start_time < kf < imr.temporalSegments[i].endTime]
             ),
         ] +
@@ -60,9 +55,8 @@ def create_isls2022_lesson(imr: IMR, segment_i: int, speed: float, useSheetMotio
                     title="Practice",
                     speed=speed,
                     is_skeleton=True,
-                    startInstruction=f"Let's practice part {i+1}",
-                    playingInstruction="Follow along!",
-                    endInstruction="Memorize this! Next, you'll try this part from memory!",
+                    startInstruction=f"Let's practice this! Use the skeleton overlay to refine your performance.",
+                    endInstruction="How was that? Feel free to repeat and practice some more!",
                     override_start_time=start_time,
                 )
             ] if not useSheetMotion or len(keyframes) <= 2 else
@@ -89,9 +83,8 @@ def create_isls2022_lesson(imr: IMR, segment_i: int, speed: float, useSheetMotio
                     endTime=end_time,
                     practiceSpeed=speed,
                     demoVisual='none',
-                    startInstruction=f"Let's practice part {i+1}",
-                    playingInstruction="Follow along! (feel free to go the the previous activity to jog your memory)",
-                    endInstruction="Memorize this! Next, you'll try this part from memory!",
+                    startInstruction=f"Let's practice this without the demo video!",
+                    endInstruction="Feel free to repeat this much as you'd like!",
                     sheetMotionVisual='skeleton',
                     sheetMotion=SheetMotion(
                         phrases=[
@@ -126,8 +119,7 @@ def create_isls2022_lesson(imr: IMR, segment_i: int, speed: float, useSheetMotio
                 demoVisual='none',
                 practiceSpeed=speed,
                 startInstruction="Do you have it? Let's try without the " + ("sheet motion." if useSheetMotion else " skeleton."),
-                playingInstruction="(feel free to go back to the previous activity if you need to)",
-                endInstruction=f"Next up: combining this what you learned earlier",
+                endInstruction=f"Next up: combining this what you learned earlier" if i != 0 else "Nice work! Feel free to repeat these steps, or hit 'Done' when you're ready to move on.",
                 # recordBehavior="video-only",
                 # reviewBehavior="video"
             ),
@@ -136,24 +128,24 @@ def create_isls2022_lesson(imr: IMR, segment_i: int, speed: float, useSheetMotio
             [] if i == 0 or start_time - COMBINE_PREV_SEGMENT_THRESHOLD < imr.startTime else 
             ([
                 MiniLessonActivity(
-                    title="Full Practice",
+                    title="From the Start",
                     startTime=imr.startTime,
                     endTime=imr.temporalSegments[i].endTime,
                     userVisual='video',
                     demoVisual='skeleton',
                     practiceSpeed=speed,
-                    startInstruction="Now try everything we learned so far",
+                    startInstruction="Now try it from the beginning!",
                     endInstruction=f"Nice job!"
                 )
             ] if not useSheetMotion else [
                 MiniLessonActivity(
-                    title="Full Practice",
+                    title="From the Start",
                     startTime=imr.startTime,
                     endTime=imr.temporalSegments[i].endTime,
                     practiceSpeed=speed,
                     demoVisual='none',
                     sheetMotionVisual='skeleton',
-                    startInstruction="Now try everything we learned so far",
+                    startInstruction="Now try it from the beginning!",
                     endInstruction=f"Nice job!",
                     sheetMotion=SheetMotion(
                         phrases=[
@@ -184,9 +176,9 @@ def create_isls2022_lesson(imr: IMR, segment_i: int, speed: float, useSheetMotio
 
 def create_isls2022_lesson(imr: IMR, useSheetMotion: bool, lessonIdCache: Dict[str, str]) -> Workflow:
 
-    compilationMethod = imr.generationMethod,
+    compilationMethod = imr.generationMethod
     learningScheme= "Study1 Format w/ " + ("Sheet Motion" if useSheetMotion else "Skeleton Overlay")
-    idEntry = f"{imr.clipName}-{compilationMethod}-{learningScheme}",
+    idEntry = f"{imr.clipName}-{compilationMethod}-{learningScheme}"
     workflowId = lessonIdCache.get(idEntry, str(uuid.uuid4()))
     lessonIdCache[idEntry] = workflowId
     workflow = Workflow(
@@ -229,7 +221,7 @@ def create_isls2022_lesson(imr: IMR, useSheetMotion: bool, lessonIdCache: Dict[s
                     lesson=MiniLesson.construct_imr_preview(imr)
                 )
             ] + [
-                create_isls2022_lesson(imr, i, speed, useSheetMotion)
+                create_isls2022_segmentlearningstep(imr, i, speed, useSheetMotion)
                 for i in range(len(imr.temporalSegments))
             ] + [
                 # WorkflowStep.with_lessonactivities(

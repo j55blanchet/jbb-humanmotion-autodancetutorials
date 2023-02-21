@@ -49,6 +49,8 @@ if __name__ == "__main__":
             imr = IMR.from_json(json.load(imrfile))
 
         # lesson = create_lesson(imr)
+        isls2022_lesson_nosheetmotion = create_isls2022_lesson(imr, useSheetMotion=False, lessonIdCache=lesson_id_cache)
+        isls2022_lesson_sheetmotion = create_isls2022_lesson(imr, useSheetMotion=True, lessonIdCache=lesson_id_cache)
         # simple_lesson_sheetmusic = create_simple_lesson(imr, useSheetMotion=True, lessonIdCache=lesson_id_cache)
         # simple_lesson_nosheetmusic = create_simple_lesson(imr, useSheetMotion=False, lessonIdCache=lesson_id_cache)
         # current_lesson = create_simple_lesson(imr, lessonIdCache=lesson_id_cache)
@@ -62,9 +64,11 @@ if __name__ == "__main__":
         out_lesson_file_simple.parent.mkdir(exist_ok=True, parents=True)
 
         new_lessons = [ 
-            unsegmented_noskeleton_speedstep_lesson,
+            isls2022_lesson_nosheetmotion,
+            isls2022_lesson_sheetmotion,
+            # unsegmented_noskeleton_speedstep_lesson,
             # unsegmented_skeleton_speedstep_lesson,
-            segmented_noskeleton_speedstep_lesson,
+            # segmented_noskeleton_speedstep_lesson,
             # segmented_skeleton_speedstep_lesson,
             # current_lesson,
             # control_lesson,

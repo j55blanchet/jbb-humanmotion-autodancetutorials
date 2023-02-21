@@ -2,7 +2,7 @@
   <div>
     <h1 class="title">Webcam Access</h1>
     <div v-if="state === 'unloaded'" class="mt-4" style="max-width:60ch">
-      <p class="block mt-4">We need your permission to start the webcam.</p>
+      <p class="block mt-4">This part of the app uses the webcam, which we need your permission to access.</p>
       <button class="block button is-primary" @click="loadDevices">Grant Permission</button>
       <div class="block notification is-warning" v-if="error !== null">
         <p class="block"><strong>Error:</strong> <span class="is-family-monospace">{{error}}</span></p>

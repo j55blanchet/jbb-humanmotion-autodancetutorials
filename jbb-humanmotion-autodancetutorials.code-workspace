@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"git.autoRepositoryDetection": "openEditors",
+		"workbench.colorTheme": "Quiet Light"
+	}
+}

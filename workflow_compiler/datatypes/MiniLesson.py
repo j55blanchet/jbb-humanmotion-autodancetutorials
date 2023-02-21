@@ -142,19 +142,18 @@ class MiniLesson(CustomSerializable):
 
         disableSegmentation = disableSegmentation or len(imr.temporalSegments) == 1
 
-        fast_preview = MiniLessonActivity(
-            title="Fast Preview",
-            startTime=imr.startTime,
-            endTime=imr.endTime,
-            practiceSpeed=1.5,
-            startInstruction="Here's a sped-up version of the dance",
-            playingInstruction="Sped-up version",
-            endInstruction="Click a button below to continue"
-        )
-        activities.append(fast_preview)
+        # fast_preview = MiniLessonActivity(
+        #     title="Fast Preview",
+        #     startTime=imr.startTime,
+        #     endTime=imr.endTime,
+        #     practiceSpeed=1.5,
+        #     startInstruction="Here's a sped-up version of the dance",
+        #     endInstruction="Click a button below to continue"
+        # )
+        # activities.append(fast_preview)
 
         preview_activity = MiniLessonActivity(
-            title="Preview"  + ("" if disableSegmentation else " (by parts)"),
+            title="Preview", #  + ("" if disableSegmentation else " (by parts)"),
             startTime=imr.startTime,
             endTime=imr.endTime,
             practiceSpeed=1.0,
@@ -163,7 +162,6 @@ class MiniLesson(CustomSerializable):
                     "" if disableSegmentation 
                     else f". The dance is split into {len(imr.temporalSegments)} parts"
                 ),
-            playingInstruction=f"Normal speed" if disableSegmentation else None,
             endInstruction="Click a button below to continue",
             timedInstructions=[] if disableSegmentation else [  
                 TimedInstruction(
@@ -184,36 +182,35 @@ class MiniLesson(CustomSerializable):
         )
         activities.append(preview_activity)
 
-        slow_preview_activity = MiniLessonActivity(
-            title="Slow Preview" + ("" if disableSegmentation else " (by parts)"),
-            startTime=imr.startTime,
-            endTime=imr.endTime,
-            practiceSpeed=0.5,
-            startInstruction=
-                "Here's the dance at a slow speed" + (
-                    "" if disableSegmentation 
-                    else f". The dance is split into {len(imr.temporalSegments)} parts"
-                ),
-            playingInstruction=f"Slow speed" if disableSegmentation else None,
-            endInstruction=endInstruction,
-            timedInstructions=[] if disableSegmentation else [  
-                TimedInstruction(
-                    seg.startTime - 0.1, 
-                    seg.endTime - 0.1,
-                    f"Part {i+1}" if seg.label is None else seg.label,
-                )
-                for i, seg in enumerate(imr.temporalSegments)
-            ],
-            pauses=[] if disableSegmentation else [
-                ActivityPause(
-                    time=seg.startTime,
-                    instruction=f"Now, Part {i+1}" if seg.label is not None else None,
-                ) for i, seg in enumerate(imr.temporalSegments)
-            ],
-            # keyframes= keyframes, 
-            # keyframeVisual='skeleton' if keyframes is not None else 'none',
-        )
-        activities.append(slow_preview_activity)
+        # slow_preview_activity = MiniLessonActivity(
+        #     title="Slow Preview" + ("" if disableSegmentation else " (by parts)"),
+        #     startTime=imr.startTime,
+        #     endTime=imr.endTime,
+        #     practiceSpeed=0.5,
+        #     startInstruction=
+        #         "Here's the dance at a slow speed" + (
+        #             "" if disableSegmentation 
+        #             else f". The dance is split into {len(imr.temporalSegments)} parts"
+        #         ),
+        #     endInstruction=endInstruction,
+        #     timedInstructions=[] if disableSegmentation else [  
+        #         TimedInstruction(
+        #             seg.startTime - 0.1, 
+        #             seg.endTime - 0.1,
+        #             f"Part {i+1}" if seg.label is None else seg.label,
+        #         )
+        #         for i, seg in enumerate(imr.temporalSegments)
+        #     ],
+        #     pauses=[] if disableSegmentation else [
+        #         ActivityPause(
+        #             time=seg.startTime,
+        #             instruction=f"Now, Part {i+1}" if seg.label is not None else None,
+        #         ) for i, seg in enumerate(imr.temporalSegments)
+        #     ],
+        #     # keyframes= keyframes, 
+        #     # keyframeVisual='skeleton' if keyframes is not None else 'none',
+        # )
+        # activities.append(slow_preview_activity)
 
         # sheetmusic_activity = MiniLessonActivity(
         #     title=f"{activityTitle} Sheet Music",

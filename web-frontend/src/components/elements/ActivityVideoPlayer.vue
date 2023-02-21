@@ -42,7 +42,13 @@
       />
     </div>
 
-    <video v-if="isReviewing"  style="height:100%" class="flipped" :src="recordingObjectUrl" controls></video>
+    <video v-if="isReviewing"  style="height:100%" class="flipped" :src="recordingObjectUrl ?? undefined" controls></video>
+
+    <div class="is-overlay" v-show="shouldShowStartInstructions && activity?.startInstruction">
+      <div class="vcenter-parent">
+        <InstructionCarousel :sizeClass="'is-large'" :tagClass="'is-white'" :instructions="startInstructions"/>
+      </div>
+    </div>
 
     <div class="is-overlay instructions-overlay mb-4">
       <InstructionCarousel v-show="pauseInstructs.length > 0" :sizeClass="'is-medium'" :tagClass="'is-white'" :instructions="pauseInstructs" class="m-2"/>
@@ -110,7 +116,7 @@ export default defineComponent({
   setup(props) {
     const { activity } = toRefs(props);
     const typedActivity = computed(() => (activity.value as MiniLessonActivity) ?? null);
-    const state = ref(ActivityPlayState.AwaitingStart);
+    const state = ref(ActivityPlayState.AwaitingStart as string);
 
     const shouldReview = computed(() => (typedActivity?.value?.reviewing) !== undefined);
     const shouldRecord = computed(() => ((typedActivity?.value?.recording) !== undefined) || shouldReview.value);
@@ -123,6 +129,8 @@ export default defineComponent({
     const videoPlayer = ref(null as null | typeof PausingVideoPlayer);
     const webcamBox = ref(null as null | typeof WebcamBox);
     const videoTime = ref(0);
+
+    const shouldShowStartInstructions = computed(() => isPendingStart.value || awaitingStart.value);
 
     const recordingId = computed(() => {
       if (!shouldRecord.value) return '';
@@ -215,6 +223,7 @@ export default defineComponent({
       isPlaying,
       isPendingStart,
       isReviewing,
+      shouldShowStartInstructions,
 
       shouldReview,
       shouldRecord,
@@ -255,14 +264,7 @@ export default defineComponent({
 
       const instructs: Instruction[] = [];
 
-      if ((this.state === ActivityPlayState.AwaitingStart || this.state === ActivityPlayState.PendingStart) && mActivity.startInstruction) {
-        let text = mActivity.startInstruction;
-        if (this.state === ActivityPlayState.PendingStart) { text += '...'; }
-        instructs.push({
-          id: 1,
-          text,
-        });
-      } else if (this.state === ActivityPlayState.Playing && mActivity.playingInstruction) {
+      if (this.state === ActivityPlayState.Playing && mActivity.playingInstruction) {
         instructs.push({
           id: 2,
           text: mActivity.playingInstruction,
@@ -274,6 +276,22 @@ export default defineComponent({
         });
       }
 
+      return instructs;
+    },
+    startInstructions(): Instruction[] {
+      const mActivity = this.activity;
+      if (!mActivity) return [];
+
+      const instructs: Instruction[] = [];
+
+      if (mActivity.startInstruction) {
+        let text = mActivity.startInstruction;
+        if (this.state === ActivityPlayState.PendingStart) { text += '...'; }
+        instructs.push({
+          id: 1,
+          text,
+        });
+      }
       return instructs;
     },
     timedInstructions(): Instruction[] {
