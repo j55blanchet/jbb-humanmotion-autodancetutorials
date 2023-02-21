@@ -46,8 +46,9 @@
                 "data/database.json",
                 "web-frontend/public/landmarks",
                 "data/audio",
-                "data/imr/autogen",
-                "temp_data/analysis",
+                "data/imr/autogen_speedminima",
+                // "--analysis_dir=temp_data/analysis",
+                "--segmentation_method=spd_minima"
             ]
         },
         {

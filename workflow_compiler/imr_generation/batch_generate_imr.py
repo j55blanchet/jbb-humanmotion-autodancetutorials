@@ -47,13 +47,28 @@ if __name__ == '__main__':
     import sys
     import json
     import matplotlib
+    import argparse
     matplotlib.use('pdf')
-    database_filepath = Path(sys.argv[1])
-    landmark_dir = Path(sys.argv[2])
-    audio_dir = Path(sys.argv[3])
-    output_dir = Path(sys.argv[4])
-    analysis_dir = Path(sys.argv[5])
-    analysis_dir.mkdir(parents=True, exist_ok=True)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('database_filepath', type=Path)
+    parser.add_argument('landmark_dir', type=Path)
+    parser.add_argument('audio_dir', type=Path)
+    parser.add_argument('output_dir', type=Path)
+    parser.add_argument('--analysis_dir', type=Path, required=False)
+
+    # choices: 'tempo', 'spd_minima'
+    parser.add_argument('--segmentation_method', type=str, default='tempo')
+
+    args = parser.parse_args()
+
+    database_filepath = args.database_filepath
+    landmark_dir = args.landmark_dir
+    audio_dir = args.audio_dir
+    output_dir = args.output_dir
+    analysis_dir = args.analysis_dir
+
+    if analysis_dir is not None:
+        analysis_dir.mkdir(parents=True, exist_ok=True)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     plt.ioff()
@@ -81,6 +96,7 @@ if __name__ == '__main__':
         landmarkScope = motion_entry['landmarkScope']
         audioSrc = motion_entry.get('audioSrc', None)
         thumbnailSrc = motion_entry['thumbnailSrc']
+        bpm = motion_entry.get('bpm', 0)
         
         if len(landmarkScope) != 1 or landmarkScope[0] != 'pose':
             continue
@@ -95,12 +111,6 @@ if __name__ == '__main__':
             break
 
         print(f"Processing #{done: 2d} {clipName}")
-
-        bpm = 0
-        if audioSrc is not None:
-            audioPath = Path(audioSrc)
-            audioPath = audio_dir.joinpath(audioPath)
-            bpm, = audio_analysis.perform_audio_analysis(audioPath)
 
         extrema_window = int(fps // 3)
         smooth_window = int(fps // 3)
@@ -153,7 +163,7 @@ if __name__ == '__main__':
         keyframeMethod = "HandExtensionExtrema"
 
         effective_tempo_bpm = bpm
-        if bpm > 0:
+        if bpm > 0 and args.segmentation_method == 'tempo':
             tempo_keyframe_bpm_min = 50
             tempo_keyframe_bpm_max = 100
             effective_tempo_bpm = bpm
@@ -186,48 +196,50 @@ if __name__ == '__main__':
         ]
         keyframeMethod += "-filtered"
 
-        chart_handspd = 0, 0
-        
-        chart_xyvel = 1, 0
-        chart_netspd = 2, 0
-        chart_handspdcorr = 0, 1
-        chart_extension = 1, 1
+        if analysis_dir is not None:
+            chart_handspd = 0, 0
+            
+            chart_xyvel = 1, 0
+            chart_netspd = 2, 0
+            chart_handspdcorr = 0, 1
+            chart_extension = 1, 1
 
-        chart_handmotion = 2, 1
+            chart_handmotion = 2, 1
 
-        fig, axs = plt.subplots(3, 2)
-        fig.set_size_inches(18.5, 13.5)
-        pose_identifier.plot_movement_extension(
-            hands,
-            fps,
-            smooth_window=smooth_window,
-            extrema_window=extrema_window,
-            ax_spds=axs[chart_handspd],
-            ax_spdcorrelation=axs[chart_handspdcorr],
-            ax_spd_horz_vs_vertical=axs[chart_xyvel],
-            ax_movement_net=axs[chart_netspd],
-            ax_extension=axs[chart_extension],
-        )
-        
-        axs[chart_handspd].yaxis.set_visible(True)
-        axs[chart_handspd].yaxis.set_ticks([])
-        axs[chart_handspd].set_ylabel('Speeds')
-        axs[chart_handspdcorr].yaxis.set_visible(True)
-        axs[chart_handspdcorr].yaxis.set_ticks([])
-        axs[chart_handspdcorr].set_ylabel('Correlation')
-        axs[chart_xyvel].yaxis.set_visible(True)
-        axs[chart_xyvel].yaxis.set_ticks([])
-        axs[chart_xyvel].set_ylabel('Horz vs Vert Speed')
-        axs[chart_netspd].yaxis.set_visible(True)
-        axs[chart_netspd].yaxis.set_ticks([])
-        axs[chart_netspd].set_ylabel('Net Speed')
-        axs[chart_extension].yaxis.set_visible(True)
-        axs[chart_extension].yaxis.set_ticks([])
-        axs[chart_extension].set_ylabel('Extension')
+            fig, axs = plt.subplots(3, 2)
+            fig.set_size_inches(18.5, 13.5)
+            pose_identifier.plot_movement_extension(
+                hands,
+                fps,
+                smooth_window=smooth_window,
+                extrema_window=extrema_window,
+                ax_spds=axs[chart_handspd],
+                ax_spdcorrelation=axs[chart_handspdcorr],
+                ax_spd_horz_vs_vertical=axs[chart_xyvel],
+                ax_movement_net=axs[chart_netspd],
+                ax_extension=axs[chart_extension],
+            )
+            
+            axs[chart_handspd].yaxis.set_visible(True)
+            axs[chart_handspd].yaxis.set_ticks([])
+            axs[chart_handspd].set_ylabel('Speeds')
+            axs[chart_handspdcorr].yaxis.set_visible(True)
+            axs[chart_handspdcorr].yaxis.set_ticks([])
+            axs[chart_handspdcorr].set_ylabel('Correlation')
+            axs[chart_xyvel].yaxis.set_visible(True)
+            axs[chart_xyvel].yaxis.set_ticks([])
+            axs[chart_xyvel].set_ylabel('Horz vs Vert Speed')
+            axs[chart_netspd].yaxis.set_visible(True)
+            axs[chart_netspd].yaxis.set_ticks([])
+            axs[chart_netspd].set_ylabel('Net Speed')
+            axs[chart_extension].yaxis.set_visible(True)
+            axs[chart_extension].yaxis.set_ticks([])
+            axs[chart_extension].set_ylabel('Extension')
 
-        fig.suptitle(f'{clipName} Motion Analysis (Hands)')
-        fig.savefig(str(analysis_dir / f'{clipName}_handanalysis.pdf'))
-        plt.close(fig)
+            fig.suptitle(f'{clipName} Motion Analysis (Hands)')
+            fig.savefig(str(analysis_dir / f'{clipName}_handanalysis.pdf'))
+            plt.close(fig)
+            # end analysis
 
         imr_file_out = output_dir / (clipName + '.imr.json')
         imr_file_out.parent.mkdir(parents=True, exist_ok=True)
@@ -269,7 +281,7 @@ if __name__ == '__main__':
                 x = x[:minlen]
                 y = y[:minlen]
                 
-                axs[chart_handmotion].plot(x, y, label=f'{label}-{landmark_id}')
+                # axs[chart_handmotion].plot(x, y, label=f'{label}-{landmark_id}')
                 motion_trails.append(
                     IMR.MotionTrail(
                         landmark=landmark_id,
@@ -291,9 +303,10 @@ if __name__ == '__main__':
         for i, seg in enumerate(imr.temporalSegments):
             seg.motionTrails = create_motion_trails(seg.startTime, seg.endTime, f'Segment {i}')
         
-        axs[chart_handmotion].legend()
-        fig.suptitle(f'{clipName} Motion Analysis (Hands)')
-        fig.savefig(str(analysis_dir / f'{clipName}_handanalysis.pdf'))
+        # if analysis_dir is not None:
+            # axs[chart_handmotion].legend()
+            # fig.suptitle(f'{clipName} Motion Analysis (Hands)')
+            # fig.savefig(str(analysis_dir / f'{clipName}_handanalysis.pdf'))
 
         # imr = IMR.IMR(
         #     clipName, 
