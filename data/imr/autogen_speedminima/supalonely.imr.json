@@ -2,7 +2,7 @@
   "clipName": "supalonely",
   "clipPath": "tiktok/supalonely.mp4",
   "clipTitle": "Sup-a-lonely",
-  "generationMethod": "Autogen HandsSpdMinima(Filtered)-HandExtensionExtrema-filtered",
+  "generationMethod": "Speed-Minima Segmentation with Retraction/Extension Keyframes",
   "startTime": 0,
   "endTime": 21.254566666666665,
   "temporalSegments": [

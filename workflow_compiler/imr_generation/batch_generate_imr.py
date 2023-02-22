@@ -157,10 +157,8 @@ if __name__ == '__main__':
             hands_spd_minima_temporal_segments = hands_spd_minima_temporal_segments[:-1]
         
         segmentationTimes = list(itertools.chain([startTime], hands_spd_minima_temporal_segments, [endTime]))
-        segmentationMethod = "HandsSpdMinima(Filtered)"
-
         keyframesIndices = hands_extension_extrema
-        keyframeMethod = "HandExtensionExtrema"
+        generationMethod = "Speed-Minima Segmentation with Retraction/Extension Keyframes"
 
         effective_tempo_bpm = bpm
         if bpm > 0 and args.segmentation_method == 'tempo':
@@ -175,14 +173,14 @@ if __name__ == '__main__':
             secs_per_beat = 60 / effective_tempo_bpm
             beat_timestamps = np.arange(startTime, endTime, secs_per_beat)
             keyframesIndices = np.array([int(round(ts * fps)) for ts in beat_timestamps])
-            keyframeMethod = "BeatAligned"
 
             beats_per_segment = 4
             segmentationTimes = np.arange(startTime, endTime, secs_per_beat * beats_per_segment)
             if endTime - segmentationTimes[-1] < 0.5:
                 segmentationTimes = segmentationTimes[:-1]
             segmentationTimes = np.append(segmentationTimes, endTime)
-            segmentationMethod = "4BeatMeasures"
+            
+            generationMethod = "4-Beat Tempo-Based Segmentation"
 
         keyframes = [
             IMR.Keyframe(
@@ -194,7 +192,7 @@ if __name__ == '__main__':
                 itertools.chain(keyframesIndices[1:], [end_frame])
             )
         ]
-        keyframeMethod += "-filtered"
+        # keyframeMethod += "-filtered"
 
         if analysis_dir is not None:
             chart_handspd = 0, 0
@@ -253,9 +251,8 @@ if __name__ == '__main__':
             tempoBPM=None if bpm <= 0 else effective_tempo_bpm,
             thumbnailSrc=thumbnailSrc,
             segmentation=segmentationTimes,
-            segmentationMethod=segmentationMethod,
+            genMethod=generationMethod,
             keyframes=keyframes,
-            keyframeMethod=keyframeMethod
         )
 
         def create_motion_trails(startTime: float, endTime: float, label: str):

@@ -2,7 +2,7 @@
   "clipName": "colddance-tutorial",
   "clipPath": "tiktok/colddance-tutorial.mp4",
   "clipTitle": "Cold Dance",
-  "generationMethod": "Autogen HandsSpdMinima(Filtered)-HandExtensionExtrema-filtered",
+  "generationMethod": "Speed-Minima Segmentation with Retraction/Extension Keyframes",
   "startTime": 0,
   "endTime": 23.83050847457627,
   "temporalSegments": [

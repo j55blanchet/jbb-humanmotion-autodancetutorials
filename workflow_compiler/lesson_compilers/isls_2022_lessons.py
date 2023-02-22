@@ -85,7 +85,7 @@ def create_isls2022_segmentlearningstep(imr: IMR, segment_i: int, speed: float, 
                     demoVisual='none',
                     startInstruction=f"Let's practice this without the demo video!",
                     endInstruction="Feel free to repeat this much as you'd like!",
-                    sheetMotionVisual='skeleton',
+                    sheetMotionVisual='video',
                     sheetMotion=SheetMotion(
                         phrases=[
                             MotionPhrase(frames=[
@@ -177,7 +177,7 @@ def create_isls2022_segmentlearningstep(imr: IMR, segment_i: int, speed: float, 
 def create_isls2022_lesson(imr: IMR, useSheetMotion: bool, lessonIdCache: Dict[str, str]) -> Workflow:
 
     compilationMethod = imr.generationMethod
-    learningScheme= "Study1 Format w/ " + ("Sheet Motion" if useSheetMotion else "Skeleton Overlay")
+    learningScheme= "V1 w/ " + ("Sheet Motion" if useSheetMotion else "Skeleton Overlay")
     idEntry = f"{imr.clipName}-{compilationMethod}-{learningScheme}"
     workflowId = lessonIdCache.get(idEntry, str(uuid.uuid4()))
     lessonIdCache[idEntry] = workflowId
@@ -187,6 +187,7 @@ def create_isls2022_lesson(imr: IMR, useSheetMotion: bool, lessonIdCache: Dict[s
         id=workflowId,
         creationMethod=compilationMethod,
         learningScheme=learningScheme,
+        associatedClip=imr.clipName,
         thumbnailSrc=imr.thumbnailSrc,
     )
     

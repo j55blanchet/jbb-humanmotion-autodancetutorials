@@ -2,7 +2,7 @@
   "clipName": "side-to-side",
   "clipPath": "tiktok/side-to-side.mp4",
   "clipTitle": "Side to side",
-  "generationMethod": "Autogen HandsSpdMinima(Filtered)-HandExtensionExtrema-filtered",
+  "generationMethod": "Speed-Minima Segmentation with Retraction/Extension Keyframes",
   "startTime": 0,
   "endTime": 19.052385719052385,
   "temporalSegments": [

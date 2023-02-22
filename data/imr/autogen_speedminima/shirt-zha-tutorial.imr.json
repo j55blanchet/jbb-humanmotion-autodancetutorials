@@ -2,7 +2,7 @@
   "clipName": "shirt-zha-tutorial",
   "clipPath": "tiktok/shirt-zha-tutorial.mp4",
   "clipTitle": "Shirt-zha",
-  "generationMethod": "Autogen HandsSpdMinima(Filtered)-HandExtensionExtrema-filtered",
+  "generationMethod": "Speed-Minima Segmentation with Retraction/Extension Keyframes",
   "startTime": 0,
   "endTime": 16.16949152542373,
   "temporalSegments": [

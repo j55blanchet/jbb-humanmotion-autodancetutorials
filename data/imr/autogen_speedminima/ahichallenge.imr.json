@@ -2,7 +2,7 @@
   "clipName": "ahichallenge",
   "clipPath": "tiktok/ahichallenge.mp4",
   "clipTitle": "Ahi Challenge",
-  "generationMethod": "Autogen HandsSpdMinima(Filtered)-HandExtensionExtrema-filtered",
+  "generationMethod": "Speed-Minima Segmentation with Retraction/Extension Keyframes",
   "startTime": 0,
   "endTime": 14.3,
   "temporalSegments": [

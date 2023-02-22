@@ -23,6 +23,7 @@ def create_simple_speedstepped_lesson(imr: IMR, lesson_id_cache: Dict[str, str],
         id=workflowId,
         learningScheme=learningScheme,
         creationMethod=creationMethod,
+        associatedClip=imr.clipName,
         thumbnailSrc=imr.thumbnailSrc,
         stages=[
             # WorkflowStage(

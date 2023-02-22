@@ -2,7 +2,7 @@
   "clipName": "itsafit",
   "clipPath": "tiktok/itsafit.mp4",
   "clipTitle": "It's a Fit",
-  "generationMethod": "Autogen HandsSpdMinima(Filtered)-HandExtensionExtrema-filtered",
+  "generationMethod": "Speed-Minima Segmentation with Retraction/Extension Keyframes",
   "startTime": 1.0,
   "endTime": 10.0,
   "temporalSegments": [

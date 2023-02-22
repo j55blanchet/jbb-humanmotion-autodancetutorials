@@ -2,7 +2,7 @@
   "clipName": "bartender",
   "clipPath": "tiktok/bartender.mp4",
   "clipTitle": "Bartender",
-  "generationMethod": "Autogen HandsSpdMinima(Filtered)-HandExtensionExtrema-filtered",
+  "generationMethod": "Speed-Minima Segmentation with Retraction/Extension Keyframes",
   "startTime": 0,
   "endTime": 14.9,
   "temporalSegments": [

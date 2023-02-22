@@ -2,7 +2,7 @@
   "clipName": "blindinglights",
   "clipPath": "tiktok/blindinglights.mp4",
   "clipTitle": "Blinding Lights",
-  "generationMethod": "Autogen HandsSpdMinima(Filtered)-HandExtensionExtrema-filtered",
+  "generationMethod": "Speed-Minima Segmentation with Retraction/Extension Keyframes",
   "startTime": 0,
   "endTime": 15.266666666666667,
   "temporalSegments": [

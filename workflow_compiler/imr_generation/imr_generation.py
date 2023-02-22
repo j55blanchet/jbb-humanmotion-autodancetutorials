@@ -11,16 +11,15 @@ def create_imr(
     tempoBPM: Optional[float],
     thumbnailSrc: str,
     segmentation: List[float],
-    segmentationMethod: str,
+    genMethod: str,
     keyframes: List[IMR.Keyframe],
-    keyframeMethod: str,
 ) -> IMR:
 
     imr = IMR.IMR(
         clipName, 
         clipPath,
         clipTitle,
-        genMethod=f"Autogen {segmentationMethod}-{keyframeMethod}",
+        genMethod=genMethod,
         startTime=segmentation[0],
         endTime=segmentation[-1],
         segments=[

@@ -23,27 +23,32 @@
     </div>
 
     <div class="grid-menu container block" v-show="currentTab === Tabs.Workflows">
-      <div class="box m-4 hover-expand is-clickable"
-        v-for="workflow in workflows"
+      <MainMenuWorkflowCard
+        v-for="workflow in whitelistedWorkflows"
+        :workflow="workflow"
         :key="workflow.id"
-        @click="$emit('workflow-selected', workflow.id)">
-        <div class="level">
-          <div class="level-item mr-4" v-if="workflow.thumbnailSrc">
-            <img :src="workflow.thumbnailSrc" class="image is-96x96 is-cover">
-          </div>
-          <div class="level-item has-text-left">
-            <div>
-              <p class="is-uppercase">{{workflow.title}}</p>
-              <p class="is-size-7 has-text-grey mt-1 mb-1" style="max-width:40ch;"><strong>Algorithm: </strong>{{workflow.creationMethod}}</p>
-              <p class="is-size-7 has-text-grey mt-1 mb-1" style="max-width:40ch;"><strong>Lesson: </strong>{{workflow.learningScheme}}</p>
-              <p class="is-size-7 has-text-grey"><strong>Created:</strong> {{workflow.created.toLocaleDateString()}} at {{workflow.created.toLocaleTimeString()}}</p>
-            </div>
-          </div>
-        </div>
-        <div style="" class="is-size-7">
-          <button class="button is-info is-light" @click.stop="copyLink(workflow.id, $event)">Copy Link</button>
-        </div>
-      </div>
+        @click="$emit('workflow-selected', workflow.id)"
+      ></MainMenuWorkflowCard>
+    </div>
+    <div class="is-justify-content-center is-flex" v-show="currentTab === Tabs.Workflows && nonwhitelistedWorkflows.length > 0">
+      <button class="button is-ghost" @click="() => isWorkflowListExpanded = !isWorkflowListExpanded">
+        <span v-if="isWorkflowListExpanded">
+          <i class="fas fa-minus"></i>
+          Show Less
+        </span>
+        <span v-else>
+          <i class="fas fa-plus"></i>
+          Show All
+        </span>
+      </button>
+    </div>
+    <div class="grid-menu container block" v-show="nonwhitelistedWorkflows.length > 0 && currentTab === Tabs.Workflows && isWorkflowListExpanded">
+      <MainMenuWorkflowCard
+        v-for="workflow in nonwhitelistedWorkflows"
+        :workflow="workflow"
+        :key="workflow.id"
+        @click="$emit('workflow-selected', workflow.id)"
+      ></MainMenuWorkflowCard>
     </div>
 
     <div v-if="currentTab === Tabs.Videos && availableTags.size > 0" class="has-text-centered container">
@@ -158,6 +163,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue';
+import MainMenuWorkflowCard from '@/components/elements/MainMenuWorkflowCard.vue';
 import LessonCard from '@/components/elements/LessonCard.vue';
 import UploadCard from '@/components/elements/UploadCard.vue';
 import VideoDatabaseEntry from '@/model/VideoDatabaseEntry';
@@ -165,6 +171,7 @@ import miniLessonManager, { MiniLessonManager } from '@/services/MiniLessonManag
 import db from '@/services/VideoDatabase';
 import MiniLesson from '@/model/MiniLesson';
 import workflowManager, { WorkflowManager } from '@/services/WorkflowManager';
+import optionsManager from '@/services/OptionsManager';
 
 const workflowWhitelist = [
   'c8829142-992b-4cda-8ef7-ff0813f6e6fb',
@@ -191,12 +198,13 @@ export default defineComponent({
   components: {
     LessonCard,
     UploadCard,
+    MainMenuWorkflowCard,
   },
   setup(props, ctx) {
     const videos = db.entries;
     const selectedVideo = ref(null as VideoDatabaseEntry | null);
     const uploadLessonUIActive = ref(false);
-    const currentTab = ref(Tabs.Workflows);
+    const currentTab = ref(Tabs.Workflows as string);
     const activeTags = ref(new Set());
 
     function onLessonSelected(
@@ -237,8 +245,19 @@ export default defineComponent({
       });
     });
 
+    // eslint-disable-next-line arrow-body-style
+    const nonwhitelistedWorkflows = computed(() => {
+      // eslint-disable-next-line arrow-body-style
+      return workflowManager.workflowsArray.value.filter((workflow) => {
+        return workflowWhitelist.length === 0 || !workflowWhitelist.includes(workflow.id);
+      });
+    });
+
     return {
-      workflows: whitelistedWorkflows,
+      whitelistedWorkflows,
+      nonwhitelistedWorkflows,
+      isDebug: optionsManager.isDebug,
+      isWorkflowListExpanded: ref(false),
       selectedVideo,
       videos,
       filteredVideos,
@@ -255,26 +274,6 @@ export default defineComponent({
     };
   },
   methods: {
-    copyLink(workflowId: string, event: MouseEvent) {
-      const url = `https://${window.location.host}?workflowId=${workflowId}&participantId=PARTICIPANTID`;
-      navigator.clipboard.writeText(url);
-
-      const target = event?.target as (HTMLButtonElement | undefined);
-      if (target) {
-        target.classList.add('is-success');
-        const originalText = target.innerText;
-        target.innerText = 'Copied!';
-        target.disabled = true;
-
-        setTimeout(() => {
-          if (target) {
-            target.classList.remove('is-success');
-            target.innerText = originalText;
-            target.disabled = false;
-          }
-        }, 1000);
-      }
-    },
     toggleTag(tag: string) {
       if (this.activeTags.has(tag)) {
         this.activeTags.delete(tag);

@@ -115,6 +115,7 @@ def create_simple_lesson(imr: IMR, lessonIdCache: Dict[str, str]) -> Workflow:
         id=workflowId,
         creationMethod=fullCreationMethod,
         thumbnailSrc=imr.thumbnailSrc,
+        associatedClip=imr.clipName,
     )
     
     learning_speeds = [0.5]

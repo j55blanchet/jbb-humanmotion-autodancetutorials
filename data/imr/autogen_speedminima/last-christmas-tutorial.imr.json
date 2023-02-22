@@ -2,7 +2,7 @@
   "clipName": "last-christmas-tutorial",
   "clipPath": "tiktok/last-christmas-tutorial.mp4",
   "clipTitle": "Last Christmas",
-  "generationMethod": "Autogen HandsSpdMinima(Filtered)-HandExtensionExtrema-filtered",
+  "generationMethod": "Speed-Minima Segmentation with Retraction/Extension Keyframes",
   "startTime": 0,
   "endTime": 15.066666666666666,
   "temporalSegments": [

@@ -2,7 +2,7 @@
   "clipName": "masquerade",
   "clipPath": "tiktok/masquerade.mp4",
   "clipTitle": "Masquerade",
-  "generationMethod": "Autogen HandsSpdMinima(Filtered)-HandExtensionExtrema-filtered",
+  "generationMethod": "Speed-Minima Segmentation with Retraction/Extension Keyframes",
   "startTime": 0,
   "endTime": 21.711538461538463,
   "temporalSegments": [

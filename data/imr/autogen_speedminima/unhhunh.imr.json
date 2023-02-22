@@ -2,7 +2,7 @@
   "clipName": "unhhunh",
   "clipPath": "tiktok/unhhunh.mp4",
   "clipTitle": "Unhhunh",
-  "generationMethod": "Autogen HandsSpdMinima(Filtered)-HandExtensionExtrema-filtered",
+  "generationMethod": "Speed-Minima Segmentation with Retraction/Extension Keyframes",
   "startTime": 0,
   "endTime": 19.266666666666666,
   "temporalSegments": [

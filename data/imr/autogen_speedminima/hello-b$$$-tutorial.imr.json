@@ -2,7 +2,7 @@
   "clipName": "hello-b$$$-tutorial",
   "clipPath": "tiktok/hello-b$$$-tutorial.mp4",
   "clipTitle": "Hello B$$$",
-  "generationMethod": "Autogen HandsSpdMinima(Filtered)-HandExtensionExtrema-filtered",
+  "generationMethod": "Speed-Minima Segmentation with Retraction/Extension Keyframes",
   "startTime": 0,
   "endTime": 30.275862068965516,
   "temporalSegments": [

@@ -2,7 +2,7 @@
   "clipName": "lets-get-married",
   "clipPath": "tiktok/lets-get-married.mp4",
   "clipTitle": "Let's Get Married",
-  "generationMethod": "Autogen HandsSpdMinima(Filtered)-HandExtensionExtrema-filtered",
+  "generationMethod": "Speed-Minima Segmentation with Retraction/Extension Keyframes",
   "startTime": 0,
   "endTime": 14.233333333333333,
   "temporalSegments": [

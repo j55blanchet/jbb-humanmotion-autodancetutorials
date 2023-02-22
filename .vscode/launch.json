@@ -46,9 +46,10 @@
                 "data/database.json",
                 "web-frontend/public/landmarks",
                 "data/audio",
-                "data/imr/autogen_speedminima",
+                "data/imr/augogen",
+                // "data/imr/autogen_speedminima",
                 // "--analysis_dir=temp_data/analysis",
-                "--segmentation_method=spd_minima"
+                // "--segmentation_method=spd_minima"
             ]
         },
         {
@@ -58,10 +59,10 @@
             "module": "workflow_compiler.lesson_compilers.lessongeneration_2d",
             "cwd": "${workspaceFolder}",
             "args": [
-                "data/imr",
+                "data/imr/autogen",
                 "web-frontend/src/data/workflows",
                 "data/lessonIdCache.json",
-                "--wl_song=mad-at-disney-tutorial-blurred"
+                // "--wl_song=mad-at-disney-tutorial-blurred"
             ],
             "console": "integratedTerminal"
         },

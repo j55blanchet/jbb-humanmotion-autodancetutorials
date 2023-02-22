@@ -116,6 +116,7 @@ class Workflow(CustomSerializable):
     userTitle: str
     creationMethod: str
     learningScheme: str
+    associatedClip: Optional[str] = field(default=None)
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
     stages: List[WorkflowStage] = field(default_factory=list)
     created: Optional[datetime] = field(default_factory=datetime.utcnow)
