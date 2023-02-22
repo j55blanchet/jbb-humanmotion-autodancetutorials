@@ -58,7 +58,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     return {
-      isDebug: computed(() => optionsManager.isDebug),
+      isDebug: optionsManager.isDebug,
       copyLink,
     };
   },
