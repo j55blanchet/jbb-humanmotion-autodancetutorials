@@ -1,19 +1,19 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "39d1d69caa03d406a5ea",
+    "revision": "3c63721c3a7bccf35370",
     "url": "/css/app.75613c79.css"
   },
   {
-    "revision": "d50909e15850db8589af5a9184cf9de4",
+    "revision": "1f0e90d74fa25befec918ece3f6f0682",
     "url": "/index.html"
   },
   {
-    "revision": "39d1d69caa03d406a5ea",
-    "url": "/js/app.217b4dec.js"
+    "revision": "3c63721c3a7bccf35370",
+    "url": "/js/app.0f9f9c86.js"
   },
   {
-    "revision": "24fc8e7ed55350afe1cd",
-    "url": "/js/chunk-vendors.4ac6d823.js"
+    "revision": "756bd45e547cb704324b",
+    "url": "/js/chunk-vendors.10391de0.js"
   },
   {
     "revision": "3cbb7ac27a2c2ebd73cc935fd3cff085",
@@ -1224,10 +1224,6 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/videos/ASL/Cluster4/hen.mp4"
   },
   {
-    "revision": "8a926b249e7c6ad2f1bd701c8fee952a",
-    "url": "/videos/tiktok/ahichallenge.mp4"
-  },
-  {
     "revision": "7b82c48b6ac13f4295221d4a34f0064d",
     "url": "/videos/tiktok/bartender-blurred.mp4"
   },
@@ -1256,10 +1252,6 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/videos/tiktok/derulo.mp4"
   },
   {
-    "revision": "5014183e35cc6965788a6cbf5488fa7a",
-    "url": "/videos/tiktok/dont-start-now.mp4"
-  },
-  {
     "revision": "0843c885ef2917a913b5f83b153a59f6",
     "url": "/videos/tiktok/getup.mp4"
   },
@@ -1282,10 +1274,6 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "a5fb3c3ddeba489aa89d5a370607873f",
     "url": "/videos/tiktok/last-christmas-tutorial.mp4"
-  },
-  {
-    "revision": "7558ad5573c02c907a152c1939800f13",
-    "url": "/videos/tiktok/lets-get-married.mp4"
   },
   {
     "revision": "1c24cb4e0ee1c2149781f6f22c131257",
@@ -1342,10 +1330,6 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "a8c22b8d3ba6b241df25ece3cee64155",
     "url": "/videos/tiktok/side-to-side.mp4"
-  },
-  {
-    "revision": "c21e16773da68c12845e71c298b7a8ed",
-    "url": "/videos/tiktok/supalonely.mp4"
   },
   {
     "revision": "e34e0afedb1a97b15bf050f89f842b92",
