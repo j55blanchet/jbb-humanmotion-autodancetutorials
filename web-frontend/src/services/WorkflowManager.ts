@@ -9,14 +9,14 @@ import videoDB, { VideoDatabase } from '@/services/VideoDatabase';
 import MiniLesson from '@/model/MiniLesson';
 import { Workflow, WorkflowStage, WorkflowStep } from '@/model/Workflow';
 // import workflowsJson from '@/model/all_workflows.json';
-import customWorkflowsJson from '@/model/customWorkflows.json';
+import additionalWorkflowsJson from '@/model/additionalWorkflows.json';
 import eventHub, { EventNames } from './EventHub';
 import Utils from './Utils';
 
 const thumbnailRootDir = 'thumbs/';
 
 const defaultWorkflows = workflowsJson as Workflow[];
-const customWorkflows = customWorkflowsJson as Workflow[];
+const customWorkflows = additionalWorkflowsJson as Workflow[];
 
 export interface TrackingWorkflowStep extends WorkflowStep {
   status: 'notstarted' | 'inprogress' | 'completed';
@@ -36,10 +36,16 @@ export class WorkflowManager {
 
   public workflows = reactive(new Map() as Map<string, Workflow>);
 
-  public allWorkflows = computed(() => {
+  public workflowsArray = computed(() => {
     const array = new Array(...this.workflows.values());
     array.sort((a, b) => a.title.localeCompare(b.title));
     return array;
+  });
+
+  public customWorkflowsArray = computed(() => {
+    const array = new Array(...this.workflows.values());
+    array.sort((a, b) => a.title.localeCompare(b.title));
+    return array.filter((w) => !this.bakedInWorkflows.has(w.id));
   });
 
   public activeFlow = ref(null as TrackingWorkflow | null);

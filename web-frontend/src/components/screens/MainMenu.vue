@@ -166,6 +166,11 @@ import db from '@/services/VideoDatabase';
 import MiniLesson from '@/model/MiniLesson';
 import workflowManager, { WorkflowManager } from '@/services/WorkflowManager';
 
+const workflowWhitelist = [
+  'c8829142-992b-4cda-8ef7-ff0813f6e6fb',
+  '15752163-7086-4305-a7be-39affe5c7e57',
+];
+
 const Tabs = Object.freeze({
   Workflows: 'Workflows',
   Videos: 'Videos',
@@ -224,8 +229,16 @@ export default defineComponent({
       return tagMatchingMotions;
     });
 
+    // eslint-disable-next-line arrow-body-style
+    const whitelistedWorkflows = computed(() => {
+      // eslint-disable-next-line arrow-body-style
+      return workflowManager.workflowsArray.value.filter((workflow) => {
+        return workflowWhitelist.length === 0 || workflowWhitelist.includes(workflow.id);
+      });
+    });
+
     return {
-      workflows: workflowManager.allWorkflows,
+      workflows: whitelistedWorkflows,
       selectedVideo,
       videos,
       filteredVideos,

@@ -24,7 +24,7 @@
           'is-success': !isDirty && activeWorkflow,
         }"
         @click="goBack()">&lt; Back</button>
-        <button v-if="activeWorkflow && workflowInDatabase" class="button is-danger" @click="deleteWorkflow">
+        <button v-if="activeWorkflow && workflowInDatabase" class="button is-danger" @click="deleteWorkflow(undefined);">
           Delete
         </button>
         <button v-if="activeWorkflow" class="button" @click="exportWorkflow">Export</button>
@@ -41,6 +41,7 @@
     </div>
 
     <div class="container block has-text-centered" v-if="!activeWorkflow">
+      <div>
       <div class="card block center-block has-text-left is-inline-block">
           <!-- <div class="card-header">
             <h4 class="card-header-title">Pick a template:</h4>
@@ -53,20 +54,28 @@
               </li>
               <li v-for="(workflow, i) in availableWorkflows" :key="workflow.id">
                 <a @click="selectingWorkflowIndex = i" :class="{'is-active': selectingWorkflowIndex === i}">
-                  <strong>#{{i+1}}</strong>&nbsp;{{workflow.title}}
+                  <strong>#{{i+1}}</strong>
+                  {{workflow.title}}
+                  <span class="tag" v-if="isCustomWorkflow(workflow.id)">custom</span>
                 </a>
               </li>
             </ul>
           </div>
           <div class="card-footer" v-if="canEditWorkflow">
+            <a class="card-footer-item is-danger" @click="deleteWorkflow(selectingWorkflowId)">Delete</a>
             <a class="card-footer-item" @click="canEditWorkflow && startCreation(false)">Edit</a>
-          </div><div class="card-footer">
+          </div>
+          <div class="card-footer">
             <a class="card-footer-item" @click="startCreation(true)">
               <span v-if="selectingWorkflowIndex === -1">Start New</span>
               <span v-else>Use as Template</span>
             </a>
           </div>
         </div>
+        <button class="button" @click="exportCustomWorkflows()">
+              Export {{customWorkflowCount}} Custom Workflows
+        </button>
+      </div>
     </div>
     <div class="block columns is-multiline" v-else>
 
@@ -89,12 +98,64 @@
 
           <div class="field is-horizontal">
             <div class="field-label is-normal">
+              <label class="label">Created</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input class="input" disabled type="date" :value="activeWorkflow.created">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
               <label class="label">Title</label>
             </div>
             <div class="field-body">
               <div class="field">
                 <div class="control">
                   <input class="input" type="text" v-model="activeWorkflow.title">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Display Title</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input class="input" type="text" v-model="activeWorkflow.userTitle">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Creation Method</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input class="input" type="text" v-model="activeWorkflow.creationMethod">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Learning Scheme</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input class="input" type="text" v-model="activeWorkflow.learningScheme">
                 </div>
               </div>
             </div>
@@ -686,9 +747,13 @@ export default defineComponent({
 
     const activeWorkflow = ref(null as null | Workflow);
     const selectingWorkflowIndex = ref(-1);
+    const selectingWorkflowId = computed(() => {
+      const selectingWorkflow = workflowManager.workflowsArray.value[selectingWorkflowIndex.value];
+      return selectingWorkflow?.id ?? null;
+    });
     const canEditWorkflow = computed(() => {
-      const workflow = workflowManager.allWorkflows.value[selectingWorkflowIndex.value];
-      return workflow && workflowManager.isCustomWorkflow(workflow.id);
+      const id = selectingWorkflowId.value;
+      return id && workflowManager.isCustomWorkflow(id);
     });
     const workflowInDatabase = computed(() => activeWorkflow.value?.id && WorkflowManager.hasSavedCustomLesson(activeWorkflow.value.id));
     const selectedStageIndex = ref(0);
@@ -756,12 +821,22 @@ export default defineComponent({
       }
     });
 
+    const customWorkflowCount = computed(() => workflowManager.workflowsArray.value.filter((w) => workflowManager.isCustomWorkflow(w.id)).length);
+
+    function exportCustomWorkflows() {
+      const workflows = workflowManager.workflowsArray.value.filter((w) => workflowManager.isCustomWorkflow(w.id));
+      const json = JSON.stringify(workflows, null, 2);
+      Utils.PromptDownloadFile('custom-workflows.json', json);
+    }
     return {
       selectingWorkflowIndex,
+      selectingWorkflowId,
       activeWorkflow,
       canEditWorkflow,
       workflowInDatabase,
-      availableWorkflows: workflowManager.allWorkflows,
+      customWorkflowCount,
+      exportCustomWorkflows,
+      availableWorkflows: workflowManager.workflowsArray,
       selectedStageIndex,
       activeStage,
 
@@ -801,6 +876,9 @@ export default defineComponent({
   computed: {
   },
   methods: {
+    isCustomWorkflow(id: string) {
+      return workflowManager.isCustomWorkflow(id);
+    },
     durationOfClip(clipName: string) {
       const entry = videoDB.entriesByClipName.get(clipName);
       if (!entry) return 0;
@@ -823,15 +901,16 @@ export default defineComponent({
         this.activeWorkflow = null;
       }
     },
-    deleteWorkflow() {
-      if (!this.activeWorkflow) return;
+    deleteWorkflow(id: string | undefined) {
+      if (!id && !this.activeWorkflow) return;
+      if (!id) id = this.activeWorkflow?.id ?? '';
 
       // eslint-disable-next-line no-alert
-      if (!window.confirm('Are you sure you want to delete this lesson?')) {
+      if (!window.confirm('Are you sure you want to delete this workflow?')) {
         return;
       }
 
-      workflowManager.deleteCustomWorkflow(this.activeWorkflow.id);
+      workflowManager.deleteCustomWorkflow(id);
       this.goBack(true);
     },
     exportWorkflow() {
@@ -851,21 +930,26 @@ export default defineComponent({
     },
     startCreation(asTemplate: boolean) {
       const existingWorkflow = this.availableWorkflows[this.selectingWorkflowIndex];
+      let newActiveWorkflow;
       if (existingWorkflow && asTemplate) {
-        this.activeWorkflow = Utils.deepCopy(existingWorkflow);
-        this.activeWorkflow.id = Utils.uuidv4();
+        newActiveWorkflow = Utils.deepCopy(existingWorkflow);
+        newActiveWorkflow.id = Utils.uuidv4();
+        this.activeWorkflow = newActiveWorkflow;
+
       } else if (existingWorkflow && !asTemplate) {
-        this.activeWorkflow = existingWorkflow;
+        newActiveWorkflow = existingWorkflow;
+        this.activeWorkflow = newActiveWorkflow;
         nextTick(() => {
           this.isDirty = false;
         });
 
       } else {
-        this.activeWorkflow = CreateBlankWorkflow();
+        newActiveWorkflow = CreateBlankWorkflow();
+        this.activeWorkflow = newActiveWorkflow;
       }
 
-      workflowManager.addSessionWorkflow(this.activeWorkflow);
-      workflowManager.setActiveFlow(this.activeWorkflow.id);
+      workflowManager.addSessionWorkflow(newActiveWorkflow);
+      workflowManager.setActiveFlow(newActiveWorkflow.id);
     },
     selectStage(stageIndex: number) {
 
