@@ -107,7 +107,10 @@ $family-sans-serif: "Nunito", sans-serif;
 
 @import '~bulma';
 @import '~bulma-slider';
-
+$fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
+@import "@fortawesome/fontawesome-free/scss/fontawesome";
+@import "@fortawesome/fontawesome-free/scss/regular";
+@import "@fortawesome/fontawesome-free/scss/solid";
 @each $name, $pair in $colors {
   $color: nth($pair, 1);
   .has-border-#{$name} {

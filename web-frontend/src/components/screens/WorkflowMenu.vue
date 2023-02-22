@@ -54,7 +54,7 @@
             <span class="icon-text">
               <span>Click to Begin </span>
               <span class="icon">
-                <i class="far fa-arrow-alt-circle-right"></i>
+                <i class="far fa-circle-right"></i>
               </span>
             </span>
           </div>
