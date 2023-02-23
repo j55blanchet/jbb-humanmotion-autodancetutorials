@@ -30,7 +30,7 @@
         @click="$emit('workflow-selected', workflow.id)"
       ></MainMenuWorkflowCard>
     </div>
-    <div class="is-justify-content-center is-flex" v-show="currentTab === Tabs.Workflows && nonwhitelistedWorkflows.length > 0">
+    <div class="is-justify-content-center is-flex" v-if="nonwhitelistedWorkflows.length > 0 && currentTab === Tabs.Workflows">
       <button class="button is-ghost" @click="() => isWorkflowListExpanded = !isWorkflowListExpanded">
         <span v-if="isWorkflowListExpanded">
           <i class="fas fa-minus"></i>
@@ -42,7 +42,7 @@
         </span>
       </button>
     </div>
-    <div class="grid-menu container block" v-show="nonwhitelistedWorkflows.length > 0 && currentTab === Tabs.Workflows && isWorkflowListExpanded">
+    <div class="grid-menu container block" v-if="nonwhitelistedWorkflows.length > 0 && currentTab === Tabs.Workflows && isWorkflowListExpanded">
       <MainMenuWorkflowCard
         v-for="workflow in nonwhitelistedWorkflows"
         :workflow="workflow"
