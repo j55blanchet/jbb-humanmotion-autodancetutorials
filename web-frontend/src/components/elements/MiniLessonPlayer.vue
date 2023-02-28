@@ -1,13 +1,19 @@
 <template>
   <div class="mini-lesson-player">
-    <div class="block is-flex-grow-0 is-flex-shrink-0 is-relative is-flex">
+    <div class="block is-flex-grow-0 is-flex-shrink-0 is-relative is-flex is-align-items-center">
       <SegmentedProgressBar
         :segments="progressSegments"
         :progress="activityProgress"
         class="is-flex-grow-1 is-flex-shrink-1"
       />
-      <div class="is-flex-grow-0 is-flex-grow-0 ml-2 has-text-grey" v-if="timeRemaining !== null">
+      <div class="is-flex-grow-0 ml-2 has-text-grey" v-if="timeRemaining !== null">
         {{timeRemaining}}
+      </div>
+      <div v-if="showCloseButton"
+          class="is-flex-grow-0 ml-2">
+        <button class="button is-white" @click="$emit('close-clicked')">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
     </div>
     <div class="video-container">
@@ -113,6 +119,7 @@ export default defineComponent({
     // maxVideoHeight: { type: String, default: 'none' },
     enableCompleteLesson: { type: Boolean, default: false },
     timeRemaining: { type: String, default: null },
+    showCloseButton: { type: Boolean, default: false },
   },
   setup() {
     const activityVideoPlayer = ref(null as null | typeof ActivityVideoPlayer);
@@ -120,7 +127,7 @@ export default defineComponent({
       activityVideoPlayer,
     };
   },
-  emits: ['lesson-completed', 'activity-changed'],
+  emits: ['lesson-completed', 'activity-changed', 'close-clicked'],
   computed: {
     nearbyActivityIndices(): number[] {
       const margin = 1;

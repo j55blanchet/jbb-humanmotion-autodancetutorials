@@ -111,10 +111,24 @@
       <button class="modal-close" @click="instructionsActive = false" aria-label="close"></button>
     </div>
 
+    <div :class="{'is-active': timingNotStarted}" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="container">
+          <div class="box">
+            <div class="content">
+              <h3>Start Timing</h3>
+              <button class="button" @click="startTiming">Start</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div v-bind:class="{ 'is-active': lessonActive }" class="modal">
       <div class="modal-background"></div>
       <div class="container" style="max-width: 100vw; max-height: 100vh;">
-        <div class="box" style="height:min(90vh);max-width:calc(100vw-2rem);margin-top:calc((10vh) / 2)" >
+        <div class="box" style="height:100vh;width:100vw;" >
           <MiniLessonPlayer
             v-if="lessonActive"
             :videoEntry="currentVideoEntry"
@@ -122,7 +136,10 @@
             @lesson-completed="lessonCompleted"
             :maxVideoHeight="'calc(100vh - 152px - 3.75rem)'"
             :timeRemaining="stageSecondsRemaining !== Infinity ? stageSecondsRemainingString : null"
-            :enableCompleteLesson="true"/>
+            :enableCompleteLesson="true"
+            :showCloseButton="true"
+            @close-clicked="lessonActive=false;"
+            />
         </div>
       </div>
       <button class="modal-close is-large" aria-label="close" @click="lessonActive=false"></button>
@@ -147,20 +164,6 @@
             />
           </div>
         <!-- </div> -->
-      </div>
-    </div>
-
-    <div :class="{'is-active': timingNotStarted}" class="modal">
-      <div class="modal-background"></div>
-      <div class="modal-content">
-        <div class="container">
-          <div class="box">
-            <div class="content">
-              <h3>Start Timing</h3>
-              <button class="button" @click="startTiming">Start</button>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </section>
