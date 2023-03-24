@@ -48,17 +48,16 @@ if __name__ == '__main__':
     import json
     import matplotlib
     import argparse
+    
     matplotlib.use('pdf')
     parser = argparse.ArgumentParser()
-    parser.add_argument('database_filepath', type=Path)
-    parser.add_argument('landmark_dir', type=Path)
-    parser.add_argument('audio_dir', type=Path)
-    parser.add_argument('output_dir', type=Path)
-    parser.add_argument('--analysis_dir', type=Path, required=False)
 
-    # choices: 'tempo', 'spd_minima'
-    parser.add_argument('--segmentation_method', type=str, default='tempo')
-
+    parser.add_argument('database_filepath', type=Path, help='Path to the database file')
+    parser.add_argument('landmark_dir', type=Path, help='Path to the directory containing the landmark files')
+    parser.add_argument('audio_dir', type=Path, help='Path to the directory containing the audio files')
+    parser.add_argument('output_dir', type=Path, help='Path to the directory where the generated IMRs will be saved')
+    parser.add_argument('analysis_dir', type=Path, help='Path to the directory where the generated analysis files will be saved')
+    parser.add_argument('--skip-existing, -s', dest="skip_existing", action='store_true', help='Skip songs that already have an IMR')
     args = parser.parse_args()
 
     database_filepath = args.database_filepath
@@ -67,8 +66,9 @@ if __name__ == '__main__':
     output_dir = args.output_dir
     analysis_dir = args.analysis_dir
 
-    if analysis_dir is not None:
-        analysis_dir.mkdir(parents=True, exist_ok=True)
+    skip_existing_imr = args.skip_existing
+
+    analysis_dir.mkdir(parents=True, exist_ok=True)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     plt.ioff()
@@ -99,6 +99,12 @@ if __name__ == '__main__':
         bpm = motion_entry.get('bpm', 0)
         
         if len(landmarkScope) != 1 or landmarkScope[0] != 'pose':
+            continue
+
+        imr_file_out = output_dir / (clipName + '.imr.json')
+        imr_file_out.parent.mkdir(parents=True, exist_ok=True)
+        if skip_existing_imr and imr_file_out.exists():
+            print(f"Skipping {clipName} because IMR already exists")
             continue
 
         pose_landmark_path: Path = landmark_files.get(clipName, {}).get('pose')
@@ -237,10 +243,6 @@ if __name__ == '__main__':
             fig.suptitle(f'{clipName} Motion Analysis (Hands)')
             fig.savefig(str(analysis_dir / f'{clipName}_handanalysis.pdf'))
             plt.close(fig)
-            # end analysis
-
-        imr_file_out = output_dir / (clipName + '.imr.json')
-        imr_file_out.parent.mkdir(parents=True, exist_ok=True)
         
         imr = imr_generation.create_imr(
             clipName=clipName,

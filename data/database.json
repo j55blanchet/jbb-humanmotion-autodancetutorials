@@ -1342,5 +1342,25 @@
     "thumbnailSrc": "tiktok/bartender.jpg",
     "audioSrc": "tiktok/bartender.wav",
     "bpm": 106.69352889852131
+  },
+  {
+    "title": "figure_vid_trimmed",
+    "clipName": "figure_vid_trimmed",
+    "clipPath": "othersrc/figure_vid_trimmed.mp4",
+    "frameCount": 229,
+    "fps": 30.0,
+    "duration": 7.633333333333334,
+    "width": 1080,
+    "height": 1920,
+    "startTime": 0,
+    "endTime": 7.633333333333334,
+    "poseUpperBodyOnly": false,
+    "tags": [],
+    "landmarkScope": [
+      "pose"
+    ],
+    "thumbnailSrc": "othersrc/figure_vid_trimmed.jpg",
+    "audioSrc": "othersrc/figure_vid_trimmed.wav",
+    "bpm": 132.3693084957881
   }
 ]

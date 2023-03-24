@@ -46,14 +46,13 @@
                 "data/database.json",
                 "web-frontend/public/landmarks",
                 "data/audio",
-                "data/imr/augogen",
-                // "data/imr/autogen_speedminima",
-                // "--analysis_dir=temp_data/analysis",
-                // "--segmentation_method=spd_minima"
+                "data/imr/autogen",
+                "temp_data/analysis",
+                "--skip-existing"
             ]
         },
         {
-            "name": "Lesson Generation (/data - all)",
+            "name": "Workflow/Lesson Generation (/data - all)",
             "type": "python",
             "request": "launch",
             "module": "workflow_compiler.lesson_compilers.lessongeneration_2d",
@@ -67,7 +66,7 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "Lesson Generation (/data/handcrafted)",
+            "name": "Workflow/Lesson Generation (/data/handcrafted)",
             "type": "python",
             "request": "launch",
             "module": "workflow_compiler.lesson_compilers.lessongeneration_2d",
