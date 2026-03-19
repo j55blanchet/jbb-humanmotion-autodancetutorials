@@ -21,6 +21,13 @@ from . import imr_generation
 
 plt.ioff()
 
+
+def _nearest_index(index: pd.Index, value: float) -> int:
+    nearest = index.get_indexer([value], method='nearest')[0]
+    if nearest < 0:
+        raise ValueError(f'Unable to find nearest index for value: {value}')
+    return int(nearest)
+
 def _load_landmark_files(landmark_base_dir: Path):
     landmark_files: Dict[str, Dict[Literal['pose', 'rightHand', 'leftHand', 'face'], Path]] = {}
 
@@ -57,7 +64,15 @@ if __name__ == '__main__':
     parser.add_argument('audio_dir', type=Path, help='Path to the directory containing the audio files')
     parser.add_argument('output_dir', type=Path, help='Path to the directory where the generated IMRs will be saved')
     parser.add_argument('analysis_dir', type=Path, help='Path to the directory where the generated analysis files will be saved')
-    parser.add_argument('--skip-existing, -s', dest="skip_existing", action='store_true', help='Skip songs that already have an IMR')
+    parser.add_argument('--skip-existing', '-s', dest="skip_existing", action='store_true', help='Skip songs that already have an IMR')
+    parser.add_argument(
+        '--segmentation-method',
+        '--segmentation_method',
+        dest='segmentation_method',
+        choices=['speed-minima', 'tempo'],
+        default='speed-minima',
+        help='Segmentation strategy: speed-minima (default) or tempo-based segmentation.',
+    )
     args = parser.parse_args()
 
     database_filepath = args.database_filepath
@@ -82,6 +97,18 @@ if __name__ == '__main__':
     import math
     num_songs = math.inf
     done = 0
+
+    def create_analysis_figure():
+        fig, axs = plt.subplots(5, 1)
+        fig.set_size_inches(6.0, 14.5)
+        return fig, axs
+
+    def save_analysis_figure(fig: plt.Figure, clip_name: str):
+        title = clip_name.replace('$', '\\$')
+        fig.suptitle(f'Hands Motion Analysis: {title}')
+        fig.tight_layout(rect=[0, 0, 1, 0.97])
+        fig.savefig(str(analysis_dir / f'handanalysis_{clip_name}.pdf'))
+        plt.close(fig)
 
     for motion_entry in db:
         title = motion_entry['title']
@@ -190,7 +217,7 @@ if __name__ == '__main__':
 
         keyframes = [
             IMR.Keyframe(
-                timestamp=times.iloc[times.index.get_loc(kf_i, method='nearest')][0],
+                timestamp=times.iloc[_nearest_index(times.index, kf_i), 0],
                 significance=pose_identifier.get_net_movement(hands[kf_i:kf_i_next])
             )
             for kf_i, kf_i_next in zip(
@@ -201,48 +228,49 @@ if __name__ == '__main__':
         # keyframeMethod += "-filtered"
 
         if analysis_dir is not None:
-            chart_handspd = 0, 0
-            
-            chart_xyvel = 1, 0
-            chart_netspd = 2, 0
-            chart_handspdcorr = 0, 1
-            chart_extension = 1, 1
+            analysis_fig, analysis_axs = create_analysis_figure()
 
-            chart_handmotion = 2, 1
+            chart_handspd = 0
+            chart_handspdcorr = 1
+            chart_xyvel = 2
+            chart_netspd = 3
+            chart_extension = 4
 
-            fig, axs = plt.subplots(3, 2)
-            fig.set_size_inches(18.5, 13.5)
             pose_identifier.plot_movement_extension(
                 hands,
                 fps,
                 smooth_window=smooth_window,
                 extrema_window=extrema_window,
-                ax_spds=axs[chart_handspd],
-                ax_spdcorrelation=axs[chart_handspdcorr],
-                ax_spd_horz_vs_vertical=axs[chart_xyvel],
-                ax_movement_net=axs[chart_netspd],
-                ax_extension=axs[chart_extension],
+                ax_spds=analysis_axs[chart_handspd],
+                ax_spdcorrelation=analysis_axs[chart_handspdcorr],
+                ax_spd_horz_vs_vertical=analysis_axs[chart_xyvel],
+                ax_movement_net=analysis_axs[chart_netspd],
+                ax_extension=analysis_axs[chart_extension],
             )
-            
-            axs[chart_handspd].yaxis.set_visible(True)
-            axs[chart_handspd].yaxis.set_ticks([])
-            axs[chart_handspd].set_ylabel('Speeds')
-            axs[chart_handspdcorr].yaxis.set_visible(True)
-            axs[chart_handspdcorr].yaxis.set_ticks([])
-            axs[chart_handspdcorr].set_ylabel('Correlation')
-            axs[chart_xyvel].yaxis.set_visible(True)
-            axs[chart_xyvel].yaxis.set_ticks([])
-            axs[chart_xyvel].set_ylabel('Horz vs Vert Speed')
-            axs[chart_netspd].yaxis.set_visible(True)
-            axs[chart_netspd].yaxis.set_ticks([])
-            axs[chart_netspd].set_ylabel('Net Speed')
-            axs[chart_extension].yaxis.set_visible(True)
-            axs[chart_extension].yaxis.set_ticks([])
-            axs[chart_extension].set_ylabel('Extension')
 
-            fig.suptitle(f'{clipName} Motion Analysis (Hands)')
-            fig.savefig(str(analysis_dir / f'{clipName}_handanalysis.pdf'))
-            plt.close(fig)
+            analysis_axs[chart_handspd].set_title(clipName)
+
+            analysis_axs[chart_handspd].yaxis.set_visible(True)
+            analysis_axs[chart_handspd].yaxis.set_ticks([])
+            analysis_axs[chart_handspd].set_ylabel('Speeds')
+
+            analysis_axs[chart_handspdcorr].yaxis.set_visible(True)
+            analysis_axs[chart_handspdcorr].yaxis.set_ticks([])
+            analysis_axs[chart_handspdcorr].set_ylabel('Correlation')
+
+            analysis_axs[chart_xyvel].yaxis.set_visible(True)
+            analysis_axs[chart_xyvel].yaxis.set_ticks([])
+            analysis_axs[chart_xyvel].set_ylabel('Horz vs Vert Speed')
+
+            analysis_axs[chart_netspd].yaxis.set_visible(True)
+            analysis_axs[chart_netspd].yaxis.set_ticks([])
+            analysis_axs[chart_netspd].set_ylabel('Net Speed')
+
+            analysis_axs[chart_extension].yaxis.set_visible(True)
+            analysis_axs[chart_extension].yaxis.set_ticks([])
+            analysis_axs[chart_extension].set_ylabel('Extension')
+
+            save_analysis_figure(analysis_fig, clipName)
         
         imr = imr_generation.create_imr(
             clipName=clipName,
@@ -268,8 +296,8 @@ if __name__ == '__main__':
             motion_trails: List[IMR.MotionTrail] = []
 
             for landmarks, landmark_id in [(leftLandmarks, PoseLandmark.leftWrist), (rightLandmarks, PoseLandmark.rightWrist)]:
-                startFrame = landmarks.index.get_loc(startFrame, method='nearest')
-                endFrame = landmarks.index.get_loc(endFrame, method='nearest')
+                startFrame = _nearest_index(landmarks.index, startFrame)
+                endFrame = _nearest_index(landmarks.index, endFrame)
                 landmarks_trimmed = landmarks.iloc[startFrame:endFrame]
 
                 trailTimes = times.loc[startFrame:endFrame].iloc[:,0].to_numpy().tolist()
@@ -333,3 +361,4 @@ if __name__ == '__main__':
 
         with imr_file_out.open('w') as f:
             imr.write_json(f, indent=2)
+

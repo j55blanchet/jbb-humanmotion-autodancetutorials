@@ -48,7 +48,7 @@
                 "data/audio",
                 "data/imr/autogen",
                 "temp_data/analysis",
-                "--skip-existing"
+                // "--skip-existing"
             ]
         },
         {

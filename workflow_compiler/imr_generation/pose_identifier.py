@@ -40,17 +40,18 @@ def get_times(data: DataFrame, fps: float) -> List[float]:
     return indices
 
 def plot_extension(times: DataFrame, extension: DataFrame, minima: np.ndarray, maxima: np.ndarray, ax: Axes, fps: float):
+    time_values = times.iloc[:, 0]
 
-    ax.plot(times, extension, label=f'Extension')
-    ax.plot(times.iloc[maxima], extension[maxima], 'o', label='Extension')
-    ax.plot(times.iloc[minima], extension[minima], 'o', label='Retraction')
+    ax.plot(time_values, extension, label=f'Extension')
+    ax.plot(time_values.iloc[maxima], extension[maxima], 'o', label='Extension')
+    ax.plot(time_values.iloc[minima], extension[minima], 'o', label='Retraction')
 
     for i in maxima:
-        time = times.iloc[i, 0]
-        ax.annotate(f'{time:0.2f}s', (times.iloc[i], extension[i]), xytext=(0, 5), textcoords='offset pixels', fontsize='x-small', horizontalalignment='center', verticalalignment='bottom')
+        time = time_values.iloc[i]
+        ax.annotate(f'{time:0.2f}s', (time_values.iloc[i], extension[i]), xytext=(0, 5), textcoords='offset pixels', fontsize='x-small', horizontalalignment='center', verticalalignment='bottom')
     for i in minima:
-        time = times.iloc[i, 0]
-        ax.annotate(f'{time:0.2f}s', (times.iloc[i], extension[i]), xytext=(0, -5), textcoords='offset pixels', fontsize='x-small', horizontalalignment='center', verticalalignment='top')
+        time = time_values.iloc[i]
+        ax.annotate(f'{time:0.2f}s', (time_values.iloc[i], extension[i]), xytext=(0, -5), textcoords='offset pixels', fontsize='x-small', horizontalalignment='center', verticalalignment='top')
             
     ax.set_ylabel('Extension (relative to torso)')
     ax.set_xlabel('Time')
@@ -78,10 +79,9 @@ def plot_extension(times: DataFrame, extension: DataFrame, minima: np.ndarray, m
 # plt.show()
 
 def get_net_movement(landmarks: pd.DataFrame):
-    import scipy.integrate
     velocities = landmarks.diff().iloc[1:]
     spds = velocities.abs()
-    accumulated_motion = spds.apply(scipy.integrate.trapz, axis=0)
+    accumulated_motion = spds.apply(np.trapezoid, axis=0)
     return accumulated_motion.sum()
 
 def get_cartesian_distance(landmarks: pd.DataFrame, frame1: int, frame2: int):
