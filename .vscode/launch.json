@@ -52,6 +52,18 @@
             ]
         },
         {
+            "name": "Analysis Generation (data)",
+            "type": "python",
+            "request": "launch",
+            "module": "workflow_compiler.imr_generation.batch_generate_analysis",
+            "args": [
+                "data/database.json",
+                "web-frontend/public/landmarks",
+                "temp_data/analysis",
+                // "--skip-existing"
+            ]
+        },
+        {
             "name": "Workflow/Lesson Generation (/data - all)",
             "type": "python",
             "request": "launch",

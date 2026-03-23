@@ -4,7 +4,6 @@ from ..datatypes import CustomSerializable, MiniLesson as Lesson
 from pathlib import Path
 from typing import *
 import numpy as np
-from matplotlib import pyplot as plt
 import pandas as pd
 from pandas import DataFrame
 from pandas.core import frame
@@ -16,39 +15,15 @@ from .postprocessing import insert_prune_keyframes
 from ..datatypes import Workflow, IMR
 
 from . import imr_generation
+from . import analysis_pipeline
 
 # IMR_GENERATION_METHOD_NAME = 'julien_v2_TemporalSdmMinima_KeyframeExtension'
-
-plt.ioff()
-
 
 def _nearest_index(index: pd.Index, value: float) -> int:
     nearest = index.get_indexer([value], method='nearest')[0]
     if nearest < 0:
         raise ValueError(f'Unable to find nearest index for value: {value}')
     return int(nearest)
-
-def _load_landmark_files(landmark_base_dir: Path):
-    landmark_files: Dict[str, Dict[Literal['pose', 'rightHand', 'leftHand', 'face'], Path]] = {}
-
-    def load_landmark(scope: str):
-        # print(f"Finding {scope} files")
-        matching_files = list(landmark_base_dir.rglob(f'*.{scope}.[c][s][v]'))
-        keys_values = [
-            (p.stem.replace(f'.{scope}', ''), p) for p in matching_files
-        ]
-        for key, value in keys_values:
-            # print(f"   FOUND {scope} file: {key}: {value}")
-            if not key in landmark_files:
-                landmark_files[key] = {}
-            landmark_files[key][scope] = value
-    
-    load_landmark('pose')
-    load_landmark('rightHand')
-    load_landmark('leftHand')
-    load_landmark('face')
-    
-    return landmark_files
 
 if __name__ == '__main__':
     import sys
@@ -86,9 +61,7 @@ if __name__ == '__main__':
     analysis_dir.mkdir(parents=True, exist_ok=True)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    plt.ioff()
-
-    landmark_files = _load_landmark_files(landmark_dir)
+    landmark_files = analysis_pipeline.load_landmark_files(landmark_dir)
 
     db = []
     with open(database_filepath, 'r', encoding='utf-8') as db_file:
@@ -97,18 +70,6 @@ if __name__ == '__main__':
     import math
     num_songs = math.inf
     done = 0
-
-    def create_analysis_figure():
-        fig, axs = plt.subplots(5, 1)
-        fig.set_size_inches(6.0, 14.5)
-        return fig, axs
-
-    def save_analysis_figure(fig: plt.Figure, clip_name: str):
-        title = clip_name.replace('$', '\\$')
-        fig.suptitle(f'Hands Motion Analysis: {title}')
-        fig.tight_layout(rect=[0, 0, 1, 0.97])
-        fig.savefig(str(analysis_dir / f'handanalysis_{clip_name}.pdf'))
-        plt.close(fig)
 
     for motion_entry in db:
         title = motion_entry['title']
@@ -228,49 +189,15 @@ if __name__ == '__main__':
         # keyframeMethod += "-filtered"
 
         if analysis_dir is not None:
-            analysis_fig, analysis_axs = create_analysis_figure()
-
-            chart_handspd = 0
-            chart_handspdcorr = 1
-            chart_xyvel = 2
-            chart_netspd = 3
-            chart_extension = 4
-
-            pose_identifier.plot_movement_extension(
-                hands,
-                fps,
+            analysis_pipeline.write_clip_analysis(
+                clip_name=clipName,
+                hands=hands,
+                fps=fps,
                 smooth_window=smooth_window,
                 extrema_window=extrema_window,
-                ax_spds=analysis_axs[chart_handspd],
-                ax_spdcorrelation=analysis_axs[chart_handspdcorr],
-                ax_spd_horz_vs_vertical=analysis_axs[chart_xyvel],
-                ax_movement_net=analysis_axs[chart_netspd],
-                ax_extension=analysis_axs[chart_extension],
+                analysis_dir=analysis_dir,
+                pose_landmarks=clipped_landmarks,
             )
-
-            analysis_axs[chart_handspd].set_title(clipName)
-
-            analysis_axs[chart_handspd].yaxis.set_visible(True)
-            analysis_axs[chart_handspd].yaxis.set_ticks([])
-            analysis_axs[chart_handspd].set_ylabel('Speeds')
-
-            analysis_axs[chart_handspdcorr].yaxis.set_visible(True)
-            analysis_axs[chart_handspdcorr].yaxis.set_ticks([])
-            analysis_axs[chart_handspdcorr].set_ylabel('Correlation')
-
-            analysis_axs[chart_xyvel].yaxis.set_visible(True)
-            analysis_axs[chart_xyvel].yaxis.set_ticks([])
-            analysis_axs[chart_xyvel].set_ylabel('Horz vs Vert Speed')
-
-            analysis_axs[chart_netspd].yaxis.set_visible(True)
-            analysis_axs[chart_netspd].yaxis.set_ticks([])
-            analysis_axs[chart_netspd].set_ylabel('Net Speed')
-
-            analysis_axs[chart_extension].yaxis.set_visible(True)
-            analysis_axs[chart_extension].yaxis.set_ticks([])
-            analysis_axs[chart_extension].set_ylabel('Extension')
-
-            save_analysis_figure(analysis_fig, clipName)
         
         imr = imr_generation.create_imr(
             clipName=clipName,

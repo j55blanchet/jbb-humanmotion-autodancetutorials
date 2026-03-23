@@ -27,6 +27,16 @@ def get_extension(landmarks: DataFrame, smooth_window: int) -> DataFrame:
     smoothed_extension = savgol_filter(extension, window_length=smooth_window, polyorder=1)
     return smoothed_extension
 
+
+def get_individual_extensions(landmarks: DataFrame, smooth_window: int) -> DataFrame:
+    extensions = DataFrame(index=landmarks.index)
+    for col_i in range(0, len(landmarks.columns), 2):
+        col_name = landmarks.columns[col_i].replace('_x', '')
+        xy = landmarks.iloc[:, col_i:col_i + 2]
+        ext = xy.apply(np.linalg.norm, axis=1)
+        extensions[col_name] = savgol_filter(ext, window_length=smooth_window, polyorder=1)
+    return extensions
+
 def get_extrema(data: DataFrame, frame_window: int):
     indices_minima = argrelmin(data, order=frame_window)[0]
     indices_maxima = argrelmax(data, order=frame_window)[0]
@@ -39,10 +49,15 @@ def get_times(data: DataFrame, fps: float) -> List[float]:
     indices /= fps
     return indices
 
-def plot_extension(times: DataFrame, extension: DataFrame, minima: np.ndarray, maxima: np.ndarray, ax: Axes, fps: float):
+def plot_extension(times: DataFrame, extension: DataFrame, individual_extensions: DataFrame, minima: np.ndarray, maxima: np.ndarray, ax: Axes, fps: float):
     time_values = times.iloc[:, 0]
 
-    ax.plot(time_values, extension, label=f'Extension')
+    if len(individual_extensions.columns) >= 1:
+        ax.plot(time_values, individual_extensions.iloc[:, 0], label='Left Arm Extension', alpha=0.7)
+    if len(individual_extensions.columns) >= 2:
+        ax.plot(time_values, individual_extensions.iloc[:, 1], label='Right Arm Extension', alpha=0.7)
+
+    ax.plot(time_values, extension, label='Combined Extension', linewidth=1.8)
     ax.plot(time_values.iloc[maxima], extension[maxima], 'o', label='Extension')
     ax.plot(time_values.iloc[minima], extension[minima], 'o', label='Retraction')
 
@@ -56,6 +71,7 @@ def plot_extension(times: DataFrame, extension: DataFrame, minima: np.ndarray, m
     ax.set_ylabel('Extension (relative to torso)')
     ax.set_xlabel('Time')
     ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f'{x:0.2f}s'))
+    ax.legend(loc='upper right', fontsize='x-small')
 
 # %%
 # import sys; sys.path.insert(0, '..')
@@ -134,7 +150,23 @@ def correlation_by_segment(a: Series, b: Series, segments: Sequence[Tuple[int, i
         for start_i, end_i in segments:
             a_segment = a[start_i:end_i]
             b_segment = b[start_i:end_i]
-            yield a_segment.corr(b_segment)
+
+            a_vals = a_segment.to_numpy(dtype=float)
+            b_vals = b_segment.to_numpy(dtype=float)
+
+            valid = np.isfinite(a_vals) & np.isfinite(b_vals)
+            a_vals = a_vals[valid]
+            b_vals = b_vals[valid]
+
+            # Correlation is undefined for tiny or constant segments.
+            if len(a_vals) < 2 or len(b_vals) < 2:
+                yield np.nan
+                continue
+            if np.nanstd(a_vals) == 0 or np.nanstd(b_vals) == 0:
+                yield np.nan
+                continue
+
+            yield float(np.corrcoef(a_vals, b_vals)[0, 1])
 
     return list(generate_correlations())
 
@@ -143,6 +175,7 @@ def plot_correlations(segments: Sequence[Tuple[int, int]], correlations: Sequenc
         selection_times = times.iloc[start_i: end_i].iloc[:, 0]
         correlation = 0 if np.isnan(correlation) else correlation
         ax.fill_between(selection_times, correlation, label=f'Segment {i}')
+    ax.set_ylim(-1, 1)
 
 def get_correlations(df: DataFrame):
     for i in range(len(df.columns)):
@@ -151,12 +184,10 @@ def get_correlations(df: DataFrame):
             print(f'{df.columns[i]} and {df.columns[j]} = {corr}')
     pass
 # %%
-def plot_movement_extension(landmarks: DataFrame, fps: float, smooth_window: int, extrema_window: int, ax_spds: Axes, ax_spdcorrelation: Axes, ax_spd_horz_vs_vertical: Axes, ax_movement_net: Axes, ax_extension: Axes):
+def plot_movement_extension(landmarks: DataFrame, fps: float, smooth_window: int, extrema_window: int, ax_spds: Axes, ax_spdcorrelation: Axes, ax_movement_net: Axes, ax_extension: Axes):
 
-    # ax_spds.sharex(ax_spd_horz_vs_vertical)
-    ax_spdcorrelation.sharex(ax_spd_horz_vs_vertical)
-    ax_movement_net.sharex(ax_spd_horz_vs_vertical)
-    ax_extension.sharex(ax_spd_horz_vs_vertical)
+    ax_spdcorrelation.sharex(ax_movement_net)
+    ax_extension.sharex(ax_movement_net)
 
     hand_spds = get_spds(landmarks, smooth_window)
     net_x_vel, net_y_vel = get_horz_vert_velocities(landmarks, smooth_window)
@@ -164,6 +195,7 @@ def plot_movement_extension(landmarks: DataFrame, fps: float, smooth_window: int
     spd_minima = argrelmin(net_spd, order=extrema_window)[0]
 
     extension = get_extension(landmarks, smooth_window = smooth_window)
+    individual_extensions = get_individual_extensions(landmarks, smooth_window=smooth_window)
     extension_minima, extension_maxima, _ = get_extrema(extension, extrema_window)
     
     times = get_times(landmarks, fps)
@@ -185,13 +217,6 @@ def plot_movement_extension(landmarks: DataFrame, fps: float, smooth_window: int
     ax_spdcorrelation.yaxis.set_ticks([])
     ax_spdcorrelation.xaxis.set_ticks([])
 
-    ax_spd_horz_vs_vertical.yaxis.set_ticks([])
-    ax_spd_horz_vs_vertical.plot(times, net_x_vel, label="Horizontal")
-    ax_spd_horz_vs_vertical.plot(times, net_y_vel, label="Vertical")
-    ax_spd_horz_vs_vertical.legend()
-    ax_spd_horz_vs_vertical.yaxis.set_visible(False)
-    ax_spd_horz_vs_vertical.xaxis.set_visible(False)
-
     # ax_movement_net.set_title('Movement')
     ax_movement_net.plot(times, net_spd, label="Net Movement")
     ax_movement_net.plot(times.iloc[spd_minima], net_spd[spd_minima], 'o', label="Minima")
@@ -205,7 +230,7 @@ def plot_movement_extension(landmarks: DataFrame, fps: float, smooth_window: int
         time = times.iat[i, 0]
         ax_movement_net.annotate(f"{time:0.2f}s", (times.iat[i, 0], net_spd[i]), xytext=(0, -5 if alternator else 5), textcoords='offset pixels', fontsize='x-small', horizontalalignment='center', verticalalignment='top' if alternator else 'bottom')
 
-    plot_extension(times, extension, extension_minima, extension_maxima, ax_extension, fps)
+    plot_extension(times, extension, individual_extensions, extension_minima, extension_maxima, ax_extension, fps)
     # ax_extension.set_title('Extension')
     ax_extension.yaxis.set_visible(False)
 
