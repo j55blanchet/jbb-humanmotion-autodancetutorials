@@ -4,6 +4,7 @@ from typing import Dict, Literal, Sequence
 from matplotlib import pyplot as plt
 import pandas as pd
 
+from . import gendered_movement_analysis
 from . import pose_identifier
 from . import symmetry_analysis
 
@@ -27,12 +28,24 @@ def load_landmark_files(landmark_base_dir: Path):
     return landmark_files
 
 
+def handanalysis_output_dir(analysis_dir: Path) -> Path:
+    return analysis_dir / 'handanalysis'
+
+
 def analysis_output_filepath(analysis_dir: Path, clip_name: str) -> Path:
-    return analysis_dir / f'handanalysis_{clip_name}.pdf'
+    return handanalysis_output_dir(analysis_dir) / f'{clip_name}_handsmotion.pdf'
 
 
 def symmetry_output_filepath(analysis_dir: Path, clip_name: str) -> Path:
     return symmetry_analysis.symmetry_output_filepath(analysis_dir, clip_name)
+
+
+def gendered_movement_output_filepath(analysis_dir: Path, clip_name: str) -> Path:
+    return gendered_movement_analysis.gendered_movement_output_filepath(analysis_dir, clip_name)
+
+
+def gendered_movement_data_filepath(analysis_dir: Path, clip_name: str) -> Path:
+    return gendered_movement_analysis.gendered_movement_data_filepath(analysis_dir, clip_name)
 
 
 def create_analysis_figure():
@@ -45,6 +58,7 @@ def save_analysis_figure(fig: plt.Figure, clip_name: str, analysis_dir: Path):
     title = clip_name.replace('$', '\\$')
     fig.suptitle(f'Hands Motion Analysis: {title}')
     fig.tight_layout(rect=[0, 0, 1, 0.97])
+    handanalysis_output_dir(analysis_dir).mkdir(parents=True, exist_ok=True)
     fig.savefig(str(analysis_output_filepath(analysis_dir, clip_name)))
     plt.close(fig)
 
@@ -57,6 +71,7 @@ def write_clip_analysis(
     extrema_window: int,
     analysis_dir: Path,
     pose_landmarks: pd.DataFrame | None = None,
+    segmentation_times: list[float] | None = None,
 ):
     analysis_fig, analysis_axs = create_analysis_figure()
 
@@ -104,3 +119,13 @@ def write_clip_analysis(
         analysis_dir=analysis_dir,
         pose_landmarks=pose_landmarks,
     )
+
+    if pose_landmarks is not None:
+        gendered_movement_analysis.write_clip_gendered_movement_analysis(
+            clip_name=clip_name,
+            pose_landmarks=pose_landmarks,
+            fps=fps,
+            smooth_window=smooth_window,
+            analysis_dir=analysis_dir,
+            segmentation_times=segmentation_times,
+        )

@@ -33,6 +33,7 @@ class TemporalSegment(CustomSerializable):
     startTime: float = 0.0
     endTime: float = 1.0
     label: Optional[str] = field(default=None)
+    hipShoulderShare: Optional[float] = field(default=None)
     motions: Optional[List[Motion]] = field(default_factory=lambda: None)
     keyframes: List[Keyframe] = field(default_factory=list)
     motionTrails: List[MotionTrail] = field(default_factory=list)

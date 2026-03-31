@@ -16,6 +16,7 @@ from ..datatypes import Workflow, IMR
 
 from . import imr_generation
 from . import analysis_pipeline
+from . import gendered_movement_analysis
 
 # IMR_GENERATION_METHOD_NAME = 'julien_v2_TemporalSdmMinima_KeyframeExtension'
 
@@ -197,6 +198,7 @@ if __name__ == '__main__':
                 extrema_window=extrema_window,
                 analysis_dir=analysis_dir,
                 pose_landmarks=clipped_landmarks,
+                segmentation_times=list(segmentationTimes),
             )
         
         imr = imr_generation.create_imr(
@@ -256,6 +258,18 @@ if __name__ == '__main__':
         
         for i, seg in enumerate(imr.temporalSegments):
             seg.motionTrails = create_motion_trails(seg.startTime, seg.endTime, f'Segment {i}')
+
+        gendered_metrics, _ = gendered_movement_analysis.compute_gendered_movement_metrics(
+            pose_landmarks=clipped_landmarks,
+            fps=fps,
+            smooth_window=smooth_window,
+        )
+        segmentation_share_summary = gendered_movement_analysis.segmentation_share_summary(
+            gendered_metrics,
+            list(segmentationTimes),
+        )
+        for seg, share_summary in zip(imr.temporalSegments, segmentation_share_summary):
+            seg.hipShoulderShare = share_summary['hip_shoulder_share']
         
         # if analysis_dir is not None:
             # axs[chart_handmotion].legend()
@@ -288,4 +302,3 @@ if __name__ == '__main__':
 
         with imr_file_out.open('w') as f:
             imr.write_json(f, indent=2)
-

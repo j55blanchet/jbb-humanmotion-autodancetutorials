@@ -7,8 +7,12 @@ from matplotlib import pyplot as plt
 from . import pose_identifier
 
 
+def symmetry_output_dir(analysis_dir: Path) -> Path:
+    return analysis_dir / 'symmetry'
+
+
 def symmetry_output_filepath(analysis_dir: Path, clip_name: str) -> Path:
-    return analysis_dir / f'handanalysis_symmetry_{clip_name}.pdf'
+    return symmetry_output_dir(analysis_dir) / f'{clip_name}_symmetry.pdf'
 
 
 def _safe_corr(a: np.ndarray, b: np.ndarray) -> float:
@@ -234,4 +238,5 @@ def write_clip_symmetry_analysis(
 ):
     metrics = compute_symmetry_metrics(hands, fps=fps, smooth_window=smooth_window, pose_landmarks=pose_landmarks)
     out_path = symmetry_output_filepath(analysis_dir, clip_name)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
     plot_symmetry_metrics(metrics, clip_name=clip_name, out_path=out_path)

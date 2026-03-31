@@ -45,7 +45,9 @@ if __name__ == '__main__':
 
         analysis_out = analysis_pipeline.analysis_output_filepath(analysis_dir, clip_name)
         symmetry_out = analysis_pipeline.symmetry_output_filepath(analysis_dir, clip_name)
-        if args.skip_existing and analysis_out.exists() and symmetry_out.exists():
+        gendered_out = analysis_pipeline.gendered_movement_output_filepath(analysis_dir, clip_name)
+        gendered_data_out = analysis_pipeline.gendered_movement_data_filepath(analysis_dir, clip_name)
+        if args.skip_existing and analysis_out.exists() and symmetry_out.exists() and gendered_out.exists() and gendered_data_out.exists():
             print(f'Skipping {clip_name} because analysis already exists')
             continue
 

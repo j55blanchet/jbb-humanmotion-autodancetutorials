@@ -152,4 +152,4 @@ Current symmetry chart output includes:
 - signed dominance.
 
 Outputs are produced per song as:
-- `handanalysis_symmetry_<clip>.pdf`
+- `<clip>_symmetry.pdf` (under the `symmetry/` analysis subfolder)
