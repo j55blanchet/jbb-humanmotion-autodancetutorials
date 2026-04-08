@@ -1,3 +1,20 @@
+"""Analysis pipeline orchestration for motion capture data.
+
+This module discovers landmark files (both .pose.csv and .pose2d.csv formats),
+routes them to the appropriate parser, and coordinates analysis functions.
+
+The pipeline maintains a critical invariant: all analysis functions operate on
+normalized relative coordinates. Format conversion happens at ingestion boundary
+via load_pose_landmarks() based on filename suffix:
+
+  - .pose2d.csv -> get_pose2d_pixel_landmarks() (no scaling, canonicalize names)
+  - .pose.csv   -> get_pixel_landmarks() (scale by width/height, canonicalize names)
+  
+Both return pixel-space DataFrames which are then normalized by downstream clients.
+
+For detailed schema information, see landmark_processing module docstring.
+"""
+
 from pathlib import Path
 from typing import Dict, Literal, Sequence
 
@@ -7,12 +24,33 @@ import pandas as pd
 from . import gendered_movement_analysis
 from . import pose_identifier
 from . import symmetry_analysis
+from .landmark_processing import get_pixel_landmarks, get_pose2d_pixel_landmarks
 
 
-def load_landmark_files(landmark_base_dir: Path):
-    landmark_files: Dict[str, Dict[Literal['pose', 'rightHand', 'leftHand', 'face'], Path]] = {}
+def discover_landmark_files(landmark_base_dir: Path):
+    """Recursively discover all landmark files in a directory tree.
 
-    def load_landmark(scope: str):
+    Searches for landmark files using these scope patterns:
+    - .pose.csv    (normalized web-frontend format)
+    - .pose2d.csv  (pixel genderdance format)
+    - .rightHand.csv, .leftHand.csv (hand-specific landmarks)
+    - .face.csv (facial landmarks)
+
+    Returns:
+        Dict[clip_name → Dict[scope → Path]]
+        Example: {
+            'clip_001': {
+                'pose': Path('.../clip_001.pose.csv'),
+                'pose2d': Path('.../clip_001.pose2d.csv'),
+                'rightHand': Path('.../clip_001.rightHand.csv'),
+                ...
+            },
+            'clip_002': {...},
+        }
+    """
+    landmark_files: Dict[str, Dict[Literal['pose', 'pose2d', 'rightHand', 'leftHand', 'face'], Path]] = {}
+
+    def load_landmark(scope: Literal['pose', 'pose2d', 'rightHand', 'leftHand', 'face']):
         matching_files = list(landmark_base_dir.rglob(f'*.{scope}.[c][s][v]'))
         keys_values = [(p.stem.replace(f'.{scope}', ''), p) for p in matching_files]
         for key, value in keys_values:
@@ -21,11 +59,48 @@ def load_landmark_files(landmark_base_dir: Path):
             landmark_files[key][scope] = value
 
     load_landmark('pose')
+    load_landmark('pose2d')
     load_landmark('rightHand')
     load_landmark('leftHand')
     load_landmark('face')
 
     return landmark_files
+
+def load_pose_landmarks(landmark_path: Path, width: int, height: int) -> pd.DataFrame:
+    """Format-agnostic loader: route .pose.csv or .pose2d.csv to appropriate parser.
+
+    This function is the ingestion boundary for pose landmark data. It detects the
+    source format by filename suffix and routes to the correct parser while
+    maintaining a consistent pixel-coordinate output format.
+
+    ROUTING LOGIC:
+    - If filename ends with .pose2d.csv:
+      -> get_pose2d_pixel_landmarks(path)
+        Converts UPPERCASE_UNDERSCORE column names to camelCase
+        Drops distance/visibility columns
+        Returns pixel coordinates (NO scaling, already in frame space)
+
+    - Otherwise (assumes .pose.csv):
+      -> get_pixel_landmarks(path, width, height)
+        Canonicalizes lowercase camelCase names (e.g., leftShoulder_x)
+        Drops visibility columns
+        Returns pixel coordinates (scaled: x *= width, y *= height)
+
+    INVARIANT: Output is always in pixel coordinate space [0, width] x [0, height]
+    Downstream analysis normalizes via normalize_landmarks() before computing
+    metrics (speed, extension, symmetry, gendered movement).
+
+    Args:
+        landmark_path: Path to either .pose.csv or .pose2d.csv
+        width: Video frame width (required for .pose.csv scaling)
+        height: Video frame height (required for .pose.csv scaling)
+
+    Returns:
+        DataFrame with pixel coordinates, columns are <jointName>_x, <jointName>_y
+    """
+    if landmark_path.name.endswith('.pose2d.csv'):
+        return get_pose2d_pixel_landmarks(landmark_path)
+    return get_pixel_landmarks(landmark_path, width, height)
 
 
 def handanalysis_output_dir(analysis_dir: Path) -> Path:

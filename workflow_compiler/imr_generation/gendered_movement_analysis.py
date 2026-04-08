@@ -47,6 +47,19 @@ def _smooth_positions(landmarks: pd.DataFrame, smooth_window: int) -> pd.DataFra
 
 
 def _pair_speed(landmarks: pd.DataFrame, smooth_window: int) -> np.ndarray:
+    """Compute mean speed of a pair of landmarks (e.g., hips or shoulders).
+
+    COORDINATE SPACE: Expects pixel coordinates to ensure isotropic speed calculation.
+    Using normalized relative coordinates would introduce anisotropic scaling when
+    video width != height, biasing hip vs. shoulder movement ratios.
+
+    Args:
+        landmarks: DataFrame with pixel coordinates, shape (n_frames, 2*n_landmarks)
+        smooth_window: Window size for Savitzky-Golay smoothing
+
+    Returns:
+        1D array of mean speeds per frame, shape (n_frames,)
+    """
     smoothed = _smooth_positions(landmarks, smooth_window=smooth_window)
     velocities = smoothed.diff().fillna(0.0)
 
@@ -121,6 +134,21 @@ def compute_gendered_movement_metrics(
     fps: float,
     smooth_window: int,
 ) -> tuple[pd.DataFrame, list[dict]]:
+    """Compute hip/shoulder movement metrics from pixel pose coordinates.
+
+    COORDINATE SPACE: Expects pixel coordinates to ensure isotropic speed metrics.
+    Using normalized relative coordinates would introduce anisotropic scaling when
+    video width != height, biasing the hip_shoulder_share and hip_over_shoulder_ratio
+    calculations toward whichever axis has larger pixel dimensions.
+
+    Args:
+        pose_landmarks: DataFrame with pixel coordinates (shape: n_frames x 2*33 landmarks)
+        fps: Frames per second
+        smooth_window: Smoothing window for velocity calculation
+
+    Returns:
+        Tuple of (metrics DataFrame with time/speeds/ratios, segment summary list)
+    """
     hips = choose_landmarks(pose_landmarks, [PoseLandmark.leftHip, PoseLandmark.rightHip])
     shoulders = choose_landmarks(pose_landmarks, [PoseLandmark.leftShoulder, PoseLandmark.rightShoulder])
 
@@ -131,7 +159,7 @@ def compute_gendered_movement_metrics(
     raw_ratio = hip_speed / (shoulder_speed + eps)
     share = hip_speed / (hip_speed + shoulder_speed + eps)
 
-    times = pose_identifier.get_times(pose_landmarks, fps).iloc[:, 0].to_numpy(dtype=float)
+    times = pose_identifier.get_times(pose_landmarks, fps).iloc[:, 0].to_numpy(dtype=float)  # frame index to seconds
     metrics = pd.DataFrame(
         {
             'time': times,

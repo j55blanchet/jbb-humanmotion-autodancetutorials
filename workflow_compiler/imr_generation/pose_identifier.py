@@ -21,7 +21,27 @@ from itertools import chain
 #    * Create keyframe selector which varies keyframe density based on accumulated movement.
 #####
 
+
+def validate_normalized_landmarks(landmarks: DataFrame, context: str, max_abs_value: float = 50.0):
+    """Raise when a metric helper receives obvious pixel-space coordinates.
+
+    These helpers expect normalized, torso-centered coordinates produced by
+    landmark_processing.normalize_landmarks() and choose_landmarks().
+    """
+    values = landmarks.to_numpy(dtype=float)
+    finite_values = values[np.isfinite(values)]
+    if finite_values.size == 0:
+        return
+    max_abs = float(np.max(np.abs(finite_values)))
+    if max_abs > max_abs_value:
+        raise ValueError(
+            f'{context} expects normalized relative coordinates, but received values with '
+            f'absolute magnitude {max_abs:.2f}. Did you pass pixel coordinates before normalization?'
+        )
+
 def get_extension(landmarks: DataFrame, smooth_window: int) -> DataFrame:
+    """Compute per-frame extension from normalized relative landmark coordinates."""
+    validate_normalized_landmarks(landmarks, 'get_extension')
     extension = landmarks.apply(np.linalg.norm, axis=1)    
     extension = extension / (len(landmarks.columns) / 2)
     smoothed_extension = savgol_filter(extension, window_length=smooth_window, polyorder=1)
@@ -29,6 +49,8 @@ def get_extension(landmarks: DataFrame, smooth_window: int) -> DataFrame:
 
 
 def get_individual_extensions(landmarks: DataFrame, smooth_window: int) -> DataFrame:
+    """Compute per-limb extension from normalized relative landmark coordinates."""
+    validate_normalized_landmarks(landmarks, 'get_individual_extensions')
     extensions = DataFrame(index=landmarks.index)
     for col_i in range(0, len(landmarks.columns), 2):
         col_name = landmarks.columns[col_i].replace('_x', '')
@@ -95,6 +117,8 @@ def plot_extension(times: DataFrame, extension: DataFrame, individual_extensions
 # plt.show()
 
 def get_net_movement(landmarks: pd.DataFrame):
+    """Compute accumulated movement from normalized relative landmark coordinates."""
+    validate_normalized_landmarks(landmarks, 'get_net_movement')
     velocities = landmarks.diff().iloc[1:]
     spds = velocities.abs()
     accumulated_motion = spds.apply(np.trapezoid, axis=0)
@@ -107,6 +131,8 @@ def get_cartesian_distance(landmarks: pd.DataFrame, frame1: int, frame2: int):
     return np.linalg.norm(x_velocities.iloc[frame1] - x_velocities.iloc[frame2]) + np.linalg.norm(y_velocities.iloc[frame1] - y_velocities.iloc[frame2])
     
 def get_horz_vert_velocities(landmarks: DataFrame, smooth_window: int):
+    """Compute horizontal and vertical velocities from normalized relative coordinates."""
+    validate_normalized_landmarks(landmarks, 'get_horz_vert_velocities')
     velocity = landmarks.diff()
     x_velocities = velocity.iloc[:, 0::2]
     y_velocities = velocity.iloc[:, 1::2]
@@ -117,6 +143,8 @@ def get_horz_vert_velocities(landmarks: DataFrame, smooth_window: int):
     return net_x_vel, net_y_vel
 
 def get_spds(landmarks: DataFrame, smooth_window: int):
+    """Compute per-landmark speed from normalized relative landmark coordinates."""
+    validate_normalized_landmarks(landmarks, 'get_spds')
     def smooth(x):
         return savgol_filter(x, window_length=smooth_window, polyorder=1)
     smoothed_lms = landmarks.apply(smooth, axis=0)

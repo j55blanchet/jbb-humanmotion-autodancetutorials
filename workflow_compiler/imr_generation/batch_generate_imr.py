@@ -10,7 +10,7 @@ from pandas.core import frame
 
 from . import pose_identifier
 from ..utils import audio_analysis
-from .landmark_processing import PoseLandmark, get_pixel_landmarks, normalize_landmarks, choose_landmarks
+from .landmark_processing import PoseLandmark, normalize_landmarks, choose_landmarks
 from .postprocessing import insert_prune_keyframes
 from ..datatypes import Workflow, IMR
 
@@ -62,7 +62,7 @@ if __name__ == '__main__':
     analysis_dir.mkdir(parents=True, exist_ok=True)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    landmark_files = analysis_pipeline.load_landmark_files(landmark_dir)
+    landmark_files = analysis_pipeline.discover_landmark_files(landmark_dir)
 
     db = []
     with open(database_filepath, 'r', encoding='utf-8') as db_file:
@@ -96,7 +96,7 @@ if __name__ == '__main__':
             print(f"Skipping {clipName} because IMR already exists")
             continue
 
-        pose_landmark_path: Path = landmark_files.get(clipName, {}).get('pose')
+        pose_landmark_path: Path = landmark_files.get(clipName, {}).get('pose2d') or landmark_files.get(clipName, {}).get('pose')
         lefthand_landmark_path: Path = landmark_files.get(clipName, {}).get('leftHand')
         righthand_landmark_path: Path = landmark_files.get(clipName, {}).get('rightHand')
         face_landmark_path: Path = landmark_files.get(clipName, {}).get('face')
@@ -112,7 +112,7 @@ if __name__ == '__main__':
         if (smooth_window < 3): smooth_window = 3
         if smooth_window % 2 == 0: smooth_window += 1
 
-        pixel_landmarks = get_pixel_landmarks(pose_landmark_path, width, height)
+        pixel_landmarks = analysis_pipeline.load_pose_landmarks(pose_landmark_path, width, height)
 
         if len(pixel_landmarks) == 0:
             print(f"   Invalid landmark file for {clipName} @ '{pose_landmark_path}'", file=sys.stderr)
@@ -123,6 +123,7 @@ if __name__ == '__main__':
         start_frame = int(startTime * fps)
         end_frame = int(endTime * fps)
         clipped_landmarks = norm_landmarks[start_frame:end_frame]
+        clipped_pixel_landmarks = pixel_landmarks[start_frame:end_frame]
         
         shoulders = choose_landmarks(clipped_landmarks, [PoseLandmark.leftShoulder, PoseLandmark.rightShoulder])
         hands = choose_landmarks(clipped_landmarks, [PoseLandmark.leftWrist, PoseLandmark.rightWrist], relative_to=shoulders)
@@ -260,7 +261,7 @@ if __name__ == '__main__':
             seg.motionTrails = create_motion_trails(seg.startTime, seg.endTime, f'Segment {i}')
 
         gendered_metrics, _ = gendered_movement_analysis.compute_gendered_movement_metrics(
-            pose_landmarks=clipped_landmarks,
+            pose_landmarks=clipped_pixel_landmarks,
             fps=fps,
             smooth_window=smooth_window,
         )

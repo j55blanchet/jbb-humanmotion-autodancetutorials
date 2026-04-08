@@ -4,7 +4,7 @@ import sys
 
 import matplotlib
 
-from .landmark_processing import PoseLandmark, get_pixel_landmarks, normalize_landmarks, choose_landmarks
+from .landmark_processing import PoseLandmark, normalize_landmarks, choose_landmarks
 from . import pose_identifier
 from . import analysis_pipeline
 
@@ -24,7 +24,7 @@ if __name__ == '__main__':
     analysis_dir = args.analysis_dir
     analysis_dir.mkdir(parents=True, exist_ok=True)
 
-    landmark_files = analysis_pipeline.load_landmark_files(args.landmark_dir)
+    landmark_files = analysis_pipeline.discover_landmark_files(args.landmark_dir)
 
     with open(args.database_filepath, 'r', encoding='utf-8') as db_file:
         db = json.load(db_file)
@@ -51,7 +51,7 @@ if __name__ == '__main__':
             print(f'Skipping {clip_name} because analysis already exists')
             continue
 
-        pose_landmark_path = landmark_files.get(clip_name, {}).get('pose')
+        pose_landmark_path = landmark_files.get(clip_name, {}).get('pose2d') or landmark_files.get(clip_name, {}).get('pose')
         if pose_landmark_path is None:
             print(f"   Missing pose landmark file for {clip_name}", file=sys.stderr)
             continue
@@ -66,7 +66,7 @@ if __name__ == '__main__':
         if smooth_window % 2 == 0:
             smooth_window += 1
 
-        pixel_landmarks = get_pixel_landmarks(pose_landmark_path, width, height)
+        pixel_landmarks = analysis_pipeline.load_pose_landmarks(pose_landmark_path, width, height)
         if len(pixel_landmarks) == 0:
             print(f"   Invalid landmark file for {clip_name} @ '{pose_landmark_path}'", file=sys.stderr)
             continue
@@ -80,6 +80,7 @@ if __name__ == '__main__':
         start_frame = int(start_time * fps)
         end_frame = int(end_time * fps)
         clipped_landmarks = norm_landmarks[start_frame:end_frame]
+        clipped_pixel_landmarks = pixel_landmarks[start_frame:end_frame]
 
         shoulders = choose_landmarks(clipped_landmarks, [PoseLandmark.leftShoulder, PoseLandmark.rightShoulder])
         hands = choose_landmarks(clipped_landmarks, [PoseLandmark.leftWrist, PoseLandmark.rightWrist], relative_to=shoulders)
@@ -91,5 +92,5 @@ if __name__ == '__main__':
             smooth_window=smooth_window,
             extrema_window=extrema_window,
             analysis_dir=analysis_dir,
-            pose_landmarks=clipped_landmarks,
+            pose_landmarks=clipped_pixel_landmarks,
         )

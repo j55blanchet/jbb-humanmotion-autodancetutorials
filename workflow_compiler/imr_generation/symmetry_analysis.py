@@ -105,7 +105,14 @@ def _compute_elbow_angle(shoulder_xy: tuple[np.ndarray, np.ndarray], elbow_xy: t
 
 
 def compute_symmetry_metrics(hands: pd.DataFrame, fps: float, smooth_window: int, pose_landmarks: pd.DataFrame | None = None) -> pd.DataFrame:
+    """Compute hand symmetry metrics from normalized relative hand coordinates.
+
+    The speed and extension measurements require normalized coordinates. Angle
+    metrics are only meaningful after the upstream centering and scaling step.
+    """
     eps = 1e-6
+
+    pose_identifier.validate_normalized_landmarks(hands, 'compute_symmetry_metrics(hands)')
 
     spds = pose_identifier.get_spds(hands, smooth_window=smooth_window)
     if len(spds.columns) < 2:
