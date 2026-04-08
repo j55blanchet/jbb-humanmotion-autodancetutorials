@@ -7,7 +7,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from scipy.signal import argrelmin, savgol_filter
 
-from . import pose_identifier
+from . import pose_analysis
 from .landmark_processing import PoseLandmark, choose_landmarks
 
 
@@ -77,7 +77,7 @@ def _segment_summary(metrics: pd.DataFrame, fps: float) -> list[dict]:
     segment_window = max(3, int(round(fps * 2.0)))
     combined_speed = metrics['hip_speed'].to_numpy(dtype=float) + metrics['shoulder_speed'].to_numpy(dtype=float)
     segment_breaks = argrelmin(combined_speed, order=segment_window)[0]
-    segments = pose_identifier.get_segments(0, segment_breaks, len(metrics) - 1)
+    segments = pose_analysis.get_segments(0, segment_breaks, len(metrics) - 1)
 
     output: list[dict] = []
     for start_i, end_i in segments:
@@ -159,7 +159,7 @@ def compute_gendered_movement_metrics(
     raw_ratio = hip_speed / (shoulder_speed + eps)
     share = hip_speed / (hip_speed + shoulder_speed + eps)
 
-    times = pose_identifier.get_times(pose_landmarks, fps).iloc[:, 0].to_numpy(dtype=float)  # frame index to seconds
+    times = pose_analysis.get_times(pose_landmarks, fps).iloc[:, 0].to_numpy(dtype=float)  # frame index to seconds
     metrics = pd.DataFrame(
         {
             'time': times,

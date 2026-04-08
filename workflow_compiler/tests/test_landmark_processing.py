@@ -6,7 +6,7 @@ import pandas as pd
 
 from workflow_compiler.imr_generation.analysis_pipeline import discover_landmark_files, load_pose_landmarks
 from workflow_compiler.imr_generation.landmark_processing import get_pixel_landmarks, get_pose2d_pixel_landmarks
-from workflow_compiler.imr_generation.pose_identifier import validate_normalized_landmarks
+from workflow_compiler.imr_generation.pose_analysis import validate_normalized_landmarks
 
 
 def _write_csv(path: Path, content: str) -> None:

@@ -3,14 +3,14 @@
 This module discovers landmark files (both .pose.csv and .pose2d.csv formats),
 routes them to the appropriate parser, and coordinates analysis functions.
 
-The pipeline maintains a critical invariant: all analysis functions operate on
-normalized relative coordinates. Format conversion happens at ingestion boundary
-via load_pose_landmarks() based on filename suffix:
+The pipeline keeps coordinates in pixel space for metric calculations. Format
+conversion happens at ingestion boundary via load_pose_landmarks() based on
+filename suffix:
 
   - .pose2d.csv -> get_pose2d_pixel_landmarks() (no scaling, canonicalize names)
   - .pose.csv   -> get_pixel_landmarks() (scale by width/height, canonicalize names)
   
-Both return pixel-space DataFrames which are then normalized by downstream clients.
+Both return pixel-space DataFrames consumed directly by downstream metrics.
 
 For detailed schema information, see landmark_processing module docstring.
 """
@@ -19,10 +19,11 @@ from pathlib import Path
 from typing import Dict, Literal, Sequence
 
 from matplotlib import pyplot as plt
+from matplotlib.figure import Figure
 import pandas as pd
 
 from . import gendered_movement_analysis
-from . import pose_identifier
+from . import pose_metrics_plotting
 from . import symmetry_analysis
 from .landmark_processing import get_pixel_landmarks, get_pose2d_pixel_landmarks
 
@@ -87,8 +88,7 @@ def load_pose_landmarks(landmark_path: Path, width: int, height: int) -> pd.Data
         Returns pixel coordinates (scaled: x *= width, y *= height)
 
     INVARIANT: Output is always in pixel coordinate space [0, width] x [0, height]
-    Downstream analysis normalizes via normalize_landmarks() before computing
-    metrics (speed, extension, symmetry, gendered movement).
+    Downstream analysis computes metrics directly in pixel space.
 
     Args:
         landmark_path: Path to either .pose.csv or .pose2d.csv
@@ -129,10 +129,10 @@ def create_analysis_figure():
     return fig, axs
 
 
-def save_analysis_figure(fig: plt.Figure, clip_name: str, analysis_dir: Path):
+def save_analysis_figure(fig: Figure, clip_name: str, analysis_dir: Path):
     title = clip_name.replace('$', '\\$')
     fig.suptitle(f'Hands Motion Analysis: {title}')
-    fig.tight_layout(rect=[0, 0, 1, 0.97])
+    fig.tight_layout(rect=(0, 0, 1, 0.97))
     handanalysis_output_dir(analysis_dir).mkdir(parents=True, exist_ok=True)
     fig.savefig(str(analysis_output_filepath(analysis_dir, clip_name)))
     plt.close(fig)
@@ -140,7 +140,7 @@ def save_analysis_figure(fig: plt.Figure, clip_name: str, analysis_dir: Path):
 
 def write_clip_analysis(
     clip_name: str,
-    hands: pd.DataFrame,
+    pixel_hands: pd.DataFrame,
     fps: float,
     smooth_window: int,
     extrema_window: int,
@@ -155,11 +155,15 @@ def write_clip_analysis(
     chart_netspd = 2
     chart_extension = 3
 
-    pose_identifier.plot_movement_extension(
-        hands,
-        fps,
+    movement_metrics = pose_metrics_plotting.compute_movement_extension_metrics(
+        hand_landmarks=pixel_hands,
+        fps=fps,
         smooth_window=smooth_window,
         extrema_window=extrema_window,
+    )
+
+    pose_metrics_plotting.plot_movement_extension(
+        metrics=movement_metrics,
         ax_spds=analysis_axs[chart_handspd],
         ax_spdcorrelation=analysis_axs[chart_handspdcorr],
         ax_movement_net=analysis_axs[chart_netspd],
@@ -188,7 +192,7 @@ def write_clip_analysis(
 
     symmetry_analysis.write_clip_symmetry_analysis(
         clip_name=clip_name,
-        hands=hands,
+        pixel_hands=pixel_hands,
         fps=fps,
         smooth_window=smooth_window,
         analysis_dir=analysis_dir,

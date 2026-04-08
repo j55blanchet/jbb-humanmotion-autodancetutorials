@@ -8,9 +8,9 @@ import pandas as pd
 from pandas import DataFrame
 from pandas.core import frame
 
-from . import pose_identifier
+from . import pose_analysis
 from ..utils import audio_analysis
-from .landmark_processing import PoseLandmark, normalize_landmarks, choose_landmarks
+from .landmark_processing import PoseLandmark, choose_landmarks
 from .postprocessing import insert_prune_keyframes
 from ..datatypes import Workflow, IMR
 
@@ -118,32 +118,28 @@ if __name__ == '__main__':
             print(f"   Invalid landmark file for {clipName} @ '{pose_landmark_path}'", file=sys.stderr)
             continue
 
-        norm_landmarks = normalize_landmarks(pixel_landmarks, [PoseLandmark.leftShoulder, PoseLandmark.rightShoulder], [PoseLandmark.leftHip, PoseLandmark.rightHip])
-
         start_frame = int(startTime * fps)
         end_frame = int(endTime * fps)
-        clipped_landmarks = norm_landmarks[start_frame:end_frame]
         clipped_pixel_landmarks = pixel_landmarks[start_frame:end_frame]
-        
-        shoulders = choose_landmarks(clipped_landmarks, [PoseLandmark.leftShoulder, PoseLandmark.rightShoulder])
-        hands = choose_landmarks(clipped_landmarks, [PoseLandmark.leftWrist, PoseLandmark.rightWrist], relative_to=shoulders)
+        pixel_shoulders = choose_landmarks(clipped_pixel_landmarks, [PoseLandmark.leftShoulder, PoseLandmark.rightShoulder])
+        hands = choose_landmarks(clipped_pixel_landmarks, [PoseLandmark.leftWrist, PoseLandmark.rightWrist], relative_to=pixel_shoulders)
 
-        times = pose_identifier.get_times(hands, fps)
+        times = pose_analysis.get_times(hands, fps)
 
-        hands_extension = pose_identifier.get_extension(hands, smooth_window)
-        _, _, hands_extension_extrema = pose_identifier.get_extrema(hands_extension, frame_window = extrema_window)
+        hands_extension = pose_analysis.get_extension(hands, smooth_window)
+        _, _, hands_extension_extrema = pose_analysis.get_extrema(hands_extension, frame_window = extrema_window)
         extension_keyframes = times.iloc[hands_extension_extrema].values[:,0].tolist()
 
         min_kf_dist = 0.06
         max_kf_dist = 0.24
         # inserted_pruned_extension_kfs = list(insert_prune_keyframes(startTime, endTime, extension_keyframes, max_kf_dist, min_kf_dist))
         
-        hands_spd_minima = pose_identifier.get_spd_minima(hands, smooth_window, extrema_window)
+        hands_spd_minima = pose_analysis.get_spd_minima(hands, smooth_window, extrema_window)
         # spd_minima_keyframes = times.iloc[hands_spd_minima].values[:,0].tolist()
         # inserted_pruned_spdminima_kfs = list(insert_prune_keyframes(startTime, endTime, spd_minima_keyframes, max_kf_dist, min_kf_dist))
         
         #target roughly every two seconds
-        hands_spd_minima_temporal_segments = pose_identifier.get_spd_minima(hands, smooth_window, int(fps * 2))
+        hands_spd_minima_temporal_segments = pose_analysis.get_spd_minima(hands, smooth_window, int(fps * 2))
         hands_spd_minima_temporal_segments = times.iloc[hands_spd_minima_temporal_segments].values[:,0].tolist()
 
         # remove the first and last keyframes if they are too close to the start and end
@@ -181,7 +177,7 @@ if __name__ == '__main__':
         keyframes = [
             IMR.Keyframe(
                 timestamp=times.iloc[_nearest_index(times.index, kf_i), 0],
-                significance=pose_identifier.get_net_movement(hands[kf_i:kf_i_next])
+                significance=pose_analysis.get_net_movement(hands[kf_i:kf_i_next])
             )
             for kf_i, kf_i_next in zip(
                 keyframesIndices,
@@ -193,12 +189,12 @@ if __name__ == '__main__':
         if analysis_dir is not None:
             analysis_pipeline.write_clip_analysis(
                 clip_name=clipName,
-                hands=hands,
+                pixel_hands=hands,
                 fps=fps,
                 smooth_window=smooth_window,
                 extrema_window=extrema_window,
                 analysis_dir=analysis_dir,
-                pose_landmarks=clipped_landmarks,
+                pose_landmarks=clipped_pixel_landmarks,
                 segmentation_times=list(segmentationTimes),
             )
         

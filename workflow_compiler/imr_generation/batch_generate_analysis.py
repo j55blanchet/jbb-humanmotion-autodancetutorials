@@ -4,8 +4,7 @@ import sys
 
 import matplotlib
 
-from .landmark_processing import PoseLandmark, normalize_landmarks, choose_landmarks
-from . import pose_identifier
+from .landmark_processing import PoseLandmark, choose_landmarks
 from . import analysis_pipeline
 
 
@@ -71,23 +70,17 @@ if __name__ == '__main__':
             print(f"   Invalid landmark file for {clip_name} @ '{pose_landmark_path}'", file=sys.stderr)
             continue
 
-        norm_landmarks = normalize_landmarks(
-            pixel_landmarks,
-            [PoseLandmark.leftShoulder, PoseLandmark.rightShoulder],
-            [PoseLandmark.leftHip, PoseLandmark.rightHip],
-        )
-
         start_frame = int(start_time * fps)
         end_frame = int(end_time * fps)
-        clipped_landmarks = norm_landmarks[start_frame:end_frame]
         clipped_pixel_landmarks = pixel_landmarks[start_frame:end_frame]
 
-        shoulders = choose_landmarks(clipped_landmarks, [PoseLandmark.leftShoulder, PoseLandmark.rightShoulder])
-        hands = choose_landmarks(clipped_landmarks, [PoseLandmark.leftWrist, PoseLandmark.rightWrist], relative_to=shoulders)
+        # Extract pixel-space hands for symmetry analysis (isotropic metrics)
+        pixel_shoulders = choose_landmarks(clipped_pixel_landmarks, [PoseLandmark.leftShoulder, PoseLandmark.rightShoulder])
+        pixel_hands = choose_landmarks(clipped_pixel_landmarks, [PoseLandmark.leftWrist, PoseLandmark.rightWrist], relative_to=pixel_shoulders)
 
         analysis_pipeline.write_clip_analysis(
             clip_name=clip_name,
-            hands=hands,
+            pixel_hands=pixel_hands,
             fps=fps,
             smooth_window=smooth_window,
             extrema_window=extrema_window,

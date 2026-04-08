@@ -50,17 +50,15 @@ COORDINATE SPACE SEMANTICS
 ===========================
 1. Raw Normalized [0, 1]: Values from .pose.csv before any scaling
 2. Pixel Coordinates: Raw integer/float positions in video frame space
-   - .pose2d.csv files are already in this space
-   - .pose.csv files are converted via: x *= width, y *= height
-3. Normalized Relative: Processed landmark space used by analysis functions
-   - Centered on reference joint pair midpoint (typically torso)
-   - Scaled by distance between reference joints
-   - Result range: typically [-5, +5] for full-body motion
-   - This is the ONLY format expected by analysis functions (speed, extension, symmetry)
+    - .pose2d.csv files are already in this space
+    - .pose.csv files are converted via: x *= width, y *= height
+3. Normalized Relative: Optional derived space for specialized transforms
+    - Centered on reference joint pair midpoint (typically torso)
+    - Scaled by distance between reference joints
+    - Result range: typically [-5, +5] for full-body motion
 
-WARNING: All downstream analysis assumes normalized relative coordinates.
-Pixel-coordinate inputs will produce silently inflated (1000-4000x) metric values.
-Use validate_normalized_landmarks() to catch format misuse.
+Current downstream analysis is pixel-first and computes speed/extension/symmetry
+in pixel space (often after subtracting a local reference such as shoulders).
 
 
 LANDMARK ENUMERATION (MediaPipe Holistic)

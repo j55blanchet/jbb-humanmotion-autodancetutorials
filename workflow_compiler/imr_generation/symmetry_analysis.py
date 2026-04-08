@@ -3,8 +3,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
+from matplotlib.ticker import FuncFormatter
+from typing import cast
 
-from . import pose_identifier
+from . import pose_analysis
 
 
 def symmetry_output_dir(analysis_dir: Path) -> Path:
@@ -104,24 +106,39 @@ def _compute_elbow_angle(shoulder_xy: tuple[np.ndarray, np.ndarray], elbow_xy: t
     return np.arccos(cos_theta)
 
 
-def compute_symmetry_metrics(hands: pd.DataFrame, fps: float, smooth_window: int, pose_landmarks: pd.DataFrame | None = None) -> pd.DataFrame:
-    """Compute hand symmetry metrics from normalized relative hand coordinates.
+def compute_symmetry_metrics(pixel_hands: pd.DataFrame, fps: float, smooth_window: int, pose_landmarks: pd.DataFrame | None = None) -> pd.DataFrame:
+    """Compute hand symmetry metrics from PIXEL SPACE hand coordinates.
 
-    The speed and extension measurements require normalized coordinates. Angle
-    metrics are only meaningful after the upstream centering and scaling step.
+    Computes metrics:
+    - Speed-based: coactivation (min/total), dominance (right-left)/total
+    - Extension-based: similarity (1 - normalized difference)
+    - Angular: congruence (mirror-symmetric angle comparison)
+
+    COORDINATE SPACE: Expects hands in pixel space for isotropic speed/extension metrics.
+    Using normalized relative coordinates would introduce anisotropic scaling when
+    video width != height. Angular metrics are computed on pixel coordinates before
+    optional pose landmark centering.
+
+    Args:
+        pixel_hands: DataFrame of pixel-space hand coordinates,
+                    shape (n_frames, 4) for [leftWrist_x, leftWrist_y, rightWrist_x, rightWrist_y]
+        fps: Frames per second
+        smooth_window: Savitzky-Golay window for computing speeds/extensions
+        pose_landmarks: Optional pose coordinates for elbow-angle similarity
+
+    Returns:
+        DataFrame indexed by frame with symmetry metric columns
     """
     eps = 1e-6
 
-    pose_identifier.validate_normalized_landmarks(hands, 'compute_symmetry_metrics(hands)')
-
-    spds = pose_identifier.get_spds(hands, smooth_window=smooth_window)
+    spds = pose_analysis.get_spds(pixel_hands, smooth_window=smooth_window)
     if len(spds.columns) < 2:
         raise ValueError('Expected at least two hand speed columns for symmetry metrics.')
 
     left_speed = spds.iloc[:, 0].to_numpy(dtype=float)
     right_speed = spds.iloc[:, 1].to_numpy(dtype=float)
 
-    ext = pose_identifier.get_individual_extensions(hands, smooth_window=smooth_window)
+    ext = pose_analysis.get_individual_extensions(pixel_hands, smooth_window=smooth_window)
     left_ext = ext.iloc[:, 0].to_numpy(dtype=float)
     right_ext = ext.iloc[:, 1].to_numpy(dtype=float)
 
@@ -134,21 +151,21 @@ def compute_symmetry_metrics(hands: pd.DataFrame, fps: float, smooth_window: int
 
     # Geometric congruence: mirror left-arm angle to compare against right-arm angle.
     left_angle = _angle_from_xy(
-        hands.iloc[:, 0].to_numpy(dtype=float),
-        hands.iloc[:, 1].to_numpy(dtype=float),
+        pixel_hands.iloc[:, 0].to_numpy(dtype=float),
+        pixel_hands.iloc[:, 1].to_numpy(dtype=float),
     )
     right_angle = _angle_from_xy(
-        hands.iloc[:, 2].to_numpy(dtype=float),
-        hands.iloc[:, 3].to_numpy(dtype=float),
+        pixel_hands.iloc[:, 2].to_numpy(dtype=float),
+        pixel_hands.iloc[:, 3].to_numpy(dtype=float),
     )
     left_mirrored_angle = _angle_from_xy(
-        -hands.iloc[:, 0].to_numpy(dtype=float),
-        hands.iloc[:, 1].to_numpy(dtype=float),
+        -pixel_hands.iloc[:, 0].to_numpy(dtype=float),
+        pixel_hands.iloc[:, 1].to_numpy(dtype=float),
     )
     angle_diff = np.abs(_wrapped_angle_diff(left_mirrored_angle, right_angle))
     angle_congruence = 1.0 - (angle_diff / np.pi)
 
-    elbow_angle_similarity = np.full(len(hands), np.nan, dtype=float)
+    elbow_angle_similarity = np.full(len(pixel_hands), np.nan, dtype=float)
     if pose_landmarks is not None:
         l_sh = _extract_xy(pose_landmarks, 'leftShoulder')
         l_el = _extract_xy(pose_landmarks, 'leftElbow')
@@ -158,8 +175,16 @@ def compute_symmetry_metrics(hands: pd.DataFrame, fps: float, smooth_window: int
         r_wr = _extract_xy(pose_landmarks, 'rightWrist')
 
         if all(x is not None for x in (l_sh[0], l_el[0], l_wr[0], r_sh[0], r_el[0], r_wr[0])):
-            left_elbow = _compute_elbow_angle(l_sh, l_el, l_wr)
-            right_elbow = _compute_elbow_angle(r_sh, r_el, r_wr)
+            left_elbow = _compute_elbow_angle(
+                cast(tuple[np.ndarray, np.ndarray], l_sh),
+                cast(tuple[np.ndarray, np.ndarray], l_el),
+                cast(tuple[np.ndarray, np.ndarray], l_wr),
+            )
+            right_elbow = _compute_elbow_angle(
+                cast(tuple[np.ndarray, np.ndarray], r_sh),
+                cast(tuple[np.ndarray, np.ndarray], r_el),
+                cast(tuple[np.ndarray, np.ndarray], r_wr),
+            )
             elbow_angle_similarity = 1.0 - (np.abs(left_elbow - right_elbow) / np.pi)
 
     rolling_window = max(9, int(round(fps * 0.75)))
@@ -170,7 +195,7 @@ def compute_symmetry_metrics(hands: pd.DataFrame, fps: float, smooth_window: int
     corr_local = _rolling_corr(left_speed, right_speed, rolling_window)
     corr_lag_aware = _lag_aware_corr(left_speed, right_speed, rolling_window, max_lag)
 
-    times = pose_identifier.get_times(hands, fps).iloc[:, 0].to_numpy(dtype=float)
+    times = pose_analysis.get_times(pixel_hands, fps).iloc[:, 0].to_numpy(dtype=float)
 
     return pd.DataFrame(
         {
@@ -226,24 +251,34 @@ def plot_symmetry_metrics(metrics: pd.DataFrame, clip_name: str, out_path: Path)
     axs[3].set_yticks([-1, 0, 1])
     axs[3].set_ylabel('Dominance')
     axs[3].set_xlabel('Time')
-    axs[3].xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f'{x:0.2f}s'))
+    axs[3].xaxis.set_major_formatter(FuncFormatter(lambda x, _: f'{x:0.2f}s'))
 
     title = clip_name.replace('$', '\\$')
     fig.suptitle(f'Hand Symmetry Analysis: {title}')
-    fig.tight_layout(rect=[0, 0, 1, 0.97])
+    fig.tight_layout(rect=(0, 0, 1, 0.97))
     fig.savefig(str(out_path))
     plt.close(fig)
 
 
 def write_clip_symmetry_analysis(
     clip_name: str,
-    hands: pd.DataFrame,
+    pixel_hands: pd.DataFrame,
     fps: float,
     smooth_window: int,
     analysis_dir: Path,
     pose_landmarks: pd.DataFrame | None = None,
 ):
-    metrics = compute_symmetry_metrics(hands, fps=fps, smooth_window=smooth_window, pose_landmarks=pose_landmarks)
+    """Write symmetry analysis to PDF output file.
+
+    Args:
+        clip_name: Name of clip being analyzed
+        pixel_hands: DataFrame of pixel-space hand coordinates
+        fps: Frames per second
+        smooth_window: Savitzky-Goyal window for metric computation
+        analysis_dir: Output directory for PDF and CSV files
+        pose_landmarks: Optional pose landmarks for angle metrics
+    """
+    metrics = compute_symmetry_metrics(pixel_hands, fps=fps, smooth_window=smooth_window, pose_landmarks=pose_landmarks)
     out_path = symmetry_output_filepath(analysis_dir, clip_name)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     plot_symmetry_metrics(metrics, clip_name=clip_name, out_path=out_path)
