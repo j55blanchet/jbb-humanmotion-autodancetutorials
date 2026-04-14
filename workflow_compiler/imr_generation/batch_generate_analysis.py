@@ -3,9 +3,53 @@ import json
 import sys
 
 import matplotlib
+import pandas as pd
 
 from .landmark_processing import PoseLandmark, choose_landmarks
 from . import analysis_pipeline
+from . import gendered_movement_analysis
+
+
+def _gender_labels_from_tags(tags: object) -> str:
+    if not isinstance(tags, list):
+        return ''
+    labels = [tag for tag in tags if tag in ('femme', 'masc')]
+    return ','.join(sorted(dict.fromkeys(labels)))
+
+
+def _stringify_metadata_value(value: object) -> object:
+    if isinstance(value, (list, dict)):
+        return json.dumps(value, ensure_ascii=True)
+    return value
+
+
+def _build_scalar_row(motion_entry: dict, scalar_summary: dict) -> dict:
+    row = {
+        'clipName': motion_entry.get('clipName', ''),
+        'title': motion_entry.get('title', ''),
+        'clipPath': motion_entry.get('clipPath', ''),
+        'thumbnailSrc': motion_entry.get('thumbnailSrc', ''),
+        'audioSrc': motion_entry.get('audioSrc', ''),
+        'genderLabels': _gender_labels_from_tags(motion_entry.get('tags')),
+    }
+
+    for key in (
+        'frameCount',
+        'fps',
+        'duration',
+        'width',
+        'height',
+        'startTime',
+        'endTime',
+        'poseUpperBodyOnly',
+        'bpm',
+        'tags',
+        'landmarkScope',
+    ):
+        row[key] = _stringify_metadata_value(motion_entry.get(key))
+
+    row.update(scalar_summary)
+    return row
 
 
 if __name__ == '__main__':
@@ -27,8 +71,11 @@ if __name__ == '__main__':
 
     with open(args.database_filepath, 'r', encoding='utf-8') as db_file:
         db = json.load(db_file)
+    complete_pairs = analysis_pipeline.detect_complete_gender_pairs(db)
 
     done = 0
+    scalar_rows: list[dict] = []
+    metrics_by_clip: dict[str, pd.DataFrame] = {}
 
     for motion_entry in db:
         clip_name = motion_entry['clipName']
@@ -39,14 +86,13 @@ if __name__ == '__main__':
         height = motion_entry['height']
         landmark_scope = motion_entry['landmarkScope']
 
-        if len(landmark_scope) != 1 or landmark_scope[0] != 'pose':
+        if 'pose' not in landmark_scope:
             continue
 
         analysis_out = analysis_pipeline.analysis_output_filepath(analysis_dir, clip_name)
         symmetry_out = analysis_pipeline.symmetry_output_filepath(analysis_dir, clip_name)
         gendered_out = analysis_pipeline.gendered_movement_output_filepath(analysis_dir, clip_name)
-        gendered_data_out = analysis_pipeline.gendered_movement_data_filepath(analysis_dir, clip_name)
-        if args.skip_existing and analysis_out.exists() and symmetry_out.exists() and gendered_out.exists() and gendered_data_out.exists():
+        if args.skip_existing and analysis_out.exists() and symmetry_out.exists() and gendered_out.exists():
             print(f'Skipping {clip_name} because analysis already exists')
             continue
 
@@ -78,7 +124,7 @@ if __name__ == '__main__':
         pixel_shoulders = choose_landmarks(clipped_pixel_landmarks, [PoseLandmark.leftShoulder, PoseLandmark.rightShoulder])
         pixel_hands = choose_landmarks(clipped_pixel_landmarks, [PoseLandmark.leftWrist, PoseLandmark.rightWrist], relative_to=pixel_shoulders)
 
-        analysis_pipeline.write_clip_analysis(
+        clip_result = analysis_pipeline.write_clip_analysis(
             clip_name=clip_name,
             pixel_hands=pixel_hands,
             fps=fps,
@@ -86,4 +132,30 @@ if __name__ == '__main__':
             extrema_window=extrema_window,
             analysis_dir=analysis_dir,
             pose_landmarks=clipped_pixel_landmarks,
+        )
+
+        gendered_result = clip_result.get('gendered_result') if clip_result is not None else None
+        if gendered_result is not None:
+            scalar_rows.append(_build_scalar_row(motion_entry, gendered_result['scalar_summary']))
+            metrics_by_clip[clip_name] = gendered_result['metrics']
+
+    if scalar_rows:
+        scalar_summary = pd.DataFrame(scalar_rows).sort_values('clipName')
+        scalar_summary.to_csv(
+            gendered_movement_analysis.gendered_movement_scalar_summary_filepath(analysis_dir),
+            index=False,
+        )
+
+    for pair_key, pair_roles in sorted(complete_pairs.items()):
+        femme_name = pair_roles['femme']
+        masc_name = pair_roles['masc']
+        if femme_name not in metrics_by_clip or masc_name not in metrics_by_clip:
+            continue
+
+        gendered_movement_analysis.plot_gendered_movement_comparison(
+            left_metrics=metrics_by_clip[femme_name],
+            right_metrics=metrics_by_clip[masc_name],
+            left_clip_name=femme_name,
+            right_clip_name=masc_name,
+            out_path=gendered_movement_analysis.gendered_movement_comparison_filepath(analysis_dir, pair_key),
         )

@@ -16,7 +16,7 @@ For detailed schema information, see landmark_processing module docstring.
 """
 
 from pathlib import Path
-from typing import Dict, Literal, Sequence
+from typing import Dict, Iterable, Literal, Sequence
 
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
@@ -26,6 +26,61 @@ from . import gendered_movement_analysis
 from . import pose_metrics_plotting
 from . import symmetry_analysis
 from .landmark_processing import get_pixel_landmarks, get_pose2d_pixel_landmarks
+
+
+def detect_gender_pair_key(clip_name: str) -> tuple[str, Literal['femme', 'masc']] | None:
+    """Infer pair key and role for clips that encode a femme/masc variant.
+
+    Supported naming patterns include:
+    - <base>_femme / <base>_masc
+    - <base>_left_femme / <base>_right_masc (side-by-side split clips)
+
+    Returns:
+        (pair_key, role) if clip_name represents one side of a femme/masc pair,
+        otherwise None.
+    """
+    tokens = clip_name.split('_')
+    if len(tokens) < 2:
+        return None
+
+    role = tokens[-1]
+    if role not in ('femme', 'masc'):
+        return None
+
+    base_tokens = tokens[:-1]
+    if base_tokens and base_tokens[-1] in ('left', 'right') and 'sidebyside' in base_tokens:
+        base_tokens = base_tokens[:-1]
+
+    if not base_tokens:
+        return None
+
+    return '_'.join(base_tokens), role
+
+
+def detect_complete_gender_pairs(entries: Iterable[dict]) -> dict[str, dict[str, str]]:
+    """Detect complete femme/masc clip pairs from database entries.
+
+    Returns:
+        Dict[pair_key -> {'femme': clip_name, 'masc': clip_name}] for keys where
+        both roles are present in the input entries.
+    """
+    grouped: dict[str, dict[str, str]] = {}
+    for entry in entries:
+        clip_name = entry.get('clipName')
+        if not isinstance(clip_name, str):
+            continue
+        pair_info = detect_gender_pair_key(clip_name)
+        if pair_info is None:
+            continue
+
+        pair_key, role = pair_info
+        grouped.setdefault(pair_key, {})[role] = clip_name
+
+    return {
+        pair_key: roles
+        for pair_key, roles in grouped.items()
+        if 'femme' in roles and 'masc' in roles
+    }
 
 
 def discover_landmark_files(landmark_base_dir: Path):
@@ -123,6 +178,10 @@ def gendered_movement_data_filepath(analysis_dir: Path, clip_name: str) -> Path:
     return gendered_movement_analysis.gendered_movement_data_filepath(analysis_dir, clip_name)
 
 
+def gendered_movement_ratio_filepath(analysis_dir: Path, clip_name: str) -> Path:
+    return gendered_movement_analysis.gendered_movement_ratio_filepath(analysis_dir, clip_name)
+
+
 def create_analysis_figure():
     fig, axs = plt.subplots(4, 1)
     fig.set_size_inches(6.0, 8.0)
@@ -199,8 +258,9 @@ def write_clip_analysis(
         pose_landmarks=pose_landmarks,
     )
 
+    gendered_result = None
     if pose_landmarks is not None:
-        gendered_movement_analysis.write_clip_gendered_movement_analysis(
+        gendered_result = gendered_movement_analysis.write_clip_gendered_movement_analysis(
             clip_name=clip_name,
             pose_landmarks=pose_landmarks,
             fps=fps,
@@ -208,3 +268,8 @@ def write_clip_analysis(
             analysis_dir=analysis_dir,
             segmentation_times=segmentation_times,
         )
+
+    return {
+        'clipName': clip_name,
+        'gendered_result': gendered_result,
+    }

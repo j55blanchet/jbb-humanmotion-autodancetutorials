@@ -11,5 +11,16 @@
    "typescript.inlayHints.parameterNames.enabled": "all",
 "javascript.inlayHints.parameterNames.enabled": "all",
 "workbench.colorTheme": "Quiet Light",
-"python.pythonPath": ".env/bin/python"
+"python.pythonPath": ".env/bin/python",
+"chat.tools.terminal.autoApprove": {
+    "/^python -m workflow_compiler\\.update_database temp_data/genderdance/database\\.json temp_data/genderdance/bundle_media/videos temp_data/genderdance/bundle_media/thumbnails temp_data/genderdance/bundle_media/audio$/": {
+        "approve": true,
+        "matchCommandLine": true
+    },
+    "/^python3 -m workflow_compiler\\.update_database temp_data/genderdance/database\\.json temp_data/genderdance/bundle_media/videos temp_data/genderdance/bundle_media/thumbnails temp_data/genderdance/bundle_media/audio$/": {
+        "approve": true,
+        "matchCommandLine": true
+    },
+    "/Users/viona/dev/jbb-humanmotion-autodancetutorials/.venv/bin/python": true
+}
 }

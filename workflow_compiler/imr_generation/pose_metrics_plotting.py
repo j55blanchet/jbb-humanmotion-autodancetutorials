@@ -102,14 +102,16 @@ def compute_movement_extension_metrics(hand_landmarks: DataFrame, fps: float, sm
     hand_spds = get_spds(hand_landmarks, smooth_window)
     net_x_vel, net_y_vel = get_horz_vert_velocities(hand_landmarks, smooth_window)
     net_spd = abs(net_x_vel) + abs(net_y_vel)
-    spd_minima = argrelmin(net_spd, order=extrema_window)[0]
+    spd_minima = argrelmin(net_spd.to_numpy(dtype=float), order=extrema_window)[0]
 
     extension = get_extension(hand_landmarks, smooth_window=smooth_window)
     individual_extensions = get_individual_extensions(hand_landmarks, smooth_window=smooth_window)
     extension_minima, extension_maxima, _ = get_extrema(extension, extrema_window)
 
     times = get_times(hand_landmarks, fps)
-    hand_spds_over_time = hand_spds.set_index(hand_spds.index.map(lambda x: times.loc[x]))
+    time_values = times.iloc[:, 0].astype(float)
+    hand_spds_over_time = hand_spds.copy()
+    hand_spds_over_time.index = time_values
 
     segments = get_segments(0, spd_minima, len(hand_landmarks) - 1)
 

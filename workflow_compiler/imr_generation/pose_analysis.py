@@ -13,6 +13,44 @@ from typing import Tuple, Sequence
 from scipy.signal import savgol_filter, argrelmin, argrelmax
 
 
+def sanitize_signal(values: np.ndarray) -> np.ndarray:
+    """Return finite signal suitable for filtering.
+
+    Replaces inf with NaN, then interpolates missing values. If all values are
+    missing, returns zeros.
+    """
+    signal = np.asarray(values, dtype=float)
+    signal[~np.isfinite(signal)] = np.nan
+    if np.isnan(signal).all():
+        return np.zeros_like(signal, dtype=float)
+
+    s = Series(signal)
+    s = s.interpolate(limit_direction='both')
+    s = s.bfill().ffill().fillna(0.0)
+    return s.to_numpy(dtype=float)
+
+
+def smooth_signal(values: np.ndarray, window_length: int) -> np.ndarray:
+    """Apply Savitzky-Golay smoothing when the signal is long enough.
+
+    Returns the original finite signal unchanged when it is too short for the
+    requested window.
+    """
+    signal = sanitize_signal(values)
+    if len(signal) < 3:
+        return signal
+
+    window = max(3, int(window_length))
+    if window % 2 == 0:
+        window += 1
+    if window > len(signal):
+        window = len(signal) if len(signal) % 2 == 1 else len(signal) - 1
+    if window < 3:
+        return signal
+
+    return np.asarray(savgol_filter(signal, window_length=window, polyorder=1), dtype=float)
+
+
 def validate_normalized_landmarks(landmarks: DataFrame, context: str, max_abs_value: float = 50.0):
     """Raise when a metric helper receives obvious pixel-space coordinates.
 
@@ -62,7 +100,7 @@ def get_extension(landmarks: DataFrame, smooth_window: int) -> Series:
     """
     extension = landmarks.apply(np.linalg.norm, axis=1)
     extension = extension / (len(landmarks.columns) / 2)
-    smoothed_extension = savgol_filter(extension.to_numpy(dtype=float), window_length=smooth_window, polyorder=1)
+    smoothed_extension = smooth_signal(extension.to_numpy(dtype=float), smooth_window)
     return Series(smoothed_extension, index=landmarks.index)
 
 
@@ -86,10 +124,7 @@ def get_individual_extensions(landmarks: DataFrame, smooth_window: int) -> DataF
         col_name = landmarks.columns[col_i].replace('_x', '')
         xy = landmarks.iloc[:, col_i:col_i + 2]
         ext = xy.apply(np.linalg.norm, axis=1)
-        extensions[col_name] = Series(
-            savgol_filter(ext.to_numpy(dtype=float), window_length=smooth_window, polyorder=1),
-            index=landmarks.index,
-        )
+        extensions[col_name] = Series(smooth_signal(ext.to_numpy(dtype=float), smooth_window), index=landmarks.index)
     return extensions
 
 
@@ -163,10 +198,10 @@ def get_horz_vert_velocities(landmarks: DataFrame, smooth_window: int) -> Tuple[
     velocity = landmarks.diff()
     x_velocities = velocity.iloc[:, 0::2]
     y_velocities = velocity.iloc[:, 1::2]
-    net_x_vel = x_velocities.sum(axis=1).to_numpy(dtype=float)
-    net_y_vel = y_velocities.sum(axis=1).to_numpy(dtype=float)
-    net_x_vel = Series(np.asarray(savgol_filter(net_x_vel, window_length=smooth_window, polyorder=1), dtype=float), index=landmarks.index)
-    net_y_vel = Series(np.asarray(savgol_filter(net_y_vel, window_length=smooth_window, polyorder=1), dtype=float), index=landmarks.index)
+    net_x_vel = sanitize_signal(x_velocities.sum(axis=1).to_numpy(dtype=float))
+    net_y_vel = sanitize_signal(y_velocities.sum(axis=1).to_numpy(dtype=float))
+    net_x_vel = Series(smooth_signal(net_x_vel, smooth_window), index=landmarks.index)
+    net_y_vel = Series(smooth_signal(net_y_vel, smooth_window), index=landmarks.index)
     return net_x_vel, net_y_vel
 
 
@@ -187,10 +222,8 @@ def get_spds(landmarks: DataFrame, smooth_window: int):
     """
     smoothed_values = landmarks.to_numpy(dtype=float)
     for col_i in range(smoothed_values.shape[1]):
-        smoothed_values[:, col_i] = np.asarray(
-            savgol_filter(smoothed_values[:, col_i], window_length=smooth_window, polyorder=1),
-            dtype=float,
-        )
+        col_signal = sanitize_signal(smoothed_values[:, col_i])
+        smoothed_values[:, col_i] = smooth_signal(col_signal, smooth_window)
     smoothed_lms = DataFrame(smoothed_values, index=landmarks.index, columns=landmarks.columns)
     velocity = smoothed_lms.diff()
     spds = DataFrame()
@@ -237,8 +270,8 @@ def correlation_by_segment(a: Series, b: Series, segments: Sequence[Tuple[int, i
     """
     def generate_correlations():
         for start_i, end_i in segments:
-            a_segment = a[start_i:end_i]
-            b_segment = b[start_i:end_i]
+            a_segment = a.iloc[start_i:end_i]
+            b_segment = b.iloc[start_i:end_i]
 
             a_vals = a_segment.to_numpy(dtype=float)
             b_vals = b_segment.to_numpy(dtype=float)
